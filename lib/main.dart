@@ -46,8 +46,8 @@ class MyHomePage extends StatelessWidget {
                 ),
                 Image.asset(
                   'assets/splash_screen.png',
-                  width: 100,
-                  height: 50,
+                  width: 90,
+                  height: 45,
                   fit: BoxFit.fill,
                 ),
                 Text(
