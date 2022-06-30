@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: '미소숯불닭갈비',
+      title: 'FitMate',
       home: AnimatedSplashScreen(
-        splash: Image.asset('assets/splash_screen.png'),
+        splash: Image.asset('assets/images/fitmate_logo.png'),
         nextScreen: MyHomePage(),
         splashTransition: SplashTransition.fadeTransition,
         backgroundColor: const Color(0xff22232A),
@@ -39,13 +39,13 @@ class MyHomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  'assets/sign_up_background.png',
+                  'assets/images/sign_up_background.png',
                   width: 280,
                   height: 160,
                   fit: BoxFit.fill,
                 ),
                 Image.asset(
-                  'assets/splash_screen.png',
+                  'assets/images/fitmate_logo.png',
                   width: 90,
                   height: 45,
                   fit: BoxFit.fill,
