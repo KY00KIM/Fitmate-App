@@ -1,10 +1,20 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'dart:async';
+import 'firebase_options.dart';
+import 'package:fitmate/screens/login.dart';
+import 'package:fitmate/screens/home.dart';
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,70 +27,20 @@ class MyApp extends StatelessWidget {
       title: 'FitMate',
       home: AnimatedSplashScreen(
         splash: Image.asset('assets/images/fitmate_logo.png'),
-        nextScreen: MyHomePage(),
+        nextScreen: StreamBuilder (
+          stream:FirebaseAuth.instance.authStateChanges(),
+          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+            if (snapshot.hasData) {
+              print("user hasData");
+              return HomePage();
+            } else {
+              print("user login page");
+              return LoginPage();
+            }
+          },
+        ),
         splashTransition: SplashTransition.fadeTransition,
         backgroundColor: const Color(0xff22232A),
-      ),
-    );
-  }
-}
-
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: const Color(0xff22232A),
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  'assets/images/sign_up_background.png',
-                  width: 280,
-                  height: 160,
-                  fit: BoxFit.fill,
-                ),
-                Image.asset(
-                  'assets/images/fitmate_logo.png',
-                  width: 90,
-                  height: 45,
-                  fit: BoxFit.fill,
-                ),
-                Text(
-                  '계정으로 접속하고\nMate로 합류하세요',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25.0),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-
-                    },
-                    child: Row(
-
-                    ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-
-                  },
-                  child: Row(
-
-                  ),
-                ),
-                TextButton(
-                    onPressed: () {
-
-                    },
-                    child: Text('로그인 없이 둘러보기'),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
