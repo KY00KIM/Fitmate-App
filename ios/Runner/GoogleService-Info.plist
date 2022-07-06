@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1038411454604-kka6jdrgafodsjdc1h09c51qd9dnup8r.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDQCYp5mFe07YFhVvIL7SuvIaG7k7L6Mvw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1038411454604</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.fitmate</string>
+	<key>PROJECT_ID</key>
+	<string>fitmate-cf118</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fitmate-cf118.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1038411454604:ios:04c304cf08288b40a703a9</string>
+</dict>
+</plist>

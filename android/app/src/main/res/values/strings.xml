@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">FitMate</string>
+    <string name="facebook_app_id">438113004618804</string>
+    <string name="fb_login_protocol_scheme">fb438113004618804</string>
+    <string name="facebook_client_token">6ca2008637ae891c60e4172c868be36e</string>
+</resources>
