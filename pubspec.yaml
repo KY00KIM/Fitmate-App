@@ -44,7 +44,15 @@ dependencies:
   cloud_firestore: ^3.2.1
   http: ^0.13.4
   firebase_core_platform_interface: ^4.4.3
-
+  flutter_svg: ^1.0.0
+  remedi_kopo: ^0.0.1
+  image_picker: ^0.8.5+3
+  table_calendar: ^3.0.6
+  video_player: ^2.4.5
+  #webview_flutter: ^3.0.4
+  #kpostal: ^0.4.2
+  #kopo: ^0.1.3
+  #daum_postcode_search: ^0.0.2
 
 dev_dependencies:
   flutter_test:

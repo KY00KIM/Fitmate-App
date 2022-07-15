@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/screens/home.dart';
+import 'package:fitmate/screens/profile.dart';
+import 'package:fitmate/screens/writing.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:async';
 import 'firebase_options.dart';
-import 'package:fitmate/screens/login.dart';
-import 'package:fitmate/screens/home.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 
 void main() async {
@@ -14,7 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  initializeDateFormatting().then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,12 +26,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'FitMate',
-      home: AnimatedSplashScreen(
+        title: 'FitMate',
+        home: AnimatedSplashScreen(
         splash: Image.asset('assets/images/fitmate_logo.png'),
         nextScreen: StreamBuilder (
           stream:FirebaseAuth.instance.authStateChanges(),
           builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+            /*
             if (snapshot.hasData) {
               print("user hasData");
               return HomePage();
@@ -37,10 +40,13 @@ class MyApp extends StatelessWidget {
               print("user login page");
               return LoginPage();
             }
+            */
+            return HomePage();
           },
         ),
         splashTransition: SplashTransition.fadeTransition,
         backgroundColor: const Color(0xff22232A),
+        duration: 1,
       ),
     );
   }

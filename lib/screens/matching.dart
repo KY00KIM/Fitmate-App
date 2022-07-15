@@ -1,24 +1,26 @@
-import 'package:fitmate/screens/matching.dart';
 import 'package:fitmate/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:fitmate/screens/writing.dart';
-import 'package:fitmate/screens/detail.dart';
-import 'package:fitmate/screens/notice.dart';
-
 import 'chatList.dart';
+import 'home.dart';
+import 'notice.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class MatchingPage extends StatefulWidget {
+  const MatchingPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MatchingPage> createState() => _MatchingPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MatchingPageState extends State<MatchingPage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    initializeDateFormatting(Localizations.localeOf(context).languageCode);
 
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
@@ -32,16 +34,21 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Color(0xFF22232A),
         title: Padding(
-          padding: EdgeInsets.only(left: 7.0),
-          child: Image.asset(
-            'assets/images/fitmate_logo.png',
-            height: 20,
+          padding: EdgeInsets.only(left: 5.0),
+          child: Text(
+            "매칭",
+            style: TextStyle(
+              color: Color(0xFFffffff),
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, CupertinoPageRoute(builder : (context) => NoticePage()));
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => NoticePage()));
             },
             icon: Padding(
               padding: EdgeInsets.only(right: 200),
@@ -71,21 +78,22 @@ class _HomePageState extends State<HomePage> {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 onPressed: () {
-                  Route route = MaterialPageRoute(builder: (context) => HomePage());
+                  Route route =
+                      MaterialPageRoute(builder: (context) => HomePage());
                   Navigator.pushReplacement(context, route);
                 },
                 child: Column(
                   children: [
                     Icon(
                       Icons.home_filled,
-                      color: Color(0xFFffffff),
+                      color: Color(0xFF757575),
                       //size: 30.0,
                       size: size.width * 0.0763,
                     ),
                     Text(
                       '홈',
                       style: TextStyle(
-                        color: Color(0xFFffffff),
+                        color: Color(0xFF757575),
                         //fontSize: 10.0,
                         fontSize: size.width * 0.0253,
                       ),
@@ -142,14 +150,14 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Icon(
                       Icons.fitness_center,
-                      color: Color(0xFF757575),
+                      color: Color(0xFFffffff),
                       //size: 30.0,
                       size: size.width * 0.0763,
                     ),
                     Text(
                       '매칭',
                       style: TextStyle(
-                        color: Color(0xFF757575),
+                        color: Color(0xFFffffff),
                         //fontSize: 10.0,
                         fontSize: size.width * 0.0253,
                       ),
@@ -197,120 +205,134 @@ class _HomePageState extends State<HomePage> {
             child: Icon(Icons.add),
             backgroundColor: Color(0xFF303037),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => WritingPage()));
-            }
-        ),
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WritingPage()));
+            }),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.zero,
-                  minimumSize: Size(size.width, 140),
-                  maximumSize: Size(size.width, 140),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(0),
-                  ),
-                  primary: Color(0xFF22232A)
+              Text(
+                'Jul 2022',
+                style: TextStyle(
+                  color: Color(0xFFffffff),
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
-                onPressed: () {
-                  print("버튼 클릭");
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
-                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: size.width - 50,
+                child: TableCalendar(
+                  //locale: 'ko_KO',
+                  focusedDay: DateTime.now(),
+                  firstDay: DateTime(2022,7,1),
+                  lastDay: DateTime(2022,7,31),
+                  headerVisible: false,
+                  calendarStyle: CalendarStyle(
+                    defaultTextStyle: TextStyle(
+                      color: Color(0xFFDADADA),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                    weekendTextStyle: TextStyle(
+                      color: Color(0xFFDADADA),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                    todayDecoration: BoxDecoration(
+                      color: Color(0xFF2975CF),
+                      shape: BoxShape.circle,
+
+                    ),
+                    todayTextStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFDADADA),
+                      fontSize: 17,
+                    ),
+                    outsideDaysVisible: false,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 3,
+                    color: Color(0xFF3D3D3D),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: size.width - 50,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Color(0xFF2975CF),
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
+                  padding: EdgeInsets.fromLTRB(25, 15, 25, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12.0),
-                        child: Image.network(
-                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
-                          width: 100.0,
-                          height: 100.0,
-                          fit: BoxFit.fitHeight,
+                      Text(
+                        '우파루파님과 매칭 운동 Day입니다!',
+                        style: TextStyle(
+                          color: Color(0xFFffffff),
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(
-                        width: 15,
+                        height: 3,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 230,
-                                  child: Flexible(
-                                    child: RichText(
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      strutStyle: StrutStyle(fontSize: 16),
-                                      text: TextSpan(
-                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  '6/25  |  장성헬스장',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFF757575),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  child: Image.network(
-                                    'https://picsum.photos/250?image=9',
-                                    width: 25.0,
-                                    height: 25.0,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  '토마스 박',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFF757575),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                      Text(
+                        '장소 : 우릉 피트니스장      시간 : 3:20pm',
+                        style: TextStyle(
+                          color: Color(0xFFDADADA),
+                          fontSize: 12,
                         ),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50.0),
+                            child: Image.network(
+                              'https://picsum.photos/250?image=9',
+                              width: 20.0,
+                              height: 20.0,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            '토마스 박',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Color(0xFFDADADA),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
-              Container(
-                height: 2,
-                width: size.width - 40,
-                color: Color(0xFF303037),
-              ),
-
             ],
           ),
         ),

@@ -3,8 +3,6 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'firebase_options.dart';
-import 'dart:async';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -61,12 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDQCYp5mFe07YFhVvIL7SuvIaG7k7L6Mvw',
-    appId: '1:1038411454604:ios:679cf523c1f48174a703a9',
+    appId: '1:1038411454604:ios:04c304cf08288b40a703a9',
     messagingSenderId: '1038411454604',
     projectId: 'fitmate-cf118',
     storageBucket: 'fitmate-cf118.appspot.com',
+    androidClientId: '1038411454604-kka6jdrgafodsjdc1h09c51qd9dnup8r.apps.googleusercontent.com',
     iosClientId: '1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1.apps.googleusercontent.com',
     iosBundleId: 'com.example.fitmate',
   );
-
 }
