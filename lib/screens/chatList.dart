@@ -194,9 +194,17 @@ class _ChatListPageState extends State<ChatListPage> {
         ),
       ),
       floatingActionButton: Container(
-        margin: EdgeInsets.only(top: 20.0),
+        margin: EdgeInsets.only(top: 30.0),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Color(0xFF22232A),
+        ),
         child: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: Icon(
+              Icons.add,
+              size: 40,
+            ),
             backgroundColor: Color(0xFF303037),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => WritingPage()));

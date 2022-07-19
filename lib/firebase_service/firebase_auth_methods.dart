@@ -12,8 +12,8 @@ class FirebaseAuthMethods {
   FirebaseAuthMethods(this._auth);
 
   //Google Sign in
-  Future<void> signInWithGoogle(BuildContext context) async {
-    //var output = null;
+  Future<String> signInWithGoogle(BuildContext context) async {
+    String output = 'null';
     try{
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -22,6 +22,7 @@ class FirebaseAuthMethods {
       print("당첨이냐");
       var asd = await user?.getIdToken();
       log(asd.toString());
+      print('-----------------------------------------');
       if(googleAuth?.accessToken != null && googleAuth?.idToken != null) {
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
@@ -40,7 +41,8 @@ class FirebaseAuthMethods {
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
-    //return output;
+
+    return output;
   }
 
   //Facebook sign in

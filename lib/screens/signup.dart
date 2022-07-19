@@ -1,116 +1,12 @@
+import 'dart:developer';
+
+import 'package:fitmate/screens/writeCenter.dart';
+import 'package:fitmate/screens/writeLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:remedi_kopo/remedi_kopo.dart';
 
-//import 'package:kpostal/kpostal.dart';
-//import 'package:get/get.dart';
-//import 'package:kopo/kopo.dart';
-//import 'package:daum_postcode_search/daum_postcode_search.dart';
-
-/*
-
-class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
-
-  @override
-  State<SignupPage> createState() => _SignupPageState();
-}
-
-
-class _SignupPageState extends State<SignupPage> {
-  final textController = TextEditingController();
-
-
-  TextEditingController _AddressController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text("sfefe"),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: ListView(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(padding: const EdgeInsets.only(top: 10)),
-                  GestureDetector(
-                    onTap: () {
-                      currentFocus.unfocus();
-                      HapticFeedback.mediumImpact();
-                      _addressAPI();
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('주소', style: TextStyle(fontSize: 15, color: Colors.blueGrey)),
-                        TextFormField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            isDense: false,
-                          ),
-                          controller: _AddressController,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  Widget AddressText() {
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.mediumImpact();
-        _addressAPI(); // 카카오 주소 API
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('주소', style: TextStyle(fontSize: 15, color: Colors.blueGrey)),
-          TextFormField(
-            enabled: false,
-            decoration: InputDecoration(
-              isDense: true,
-            ),
-            controller: _AddressController,
-            style: TextStyle(fontSize: 20),
-          ),
-        ],
-      ),
-    );
-  }
-
-  _addressAPI() async {
-    KopoModel model = await Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => RemediKopo(),
-      ),
-    );
-    _AddressController.text =
-    '${model.zonecode!} ${model.address!} ${model.buildingName!}';
-  }
-
-}
-
- */
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -120,6 +16,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  String nickname = '';
   final isSelectedSex = <bool>[false, false];
   final isSelectedWeekDay = <bool>[
     false,
@@ -132,7 +29,10 @@ class _SignupPageState extends State<SignupPage> {
   ];
   final isSelectedTime = <bool>[false, false, false];
   String location = '동네 입력';
-  String center = '센터 등록';
+  String centerName = '센터 등록';
+  late Map center;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -179,6 +79,9 @@ class _SignupPageState extends State<SignupPage> {
                       width: size.width - 165,
                       height: 45,
                       child: TextField(
+                        onChanged: (value) {
+                          nickname = value;
+                        },
                         style: TextStyle(color: Color(0xff878E97)),
                         decoration: InputDecoration(
                           hintText: '닉네임',
@@ -274,7 +177,7 @@ class _SignupPageState extends State<SignupPage> {
                   ],
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7.0),
@@ -636,28 +539,49 @@ class _SignupPageState extends State<SignupPage> {
                             color: Color(0xFF878E97),
                             size: 17.0,
                           ),
-                          Text(
-                            ' $location',
-                            style: TextStyle(
-                              color: Color(0xFF878E97),
-                              fontSize: 15,
+                          Flexible(
+                            child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              strutStyle: StrutStyle(fontSize: 15),
+                              text: TextSpan(
+                                text: ' $location',
+                                style: TextStyle(
+                                  color: Color(0xFF878E97),
+                                  fontSize: 15,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                          alignment: Alignment.centerLeft,
-                          primary: Color(0xFF22232A),
-                          shape: RoundedRectangleBorder(
-                            // 테두리를 라운드하게 만들기
-                            borderRadius: BorderRadius.circular(7.0),
-                          ),
-                          side: BorderSide(
-                            width: 1.0,
-                            color: Color(0xFF878E97),
-                          ),
-                          minimumSize: Size((size.width - 55) / 2, 45)),
-                      onPressed: () async {},
+                        alignment: Alignment.centerLeft,
+                        primary: Color(0xFF22232A),
+                        shape: RoundedRectangleBorder(
+                          // 테두리를 라운드하게 만들기
+                          borderRadius: BorderRadius.circular(7.0),
+                        ),
+                        side: BorderSide(
+                          width: 1.0,
+                          color: Color(0xFF878E97),
+                        ),
+                        minimumSize: Size((size.width - 55) / 2, 45),
+                        maximumSize: Size((size.width - 55) / 2, 45),
+                      ),
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  WriteLocationPage()),
+                        ).then((onValue) {
+                          print(onValue);
+                          onValue == null ? null : setState(() {
+                            location = onValue;
+                          });
+                        });
+                      },
                     ),
                     SizedBox(
                       width: 15,
@@ -670,28 +594,50 @@ class _SignupPageState extends State<SignupPage> {
                             color: Color(0xFF878E97),
                             size: 17.0,
                           ),
-                          Text(
-                            ' $center',
-                            style: TextStyle(
-                              color: Color(0xFF878E97),
-                              fontSize: 15,
+                          Flexible(
+                            child: RichText(
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              strutStyle: StrutStyle(fontSize: 15),
+                              text: TextSpan(
+                                text: ' $centerName',
+                                style: TextStyle(
+                                  color: Color(0xFF878E97),
+                                  fontSize: 15,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                          alignment: Alignment.centerLeft,
-                          primary: Color(0xFF22232A),
-                          shape: RoundedRectangleBorder(
-                            // 테두리를 라운드하게 만들기
-                            borderRadius: BorderRadius.circular(7.0),
-                          ),
-                          side: BorderSide(
-                            width: 1.0,
-                            color: Color(0xFF878E97),
-                          ),
-                          minimumSize: Size((size.width - 55) / 2, 45)),
-                      onPressed: () async {},
+                        alignment: Alignment.centerLeft,
+                        primary: Color(0xFF22232A),
+                        shape: RoundedRectangleBorder(
+                          // 테두리를 라운드하게 만들기
+                          borderRadius: BorderRadius.circular(7.0),
+                        ),
+                        side: BorderSide(
+                          width: 1.0,
+                          color: Color(0xFF878E97),
+                        ),
+                        minimumSize: Size((size.width - 55) / 2, 45),
+                        maximumSize: Size((size.width - 55) / 2, 45),
+                      ),
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  WriteCenterPage()),
+                        ).then((onValue) {
+                            print(onValue);
+                            onValue == null ? null : setState(() {
+                              center = onValue;
+                              centerName = onValue['place_name'];
+                            });
+                          });
+                        },
                     ),
                   ],
                 ),
@@ -700,14 +646,18 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    //primary: Color(0xFF3F93D1)
-                    primary: Color(0xFF3889D1),
+                    primary: nickname == '' || isSelectedSex[0] == false && isSelectedSex[1] == false || isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false || isSelectedWeekDay[0] == false && isSelectedWeekDay[1] == false && isSelectedWeekDay[2] == false && isSelectedWeekDay[3] == false  && isSelectedWeekDay[4] == false && isSelectedWeekDay[5] == false && isSelectedWeekDay[6] == false || location == '동네 입력' ? Color(0xFF878E97) : Color(0xFF3889D1),
                     minimumSize: Size(size.width-40, 45),
                   ),
                   onPressed: () {
-
+                    print('go');
                   },
-                  child: Text(
+                  child: nickname == '' || isSelectedSex[0] == false && isSelectedSex[1] == false || isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false || isSelectedWeekDay[0] == false && isSelectedWeekDay[1] == false && isSelectedWeekDay[2] == false && isSelectedWeekDay[3] == false  && isSelectedWeekDay[4] == false && isSelectedWeekDay[5] == false && isSelectedWeekDay[6] == false || location == '동네 입력' ? Text(
+                    '필수 입력을 마쳐주세요',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ) : Text(
                     '가입하기',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -721,4 +671,5 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
   }
+
 }

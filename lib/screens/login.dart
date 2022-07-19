@@ -12,7 +12,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String name = '';
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -103,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                             ElevatedButton(
                               onPressed: () {
                                 var answer = FirebaseAuthMethods(FirebaseAuth.instance).signInWithGoogle(context);
-                                //print('answer : $answer');
+                                print('answer : $answer');
 
                                 Route route = MaterialPageRoute(builder: (context) => StreamBuilder (
                                   stream:FirebaseAuth.instance.authStateChanges(),
@@ -141,7 +140,6 @@ class _LoginPageState extends State<LoginPage> {
                               style: ElevatedButton.styleFrom(
                                 side: BorderSide(width: 1.0, color: Color(0xff878E97)),
                                 primary: Color(0xFF15161B),
-
 
                                 minimumSize: Size.fromHeight(60),
                                 elevation: 1.0,

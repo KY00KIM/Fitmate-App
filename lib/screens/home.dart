@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fitmate/screens/writing.dart';
 import 'package:fitmate/screens/detail.dart';
 import 'package:fitmate/screens/notice.dart';
+import 'package:http/http.dart' as http;
+
 
 import 'chatList.dart';
 
@@ -16,6 +18,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  _HomePageState() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -135,7 +141,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () {
                   Route route =
-                      MaterialPageRoute(builder: (context) => MatchingPage());
+                      MaterialPageRoute(
+                        builder: (context) => MatchingPage(),
+
+                      );
                   Navigator.pushReplacement(context, route);
                 },
                 child: Column(
@@ -192,9 +201,17 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: Container(
-        margin: EdgeInsets.only(top: 20.0),
+        margin: EdgeInsets.only(top: 30.0),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Color(0xFF22232A),
+        ),
         child: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: Icon(
+              Icons.add,
+              size: 40,
+            ),
             backgroundColor: Color(0xFF303037),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => WritingPage()));
@@ -310,7 +327,838 @@ class _HomePageState extends State<HomePage> {
                 width: size.width - 40,
                 color: Color(0xFF303037),
               ),
-
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(size.width, 140),
+                    maximumSize: Size(size.width, 140),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(0),
+                    ),
+                    primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.0),
+                        child: Image.network(
+                          'https://tgzzmmgvheix1905536.cdn.ntruss.com/2020/12/0415c4378a98400fbd96d00de64e8112',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  장성헬스장',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
             ],
           ),
         ),
