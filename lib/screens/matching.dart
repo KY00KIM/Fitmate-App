@@ -78,9 +78,27 @@ class _MatchingPageState extends State<MatchingPage> {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 onPressed: () {
-                  Route route =
-                      MaterialPageRoute(builder: (context) => HomePage());
-                  Navigator.pushReplacement(context, route);
+                  //Route route = MaterialPageRoute(builder: (context) => HomePage());
+                  //Navigator.pushReplacement(context, route);
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                  /*
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return child;
+                      },
+                    ),
+                  );
+
+                   */
                 },
                 child: Column(
                   children: [
@@ -110,9 +128,27 @@ class _MatchingPageState extends State<MatchingPage> {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 onPressed: () {
-                  Route route =
-                      MaterialPageRoute(builder: (context) => ChatListPage());
-                  Navigator.pushReplacement(context, route);
+                  //Route route = MaterialPageRoute(builder: (context) => ChatListPage());
+                  //Navigator.pushReplacement(context, route);
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                  /*
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return child;
+                      },
+                    ),
+                  );
+
+                   */
                 },
                 child: Column(
                   children: [
@@ -142,9 +178,8 @@ class _MatchingPageState extends State<MatchingPage> {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 onPressed: () {
-                  Route route =
-                      MaterialPageRoute(builder: (context) => MatchingPage());
-                  Navigator.pushReplacement(context, route);
+                  //Route route = MaterialPageRoute(builder: (context) => MatchingPage());
+                  //Navigator.pushReplacement(context, route);
                 },
                 child: Column(
                   children: [
@@ -173,9 +208,27 @@ class _MatchingPageState extends State<MatchingPage> {
                   splashFactory: NoSplash.splashFactory,
                 ),
                 onPressed: () {
-                  Route route =
-                      MaterialPageRoute(builder: (context) => ProfilePage());
-                  Navigator.pushReplacement(context, route);
+                  //Route route = MaterialPageRoute(builder: (context) => ProfilePage());
+                  //Navigator.pushReplacement(context, route);
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                  /*
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return child;
+                      },
+                    ),
+                  );
+
+                   */
                 },
                 child: Column(
                   children: [

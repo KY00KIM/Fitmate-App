@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'chat.dart';
+
 class DetailMachingPage extends StatefulWidget {
   const DetailMachingPage({Key? key}) : super(key: key);
 
@@ -29,7 +31,9 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                 ),
                 elevation: 0,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
+              },
               child: Text(
                 '채팅하기',
                 style: TextStyle(

@@ -1,6 +1,70 @@
+/*
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
+class WritingPage extends StatefulWidget {
+  const WritingPage({Key? key}) : super(key: key);
+
+  @override
+  _WritingPageState createState() => _WritingPageState();
+}
+
+class _WritingPageState extends State<WritingPage> {
+  File? _image;
+
+  final _picker = ImagePicker();
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+    await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Kindacode.com'),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(35),
+            child: Column(children: [
+              Center(
+                child: ElevatedButton(
+                  child: const Text('Select An Image'),
+                  onPressed: _openImagePicker,
+                ),
+              ),
+              const SizedBox(height: 35),
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                height: 300,
+                color: Colors.grey[300],
+                child: _image != null
+                    ? Image.file(_image!, fit: BoxFit.cover)
+                    : const Text('Please select an image'),
+              )
+            ]),
+          ),
+        ));
+  }
+}
+
+ */
+
+//import 'dart:html' as http;
+import 'package:fitmate/screens/writeCenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class WritingPage extends StatefulWidget {
@@ -14,15 +78,20 @@ class _WritingPageState extends State<WritingPage> {
   String _selectedTime = '시간 선택';
   String _selectedDate = '날짜 선택';
   String _selectedpart = '운동 부위';
+  String centerName = '만날 피트니스장을 선택해주세요';
 
-  final ImagePicker _picker = ImagePicker();
-  List<XFile> _pickedImgs = [];
+  File? _image;
 
-  Future<void> _pickImg() async {
-    final List<XFile>? images = await _picker.pickMultiImage();
-    if(images != null) {
+  final _picker = ImagePicker();
+
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
       setState(() {
-        _pickedImgs = images;
+        _image = File(pickedImage.path);
+        print(_image);
       });
     }
   }
@@ -95,19 +164,19 @@ class _WritingPageState extends State<WritingPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _pickImg();
-                      print(_pickedImgs[0].path);
+                      _openImagePicker();
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0,
                       //minimumSize: Size(65, 65),
-                      minimumSize:
-                          Size(size.height * 0.09, size.height * 0.09),
-                      primary: Color(0xFF878E97)
+                      minimumSize: Size(size.height * 0.09, size.height * 0.09),
+                      maximumSize: Size(size.height * 0.09, size.height * 0.09),
+                      primary: _image == null ? Color(0xFF878E97) : Color(0xFF22232A),
                     ),
-                    child: Icon(
+                    child: _image == null ? Icon(
                       Icons.photo_camera,
                       size: 30.0,
-                    ),
+                    ) : Image.file(_image!, fit: BoxFit.cover),
                   ),
                   SizedBox(
                     height: 20,
@@ -408,7 +477,19 @@ class _WritingPageState extends State<WritingPage> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                WriteCenterPage()),
+                      ).then((onValue) {
+                        print(onValue);
+                        onValue == null ? null : setState(() {
+                          centerName = onValue['place_name'];
+                        });
+                      });
+                    },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(size.width, 45),
                       primary: Color(0xFF22232A),
@@ -428,7 +509,7 @@ class _WritingPageState extends State<WritingPage> {
                           size: 17,
                         ),
                         Text(
-                          ' 만날 피트니스장을 선택해주세요.',
+                          ' $centerName',
                           style: TextStyle(
                             color: Color(0xFF878E97),
                             fontSize: 14.0,

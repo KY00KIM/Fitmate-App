@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
             }
             */
 
-            return SignupPage();
+            return HomePage();
           },
         ),
         splashTransition: SplashTransition.fadeTransition,
