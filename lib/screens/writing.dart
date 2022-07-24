@@ -1,71 +1,17 @@
-/*
-import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-
-class WritingPage extends StatefulWidget {
-  const WritingPage({Key? key}) : super(key: key);
-
-  @override
-  _WritingPageState createState() => _WritingPageState();
-}
-
-class _WritingPageState extends State<WritingPage> {
-  File? _image;
-
-  final _picker = ImagePicker();
-  // Implementing the image picker
-  Future<void> _openImagePicker() async {
-    final XFile? pickedImage =
-    await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Kindacode.com'),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(35),
-            child: Column(children: [
-              Center(
-                child: ElevatedButton(
-                  child: const Text('Select An Image'),
-                  onPressed: _openImagePicker,
-                ),
-              ),
-              const SizedBox(height: 35),
-              Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                height: 300,
-                color: Colors.grey[300],
-                child: _image != null
-                    ? Image.file(_image!, fit: BoxFit.cover)
-                    : const Text('Please select an image'),
-              )
-            ]),
-          ),
-        ));
-  }
-}
-
- */
-
 //import 'dart:html' as http;
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+
+import '../utils/data.dart';
 
 class WritingPage extends StatefulWidget {
   const WritingPage({Key? key}) : super(key: key);
@@ -77,8 +23,11 @@ class WritingPage extends StatefulWidget {
 class _WritingPageState extends State<WritingPage> {
   String _selectedTime = '시간 선택';
   String _selectedDate = '날짜 선택';
-  String _selectedpart = '운동 부위';
+  String _selectedpart = '부위';
   String centerName = '만날 피트니스장을 선택해주세요';
+  String title = "";
+  String description = "";
+  String postId = "";
 
   File? _image;
 
@@ -94,6 +43,54 @@ class _WritingPageState extends State<WritingPage> {
         print(_image);
       });
     }
+  }
+
+  void PostPosets() async {
+    List<int> imageBytes = _image!.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+    List textPart = ["가슴"];
+    Map data = {
+      "user_id" : "$UserId",
+      "location_id" : "${UserData["data"]["location_id"]}",
+      "post_fitness_part" : textPart,
+      "post_title" : "$title",
+      "promise_location" : "$centerName",
+      "promise_date" : "${_selectedDate}T",
+      "post_img" : "",
+      "post_main_text" : "$description"
+    };
+    var body = json.encode(data);
+
+    http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/posts/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization' : '$IdToken',
+      }, // this header is essential to send json data
+      body: body
+    );
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print(resBody);
+    postId = resBody["data"]["_id"].toString();
+
+    // ignore: unused_local_variable
+    var request = http.MultipartRequest('POST', Uri.parse("https://fitmate.co.kr/v1/posts/image/$postId"));
+    request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+    var res = await request.send();
+    print('$postId');
+    print(res.statusCode);
+    
+    /*
+    print("idtoken : $IdToken");
+
+    if(response.statusCode == 201) {
+
+    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      FlutterToastBottom("한번 더 시도해 주세요");
+    } else {
+      FlutterToastBottom("오류가 발생하였습니다");
+    }
+    */
   }
 
   @override
@@ -134,12 +131,25 @@ class _WritingPageState extends State<WritingPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                print(_image);
+                print(title);
+                print(_selectedDate);
+                print(_selectedTime);
+                print(_selectedpart);
+                print(centerName);
+                
+                _image == null || title == "" || _selectedpart == '부위' || centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택'  ?
+                    FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
+                        : PostPosets();
+                        
+              },
               child: Text(
                 '완료',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
+                  color: _image == null || title == "" || _selectedpart == '부위' || centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택' ? Color(0xFF878E97) : Color(0xFF2975CF),
                 ),
               ),
             ),
@@ -172,11 +182,12 @@ class _WritingPageState extends State<WritingPage> {
                       minimumSize: Size(size.height * 0.09, size.height * 0.09),
                       maximumSize: Size(size.height * 0.09, size.height * 0.09),
                       primary: _image == null ? Color(0xFF878E97) : Color(0xFF22232A),
+                      
                     ),
                     child: _image == null ? Icon(
                       Icons.photo_camera,
                       size: 30.0,
-                    ) : Image.file(_image!, fit: BoxFit.cover),
+                    ) : Image.file(_image!, width: 100, height: 100),
                   ),
                   SizedBox(
                     height: 20,
@@ -197,9 +208,12 @@ class _WritingPageState extends State<WritingPage> {
                         width: size.width - 160,
                         height: 45,
                         child: TextField(
-                          style: TextStyle(color: Color(0xff878E97)),
+                          onChanged: (value) {
+                            title = value;
+                          },
+                          style: TextStyle(color: Color(0xFF878E97)),
                           decoration: InputDecoration(
-                            hintText: '운동 내용을 요약해서 적어주세요.',
+                            hintText: '운동 내용을 요약해서 적어주세요',
                             contentPadding: EdgeInsets.fromLTRB(15, 5, 0, 0),
                             hintStyle: TextStyle(
                               color: Color(0xff878E97),
@@ -590,7 +604,7 @@ class _WritingPageState extends State<WritingPage> {
                             setState(() {
                               if (timeOfDay != null) {
                                 _selectedTime =
-                                    '${timeOfDay.hour}:${timeOfDay.minute}';
+                                    '${timeOfDay.hour}:${timeOfDay.minute}:00';
                               }
                             });
                           });
@@ -641,6 +655,9 @@ class _WritingPageState extends State<WritingPage> {
                   Container(
                     width: size.width,
                     child: TextField(
+                      onChanged: (value) {
+                        description = value;
+                      },
                       keyboardType: TextInputType.multiline,
                       maxLines: 15,
                       minLines: 1,

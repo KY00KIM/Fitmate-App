@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:fitmate/screens/login.dart';
 import 'package:fitmate/screens/profileEdit.dart';
+import 'package:fitmate/utils/data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fitmate/screens/writing.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'chatList.dart';
 import 'home.dart';
 import 'matching.dart';
@@ -14,6 +20,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  String getSchedule() {
+    if(UserData["data"]["user_schedule_time"] == 0) return "오전";
+    else if(UserData["data"]["user_schedule_time"] == 1) return "오후";
+    else return "저녁";
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -49,12 +62,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Color(0xFF757575),
                 width: 1,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             elevation: 40,
-            onSelected: (value) {
+            onSelected: (value) async {
               if (value == '/edit') Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditPage()));
-              else print('로그아웃');
+              else if (value == '/logout'){ 
+                print('로그아웃');
+              }
             },
             itemBuilder: (BuildContext bc) {
               return [
@@ -303,7 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(100.0),
                       child: Image.network(
-                        'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
+                        'https://lh3.googleusercontent.com/a-/AFdZucrZLMIGoom5ZRl_l8ZxegVkQLyhlvLJMu2Ott2R0w=s96-c',
                         width: 70.0,
                         height: 70.0,
                         fit: BoxFit.fitHeight,
@@ -313,7 +328,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 10,
                     ),
                     Text(
-                      '안드레아(여)',
+                      '${UserData["data"]["user_nickname"]}(${UserData["data"]["user_gender"] == false ? '남' : '여'})',
                       style: TextStyle(
                         color: Color(0xFFffffff),
                         fontWeight: FontWeight.bold,
@@ -342,7 +357,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: Text(
-                        '오전',
+                        '${getSchedule()}',
                         style: TextStyle(
                           color: Color(0xFF2975CF),
                           fontWeight: FontWeight.bold,
@@ -445,14 +460,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: Color(0xFF878E97),
+                          color: UserData["data"]["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '금',
                         style: TextStyle(
-                            color: Color(0xFF878E97),
+                            color: UserData["data"]["user_weekday"]["fri"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -520,7 +536,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Container(
                 width: size.width - 40,
-                height: 150,
+                height: 112,
                 decoration: BoxDecoration(
                   color: Color(0xFF22232A),
                   border: Border.all(width: 1, color: Color(0xFF757575)),
@@ -556,7 +572,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Text(
-                            '서울 강남구',
+                            '${UserData["data"]["user_address"]}',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -590,7 +606,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Text(
-                            '보령헬스장',
+                            '${UserData["data"]["fitness_center_id"]}',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -633,6 +649,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
+                      /*
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -667,6 +684,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
+                      */
                     ],
                   ),
                 ),

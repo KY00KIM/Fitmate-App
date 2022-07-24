@@ -1,8 +1,16 @@
+//import 'dart:_http';
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:fitmate/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:fitmate/firebase_service/firebase_auth_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'package:fitmate/utils/data.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,7 +18,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String name = '';
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +68,54 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                              onPressed: () {
-                                FirebaseAuthMethods(FirebaseAuth.instance).signInWithFacebook(context);
+                              onPressed: () async {
+                                IdToken = await FirebaseAuthMethods(FirebaseAuth.instance).signInWithFacebook(context);
+                                log(IdToken);
+                                if(IdToken == 'error') {FlutterToastTop("알수 없는 에러가 발생하였습니다");}
+                                else {
+                                  //토큰을 받는 단계에서 에러가 나지 않았다면
+                                  http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
+                                    'Authorization' : '${IdToken.toString()}'});
+                                  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                  print('status code : ${response.statusCode}');
+                                  print('resBody : $resBody');
+                                  if(response.statusCode == 200) {
+                                    //사용자 정보가 완벽히 등록 되어있다면
+                                    print("등록된 사용자");
+                                    UserId = resBody['data']['user_id'];
+                                    print("user Id : $UserId");
+
+                                    bool userdata = await UpdateUserData();
+
+                                    if(userdata == true) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+                                          transitionDuration: Duration.zero,
+                                          reverseTransitionDuration: Duration.zero,
+                                        ),
+                                      );
+                                    }
+                                    else {
+                                      FlutterToastTop("알수 없는 에러가 발생하였습니다");
+                                    }
+                                  } else if(resBody['message'] == 404) {
+                                    // 사용자 정보가 등록 안된 상황에서는
+                                    print("등록해야하는 사용자");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation, secondaryAnimation) => SignupPage(),
+                                        transitionDuration: Duration.zero,
+                                        reverseTransitionDuration: Duration.zero,
+                                      ),
+                                    );
+                                  } else {
+                                    //모르는 문제 시에는
+                                    FlutterToastTop("알수 없는 에러가 발생하였습니다");
+                                  }
+                                }
                               },
                               child: Row(
                                 //spaceEvenly: 요소들을 균등하게 배치하는 속성
@@ -100,23 +153,52 @@ class _LoginPageState extends State<LoginPage> {
                               height: 20.0,
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                var answer = FirebaseAuthMethods(FirebaseAuth.instance).signInWithGoogle(context);
-                                print('answer : $answer');
+                              onPressed: () async {
+                                IdToken = await FirebaseAuthMethods(FirebaseAuth.instance).signInWithGoogle(context);
+                                log('$IdToken');
 
-                                Route route = MaterialPageRoute(builder: (context) => StreamBuilder (
-                                  stream:FirebaseAuth.instance.authStateChanges(),
-                                  builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-                                    if (snapshot.hasData) {
-                                      print("user hasData");
-                                      return HomePage();
-                                    } else {
-                                      print("user login page");
-                                      return LoginPage();
+                                if(IdToken == 'error') {FlutterToastTop("알수 없는 에러가 발생하였습니다");}
+                                else {
+                                  //토큰을 받는 단계에서 에러가 나지 않았다면
+                                  http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
+                                    'Authorization' : '$IdToken'});
+                                  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                  print('status code : ${response.statusCode}');
+                                  print('resBody : $resBody');
+                                  if(response.statusCode == 200) {
+                                    //사용자 정보가 완벽히 등록 되어있다면
+                                    UserId = resBody['data']['user_id'];
+
+                                    bool userdata = await UpdateUserData();
+
+                                    if(userdata == true) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+                                          transitionDuration: Duration.zero,
+                                          reverseTransitionDuration: Duration.zero,
+                                        ),
+                                      );
                                     }
-                                  },
-                                ),);
-                                Navigator.pushReplacement(context, route);
+                                    else {
+                                      FlutterToastTop("알수 없는 에러가 발생하였습니다");
+                                    }
+                                  } else if(resBody['message'] == 404) {
+                                    // 사용자 정보가 등록 안된 상황에서는
+                                    Navigator.pushReplacement(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation, secondaryAnimation) => SignupPage(),
+                                        transitionDuration: Duration.zero,
+                                        reverseTransitionDuration: Duration.zero,
+                                      ),
+                                    );
+                                  } else {
+                                    //모르는 문제 시에는
+                                    FlutterToastTop("알수 없는 에러가 발생하였습니다");
+                                  }
+                                }
                               },
                               child: Row(
                                 //spaceEvenly: 요소들을 균등하게 배치하는 속성

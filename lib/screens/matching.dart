@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:fitmate/utils/data.dart';
+
 
 import 'package:fitmate/screens/writing.dart';
 import 'chatList.dart';
@@ -291,6 +293,7 @@ class _MatchingPageState extends State<MatchingPage> {
               Container(
                 width: size.width - 50,
                 child: TableCalendar(
+                  daysOfWeekHeight:30,
                   locale: 'ko_KO',
                   focusedDay: DateTime.now(),
                   firstDay: DateTime(2022,7,1),
@@ -310,7 +313,6 @@ class _MatchingPageState extends State<MatchingPage> {
                     todayDecoration: BoxDecoration(
                       color: Color(0xFF2975CF),
                       shape: BoxShape.circle,
-
                     ),
                     todayTextStyle: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -336,13 +338,13 @@ class _MatchingPageState extends State<MatchingPage> {
               ),
               Container(
                 width: size.width - 50,
-                height: 100,
+                height: 110,
                 decoration: BoxDecoration(
                   color: Color(0xFF2975CF),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(25, 15, 25, 10),
+                  padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

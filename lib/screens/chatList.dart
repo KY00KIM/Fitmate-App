@@ -21,7 +21,6 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(
@@ -289,11 +288,20 @@ class _ChatListPageState extends State<ChatListPage> {
                 onPressed: () {
                   //Route route = MaterialPageRoute(builder: (context) => ChatPage());
                   //Navigator.pushReplacement(context, route);
-                  Navigator.push(context, CupertinoPageRoute(builder : (context) => ChatPage()));
+                  //Navigator.push(context, CupertinoPageRoute(builder : (context) => ChatPage()));
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => ChatPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(100.0),

@@ -1,24 +1,28 @@
-// ignore_for_file: prefer_const_constructors
-import 'dart:convert';
-import 'dart:io';
+// ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/home.dart';
 import 'package:fitmate/screens/login.dart';
-import 'package:fitmate/screens/matching.dart';
 import 'package:fitmate/screens/profile.dart';
-import 'package:fitmate/screens/profileEdit.dart';
+import 'package:fitmate/screens/review.dart';
 import 'package:fitmate/screens/signup.dart';
-import 'package:fitmate/screens/test.dart';
-import 'package:fitmate/screens/writing.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:async';
 import 'firebase_options.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:http/http.dart' as http;
-import 'package:fitmate/screens/writeCenter.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:fitmate/utils/data.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'firebase_service/firebase_auth_methods.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:fitmate/utils/data.dart';
+import 'dart:convert';
+import 'dart:developer';
 
 
 void main() async {
@@ -26,84 +30,108 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  //User? tokenResult = await FirebaseAuth.instance.currentUser;
+  //var idToken = await tokenResult?.getIdToken();
+  //print("id token : $idToken");  
+
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
+
   /*
-  print("서버 통신 시작");
-  //String url = "http://fitmate.co.kr:8000/v1/users/oauth/";
-  String url = "https://dapi.kakao.com/v2/local/search/keyword.json?size=15&sort=accuracy&query=YB휘트니스";
-  var body = jsonEncode({
-    "user_nickname": "우민",
-    "user_gender" : true,
-    "user_weekday" : {
-      "fri":  true
-    },
-    "user_schedule_time": 0,
-    "user_address" : "서울특별시 강남구 송정동 상무대로 312",
-    "user_latitude" : 35.142905,
-    "user_longitude": 126.800562,
-    "fitness_center" : {
-      "center_name":"무야호짐",
-      "center_address":"서울시 강남구 구의로 579 B104호",
-      "center_latitude": 123.5,
-      "center_longitude": 123.2334
-    },
-    "name": "김보석",
-    "picture": "https://graph.facebook.com/1626030847797342/picture",
-    "iss": "https://securetoken.google.com/fitmate-cf118",
-    "aud": "fitmate-cf118",
-    "auth_time": 1657436473,
-    "user_id": "q6KlqMtj18NFpWHvOB2tQs24PvM2",
-    "sub": "q6KlqMtj18NFpWHvOB2tQs24PvM2",
-    "iat": 1657436473,
-    "exp": 1657440073,
-    "email": "hihi@gmail.com",
-    "email_verified": false,
-    "firebase": {
-      "identities": { "facebook.com": [], "email": [] },
-      "sign_in_provider": "google.com"
-    },
-    "uid": "q6KlqMtj18NFpWHvOB2tQs24PvM2"
-  });
+  http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/posts"),
+      headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8"},
+      body: body
+  );
+  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+  */
 
-  http.Response response = await http.get(Uri.parse(url), headers:{"Authorization": "KakaoAK 281e3d7d678f26ad3b6020d8fc517852"});
-  print('서버 통신 완료');
-  print("status : ${response.statusCode}");
-  print("response : ${response.body}");
+  //IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+  //print("token : $IdToken");
 
-   */
-
-  initializeDateFormatting().then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  // ignore: prefer_typing_uninitialized_variables
+  
+  Future<bool> getToken() async {
+    print("start gettoken");
+    // ignore: await_only_futures
+    
+    User? tokenResult = await FirebaseAuth.instance.currentUser;
+    log(tokenResult.toString());
+    if(tokenResult == null) return true;
+    // ignore: unused_local_variable
+    var idToken = await tokenResult.getIdToken();
+    log(idToken.toString());
+    
+    // ignore: avoid_print
+    //print("idToken : $idToken");
+    //if(idToken == null) return true;
+    IdToken = idToken.toString();
+    
+    http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
+      'Authorization' : '$IdToken'});
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    // ignore: avoid_print
+    print('status code : ${response.statusCode}');
+    // ignore: avoid_print
+    print('resBody : $resBody');
+    UserId = resBody['data']['user_id'];
+
+    // ignore: avoid_print
+    print("Idtoken : $IdToken");
+    // ignore: avoid_print
+    print("user Id : $UserId");
+
+    bool userdata = await UpdateUserData();
+
+    // ignore: unrelated_type_equality_checks
+
+    return IdToken == null || UserId == null || userdata == false;
+  }
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-        title: 'FitMate',
-        home: AnimatedSplashScreen(
-        splash: Image.asset('assets/images/fitmate_logo.png'),
-        nextScreen: StreamBuilder (
-          stream:FirebaseAuth.instance.authStateChanges(),
-          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-            /*
-            if (snapshot.hasData) {
-              print("user hasData");
-              return HomePage();
-            } else {
-              print("user login page");
-              return LoginPage();
-            }
-            */
-
-            return HomePage();
-          },
-        ),
-        splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: const Color(0xff22232A),
-        duration: 1,
+      title: 'FitMate',
+      // ignore: unrelated_type_equality_checks, prefer_const_constructors
+      //home: getToken() == true ? LoginPage() : HomePage(),
+      home: FutureBuilder(
+        future: getToken(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          
+          if (snapshot.hasData == false) {
+            return Center(child: CircularProgressIndicator());
+          }
+          //error가 발생하게 될 경우 반환하게 되는 부분
+          else if (snapshot.hasError) {
+            print("error");
+            return LoginPage();
+          }
+          // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+          else {
+            print("값 받아옴 : ${snapshot.hasData}");
+            // ignore: avoid_print
+            print(snapshot.hasData);
+            return snapshot.hasData == false ? LoginPage() : const HomePage();
+          }
+          
+          //return ReviewPage();
+        },
       ),
     );
   }
 }
+
+class $ {
+}
+
+class $idToken {
+}
+
+

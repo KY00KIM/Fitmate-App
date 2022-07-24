@@ -1,11 +1,21 @@
+import 'dart:convert';
 import 'dart:developer';
+//import 'dart:developer';
+//import 'dart:html';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/screens/login.dart';
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:fitmate/screens/writeLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:remedi_kopo/remedi_kopo.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import '../firebase_service/firebase_auth_methods.dart';
+import '../utils/data.dart';
+import 'home.dart';
 
 
 class SignupPage extends StatefulWidget {
@@ -31,12 +41,114 @@ class _SignupPageState extends State<SignupPage> {
   String location = '동네 입력';
   String centerName = '센터 등록';
   late Map center;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  void SignPost() async {
+    int schedule = 0;
+    bool gender = true;   //남자면 true, 여자면 false
+
+    if(isSelectedTime[1]) {schedule = 1;}
+    else if (isSelectedTime[2]) {schedule = 2;}
+
+    if(isSelectedSex[1]) gender = false;
+
+    print('위치 보기');
+    Position position = await DeterminePosition();
+    print('latitute : ${position.latitude}');
+    print('longitude : ${position.longitude}');
+    double latitude = position.latitude;
+    double longitude = position.longitude;
+
+    final fcmToken = FirebaseMessaging.instance.getToken();
+    print('fcm token : $fcmToken');
+
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
+
+    Map data = {
+      "user_nickname": "$nickname",
+      "user_address": "$location",
+      "user_schedule_time": schedule,
+      "user_weekday": {
+        "mon" : isSelectedWeekDay[0],
+        "tue" : isSelectedWeekDay[1],
+        "wed" : isSelectedWeekDay[2],
+        "thu" : isSelectedWeekDay[3],
+        "fri" : isSelectedWeekDay[4],
+        "sat" : isSelectedWeekDay[5],
+        "sun" : isSelectedWeekDay[6]
+      },
+      "user_gender": gender,
+      "user_longitude": longitude,
+      "user_latitude": latitude,
+      "fitness_center": {
+        "center_name": "$centerName",
+        "center_address": "${center['assress_name']}",
+        "fitness_longitude": center['y'],
+        "fitness_latitude": center['x']
+      },
+      "social" : {
+        "device_token" : [
+          "$deviceToken"
+        ]
+      }
+    };
+    var body = json.encode(data);
+    log(IdToken);
+    http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),
+        headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8"},
+        body: body
+    );
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if(response.statusCode == 201) {
+      UserId = resBody['data']['_id'];
+      print("user id : $UserId");
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
+    } else if(resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      
+      http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),
+          headers: {'Authorization' : '$IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
+          body: body
+      );
+      var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if(response.statusCode == 201) {
+        UserId = resBody['data']['_id'];
+        bool userdata = await UpdateUserData();
+
+        if(userdata == true) {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
+        }
+        else {
+          FlutterToastTop("알수 없는 에러가 발생하였습니다");
+        }
+      } else {
+        FlutterToastTop("알수 없는 에러가 발생하였습니다");
+      }
+    } else {
+      FlutterToastTop("알수 없는 에러가 발생하였습니다");
+    }
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    //widget.idToken;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -650,14 +762,11 @@ class _SignupPageState extends State<SignupPage> {
                     minimumSize: Size(size.width-40, 45),
                   ),
                   onPressed: () {
-                    print('go');
+                    nickname == '' || isSelectedSex[0] == false && isSelectedSex[1] == false || isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false || isSelectedWeekDay[0] == false && isSelectedWeekDay[1] == false && isSelectedWeekDay[2] == false && isSelectedWeekDay[3] == false  && isSelectedWeekDay[4] == false && isSelectedWeekDay[5] == false && isSelectedWeekDay[6] == false || location == '동네 입력' ?
+                    FlutterToastBottom("센터 등록 외의 모든 항목을 입력하여주세요")
+                        : SignPost();
                   },
-                  child: nickname == '' || isSelectedSex[0] == false && isSelectedSex[1] == false || isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false || isSelectedWeekDay[0] == false && isSelectedWeekDay[1] == false && isSelectedWeekDay[2] == false && isSelectedWeekDay[3] == false  && isSelectedWeekDay[4] == false && isSelectedWeekDay[5] == false && isSelectedWeekDay[6] == false || location == '동네 입력' ? Text(
-                    '필수 입력을 마쳐주세요',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ) : Text(
+                  child: Text(
                     '가입하기',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
