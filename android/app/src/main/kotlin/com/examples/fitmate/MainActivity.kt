@@ -1,4 +1,4 @@
-package com.example.fitmate
+package com.examples.fitmate
 
 import io.flutter.embedding.android.FlutterActivity
 

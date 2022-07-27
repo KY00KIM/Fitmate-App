@@ -345,7 +345,7 @@
     },
     {
       "name": "image_picker_android",
-      "rootUri": "file:///Users/gimboseok/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+1",
+      "rootUri": "file:///Users/gimboseok/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+13",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -602,7 +602,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-07-23T05:10:42.836334Z",
+  "generated": "2022-07-25T15:44:24.927065Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

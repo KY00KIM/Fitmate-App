@@ -391,7 +391,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         '월',
                         style: TextStyle(
-                            color: Color(0xFF878E97),
+                            color: UserData["data"]["user_weekday"]["mon"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -411,7 +411,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         '화',
                         style: TextStyle(
-                            color: Color(0xFF878E97),
+                            color: UserData["data"]["user_weekday"]["tue"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -431,7 +431,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         '수',
                         style: TextStyle(
-                            color: Color(0xFF878E97),
+                            color: UserData["data"]["user_weekday"]["wed"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -439,15 +439,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       width: 40,
                       height: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF2975CF),
+                      decoration: UserData["data"]["user_weekday"]["thu"] == true ? BoxDecoration(
+                        color: Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFF878E97),
+                        ),
+                      ) : BoxDecoration(
+                        color: Color(0xFF22232A),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFF878E97),
+                        ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '목',
                         style: TextStyle(
-                            color: Color(0xFFffffff),
+                            color: UserData["data"]["user_weekday"]["thu"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -455,13 +466,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       width: 40,
                       height: 40,
-                      decoration: BoxDecoration(
+                      decoration: UserData["data"]["user_weekday"]["fri"] == true ? BoxDecoration(
                         color: Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["data"]["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-
+                          color: Color(0xFF878E97),
+                        ),
+                      ) : BoxDecoration(
+                        color: Color(0xFF22232A),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
@@ -476,15 +493,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       width: 40,
                       height: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF2975CF),
+                      decoration: UserData["data"]["user_weekday"]["sat"] == true ? BoxDecoration(
+                        color: Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFF878E97),
+                        ),
+                      ) : BoxDecoration(
+                        color: Color(0xFF22232A),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFF878E97),
+                        ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '토',
                         style: TextStyle(
-                            color: Color(0xFFffffff),
+                            color: UserData["data"]["user_weekday"]["sat"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -492,7 +520,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       width: 40,
                       height: 40,
-                      decoration: BoxDecoration(
+                      decoration: UserData["data"]["user_weekday"]["sun"] == true ? BoxDecoration(
+                        color: Color(0xFF22232A),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFF878E97),
+                        ),
+                      ) : BoxDecoration(
                         color: Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
@@ -504,7 +539,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         '일',
                         style: TextStyle(
-                            color: Color(0xFF878E97),
+                            color: UserData["data"]["user_weekday"]["sun"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),

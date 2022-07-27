@@ -9,6 +9,7 @@ late String IdToken;
 late String UserId;
 //late String FirebasePlatform = "Facebook";
 
+String baseUrl = "https://fitmate.co.kr/v1/";
 late Map UserData = {
   "success": true,
   "message": "",

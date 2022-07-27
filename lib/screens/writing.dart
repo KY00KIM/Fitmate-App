@@ -61,7 +61,7 @@ class _WritingPageState extends State<WritingPage> {
     };
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/posts/"),
+    http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization' : '$IdToken',
@@ -73,7 +73,7 @@ class _WritingPageState extends State<WritingPage> {
     postId = resBody["data"]["_id"].toString();
 
     // ignore: unused_local_variable
-    var request = http.MultipartRequest('POST', Uri.parse("https://fitmate.co.kr/v1/posts/image/$postId"));
+    var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
     request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
     var res = await request.send();
     print('$postId');

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1038411454604:android:7981fa2f18df7fcda703a9",
         "android_client_info": {
-          "package_name": "com.example.fitmate"
+          "package_name": "com.examples.fitmate"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "1038411454604-kka6jdrgafodsjdc1h09c51qd9dnup8r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.fitmate",
+            "package_name": "com.examples.fitmate",
             "certificate_hash": "6e7198052d481070c81bda166ac4f82776766704"
           }
         },
@@ -25,7 +25,7 @@
           "client_id": "1038411454604-pbk81ugu14h0onqf3oq5kcd4rdceho3i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.fitmate",
+            "package_name": "com.examples.fitmate",
             "certificate_hash": "ed5a8049d0121786347a0e1ac3d5775d2fc8b580"
           }
         },
@@ -50,7 +50,7 @@
               "client_id": "1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.fitmate"
+                "bundle_id": "com.examples.fitmate"
               }
             }
           ]

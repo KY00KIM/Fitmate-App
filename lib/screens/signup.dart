@@ -112,7 +112,7 @@ class _SignupPageState extends State<SignupPage> {
     } else if(resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       
-      http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),
+      http.Response response = await http.post(Uri.parse("${baseUrl}users/oauth"),
           headers: {'Authorization' : '$IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
           body: body
       );

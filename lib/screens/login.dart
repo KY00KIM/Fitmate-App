@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                                 if(IdToken == 'error') {FlutterToastTop("알수 없는 에러가 발생하였습니다");}
                                 else {
                                   //토큰을 받는 단계에서 에러가 나지 않았다면
-                                  http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
+                                  http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
                                     'Authorization' : '${IdToken.toString()}'});
                                   var resBody = jsonDecode(utf8.decode(response.bodyBytes));
                                   print('status code : ${response.statusCode}');

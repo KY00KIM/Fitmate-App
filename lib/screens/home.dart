@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   List homeData = [];
 
   Future<List> getPosts() async{
-    http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/posts"),
+    http.Response response = await http.get(Uri.parse("${baseUrl}posts"),
         headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8"},
     );
     // ignore: unused_local_variable
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     if(resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       
-      http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/posts"),
+      http.Response response = await http.post(Uri.parse("${baseUrl}posts"),
           headers: {'Authorization' : '$IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
       );
     }
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    homeData = getPosts() as List;
+    //homeData = getPosts() as List;
   }
 
   @override
@@ -306,6 +306,111 @@ class _HomePageState extends State<HomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size(size.width, 140),
+                  maximumSize: Size(size.width, 140),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(0),
+                  ),
+                  primary: Color(0xFF22232A)
+                ),
+                onPressed: () {
+                  print("버튼 클릭");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.network(
+                          'https://picsum.photos/250?image=9',                          
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 230,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '테스트테스트테스트테스틑테스트테스트',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '6/25  |  나쁜개구리',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  child: Image.network(
+                                    'https://picsum.photos/250?image=9',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '토마스 박',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF757575),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 2,
+                width: size.width - 40,
+                color: Color(0xFF303037),
+              ),
+              /*
               ListView.builder(
                 itemCount: homeData.length, 
                 itemBuilder: (BuildContext context, int index) {
@@ -415,6 +520,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
               ),
+              */
             ],
           ),
         ),

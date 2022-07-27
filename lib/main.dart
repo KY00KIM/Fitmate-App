@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
     //if(idToken == null) return true;
     IdToken = idToken.toString();
     
-    http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
+    http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
       'Authorization' : '$IdToken'});
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     // ignore: avoid_print
