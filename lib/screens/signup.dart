@@ -51,15 +51,11 @@ class _SignupPageState extends State<SignupPage> {
 
     if(isSelectedSex[1]) gender = false;
 
-    print('위치 보기');
     Position position = await DeterminePosition();
-    print('latitute : ${position.latitude}');
-    print('longitude : ${position.longitude}');
     double latitude = position.latitude;
     double longitude = position.longitude;
 
     final fcmToken = FirebaseMessaging.instance.getToken();
-    print('fcm token : $fcmToken');
 
     String? deviceToken = await FirebaseMessaging.instance.getToken();
 
@@ -100,15 +96,20 @@ class _SignupPageState extends State<SignupPage> {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     if(response.statusCode == 201) {
       UserId = resBody['data']['_id'];
-      print("user id : $UserId");
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
+      bool userdata = await UpdateUserData();
+      if(userdata == true) {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
+      }
+      else {
+        FlutterToastTop("알수 없는 에러가 발생하였습니다");
+      }
     } else if(resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       
@@ -351,7 +352,6 @@ class _SignupPageState extends State<SignupPage> {
                                       isSelectedTime[0] = false;
                                     }
                                   }
-                                  print(isSelectedTime);
                                 });
                               },
                               children: [
@@ -688,7 +688,6 @@ class _SignupPageState extends State<SignupPage> {
                               builder: (context) =>
                                   WriteLocationPage()),
                         ).then((onValue) {
-                          print(onValue);
                           onValue == null ? null : setState(() {
                             location = onValue;
                           });
@@ -743,7 +742,6 @@ class _SignupPageState extends State<SignupPage> {
                               builder: (context) =>
                                   WriteCenterPage()),
                         ).then((onValue) {
-                            print(onValue);
                             onValue == null ? null : setState(() {
                               center = onValue;
                               centerName = onValue['place_name'];

@@ -12,14 +12,16 @@ import 'chatList.dart';
 import 'home.dart';
 import 'matching.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class OtherProfilePage extends StatefulWidget {
+  String profileId;
+
+  OtherProfilePage(String this.profileId, {Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<OtherProfilePage> createState() => _OtherProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _OtherProfilePageState extends State<OtherProfilePage> {
 
   String getSchedule() {
     if(UserData["user_schedule_time"] == 0) return "오전";
@@ -72,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
             elevation: 40,
             onSelected: (value) async {
               if (value == '/edit') Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditPage()));
-              else if (value == '/logout'){ 
+              else if (value == '/logout'){
                 print('로그아웃');
               }
             },

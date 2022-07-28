@@ -1,4 +1,5 @@
 import 'dart:convert';
+//import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/matching.dart';
@@ -10,6 +11,7 @@ import 'package:fitmate/screens/detail.dart';
 import 'package:fitmate/screens/notice.dart';
 import 'package:http/http.dart' as http;
 import 'package:fitmate/utils/data.dart';
+import 'dart:developer';
 
 
 import 'chatList.dart';
@@ -25,39 +27,71 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List usersName = [];
+  List userImage = [];
+  List centerName = [];
 
-  List homeData = [];
-
-  Future<List> getPosts() async{
+  Future<List> getPost() async {
+    print("idtoken : $IdToken");
+    print("skflsjeifslf");
     http.Response response = await http.get(Uri.parse("${baseUrl}posts"),
-        headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8"},
+      headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8"},
     );
-    // ignore: unused_local_variable
+    print("response 완료");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    
-    if(resBody["error"]["code"] == "auth/id-token-expired") {
+    print("아 몰라");
+    if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
-      
+
       http.Response response = await http.post(Uri.parse("${baseUrl}posts"),
-          headers: {'Authorization' : '$IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
+        headers: {'Authorization' : '$IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
       );
+      resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
-    if(response.statusCode == 400) return [];
-    else {
+
+    for(int i = 0; i < resBody['data'].length; i++) {
+      http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['promise_location'].toString()}"), headers: {
+        // ignore: unnecessary_string_interpolations
+        "Authorization" : "${IdToken.toString()}",
+        "fitnesscenterId" : "${resBody['data'][i]['promise_location'].toString()}"});
+
+      if(responseFitness.statusCode == 200) {
+        var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
+
+        centerName.add(resBody2["data"]["center_name"]);
+      }
+
+      http.Response responseUser = await http.get(Uri.parse("${baseUrl}users/${resBody['data'][i]['user_id'].toString()}"), headers: {
+        // ignore: unnecessary_string_interpolations
+        "Authorization" : "${IdToken.toString()}",
+        "Content-Type" : "application/json; charset=UTF-8",
+        "userId" : "${resBody['data'][i]['user_id'].toString()}"});
+      var resBody3 = jsonDecode(utf8.decode(responseUser.bodyBytes));
+
+      userImage.add(resBody3['data']['user_profile_img']);
+      usersName.add(resBody3['data']['user_nickname']);
+    }
+
+    print("반환 준비 : ${response.statusCode}");
+    if(response.statusCode == 200) {
+      print("반환 갑니다잉");
       return resBody["data"];
     }
+    else {
+      print("what the fuck");
+      throw Exception('Failed to load post');
+    }
   }
+
 
   @override
   void initState() {
     super.initState();
-    //homeData = getPosts() as List;
   }
-
+  // Text('${snapshot.data?[index]['post_title']}');
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(
@@ -303,228 +337,160 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.zero,
-                  minimumSize: Size(size.width, 140),
-                  maximumSize: Size(size.width, 140),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(0),
-                  ),
-                  primary: Color(0xFF22232A)
-                ),
-                onPressed: () {
-                  print("버튼 클릭");
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(
-                          'https://picsum.photos/250?image=9',                          
-                          width: 100.0,
-                          height: 100.0,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 230,
-                                  child: Flexible(
-                                    child: RichText(
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      strutStyle: StrutStyle(fontSize: 16),
-                                      text: TextSpan(
-                                        text: '테스트테스트테스트테스틑테스트테스트',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  '6/25  |  나쁜개구리',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFF757575),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  child: Image.network(
-                                    'https://picsum.photos/250?image=9',
-                                    width: 25.0,
-                                    height: 25.0,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  '토마스 박',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFF757575),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                height: 2,
-                width: size.width - 40,
-                color: Color(0xFF303037),
-              ),
-              /*
-              ListView.builder(
-                itemCount: homeData.length, 
-                itemBuilder: (BuildContext context, int index) {
+        child: FutureBuilder<List> (
+          future: getPost(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data?.length,
+                itemBuilder: (context, index) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size(size.width, 140),
-                      maximumSize: Size(size.width, 140),
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(0),
-                      ),
-                      primary: Color(0xFF22232A)
+                        elevation: 0,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size(size.width, 144),
+                        maximumSize: Size(size.width, 144),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(0),
+                        ),
+                        primary: Color(0xFF22232A)
                     ),
                     onPressed: () {
-                      print("버튼 클릭");
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage()));
+                      print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.network(
-                              '${homeData[index]["post_img"]}',
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
-                            child: Column(
-                              //mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  "${snapshot.data?[index]['post_img']}",
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Container(
+                                height: 100.0,
+                                child: Column(
+                                  //mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      width: 230,
-                                      child: Flexible(
-                                        child: RichText(
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                          strutStyle: StrutStyle(fontSize: 16),
-                                          text: TextSpan(
-                                            text: '${homeData[index]["post_title"]}',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              strutStyle: StrutStyle(fontSize: 16),
+                                              text: TextSpan(
+                                                text: '${snapshot.data?[index]['post_title']}',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              strutStyle: StrutStyle(fontSize: 16),
+                                              text: TextSpan(
+                                                text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF757575),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      '6/25  |  ${homeData[index]["promise_location"]}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xFF757575),
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(50.0),
+                                          child: Image.network(
+                                            '${userImage[index]}',
+                                            width: 25.0,
+                                            height: 25.0,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          width: size.width - 190,
+                                          child: Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              strutStyle: StrutStyle(fontSize: 16),
+                                              text: TextSpan(
+                                                text: '${usersName[index]}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xFF757575),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      child: Image.network(
-                                        'https://picsum.photos/250?image=9',
-                                        width: 25.0,
-                                        height: 25.0,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      '토마스 박',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xFF757575),
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 2,
+                            width: size.width - 40,
+                            color: Color(0xFF303037),
                           ),
                         ],
                       ),
                     ),
                   );
-                  Container(
-                    height: 2,
-                    width: size.width - 40,
-                    color: Color(0xFF303037),
-                  );
-                }
-              ),
-              */
-            ],
-          ),
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            // 기본적으로 로딩 Spinner를 보여줍니다.
+            return CircularProgressIndicator();
+          },
         ),
       ),
     );
   }
 }
+
+
+/*
+
+ */

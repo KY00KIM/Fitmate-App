@@ -1,16 +1,96 @@
+import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
+import '../utils/data.dart';
 import 'chat.dart';
+import 'otherProfile.dart';
 
 class DetailMachingPage extends StatefulWidget {
-  const DetailMachingPage({Key? key}) : super(key: key);
+  String postId;
+
+  DetailMachingPage(String this.postId, {Key? key}) : super(key: key);
 
   @override
   State<DetailMachingPage> createState() => _DetailMachingPageState();
 }
 
 class _DetailMachingPageState extends State<DetailMachingPage> {
+  String locationName = '';
+  String usersName = '';
+  String userImage = '';
+  String centerName = '';
+
+  Future<List> getPostDetail() async {
+    print("idtoken : $IdToken");
+    print("skflsjeifslf");
+    http.Response response = await http.get(Uri.parse("${baseUrl}posts/${widget.postId}"),
+      headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8", "postId" : "${widget.postId}"},
+    );
+    print("response 완료");
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print("아 몰라");
+    if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+      http.Response response = await http.get(Uri.parse("${baseUrl}posts/${widget.postId}"),
+        headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8", "postId" : "${widget.postId}"},
+      );
+      resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    }
+
+    http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][0]['promise_location'].toString()}"), headers: {
+      // ignore: unnecessary_string_interpolations
+      "Authorization" : "${IdToken.toString()}",
+      "fitnesscenterId" : "${resBody['data'][0]['promise_location'].toString()}"});
+
+    if(responseFitness.statusCode == 200) {
+      var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
+
+      centerName = resBody2["data"]["center_name"];
+    }
+
+    http.Response responseUser = await http.get(Uri.parse("${baseUrl}users/${resBody['data'][0]['user_id'].toString()}"), headers: {
+      // ignore: unnecessary_string_interpolations
+      "Authorization" : "${IdToken.toString()}",
+      "Content-Type" : "application/json; charset=UTF-8",
+      "userId" : "${resBody['data'][0]['user_id'].toString()}"});
+    var resBody3 = jsonDecode(utf8.decode(responseUser.bodyBytes));
+
+    userImage = resBody3['data']['user_profile_img'];
+    usersName = resBody3['data']['user_nickname'];
+
+    http.Response responseLocation = await http.get(Uri.parse("${baseUrl}locations/${resBody['data'][0]['location_id'].toString()}"), headers: {
+      // ignore: unnecessary_string_interpolations
+      "Authorization" : "${IdToken.toString()}",
+      "locId" : "${resBody['data'][0]['location_id'].toString()}"});
+
+    if(responseLocation.statusCode == 200) {
+      var resBody3 = jsonDecode(utf8.decode(responseLocation.bodyBytes));
+
+      locationName = resBody3["data"]["location_name"];
+    }
+
+
+    print("반환 준비 : ${response.statusCode}");
+    if(response.statusCode == 200) {
+      print("반환 갑니다잉");
+      return resBody["data"];
+    }
+    else {
+      print("what the fuck");
+      throw Exception('Failed to load post');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -46,163 +126,209 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Image.network(
-                    'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                    fit: BoxFit.fitWidth,
-                    color: Color.fromRGBO(255, 255, 255, 0.8),
-                    colorBlendMode: BlendMode.modulate,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Color(0xFFffffff),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                width: size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Color(0xFF22232A),
-                ),
-                transform: Matrix4.translationValues(0.0, -37.0, 0.0),
-                child:Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        child: FutureBuilder<List> (
+          future: getPostDetail(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              String? time = snapshot.data?[0]['promise_date'].toString().substring(11,13);
+              String M = int.parse(time!) > 12 ? '오후' : '오전';
+              return ListView.builder(
+                itemCount: snapshot.data?.length,
+                itemBuilder: (context, index) {
+                  return Column(
                     children: [
+                      Stack(
+                        children: [
+                          Image.network(
+                            '${snapshot.data?[0]['post_img']}',
+                            fit: BoxFit.fitWidth,
+                            width: size.width,
+                            color: Color.fromRGBO(255, 255, 255, 0.8),
+                            colorBlendMode: BlendMode.modulate,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: Color(0xFFffffff),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       Container(
-                        width: 60,
-                        height: 30,
-                        alignment: Alignment.center,
+                        width: size.width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: Color(0xFF2975CF),
+                          color: Color(0xFF22232A),
                         ),
-                        child: Text(
-                          '승모근',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        '러닝머신 자세 봐드립니다!',
-                        style: TextStyle(
-                          color: Color(0xFFffffff),
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.location_pin,
-                            color: Color(0xFF2975CF),
-                            size: 20,
-                          ),
-                          Text(
-                            '  서울 강남구 / 보령헬스장',
-                            style: TextStyle(
-                              color: Color(0xFFDADADA),
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.schedule,
-                            color: Color(0xFF2975CF),
-                            size: 20,
-                          ),
-                          Text(
-                            '  22. 08. 29. (월) 오전 10:00',
-                            style: TextStyle(
-                              color: Color(0xFFDADADA),
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Text(
-                        '상세설명',
-                        style: TextStyle(
-                          color: Color(0xffFFFFFF),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 10, 0, 35),
-                        width: size.width,
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(100.0),
-                              child: Image.network(
-                                'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                                width: 60.0,
-                                height: 60.0,
-                                fit: BoxFit.fitHeight,
+                        transform: Matrix4.translationValues(0.0, -37.0, 0.0),
+                        child:Padding(
+                          padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 30,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Color(0xFF2975CF),
+                                ),
+                                child: Text(
+                                  '${fitnessPart[snapshot.data?[0]['post_fitness_part'][0]]}',
+                                  style: TextStyle(
+                                    color: Color(0xFFffffff),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '우천류',
-                              style: TextStyle(
-                                color: Color(0xffFFFFFF),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                              SizedBox(
+                                height: 20,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        '요세 운동할 시간이 없어서 운동 겸 몸풀기로 당분간 러닝할 생각인데 같이 하실분 구해요!',
-                        style: TextStyle(
-                          color: Color(0xFFffffff),
+                              Container(
+                                width: size.width - 50,
+                                child: Flexible(
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 5,
+                                    strutStyle: StrutStyle(fontSize: 16),
+                                    text: TextSpan(
+                                      text: '${snapshot.data?[0]['post_title']}',
+                                      style: TextStyle(
+                                        color: Color(0xFFffffff),
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_pin,
+                                    color: Color(0xFF2975CF),
+                                    size: 20,
+                                  ),
+                                  Text(
+                                    '  $locationName / $centerName',
+                                    style: TextStyle(
+                                      color: Color(0xFFDADADA),
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.schedule,
+                                    color: Color(0xFF2975CF),
+                                    size: 20,
+                                  ),
+                                  Text(
+                                    '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${M} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
+                                    style: TextStyle(
+                                      color: Color(0xFFDADADA),
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                '상세설명',
+                                style: TextStyle(
+                                  color: Color(0xffFFFFFF),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 35),
+                                width: size.width,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(snapshot.data?[0]['user_id'])));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFF22232A),
+                                      elevation: 0
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(100.0),
+                                        child: Image.network(
+                                          '$userImage',
+                                          width: 60.0,
+                                          height: 60.0,
+                                          fit: BoxFit.fitHeight,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        '$usersName',
+                                        style: TextStyle(
+                                          color: Color(0xffFFFFFF),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: size.width - 50,
+                                child: Flexible(
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 50,
+                                    strutStyle: StrutStyle(fontSize: 12),
+                                    text: TextSpan(
+                                      text: '${snapshot.data?[0]['post_main_text']}',
+                                      style: TextStyle(
+                                        color: Color(0xFFffffff),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            // 기본적으로 로딩 Spinner를 보여줍니다.
+            return CircularProgressIndicator();
+          },
         ),
       ),
     );

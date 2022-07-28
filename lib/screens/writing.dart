@@ -48,10 +48,10 @@ class _WritingPageState extends State<WritingPage> {
   void PostPosets() async {
     List<int> imageBytes = _image!.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
-    List textPart = ["가슴"];
+    List textPart = ["$_selectedpart"];
     Map data = {
       "user_id" : "$UserId",
-      "location_id" : "${UserData["data"]["location_id"]}",
+      "location_id" : "${UserData["location_id"]}",
       "post_fitness_part" : textPart,
       "post_title" : "$title",
       "promise_location" : "$centerName",
@@ -70,27 +70,23 @@ class _WritingPageState extends State<WritingPage> {
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print(resBody);
-    postId = resBody["data"]["_id"].toString();
-
-    // ignore: unused_local_variable
-    var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
-    request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
-    var res = await request.send();
-    print('$postId');
-    print(res.statusCode);
-    
-    /*
-    print("idtoken : $IdToken");
 
     if(response.statusCode == 201) {
+      postId = resBody["data"]["_id"].toString();
 
+      // ignore: unused_local_variable
+      var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
+      request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+      var res = await request.send();
+      print('$postId');
+      print(res.statusCode);
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
-      FlutterToastBottom("한번 더 시도해 주세요");
+      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
     } else {
       FlutterToastBottom("오류가 발생하였습니다");
     }
-    */
+
   }
 
   @override
@@ -142,7 +138,6 @@ class _WritingPageState extends State<WritingPage> {
                 _image == null || title == "" || _selectedpart == '부위' || centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택'  ?
                     FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
                         : PostPosets();
-                        
               },
               child: Text(
                 '완료',

@@ -77,13 +77,10 @@ class _LoginPageState extends State<LoginPage> {
                                   http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
                                     'Authorization' : '${IdToken.toString()}'});
                                   var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                                  print('status code : ${response.statusCode}');
-                                  print('resBody : $resBody');
+
                                   if(response.statusCode == 200) {
                                     //사용자 정보가 완벽히 등록 되어있다면
-                                    print("등록된 사용자");
                                     UserId = resBody['data']['user_id'];
-                                    print("user Id : $UserId");
 
                                     bool userdata = await UpdateUserData();
 
@@ -102,7 +99,6 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                   } else if(resBody['message'] == 404) {
                                     // 사용자 정보가 등록 안된 상황에서는
-                                    print("등록해야하는 사용자");
                                     Navigator.pushReplacement(
                                       context,
                                       PageRouteBuilder(
@@ -163,8 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                                   http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
                                     'Authorization' : '$IdToken'});
                                   var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                                  print('status code : ${response.statusCode}');
-                                  print('resBody : $resBody');
+
                                   if(response.statusCode == 200) {
                                     //사용자 정보가 완벽히 등록 되어있다면
                                     UserId = resBody['data']['user_id'];

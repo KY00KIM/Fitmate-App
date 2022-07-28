@@ -7,14 +7,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1038411454604:android:7981fa2f18df7fcda703a9",
+        "mobilesdk_app_id": "1:1038411454604:android:8767bdae4487c30da703a9",
         "android_client_info": {
           "package_name": "com.examples.fitmate"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1038411454604-kka6jdrgafodsjdc1h09c51qd9dnup8r.apps.googleusercontent.com",
+          "client_id": "1038411454604-7568drml8ksi8mj535ue8ddbibu6t0i8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.examples.fitmate",
+            "certificate_hash": "ed5a8049d0121786347a0e1ac3d5775d2fc8b580"
+          }
+        },
+        {
+          "client_id": "1038411454604-cs6ufpt2mefv38h2ne6fbggi408t59cd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.examples.fitmate",
@@ -22,11 +30,27 @@
           }
         },
         {
-          "client_id": "1038411454604-pbk81ugu14h0onqf3oq5kcd4rdceho3i.apps.googleusercontent.com",
+          "client_id": "1038411454604-lgilq01jnrr1rcaaj485qaqlntjhpgqu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.examples.fitmate",
-            "certificate_hash": "ed5a8049d0121786347a0e1ac3d5775d2fc8b580"
+            "certificate_hash": "89d68b931b17bdeee15505cb1e02e247a6624f31"
+          }
+        },
+        {
+          "client_id": "1038411454604-tq6una6hq0h17tn4fbksm2ebj5bc62bc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.examples.fitmate",
+            "certificate_hash": "b6933dabd7d0eda37eeb3a83f4b70bf81ba33df8"
+          }
+        },
+        {
+          "client_id": "1038411454604-vmicgk0d6sm5u1mb4ig2steb5099cigi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.examples.fitmate",
+            "certificate_hash": "96a5974e7f9f625badd5989e844318df810ccc28"
           }
         },
         {
@@ -50,7 +74,7 @@
               "client_id": "1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.examples.fitmate"
+                "bundle_id": "com.example.fitmate"
               }
             }
           ]
