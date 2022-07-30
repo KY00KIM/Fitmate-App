@@ -57,15 +57,15 @@ class MyApp extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
   
   Future<bool> getToken() async {
-    print("start gettoken");
+
     // ignore: await_only_futures
     
     User? tokenResult = await FirebaseAuth.instance.currentUser;
-    log(tokenResult.toString());
+    //log(tokenResult.toString());
     if(tokenResult == null) return true;
     // ignore: unused_local_variable
     var idToken = await tokenResult.getIdToken();
-    log(idToken.toString());
+    //log(idToken.toString());
     
     // ignore: avoid_print
     //print("idToken : $idToken");
@@ -75,16 +75,8 @@ class MyApp extends StatelessWidget {
     http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
       'Authorization' : '$IdToken'});
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    // ignore: avoid_print
-    print('status code : ${response.statusCode}');
-    // ignore: avoid_print
-    print('resBody : $resBody');
     UserId = resBody['data']['user_id'];
 
-    // ignore: avoid_print
-    print("Idtoken : $IdToken");
-    // ignore: avoid_print
-    print("user Id : $UserId");
 
     bool userdata = await UpdateUserData();
 
@@ -104,7 +96,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          
+          /*
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
@@ -118,10 +110,10 @@ class MyApp extends StatelessWidget {
             print("값 받아옴 : ${snapshot.hasData}");
             // ignore: avoid_print
             print(snapshot.hasData);
-            return snapshot.hasData == false ? LoginPage() : const HomePage();
+            return snapshot.hasData == true ? LoginPage() : const HomePage();
           }
-          
-          //return ReviewPage();
+          */
+          return HomePage();
         },
       ),
     );

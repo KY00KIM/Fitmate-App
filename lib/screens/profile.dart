@@ -323,7 +323,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(100.0),
                       child: Image.network(
-                        'https://lh3.googleusercontent.com/a-/AFdZucrZLMIGoom5ZRl_l8ZxegVkQLyhlvLJMu2Ott2R0w=s96-c',
+                        '${UserData['user_profile_img']}',
                         width: 70.0,
                         height: 70.0,
                         fit: BoxFit.fitHeight,

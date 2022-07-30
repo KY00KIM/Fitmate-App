@@ -145,6 +145,15 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                             width: size.width,
                             color: Color.fromRGBO(255, 255, 255, 0.8),
                             colorBlendMode: BlendMode.modulate,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return Image.asset(
+                                'assets/images/dummy.jpg',
+                                fit: BoxFit.fitWidth,
+                                width: size.width,
+                                color: Color.fromRGBO(255, 255, 255, 0.8),
+                                colorBlendMode: BlendMode.modulate,
+                              );
+                            },
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
@@ -267,7 +276,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                                 width: size.width,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(snapshot.data?[0]['user_id'])));
+                                    Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$usersName')));
                                   },
                                   style: ElevatedButton.styleFrom(
                                       primary: Color(0xFF22232A),

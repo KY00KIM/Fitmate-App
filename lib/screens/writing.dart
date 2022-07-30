@@ -1,8 +1,10 @@
 //import 'dart:html' as http;
 import 'dart:convert';
-import 'dart:math';
+//import 'dart:math';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/main.dart';
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +26,7 @@ class _WritingPageState extends State<WritingPage> {
   String _selectedTime = '시간 선택';
   String _selectedDate = '날짜 선택';
   String _selectedpart = '부위';
+  late Map center;
   String centerName = '만날 피트니스장을 선택해주세요';
   String title = "";
   String description = "";
@@ -35,8 +38,7 @@ class _WritingPageState extends State<WritingPage> {
 
   // Implementing the image picker
   Future<void> _openImagePicker() async {
-    final XFile? pickedImage =
-        await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);
@@ -45,20 +47,40 @@ class _WritingPageState extends State<WritingPage> {
     }
   }
 
+  String fitnessPartGetKey(String s) {
+    String keyId = '';
+    fitnessPart.forEach((key, value) {
+      if (value == s) keyId = key;
+    });
+    return keyId;
+  }
+
+  String selectTime(int i) {
+    int temp = i ~/ 10;
+    if (temp == 0) return '0${i}';
+    else return '${i}';
+  }
+
   void PostPosets() async {
     List<int> imageBytes = _image!.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
-    List textPart = ["$_selectedpart"];
+    List textPart = ["${fitnessPartGetKey(_selectedpart)}"];
     Map data = {
       "user_id" : "$UserId",
       "location_id" : "${UserData["location_id"]}",
       "post_fitness_part" : textPart,
       "post_title" : "$title",
-      "promise_location" : "$centerName",
-      "promise_date" : "${_selectedDate}T",
+      "promise_location": {
+        "center_name": "$centerName",
+        "center_address": "${center['address_name']}",
+        "center_longitude": center['y'],
+        "center_latitude": center['x']
+      },
+      "promise_date" : "${_selectedDate}T${_selectedTime}:00",
       "post_img" : "",
       "post_main_text" : "$description"
     };
+    print(data);
     var body = json.encode(data);
 
     http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
@@ -76,10 +98,13 @@ class _WritingPageState extends State<WritingPage> {
 
       // ignore: unused_local_variable
       var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
+      request.headers.addAll({"Authorization" : "$IdToken", "postId" : "$postId"});
       request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
       var res = await request.send();
       print('$postId');
+      log(IdToken);
       print(res.statusCode);
+      Navigator.pop(context);
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
@@ -128,13 +153,6 @@ class _WritingPageState extends State<WritingPage> {
           actions: [
             TextButton(
               onPressed: () {
-                print(_image);
-                print(title);
-                print(_selectedDate);
-                print(_selectedTime);
-                print(_selectedpart);
-                print(centerName);
-                
                 _image == null || title == "" || _selectedpart == '부위' || centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택'  ?
                     FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
                         : PostPosets();
@@ -495,7 +513,8 @@ class _WritingPageState extends State<WritingPage> {
                       ).then((onValue) {
                         print(onValue);
                         onValue == null ? null : setState(() {
-                          centerName = onValue['place_name'];
+                          center = onValue;
+                          centerName = center['place_name'];
                         });
                       });
                     },
@@ -518,7 +537,7 @@ class _WritingPageState extends State<WritingPage> {
                           size: 17,
                         ),
                         Text(
-                          ' $centerName',
+                          ' ${centerName}',
                           style: TextStyle(
                             color: Color(0xFF878E97),
                             fontSize: 14.0,
@@ -599,8 +618,9 @@ class _WritingPageState extends State<WritingPage> {
                             setState(() {
                               if (timeOfDay != null) {
                                 _selectedTime =
-                                    '${timeOfDay.hour}:${timeOfDay.minute}:00';
+                                    '${selectTime(timeOfDay.hour)}:${selectTime(timeOfDay.minute)}';
                               }
+                              print('$_selectedTime');
                             });
                           });
                         },

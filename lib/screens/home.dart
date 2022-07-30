@@ -373,7 +373,15 @@ class _HomePageState extends State<HomePage> {
                                   "${snapshot.data?[index]['post_img']}",
                                   width: 100.0,
                                   height: 100.0,
-                                  fit: BoxFit.fitHeight,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return Image.asset(
+                                        'assets/images/dummy.jpg',
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 ),
                               ),
                               SizedBox(
@@ -437,6 +445,15 @@ class _HomePageState extends State<HomePage> {
                                             '${userImage[index]}',
                                             width: 25.0,
                                             height: 25.0,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/dummy.jpg',
+                                                width: 25.0,
+                                                height: 25.0,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
                                           ),
                                         ),
                                         SizedBox(

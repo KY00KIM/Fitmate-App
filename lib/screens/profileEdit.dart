@@ -1,8 +1,16 @@
+//import 'dart:html';
+
+import 'dart:convert';
+
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:fitmate/screens/writeLocation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../utils/data.dart';
+
+import 'dart:io';
 
 class ProfileEditPage extends StatefulWidget {
   const ProfileEditPage({Key? key}) : super(key: key);
@@ -12,10 +20,7 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
-  String _selectedTime = '시간 선택';
-  String _selectedDate = '날짜 선택';
   String nickname = '';
-  final isSelectedSex = <bool>[false, false];
   final isSelectedWeekDay = <bool>[
     false,
     false,
@@ -31,14 +36,60 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   late Map center;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final ImagePicker _picker = ImagePicker();
-  late PickedFile _image;
+  File? _image;
 
-  Future _getImage() async {
-    PickedFile? image = await _picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _image = (image == null ? null : image)!;
-    });
+  final _picker = ImagePicker();
+
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+        print(_image);
+      });
+    }
+  }
+
+  void PostPosets() async {
+    List<int> imageBytes = _image!.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+    Map data = {
+      "user_id" : "$UserId",
+      "location_id" : "${UserData["location_id"]}",
+    };
+    print(data);
+    var body = json.encode(data);
+
+    http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization' : '$IdToken',
+        }, // this header is essential to send json data
+        body: body
+    );
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print(resBody);
+
+    if(response.statusCode == 201) {
+      postId = resBody["data"]["_id"].toString();
+
+      // ignore: unused_local_variable
+      var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
+      request.headers.addAll({"Authorization" : "$IdToken", "postId" : "$postId"});
+      request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+      var res = await request.send();
+      print('$postId');
+      log(IdToken);
+      print(res.statusCode);
+      Navigator.pop(context);
+    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
+    } else {
+      FlutterToastBottom("오류가 발생하였습니다");
+    }
+
   }
 
   @override
@@ -79,13 +130,17 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _image == null || nickname == "" || location == '동네 입력' || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ?
+                FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
+                    : PostPosets();
+              },
               child: Text(
                 '저장',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFFffffff)
+                  color: _image == null || nickname == "" || location == '동네 입력' || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ? Color(0xFF878E97) : Color(0xFF2975CF),
                 ),
               ),
             ),
@@ -168,13 +223,51 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 SizedBox(
                   height: 30,
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(100.0),
-                  child: Image.network(
-                    'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                    width: 85.0,
-                    height: 85.0,
-                    fit: BoxFit.fitHeight,
+                ElevatedButton(
+                  onPressed: () {
+                    _openImagePicker();
+                  },
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    children: [
+                      _image == null ? ClipRRect(
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: Image.network(
+                          '${UserData['user_profile_img']}',
+                          width: 85.0,
+                          height: 85.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ) : ClipRRect(
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: Image.file(
+                          _image!,
+                          width: 85.0,
+                          height: 85.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        child: Icon(
+                          Icons.photo_camera,
+                          size: 20,
+                        ),
+                        decoration: BoxDecoration(
+                            color: Color(0xFF878E97),
+                            border: Border.all(
+                              color: Color(0xFF878E97),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                      ),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(0),
+                    shape: CircleBorder(),
+                    fixedSize: const Size(85, 85),
                   ),
                 ),
                 SizedBox(
