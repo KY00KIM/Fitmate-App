@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/home.dart';
 import 'package:fitmate/screens/login.dart';
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
     IdToken = idToken.toString();
     
     http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
-      'Authorization' : '$IdToken'});
+      'Authorization' : 'bearer $IdToken'});
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     UserId = resBody['data']['user_id'];
 
@@ -96,7 +97,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          /*
+
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
@@ -110,10 +111,10 @@ class MyApp extends StatelessWidget {
             print("값 받아옴 : ${snapshot.hasData}");
             // ignore: avoid_print
             print(snapshot.hasData);
-            return snapshot.hasData == true ? LoginPage() : const HomePage();
+            return snapshot.hasData == true ? LoginPage() : HomePage();
           }
-          */
-          return HomePage();
+
+          //return SignupPage();
         },
       ),
     );
@@ -127,3 +128,71 @@ class $idToken {
 }
 
 
+
+/*
+// Copyright 2019 Aleksander Woźniak
+// SPDX-License-Identifier: Apache-2.0
+
+import 'package:fitmate/screens/matching.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+import 'pages/events_example.dart';
+
+void main() {
+  initializeDateFormatting().then((_) => runApp(MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'TableCalendar Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: StartPage(),
+    );
+  }
+}
+
+class StartPage extends StatefulWidget {
+  @override
+  _StartPageState createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TableCalendar Example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20.0),
+            ElevatedButton(
+              child: Text('Events'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => TableEventsExample()),
+              ),
+            ),
+            const SizedBox(height: 12.0),
+            ElevatedButton(
+              child: Text('매칭 페이지'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => MatchingPage()),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+ */

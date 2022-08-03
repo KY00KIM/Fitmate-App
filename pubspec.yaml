@@ -55,6 +55,7 @@ dependencies:
   intl: ^0.17.0
   flutter_launcher_icons: ^0.9.3
   flutter_native_splash: ^2.1.6
+  flutter_chat_bubble: ^2.0.0
 
 flutter_icons:
   android: "launcher_icon"

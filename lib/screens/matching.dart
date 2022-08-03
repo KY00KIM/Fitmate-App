@@ -1,6 +1,10 @@
+import 'dart:collection';
+import 'dart:developer';
+
 import 'package:fitmate/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:fitmate/utils/data.dart';
@@ -11,6 +15,66 @@ import 'chatList.dart';
 import 'home.dart';
 import 'notice.dart';
 
+class Event {
+  final String title;
+
+  const Event(this.title);
+
+  @override
+  String toString() => title;
+}
+
+/// Example events.
+///
+/// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
+/*
+var kEvents = Map<DateTime, List<Event>> (
+
+)..addAll({DateTime(2022,07,31) : [Event('Event 0 | 1')]});
+
+
+ */
+
+var kEvents = LinkedHashMap<DateTime, List<Event>>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+)..addAll({DateTime(2001,07,31): [Event('Event 0 | 1')]});
+
+/*
+final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
+    key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
+    value: (item) => List.generate(
+        item % 4 + 1, (index) => Event('Event $item | ${index + 1}')))
+  ..addAll({
+    kToday: [
+      Event('Today\'s Event 1'),
+      Event('Today\'s Event 2'),
+    ],
+  });
+
+ */
+
+int getHashCode(DateTime key) {
+  return key.day * 1000000 + key.month * 10000 + key.year;
+}
+/*
+/// Returns a list of [DateTime] objects from [first] to [last], inclusive.
+List<DateTime> daysInRange(DateTime first, DateTime last) {
+  final dayCount = last.difference(first).inDays + 1;
+  return List.generate(
+    dayCount,
+        (index) => DateTime.utc(first.year, first.month, first.day + index),
+  );
+}
+
+ */
+final kToday = DateTime.now();
+final kFirstDay = DateTime(kToday.year, (kToday.month - 200), kToday.day);
+final kLastDay = DateTime(kToday.year, (kToday.month + 200), kToday.day);
+
+//final kFirstDay = DateTime(kToday.year, (kToday.month - 2), kToday.day);
+//final kLastDay = DateTime(kToday.year, (kToday.month + 2), kToday.day);
+
 class MatchingPage extends StatefulWidget {
   const MatchingPage({Key? key}) : super(key: key);
 
@@ -19,11 +83,87 @@ class MatchingPage extends StatefulWidget {
 }
 
 class _MatchingPageState extends State<MatchingPage> {
+  late final ValueNotifier<List<Event>> _selectedEvents;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+      .toggledOff; // Can be toggled on/off by longpressing a date
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
+  }
+
+  List<Event> _getEventsForDay(DateTime day) {
+    print(kEvents);
+    log(kEvents[day].toString());
+    // Implementation example
+    return kEvents[day] ?? [];
+  }
+  /*
+  List<Event> (DateTime start, DateTime end) {
+    // Implementation example
+    final days = daysInRange(start, end);
+
+    return [
+      for (final d in days) ..._getEventsForDay(d),
+    ];
+  }
+
+   */
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+      });
+
+      _selectedEvents.value = _getEventsForDay(selectedDay);
+    }
+  }
+  /*
+  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    setState(() {
+      _selectedDay = null;
+      _focusedDay = focusedDay;
+      _rangeStart = start;
+      _rangeEnd = end;
+      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+    });
+
+    // `start` or `end` could be null
+    if (start != null && end != null) {
+      _selectedEvents.value = _getEventsForRange(start, end);
+    } else if (start != null) {
+      _selectedEvents.value = _getEventsForDay(start);
+    } else if (end != null) {
+      _selectedEvents.value = _getEventsForDay(end);
+    }
+  }
+
+
+   */
   @override
   Widget build(BuildContext context) {
+    log(IdToken);
     final Size size = MediaQuery.of(context).size;
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
-
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(
@@ -274,31 +414,156 @@ class _MatchingPageState extends State<MatchingPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(25, 10, 25, 0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Jul 2022',
-                style: TextStyle(
-                  color: Color(0xFFffffff),
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+              TableCalendar<Event>(
+                calendarBuilders: CalendarBuilders(
+                  singleMarkerBuilder: (context, date, _) {
+                    DateTime now = DateTime.now();
+                    DateFormat formatter = DateFormat('yyyy-MM-dd');
+                    String strToday = formatter.format(now);
+                    return Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: (date == _selectedDay || date.toString() == '$strToday 00:00:00.000Z') ? Colors.white : Color(0xff6FA2DE)), //Change color
+                      width: 5.0,
+                      height: 5.0,
+                      margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    );
+                  },
                 ),
+                headerStyle: HeaderStyle(
+                  formatButtonVisible: false,
+                  leftChevronVisible: false,
+                  rightChevronVisible: false,
+                  titleTextStyle: TextStyle(
+                    color: Color(0xFFffffff),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  headerMargin: EdgeInsets.only(bottom: 10),
+                ),
+                daysOfWeekHeight:30,
+                locale: 'ko_KO',
+                focusedDay: kToday,
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                eventLoader: _getEventsForDay,
+                //startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  selectedTextStyle: TextStyle(
+                    color: Color(0xFFDADADA),
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  defaultTextStyle: TextStyle(
+                    color: Color(0xFFDADADA),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                  weekendTextStyle: TextStyle(
+                    color: Color(0xFFDADADA),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: Color(0xFF6FA2DE),
+                    shape: BoxShape.circle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: Color(0xFF2975CF),
+                    shape: BoxShape.circle,
+                  ),
+                  todayTextStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFDADADA),
+                    fontSize: 17,
+                  ),
+                  outsideDaysVisible: false,
+                ),
+                onDaySelected: _onDaySelected,
+                //onRangeSelected: _onRangeSelected,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 3,
+                    color: Color(0xFF3D3D3D),
+                  ),
+                ],
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
+              Expanded(
+                child: ValueListenableBuilder<List<Event>>(
+                  valueListenable: _selectedEvents,
+                  builder: (context, value, _) {
+                    return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: 100,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 2.0,
+                            vertical: 6.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: ListTile(
+                            onTap: () => print('${value[index]}'),
+                            title: Text('이게 머지 ${value[index]}'),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              /*
               Container(
                 width: size.width - 50,
                 child: TableCalendar(
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    leftChevronVisible: false,
+                    rightChevronVisible: false,
+                    titleTextStyle: TextStyle(
+                      color: Color(0xFFffffff),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    headerMargin: EdgeInsets.only(bottom: 10),
+                  ),
                   daysOfWeekHeight:30,
                   locale: 'ko_KO',
                   focusedDay: DateTime.now(),
                   firstDay: DateTime(2022,7,1),
-                  lastDay: DateTime(2022,7,31),
-                  headerVisible: false,
+                  lastDay: DateTime(2122,8,1),
+                  //headerVisible: false,
                   calendarStyle: CalendarStyle(
                     defaultTextStyle: TextStyle(
                       color: Color(0xFFDADADA),
@@ -323,6 +588,10 @@ class _MatchingPageState extends State<MatchingPage> {
                   ),
                 ),
               ),
+
+               */
+              /*
+              SizedBox(height: 5,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -338,7 +607,7 @@ class _MatchingPageState extends State<MatchingPage> {
               ),
               Container(
                 width: size.width - 50,
-                height: 110,
+                height: 105,
                 decoration: BoxDecoration(
                   color: Color(0xFF2975CF),
                   borderRadius: BorderRadius.circular(20),
@@ -396,6 +665,7 @@ class _MatchingPageState extends State<MatchingPage> {
                   ),
                 ),
               ),
+               */
             ],
           ),
         ),

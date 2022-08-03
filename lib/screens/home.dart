@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     print("idtoken : $IdToken");
     print("skflsjeifslf");
     http.Response response = await http.get(Uri.parse("${baseUrl}posts"),
-      headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8"},
+      headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
     );
     print("response 완료");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
       http.Response response = await http.post(Uri.parse("${baseUrl}posts"),
-        headers: {'Authorization' : '$IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
+        headers: {'Authorization' : 'bearer $IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
       );
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
     for(int i = 0; i < resBody['data'].length; i++) {
       http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['promise_location'].toString()}"), headers: {
         // ignore: unnecessary_string_interpolations
-        "Authorization" : "${IdToken.toString()}",
+        "Authorization" : "bearer ${IdToken.toString()}",
         "fitnesscenterId" : "${resBody['data'][i]['promise_location'].toString()}"});
 
       if(responseFitness.statusCode == 200) {
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
 
       http.Response responseUser = await http.get(Uri.parse("${baseUrl}users/${resBody['data'][i]['user_id'].toString()}"), headers: {
         // ignore: unnecessary_string_interpolations
-        "Authorization" : "${IdToken.toString()}",
+        "Authorization" : "bearer ${IdToken.toString()}",
         "Content-Type" : "application/json; charset=UTF-8",
         "userId" : "${resBody['data'][i]['user_id'].toString()}"});
       var resBody3 = jsonDecode(utf8.decode(responseUser.bodyBytes));
@@ -92,6 +92,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    print(UserData);
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(

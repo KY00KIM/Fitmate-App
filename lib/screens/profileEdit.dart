@@ -1,7 +1,9 @@
 //import 'dart:html';
 
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:fitmate/screens/writeLocation.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../utils/data.dart';
+import 'package:http/http.dart' as http;
 
 import 'dart:io';
 
@@ -51,16 +54,88 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     }
   }
 
-  void PostPosets() async {
-    List<int> imageBytes = _image!.readAsBytesSync();
-    String base64Image = base64Encode(imageBytes);
+  void PatchPosets() async {
+
+    int schedule;
+    if (isSelectedTime[0] == true) schedule = 0;
+    else if(isSelectedTime[1] == true) schedule = 1;
+    else schedule = 2;
+
+    String imgUrl = _image == null ? UserData['user_profile_img'] : '';
+    if(_image != null) {
+      List<int> imageBytes = _image!.readAsBytesSync();
+      String base64Image = base64Encode(imageBytes);
+    }
+
     Map data = {
-      "user_id" : "$UserId",
-      "location_id" : "${UserData["location_id"]}",
+      "_id": "${UserData['_id']}",
+      "user_name": "${UserData['user_name']}",
+      "user_address": "${UserData['user_address']}",
+      "user_nickname": "$nickname",
+      "user_email": "${UserData['user_email']}",
+      "user_profile_img": imgUrl,
+      "user_schedule_time": schedule,
+      "user_weekday": isSelectedWeekDay,
+      "user_introduce": "",
+      "user_fitness_part": UserData['user_fitness_part'],
+      "user_age": 0,
+      "user_gender": UserData['user_gender'],
+      "user_loc_bound": 3,
+      "fitness_center_id": "${UserData['fitness_center_id']}",
+      "user_longitude": UserData['user_longitude'],
+      "user_latitude": UserData['user_latitude'],
+      "location_id": "${UserData['location_id']}",
+      "social": {
+        "user_id": "${UserData['social']['user_id']}",
+        "user_name": "${UserData['social']['user_name']}",
+        "provider": "${UserData['social']['provider']}",
+        "device_token": [
+          "${UserData['social']['device_token']}"
+        ],
+        "firebase_info": {}
+      },
+      "is_deleted": false,
+      "createdAt": "",
+      "updatedAt": ""
     };
     print(data);
     var body = json.encode(data);
 
+    http.Response response = await http.patch(Uri.parse("${baseUrl}users/${UserData['_id']}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization' : 'bearer $IdToken',
+          'userId' : 'bearer ${UserData['_id']}',
+        }, // this header is essential to send json data
+        body: body
+    );
+
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if(response.statusCode == 200) {
+      UserData['user_nickname'] = nickname;
+      UserData['user_schedule_time'] = schedule;
+      UserData['user_weekday'] = isSelectedWeekDay;
+
+      if(_image != null) {
+        var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}users/image/"));
+        request.headers.addAll({"Authorization" : "bearer $IdToken"});
+        request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+        var res = await request.send();
+        print(res.statusCode);
+        if(res.statusCode == 200) {
+          var resbodyimg = json.decode(await res.stream.bytesToString());
+          print(resbodyimg);
+          UserData['user_profile_img'] = resbodyimg["data"].toString();
+        }
+      }
+      Navigator.pop(context);
+    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
+    } else {
+      FlutterToastBottom("오류가 발생하였습니다");
+    }
+    /*
     http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -76,7 +151,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
       // ignore: unused_local_variable
       var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
-      request.headers.addAll({"Authorization" : "$IdToken", "postId" : "$postId"});
+      request.headers.addAll({"Authorization" : "bearer $IdToken", "postId" : "$postId"});
       request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
       var res = await request.send();
       print('$postId');
@@ -89,11 +164,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     } else {
       FlutterToastBottom("오류가 발생하였습니다");
     }
-
+     */
   }
 
   @override
   Widget build(BuildContext context) {
+    log(IdToken.toString());
     final Size size = MediaQuery.of(context).size;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -131,16 +207,16 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           actions: [
             TextButton(
               onPressed: () {
-                _image == null || nickname == "" || location == '동네 입력' || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ?
+                nickname == "" || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ?
                 FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
-                    : PostPosets();
+                    : PatchPosets();
               },
               child: Text(
                 '저장',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: _image == null || nickname == "" || location == '동네 입력' || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ? Color(0xFF878E97) : Color(0xFF2975CF),
+                  color: nickname == "" || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ? Color(0xFF878E97) : Color(0xFF2975CF),
                 ),
               ),
             ),
@@ -670,6 +746,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 SizedBox(
                   height: 20,
                 ),
+                /*
                 Row(
                   children: [
                     Column(
@@ -818,6 +895,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     ),
                   ],
                 ),
+
+                 */
                 /*
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7.0),

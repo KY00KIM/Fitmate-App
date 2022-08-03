@@ -3,6 +3,7 @@ import 'dart:developer';
 //import 'dart:developer';
 //import 'dart:html';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/login.dart';
 import 'package:fitmate/screens/writeCenter.dart';
@@ -41,6 +42,23 @@ class _SignupPageState extends State<SignupPage> {
   String location = '동네 입력';
   String centerName = '센터 등록';
   late Map center;
+
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  void createUserInFirestore() {
+    users.where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .limit(1)
+        .get()
+        .then((QuerySnapshot querySnapshot){
+            if(querySnapshot.docs.isEmpty) {
+              users.add({
+                'name' : UserData['user_name'],
+                'uid' : FirebaseAuth.instance.currentUser?.uid
+              });
+            }
+          },
+        )
+        .catchError((error){});
+  }
 
   void SignPost() async {
     int schedule = 0;
@@ -87,10 +105,13 @@ class _SignupPageState extends State<SignupPage> {
         ]
       }
     };
+    log(deviceToken!);
     var body = json.encode(data);
-    log(IdToken);
+    //log(IdToken);
+    //if (IdToken != null)IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
     http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),
-        headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8"},
+        headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
         body: body
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -114,7 +135,7 @@ class _SignupPageState extends State<SignupPage> {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       
       http.Response response = await http.post(Uri.parse("${baseUrl}users/oauth"),
-          headers: {'Authorization' : '$IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
+          headers: {'Authorization' : 'bearer $IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
           body: body
       );
       var resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -760,6 +781,7 @@ class _SignupPageState extends State<SignupPage> {
                     minimumSize: Size(size.width-40, 45),
                   ),
                   onPressed: () {
+                    createUserInFirestore();
                     nickname == '' || isSelectedSex[0] == false && isSelectedSex[1] == false || isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false || isSelectedWeekDay[0] == false && isSelectedWeekDay[1] == false && isSelectedWeekDay[2] == false && isSelectedWeekDay[3] == false  && isSelectedWeekDay[4] == false && isSelectedWeekDay[5] == false && isSelectedWeekDay[6] == false || location == '동네 입력' ?
                     FlutterToastBottom("센터 등록 외의 모든 항목을 입력하여주세요")
                         : SignPost();

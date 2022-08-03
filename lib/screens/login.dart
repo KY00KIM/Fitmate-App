@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                                 else {
                                   //토큰을 받는 단계에서 에러가 나지 않았다면
                                   http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
-                                    'Authorization' : '${IdToken.toString()}'});
+                                    'Authorization' : 'bearer ${IdToken.toString()}'});
                                   var resBody = jsonDecode(utf8.decode(response.bodyBytes));
 
                                   if(response.statusCode == 200) {
@@ -157,10 +157,11 @@ class _LoginPageState extends State<LoginPage> {
                                 else {
                                   //토큰을 받는 단계에서 에러가 나지 않았다면
                                   http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
-                                    'Authorization' : '$IdToken'});
+                                    'Authorization' : 'bearer $IdToken'});
                                   var resBody = jsonDecode(utf8.decode(response.bodyBytes));
 
                                   if(response.statusCode == 200) {
+                                    print("지금이니!");
                                     //사용자 정보가 완벽히 등록 되어있다면
                                     UserId = resBody['data']['user_id'];
 

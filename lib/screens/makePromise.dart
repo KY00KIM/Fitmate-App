@@ -14,7 +14,8 @@ import 'package:http/http.dart' as http;
 import '../utils/data.dart';
 
 class MakePromisePage extends StatefulWidget {
-  const MakePromisePage({Key? key}) : super(key: key);
+  String partnerId;
+  MakePromisePage({Key? key, required this.partnerId}) : super(key: key);
 
   @override
   State<MakePromisePage> createState() => _MakePromisePageState();
@@ -24,38 +25,42 @@ class _MakePromisePageState extends State<MakePromisePage> {
   String _selectedTime = '시간 선택';
   String _selectedDate = '날짜 선택';
   String centerName = '만날 피트니스장을 선택해주세요';
+  late Map center;
 
-  /*
-  void PostPosets() async {
-    /*
+  String selectTime(int i) {
+    int temp = i ~/ 10;
+    if (temp == 0) return '0${i}';
+    else return '${i}';
+  }
+
+  void PostPromise() async {
+
     Map data = {
-      "user_id" : "$UserId",
-      "location_id" : "${UserData["data"]["location_id"]}",
-      "post_fitness_part" : [
-      ],
-      "post_title" : "$title",
-      "promise_location" : "",
-      "promise_date" : "$_selectedDate",
-      "post_img" : "",
-      "post_main_text" : "$description"
+      "fitness_center": {
+        "center_name": "$centerName",
+        "center_address": "${center['address_name']}",
+        "center_longitude": center['y'],
+        "center_latitude": center['x']
+      },
+      "appointment_date": "${_selectedDate}T${_selectedTime}:00",
+      "match_start_id": "${UserData['_id']}",
+      "match_join_id": "${widget.partnerId}"
     };
-    */
+    print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/posts/"),
+    http.Response response = await http.post(Uri.parse("${baseUrl}appointments"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : '$IdToken',
+        'Authorization' : 'bearer $IdToken',
       }, // this header is essential to send json data
       body: body
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print(resBody);
 
-    print("idtoken : $IdToken");
-
     if(response.statusCode == 201) {
-
+      Navigator.pop(context);
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       FlutterToastBottom("한번 더 시도해 주세요");
@@ -63,7 +68,7 @@ class _MakePromisePageState extends State<MakePromisePage> {
       FlutterToastBottom("오류가 발생하였습니다");
     }
   }
-  */
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -109,8 +114,7 @@ class _MakePromisePageState extends State<MakePromisePage> {
                 
                 centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택'  ?
                     FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
-                        : null;
-                        
+                        : PostPromise();
               },
               child: Text(
                 '완료',
@@ -154,6 +158,7 @@ class _MakePromisePageState extends State<MakePromisePage> {
                         print(onValue);
                         onValue == null ? null : setState(() {
                           centerName = onValue['place_name'];
+                          center = onValue;
                         });
                       });
                     },
@@ -257,8 +262,9 @@ class _MakePromisePageState extends State<MakePromisePage> {
                             setState(() {
                               if (timeOfDay != null) {
                                 _selectedTime =
-                                    '${timeOfDay.hour}:${timeOfDay.minute}';
+                                '${selectTime(timeOfDay.hour)}:${selectTime(timeOfDay.minute)}';
                               }
+                              print('$_selectedTime');
                             });
                           });
                         },

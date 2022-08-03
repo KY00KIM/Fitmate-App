@@ -164,6 +164,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_chat_bubble",
+      "rootUri": "file:///Users/gimboseok/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_chat_bubble-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_facebook_auth",
       "rootUri": "file:///Users/gimboseok/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth-4.3.4+2",
       "packageUri": "lib/",
@@ -602,7 +608,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-07-27T05:48:48.340841Z",
+  "generated": "2022-08-03T20:32:11.658576Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

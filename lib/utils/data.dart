@@ -31,15 +31,7 @@ late Map UserData = {
   "user_email": "",
   "user_profile_img": "",
   "user_schedule_time": 0,
-  "user_weekday": {
-    "mon": false,
-    "tue": false,
-    "wed": false,
-    "thu": false,
-    "fri": false,
-    "sat": false,
-    "sun": false
-  },
+  "user_weekday": {},
   "user_introduce": "",
   "user_fitness_part": [
     ""
@@ -70,7 +62,7 @@ late Map UserData = {
 Future<bool> UpdateUserData() async {
   http.Response response = await http.get(Uri.parse("${baseUrl}users/${UserId.toString()}"), headers: {
     // ignore: unnecessary_string_interpolations
-    "Authorization" : "${IdToken.toString()}",
+    "Authorization" : "bearer ${IdToken.toString()}",
     "Content-Type" : "application/json; charset=UTF-8",
     "userId" : "${UserId.toString()}"});
   if (response.statusCode == 200) {
@@ -79,7 +71,7 @@ Future<bool> UpdateUserData() async {
     UserData = resBody["data"];
     http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${UserData["fitness_center_id"].toString()}"), headers: {
       // ignore: unnecessary_string_interpolations
-      "Authorization" : "${IdToken.toString()}",
+      "Authorization" : "bearer ${IdToken.toString()}",
       "fitnesscenterId" : "${UserData["fitness_center_id"]}"});
 
     if(responseFitness.statusCode == 200) {

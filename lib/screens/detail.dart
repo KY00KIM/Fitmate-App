@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,16 +20,78 @@ class DetailMachingPage extends StatefulWidget {
 }
 
 class _DetailMachingPageState extends State<DetailMachingPage> {
-  String locationName = '';
-  String usersName = '';
-  String userImage = '';
-  String centerName = '';
+  String makerLocationName = '';
+  String makerUsersName = '';
+  String makerUserImage = '';
+  String makerCenterName = '';
+  String makerUserId = '';
+  String makerUserUid = '';
+
+  Future<bool> addChat() async{
+    //기존 채팅방이 있는지 확인
+    http.Response response = await http.get(Uri.parse("${baseUrl}chats/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization' : 'bearer $IdToken',
+        },
+    );
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+      http.Response response = await http.get(Uri.parse("${baseUrl}chats/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization' : 'bearer $IdToken',
+        },
+      );
+      resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    }
+
+    for(int i = 0; i < resBody['data'].length; i++) {
+      if((resBody['data'][i]['chat_start_id'] == UserData['_id'] && resBody['data'][i]['chat_join_id'] == makerUserId) || (resBody['data'][i]['chat_join_id'] == UserData['_id'] && resBody['data'][i]['chat_start_id'] == makerUserId)) {
+        return true;
+      }
+    }
+
+    Map data = {
+      "chat_join_id": "$makerUserId"
+    };
+    print(data);
+    var body = json.encode(data);
+    log(IdToken);
+    http.Response response2 = await http.post(Uri.parse("${baseUrl}chats/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization' : 'bearer $IdToken',
+        }, // this header is essential to send json data
+        body: body
+    );
+    var resBody2 = jsonDecode(utf8.decode(response2.bodyBytes));
+    print('오우 : ${response.body}');
+    if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+      response2 = await http.post(Uri.parse("${baseUrl}chats/"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization' : 'bearer $IdToken',
+          }, // this header is essential to send json data
+          body: body
+      );
+      resBody2 = jsonDecode(utf8.decode(response2.bodyBytes));
+    }
+
+    if(response2.statusCode == 201) return true;
+    else return false;
+  }
 
   Future<List> getPostDetail() async {
     print("idtoken : $IdToken");
     print("skflsjeifslf");
     http.Response response = await http.get(Uri.parse("${baseUrl}posts/${widget.postId}"),
-      headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8", "postId" : "${widget.postId}"},
+      headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8", "postId" : "${widget.postId}"},
     );
     print("response 완료");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -37,41 +100,43 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
       http.Response response = await http.get(Uri.parse("${baseUrl}posts/${widget.postId}"),
-        headers: {"Authorization" : "$IdToken", "Content-Type": "application/json; charset=UTF-8", "postId" : "${widget.postId}"},
+        headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8", "postId" : "${widget.postId}"},
       );
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
     http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][0]['promise_location'].toString()}"), headers: {
       // ignore: unnecessary_string_interpolations
-      "Authorization" : "${IdToken.toString()}",
+      "Authorization" : "bearer ${IdToken.toString()}",
       "fitnesscenterId" : "${resBody['data'][0]['promise_location'].toString()}"});
 
     if(responseFitness.statusCode == 200) {
       var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
 
-      centerName = resBody2["data"]["center_name"];
+      makerCenterName = resBody2["data"]["center_name"];
     }
 
+    makerUserId = resBody['data'][0]['user_id'].toString();
     http.Response responseUser = await http.get(Uri.parse("${baseUrl}users/${resBody['data'][0]['user_id'].toString()}"), headers: {
       // ignore: unnecessary_string_interpolations
-      "Authorization" : "${IdToken.toString()}",
+      "Authorization" : "bearer ${IdToken.toString()}",
       "Content-Type" : "application/json; charset=UTF-8",
       "userId" : "${resBody['data'][0]['user_id'].toString()}"});
     var resBody3 = jsonDecode(utf8.decode(responseUser.bodyBytes));
 
-    userImage = resBody3['data']['user_profile_img'];
-    usersName = resBody3['data']['user_nickname'];
+    makerUserUid = resBody3['data']['social']['user_id'];
+    makerUserImage = resBody3['data']['user_profile_img'];
+    makerUsersName = resBody3['data']['user_nickname'];
 
     http.Response responseLocation = await http.get(Uri.parse("${baseUrl}locations/${resBody['data'][0]['location_id'].toString()}"), headers: {
       // ignore: unnecessary_string_interpolations
-      "Authorization" : "${IdToken.toString()}",
+      "Authorization" : "bearer ${IdToken.toString()}",
       "locId" : "${resBody['data'][0]['location_id'].toString()}"});
 
     if(responseLocation.statusCode == 200) {
       var resBody3 = jsonDecode(utf8.decode(responseLocation.bodyBytes));
 
-      locationName = resBody3["data"]["location_name"];
+      makerLocationName = resBody3["data"]["location_name"];
     }
 
 
@@ -111,8 +176,13 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                 ),
                 elevation: 0,
               ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage()));
+              onPressed: () async {
+                if(makerUserId != UserData['_id']) {
+                  bool addChatAnswer = await addChat();
+                  if (addChatAnswer == true) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name : makerUsersName, imageUrl : makerUserImage, uid : makerUserUid, userId : makerUserId)));
+                  }
+                }
               },
               child: Text(
                 '채팅하기',
@@ -131,7 +201,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               String? time = snapshot.data?[0]['promise_date'].toString().substring(11,13);
-              String M = int.parse(time!) > 12 ? '오후' : '오전';
+              String slot = int.parse(time!) > 12 ? '오후' : '오전';
               return ListView.builder(
                 itemCount: snapshot.data?.length,
                 itemBuilder: (context, index) {
@@ -231,7 +301,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                                     size: 20,
                                   ),
                                   Text(
-                                    '  $locationName / $centerName',
+                                    '  $makerLocationName / $makerCenterName',
                                     style: TextStyle(
                                       color: Color(0xFFDADADA),
                                       fontSize: 14.0,
@@ -251,7 +321,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                                     size: 20,
                                   ),
                                   Text(
-                                    '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${M} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
+                                    '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${slot} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
                                     style: TextStyle(
                                       color: Color(0xFFDADADA),
                                       fontSize: 14.0,
@@ -276,7 +346,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                                 width: size.width,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$usersName')));
+                                    Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$makerUsersName')));
                                   },
                                   style: ElevatedButton.styleFrom(
                                       primary: Color(0xFF22232A),
@@ -287,17 +357,25 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(100.0),
                                         child: Image.network(
-                                          '$userImage',
+                                          '$makerUserImage',
                                           width: 60.0,
                                           height: 60.0,
-                                          fit: BoxFit.fitHeight,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/dummy.jpg',
+                                              width: 60.0,
+                                              height: 60.0,
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
                                         ),
                                       ),
                                       SizedBox(
                                         height: 10,
                                       ),
                                       Text(
-                                        '$usersName',
+                                        '$makerUsersName',
                                         style: TextStyle(
                                           color: Color(0xffFFFFFF),
                                           fontWeight: FontWeight.bold,

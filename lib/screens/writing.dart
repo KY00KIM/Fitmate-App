@@ -86,7 +86,7 @@ class _WritingPageState extends State<WritingPage> {
     http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : '$IdToken',
+        'Authorization' : 'bearer $IdToken',
       }, // this header is essential to send json data
       body: body
     );
@@ -98,7 +98,7 @@ class _WritingPageState extends State<WritingPage> {
 
       // ignore: unused_local_variable
       var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
-      request.headers.addAll({"Authorization" : "$IdToken", "postId" : "$postId"});
+      request.headers.addAll({"Authorization" : "bearer $IdToken", "postId" : "$postId"});
       request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
       var res = await request.send();
       print('$postId');
@@ -194,13 +194,17 @@ class _WritingPageState extends State<WritingPage> {
                       //minimumSize: Size(65, 65),
                       minimumSize: Size(size.height * 0.09, size.height * 0.09),
                       maximumSize: Size(size.height * 0.09, size.height * 0.09),
-                      primary: _image == null ? Color(0xFF878E97) : Color(0xFF22232A),
-                      
+                      //primary: _image == null ? Color(0xFF878E97) : Color(0xFF22232A),
+                      primary: Color(0xFF878E97),
+                      padding: EdgeInsets.all(0),
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(10.0),
+                      ),
                     ),
                     child: _image == null ? Icon(
                       Icons.photo_camera,
                       size: 30.0,
-                    ) : Image.file(_image!, width: 100, height: 100),
+                    ) : Image.file(_image!, width: 100, height: 100, fit: BoxFit.cover,),
                   ),
                   SizedBox(
                     height: 20,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,6 +7,7 @@ import 'package:fitmate/screens/login.dart';
 import 'package:fitmate/screens/profileEdit.dart';
 import 'package:fitmate/utils/data.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:fitmate/screens/writing.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -21,10 +24,67 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
+  List<String> reviewName = [];
+  List<String> reviewImg = [];
+  List<String> reviewContext = [];
+
+  int reviewNumber = 0;
+
   String getSchedule() {
     if(UserData["user_schedule_time"] == 0) return "오전";
     else if(UserData["user_schedule_time"] == 1) return "오후";
     else return "저녁";
+  }
+
+  Future<int> getReviewProfile() async {
+    http.Response response = await http.get(Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
+      headers: {
+        "Authorization" : "bearer $IdToken",
+        "userId" : "bearer ${UserData['_id']}"
+      },
+    );
+    print("response 완료 : ${response.statusCode}");
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print("아 몰라 : ${resBody}");
+    if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+      http.Response response = await http.get(Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
+        headers: {
+          "Authorization" : "bearer $IdToken",
+          "userId" : "bearer ${UserData['_id']}"
+        },
+      );
+      resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    }
+    reviewContext.add(resBody['data']['review_body']);
+    reviewNumber = resBody['data'].length;
+    for(int i = 0; i < resBody['data'].length; i++) {
+      http.Response responseFitness = await http.get(Uri.parse("${baseUrl}users/${resBody['data'][i]['review_send_id'].toString()}"), headers: {
+        // ignore: unnecessary_string_interpolations
+        "Authorization" : "bearer ${IdToken.toString()}",
+        "userId" : "${resBody['data'][i]['review_send_id'].toString()}"});
+
+      var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
+
+      if(responseFitness.statusCode == 200) {
+        reviewImg.add(resBody2["data"]["user_profile_img"]);
+        reviewName.add(resBody2['data']['user_name']);
+      } else {
+        reviewImg.add('');
+        reviewName.add('');
+      }
+    }
+
+    if(response.statusCode == 200) {
+      print(resBody['data']);
+      print('sfe');
+      return reviewNumber;
+    }
+    else {
+      print("what the fuck");
+      return 0;
+    }
   }
 
   @override
@@ -35,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
+    print(UserData);
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(
@@ -318,6 +378,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Container(
                 width: size.width - 34,
+                padding: EdgeInsets.all(0),
                 child: Column(
                   children: [
                     ClipRRect(
@@ -326,14 +387,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         '${UserData['user_profile_img']}',
                         width: 70.0,
                         height: 70.0,
-                        fit: BoxFit.fitHeight,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      '${UserData["user_nickname"]}(${UserData["user_gender"] == false ? '남' : '여'})',
+                      '${UserData["user_nickname"]}(${UserData["user_gender"] == true ? '남' : '여'})',
                       style: TextStyle(
                         color: Color(0xFFffffff),
                         fontWeight: FontWeight.bold,
@@ -385,18 +446,19 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]['mon'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]['mon'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
+
                       alignment: Alignment.center,
                       child: Text(
                         '월',
                         style: TextStyle(
-                            color: UserData["user_weekday"]["mon"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]['mon'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -405,18 +467,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]['tue'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]['tue'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '화',
                         style: TextStyle(
-                            color: UserData["user_weekday"]["tue"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]['tue'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -425,18 +487,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]['wed'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]['wed'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '수',
                         style: TextStyle(
-                            color: UserData["user_weekday"]["wed"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]['wed'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -445,18 +507,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]['thu'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]['thu'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '목',
                         style: TextStyle(
-                            color: UserData["user_weekday"]["thu"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]['thu'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -465,18 +527,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]['fri'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]['fri'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '금',
                         style: TextStyle(
-                            color: UserData["user_weekday"]["fri"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]['fri'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -485,18 +547,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]['sat'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]['sat'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '토',
                         style: TextStyle(
-                            color: UserData["user_weekday"]["sat"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]['sat'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -505,18 +567,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]['sun'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]['sun'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '일',
                         style: TextStyle(
-                            color: UserData["user_weekday"]["sun"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]['sun'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -652,7 +714,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Text(
-                            '3회',
+                            '${reviewNumber.toString()}회',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -731,325 +793,75 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 15,
               ),
-              Container(
-                width: size.width - 40,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                            width: 35.0,
-                            height: 35.0,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          '우천류',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 45),
-                      child: Container(
-                        width: size.width - 85,
-                        child: Flexible(
-                          child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 100,
-                            strutStyle: StrutStyle(fontSize: 16),
-                            text: TextSpan(
-                              text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
-                              style: TextStyle(
-                                fontSize: 16,
+              FutureBuilder<int> (
+                future: getReviewProfile(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: size.width - 40,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(100.0),
+                                    child: Image.network(
+                                      '${reviewImg[index]}',
+                                      width: 35.0,
+                                      height: 35.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                  Text(
+                                    '${reviewName[index]}',
+                                    style: TextStyle(
+                                      color: Color(0xFFffffff),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: size.width - 40,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                            width: 35.0,
-                            height: 35.0,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          '우천류',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 45),
-                      child: Container(
-                        width: size.width - 85,
-                        child: Flexible(
-                          child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 100,
-                            strutStyle: StrutStyle(fontSize: 16),
-                            text: TextSpan(
-                              text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
-                              style: TextStyle(
-                                fontSize: 16,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 45),
+                                child: Container(
+                                  width: size.width - 85,
+                                  child: Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 100,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '${reviewContext[index]}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: size.width - 40,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                            width: 35.0,
-                            height: 35.0,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          '우천류',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 45),
-                      child: Container(
-                        width: size.width - 85,
-                        child: Flexible(
-                          child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 100,
-                            strutStyle: StrutStyle(fontSize: 16),
-                            text: TextSpan(
-                              text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
-                              style: TextStyle(
-                                fontSize: 16,
+                              SizedBox(
+                                height: 20,
                               ),
-                            ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return SizedBox();
+                  }
+                  // 기본적으로 로딩 Spinner를 보여줍니다.
+                  return CircularProgressIndicator();
+                },
               ),
-              Container(
-                width: size.width - 40,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                            width: 35.0,
-                            height: 35.0,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          '우천류',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 45),
-                      child: Container(
-                        width: size.width - 85,
-                        child: Flexible(
-                          child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 100,
-                            strutStyle: StrutStyle(fontSize: 16),
-                            text: TextSpan(
-                              text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: size.width - 40,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                            width: 35.0,
-                            height: 35.0,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          '우천류',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 45),
-                      child: Container(
-                        width: size.width - 85,
-                        child: Flexible(
-                          child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 100,
-                            strutStyle: StrutStyle(fontSize: 16),
-                            text: TextSpan(
-                              text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: size.width - 40,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                            width: 35.0,
-                            height: 35.0,
-                            fit: BoxFit.fitHeight,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        Text(
-                          '우천류',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 45),
-                      child: Container(
-                        width: size.width - 85,
-                        child: Flexible(
-                          child: RichText(
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 100,
-                            strutStyle: StrutStyle(fontSize: 16),
-                            text: TextSpan(
-                              text: '어깨 제대로 부수실 분앙아아아ㅇ러냐릔두ㅑ루디루댜sdfsfsfsfd아아',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-
             ],
           ),
         ),
