@@ -260,18 +260,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: snapshot.data!["user_weekday"][0] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                                color: snapshot.data!["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                                 borderRadius: BorderRadius.circular(40),
                                 border: Border.all(
                                   width: 1,
-                                  color: snapshot.data!["user_weekday"][0] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                                  color: snapshot.data!["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 '월',
                                 style: TextStyle(
-                                    color: snapshot.data!["user_weekday"][0] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                                    color: snapshot.data!["user_weekday"]["mon"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),
@@ -280,18 +280,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: snapshot.data!["user_weekday"][1] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                                color: snapshot.data!["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                                 borderRadius: BorderRadius.circular(40),
                                 border: Border.all(
                                   width: 1,
-                                  color: snapshot.data!["user_weekday"][1] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                                  color: snapshot.data!["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 '화',
                                 style: TextStyle(
-                                    color: snapshot.data!["user_weekday"][1] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                                    color: snapshot.data!["user_weekday"]["tue"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),
@@ -300,18 +300,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: snapshot.data!["user_weekday"][2] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                                color: snapshot.data!["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                                 borderRadius: BorderRadius.circular(40),
                                 border: Border.all(
                                   width: 1,
-                                  color: snapshot.data!["user_weekday"][2] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                                  color: snapshot.data!["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 '수',
                                 style: TextStyle(
-                                    color: snapshot.data!["user_weekday"][2] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                                    color: snapshot.data!["user_weekday"]["wed"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),
@@ -320,18 +320,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: snapshot.data!["user_weekday"][3] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                                color: snapshot.data!["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                                 borderRadius: BorderRadius.circular(40),
                                 border: Border.all(
                                   width: 1,
-                                  color: snapshot.data!["user_weekday"][3] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                                  color: snapshot.data!["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 '목',
                                 style: TextStyle(
-                                    color: snapshot.data!["user_weekday"][3] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                                    color: snapshot.data!["user_weekday"]["thu"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),
@@ -340,18 +340,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: snapshot.data!["user_weekday"][4] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                                color: snapshot.data!["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                                 borderRadius: BorderRadius.circular(40),
                                 border: Border.all(
                                   width: 1,
-                                  color: snapshot.data!["user_weekday"][4] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                                  color: snapshot.data!["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 '금',
                                 style: TextStyle(
-                                    color: snapshot.data!["user_weekday"][4] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                                    color: snapshot.data!["user_weekday"]["fri"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),
@@ -360,18 +360,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: snapshot.data!["user_weekday"][5] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                                color: snapshot.data!["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                                 borderRadius: BorderRadius.circular(40),
                                 border: Border.all(
                                   width: 1,
-                                  color: snapshot.data!["user_weekday"][5] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                                  color: snapshot.data!["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 '토',
                                 style: TextStyle(
-                                    color: snapshot.data!["user_weekday"][5] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                                    color: snapshot.data!["user_weekday"]["sat"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),
@@ -380,18 +380,18 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: snapshot.data!["user_weekday"][6] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                                color: snapshot.data!["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                                 borderRadius: BorderRadius.circular(40),
                                 border: Border.all(
                                   width: 1,
-                                  color: snapshot.data!["user_weekday"][6] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                                  color: snapshot.data!["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 '일',
                                 style: TextStyle(
-                                    color: snapshot.data!["user_weekday"][6] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                                    color: snapshot.data!["user_weekday"]["sun"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),

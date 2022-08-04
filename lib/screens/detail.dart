@@ -274,20 +274,24 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                               ),
                               Container(
                                 width: size.width - 50,
-                                child: Flexible(
-                                  child: RichText(
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 5,
-                                    strutStyle: StrutStyle(fontSize: 16),
-                                    text: TextSpan(
-                                      text: '${snapshot.data?[0]['post_title']}',
-                                      style: TextStyle(
-                                        color: Color(0xFFffffff),
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 5,
+                                        strutStyle: StrutStyle(fontSize: 16),
+                                        text: TextSpan(
+                                          text: '${snapshot.data?[0]['post_title']}',
+                                          style: TextStyle(
+                                            color: Color(0xFFffffff),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                               SizedBox(
@@ -388,18 +392,22 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                               ),
                               Container(
                                 width: size.width - 50,
-                                child: Flexible(
-                                  child: RichText(
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 50,
-                                    strutStyle: StrutStyle(fontSize: 12),
-                                    text: TextSpan(
-                                      text: '${snapshot.data?[0]['post_main_text']}',
-                                      style: TextStyle(
-                                        color: Color(0xFFffffff),
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 50,
+                                        strutStyle: StrutStyle(fontSize: 12),
+                                        text: TextSpan(
+                                          text: '${snapshot.data?[0]['post_main_text']}',
+                                          style: TextStyle(
+                                            color: Color(0xFFffffff),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                             ],

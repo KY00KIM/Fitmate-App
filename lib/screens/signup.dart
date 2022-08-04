@@ -29,15 +29,15 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   String nickname = '';
   final isSelectedSex = <bool>[false, false];
-  final isSelectedWeekDay = <bool>[
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
+  Map isSelectedWeekDay = {
+    "mon": false,
+    "tue": false,
+    "wed": false,
+    "thu": false,
+    "fri": false,
+    "sat": false,
+    "sun": false
+  };
   final isSelectedTime = <bool>[false, false, false];
   String location = '동네 입력';
   String centerName = '센터 등록';
@@ -82,13 +82,13 @@ class _SignupPageState extends State<SignupPage> {
       "user_address": "$location",
       "user_schedule_time": schedule,
       "user_weekday": {
-        "mon" : isSelectedWeekDay[0],
-        "tue" : isSelectedWeekDay[1],
-        "wed" : isSelectedWeekDay[2],
-        "thu" : isSelectedWeekDay[3],
-        "fri" : isSelectedWeekDay[4],
-        "sat" : isSelectedWeekDay[5],
-        "sun" : isSelectedWeekDay[6]
+        "mon" : isSelectedWeekDay['mon'],
+        "tue" : isSelectedWeekDay['tue'],
+        "wed" : isSelectedWeekDay['wed'],
+        "thu" : isSelectedWeekDay['thu'],
+        "fri" : isSelectedWeekDay['fri'],
+        "sat" : isSelectedWeekDay['sat'],
+        "sun" : isSelectedWeekDay['sun']
       },
       "user_gender": gender,
       "user_longitude": longitude,
@@ -433,14 +433,14 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay[0] == false
+                          color: isSelectedWeekDay['mon'] == false
                               ? Color(0xFF878E97)
                               : Color(0xFFffffff),
                         ),
                       ),
                       onPressed: () {
                         setState(() {
-                          isSelectedWeekDay[0] = !isSelectedWeekDay[0];
+                          isSelectedWeekDay['mon'] = !isSelectedWeekDay['mon'];
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -448,13 +448,13 @@ class _SignupPageState extends State<SignupPage> {
                         minimumSize: Size(40, 40),
                         padding: EdgeInsets.only(right: 0),
                         shape: const CircleBorder(),
-                        primary: isSelectedWeekDay[0] == false
+                        primary: isSelectedWeekDay['mon'] == false
                             ? Color(0xFF22232A)
                             : Color(0xFF2975CF),
                         elevation: 0,
                         side: BorderSide(
                           color: Color(0xFF878E97),
-                          width: isSelectedWeekDay[0] == false ? 1 : 0,
+                          width: isSelectedWeekDay['mon'] == false ? 1 : 0,
                         ),
                       ),
                     ),
@@ -464,14 +464,14 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay[1] == false
+                          color: isSelectedWeekDay["tue"] == false
                               ? Color(0xFF878E97)
                               : Color(0xFFffffff),
                         ),
                       ),
                       onPressed: () {
                         setState(() {
-                          isSelectedWeekDay[1] = !isSelectedWeekDay[1];
+                          isSelectedWeekDay["tue"] = !isSelectedWeekDay["tue"];
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -479,13 +479,13 @@ class _SignupPageState extends State<SignupPage> {
                         padding: EdgeInsets.only(right: 0),
                         fixedSize: const Size(40, 40),
                         shape: const CircleBorder(),
-                        primary: isSelectedWeekDay[1] == false
+                        primary: isSelectedWeekDay["tue"] == false
                             ? Color(0xFF22232A)
                             : Color(0xFF2975CF),
                         elevation: 0,
                         side: BorderSide(
                           color: Color(0xFF878E97),
-                          width: isSelectedWeekDay[1] == false ? 1 : 0,
+                          width: isSelectedWeekDay["tue"] == false ? 1 : 0,
                         ),
                       ),
                     ),
@@ -495,14 +495,14 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay[2] == false
+                          color: isSelectedWeekDay["wed"] == false
                               ? Color(0xFF878E97)
                               : Color(0xFFffffff),
                         ),
                       ),
                       onPressed: () {
                         setState(() {
-                          isSelectedWeekDay[2] = !isSelectedWeekDay[2];
+                          isSelectedWeekDay["wed"] = !isSelectedWeekDay["wed"];
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -510,13 +510,13 @@ class _SignupPageState extends State<SignupPage> {
                         padding: EdgeInsets.only(right: 0),
                         fixedSize: const Size(40, 40),
                         shape: const CircleBorder(),
-                        primary: isSelectedWeekDay[2] == false
+                        primary: isSelectedWeekDay["wed"] == false
                             ? Color(0xFF22232A)
                             : Color(0xFF2975CF),
                         elevation: 0,
                         side: BorderSide(
                           color: Color(0xFF878E97),
-                          width: isSelectedWeekDay[2] == false ? 1 : 0,
+                          width: isSelectedWeekDay["wed"] == false ? 1 : 0,
                         ),
                       ),
                     ),
@@ -526,14 +526,14 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay[3] == false
+                          color: isSelectedWeekDay["thu"] == false
                               ? Color(0xFF878E97)
                               : Color(0xFFffffff),
                         ),
                       ),
                       onPressed: () {
                         setState(() {
-                          isSelectedWeekDay[3] = !isSelectedWeekDay[3];
+                          isSelectedWeekDay["thu"] = !isSelectedWeekDay["thu"];
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -541,13 +541,13 @@ class _SignupPageState extends State<SignupPage> {
                         padding: EdgeInsets.only(right: 0),
                         fixedSize: const Size(40, 40),
                         shape: const CircleBorder(),
-                        primary: isSelectedWeekDay[3] == false
+                        primary: isSelectedWeekDay["thu"] == false
                             ? Color(0xFF22232A)
                             : Color(0xFF2975CF),
                         elevation: 0,
                         side: BorderSide(
                           color: Color(0xFF878E97),
-                          width: isSelectedWeekDay[3] == false ? 1 : 0,
+                          width: isSelectedWeekDay["thu"] == false ? 1 : 0,
                         ),
                       ),
                     ),
@@ -557,14 +557,14 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay[4] == false
+                          color: isSelectedWeekDay["fri"] == false
                               ? Color(0xFF878E97)
                               : Color(0xFFffffff),
                         ),
                       ),
                       onPressed: () {
                         setState(() {
-                          isSelectedWeekDay[4] = !isSelectedWeekDay[4];
+                          isSelectedWeekDay["fri"] = !isSelectedWeekDay["fri"];
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -572,13 +572,13 @@ class _SignupPageState extends State<SignupPage> {
                         padding: EdgeInsets.only(right: 0),
                         fixedSize: const Size(40, 40),
                         shape: const CircleBorder(),
-                        primary: isSelectedWeekDay[4] == false
+                        primary: isSelectedWeekDay["fri"] == false
                             ? Color(0xFF22232A)
                             : Color(0xFF2975CF),
                         elevation: 0,
                         side: BorderSide(
                           color: Color(0xFF878E97),
-                          width: isSelectedWeekDay[4] == false ? 1 : 0,
+                          width: isSelectedWeekDay["fri"] == false ? 1 : 0,
                         ),
                       ),
                     ),
@@ -588,14 +588,14 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay[5] == false
+                          color: isSelectedWeekDay["sat"] == false
                               ? Color(0xFF878E97)
                               : Color(0xFFffffff),
                         ),
                       ),
                       onPressed: () {
                         setState(() {
-                          isSelectedWeekDay[5] = !isSelectedWeekDay[5];
+                          isSelectedWeekDay["sat"] = !isSelectedWeekDay["sat"];
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -603,13 +603,13 @@ class _SignupPageState extends State<SignupPage> {
                         padding: EdgeInsets.only(right: 0),
                         fixedSize: const Size(40, 40),
                         shape: const CircleBorder(),
-                        primary: isSelectedWeekDay[5] == false
+                        primary: isSelectedWeekDay["sat"] == false
                             ? Color(0xFF22232A)
                             : Color(0xFF2975CF),
                         elevation: 0,
                         side: BorderSide(
                           color: Color(0xFF878E97),
-                          width: isSelectedWeekDay[5] == false ? 1 : 0,
+                          width: isSelectedWeekDay["sat"] == false ? 1 : 0,
                         ),
                       ),
                     ),
@@ -619,14 +619,14 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay[6] == false
+                          color: isSelectedWeekDay["sun"] == false
                               ? Color(0xFF878E97)
                               : Color(0xFFffffff),
                         ),
                       ),
                       onPressed: () {
                         setState(() {
-                          isSelectedWeekDay[6] = !isSelectedWeekDay[6];
+                          isSelectedWeekDay["sun"] = !isSelectedWeekDay["sun"];
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -634,13 +634,13 @@ class _SignupPageState extends State<SignupPage> {
                         padding: EdgeInsets.only(right: 0),
                         fixedSize: const Size(40, 40),
                         shape: const CircleBorder(),
-                        primary: isSelectedWeekDay[6] == false
+                        primary: isSelectedWeekDay["sun"] == false
                             ? Color(0xFF22232A)
                             : Color(0xFF2975CF),
                         elevation: 0,
                         side: BorderSide(
                           color: Color(0xFF878E97),
-                          width: isSelectedWeekDay[6] == false ? 1 : 0,
+                          width: isSelectedWeekDay["sun"] == false ? 1 : 0,
                         ),
                       ),
                     ),

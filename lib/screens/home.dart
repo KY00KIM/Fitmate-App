@@ -400,19 +400,23 @@ class _HomePageState extends State<HomePage> {
                                       children: [
                                         Container(
                                           width: size.width - 155,
-                                          child: Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              strutStyle: StrutStyle(fontSize: 16),
-                                              text: TextSpan(
-                                                text: '${snapshot.data?[index]['post_title']}',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${snapshot.data?[index]['post_title']}',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                         SizedBox(
@@ -420,20 +424,24 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Container(
                                           width: size.width - 155,
-                                          child: Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              strutStyle: StrutStyle(fontSize: 16),
-                                              text: TextSpan(
-                                                text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF757575),
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color(0xFF757575),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -462,20 +470,24 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         Container(
                                           width: size.width - 190,
-                                          child: Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              strutStyle: StrutStyle(fontSize: 16),
-                                              text: TextSpan(
-                                                text: '${usersName[index]}',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Color(0xFF757575),
-                                                  fontWeight: FontWeight.bold,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${usersName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color(0xFF757575),
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ],

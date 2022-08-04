@@ -372,7 +372,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
           padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
           child: Column(
             children: [
@@ -446,11 +446,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]['mon'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]['mon'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
 
@@ -458,7 +458,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         '월',
                         style: TextStyle(
-                            color: UserData["user_weekday"]['mon'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]["mon"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -467,18 +467,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]['tue'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]['tue'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '화',
                         style: TextStyle(
-                            color: UserData["user_weekday"]['tue'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]["tue"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -487,18 +487,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]['wed'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]['wed'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '수',
                         style: TextStyle(
-                            color: UserData["user_weekday"]['wed'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]["wed"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -507,18 +507,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]['thu'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]['thu'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '목',
                         style: TextStyle(
-                            color: UserData["user_weekday"]['thu'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]["thu"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -527,18 +527,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]['fri'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]['fri'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '금',
                         style: TextStyle(
-                            color: UserData["user_weekday"]['fri'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]["fri"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -547,18 +547,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]['sat'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]['sat'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '토',
                         style: TextStyle(
-                            color: UserData["user_weekday"]['sat'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]["sat"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
@@ -567,18 +567,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: UserData["user_weekday"]['sun'] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
+                        color: UserData["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
                         borderRadius: BorderRadius.circular(40),
                         border: Border.all(
                           width: 1,
-                          color: UserData["user_weekday"]['sun'] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
+                          color: UserData["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                         ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         '일',
                         style: TextStyle(
-                            color: UserData["user_weekday"]['sun'] == true ? Color(0xFFffffff) : Color(0xFF878E97),
+                            color: UserData["user_weekday"]["sun"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
