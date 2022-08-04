@@ -524,220 +524,241 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      child: Text(
-                        '월',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay["mon"] == false
-                              ? Color(0xFF878E97)
-                              : Color(0xFFffffff),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: ElevatedButton(
+                        child: Text(
+                          '월',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isSelectedWeekDay["mon"] == false
+                                ? Color(0xFF878E97)
+                                : Color(0xFFffffff),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isSelectedWeekDay["mon"] = !isSelectedWeekDay["mon"];
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(40, 40),
-                        minimumSize: Size(40, 40),
-                        padding: EdgeInsets.only(right: 0),
-                        shape: const CircleBorder(),
-                        primary: isSelectedWeekDay["mon"] == false
-                            ? Color(0xFF22232A)
-                            : Color(0xFF2975CF),
-                        elevation: 0,
-                        side: BorderSide(
-                          color: Color(0xFF878E97),
-                          width: isSelectedWeekDay["mon"] == false ? 1 : 0,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      child: Text(
-                        '화',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay["tue"] == false
-                              ? Color(0xFF878E97)
-                              : Color(0xFFffffff),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isSelectedWeekDay["tue"] = !isSelectedWeekDay["tue"];
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(40, 40),
-                        padding: EdgeInsets.only(right: 0),
-                        fixedSize: const Size(40, 40),
-                        shape: const CircleBorder(),
-                        primary: isSelectedWeekDay["tue"] == false
-                            ? Color(0xFF22232A)
-                            : Color(0xFF2975CF),
-                        elevation: 0,
-                        side: BorderSide(
-                          color: Color(0xFF878E97),
-                          width: isSelectedWeekDay["tue"] == false ? 1 : 0,
+                        onPressed: () {
+                          setState(() {
+                            isSelectedWeekDay["mon"] = !isSelectedWeekDay["mon"];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(40, 40),
+                          minimumSize: Size(40, 40),
+                          padding: EdgeInsets.all(0),
+                          shape: CircleBorder(),
+                          primary: isSelectedWeekDay["mon"] == false
+                              ? Color(0xFF22232A)
+                              : Color(0xFF2975CF),
+                          elevation: 0,
+                          side: BorderSide(
+                            color: Color(0xFF878E97),
+                            width: isSelectedWeekDay["mon"] == false ? 1 : 0,
+                          ),
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      child: Text(
-                        '수',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay["wed"] == false
-                              ? Color(0xFF878E97)
-                              : Color(0xFFffffff),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: ElevatedButton(
+                        child: Text(
+                          '화',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isSelectedWeekDay["tue"] == false
+                                ? Color(0xFF878E97)
+                                : Color(0xFFffffff),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isSelectedWeekDay["wed"] = !isSelectedWeekDay["wed"];
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(40, 40),
-                        padding: EdgeInsets.only(right: 0),
-                        fixedSize: const Size(40, 40),
-                        shape: const CircleBorder(),
-                        primary: isSelectedWeekDay["wed"] == false
-                            ? Color(0xFF22232A)
-                            : Color(0xFF2975CF),
-                        elevation: 0,
-                        side: BorderSide(
-                          color: Color(0xFF878E97),
-                          width: isSelectedWeekDay["wed"] == false ? 1 : 0,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      child: Text(
-                        '목',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay["thu"] == false
-                              ? Color(0xFF878E97)
-                              : Color(0xFFffffff),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isSelectedWeekDay["thu"] = !isSelectedWeekDay["thu"];
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(40, 40),
-                        padding: EdgeInsets.only(right: 0),
-                        fixedSize: const Size(40, 40),
-                        shape: const CircleBorder(),
-                        primary: isSelectedWeekDay["thu"] == false
-                            ? Color(0xFF22232A)
-                            : Color(0xFF2975CF),
-                        elevation: 0,
-                        side: BorderSide(
-                          color: Color(0xFF878E97),
-                          width: isSelectedWeekDay["thu"] == false ? 1 : 0,
+                        onPressed: () {
+                          setState(() {
+                            isSelectedWeekDay["tue"] = !isSelectedWeekDay["tue"];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          padding: EdgeInsets.all(0),
+                          fixedSize: Size(40, 40),
+                          shape: CircleBorder(),
+                          primary: isSelectedWeekDay["tue"] == false
+                              ? Color(0xFF22232A)
+                              : Color(0xFF2975CF),
+                          elevation: 0,
+                          side: BorderSide(
+                            color: Color(0xFF878E97),
+                            width: isSelectedWeekDay["tue"] == false ? 1 : 0,
+                          ),
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      child: Text(
-                        '금',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay["fri"] == false
-                              ? Color(0xFF878E97)
-                              : Color(0xFFffffff),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: ElevatedButton(
+                        child: Text(
+                          '수',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isSelectedWeekDay["wed"] == false
+                                ? Color(0xFF878E97)
+                                : Color(0xFFffffff),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isSelectedWeekDay["fri"] = !isSelectedWeekDay["fri"];
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(40, 40),
-                        padding: EdgeInsets.only(right: 0),
-                        fixedSize: const Size(40, 40),
-                        shape: const CircleBorder(),
-                        primary: isSelectedWeekDay["fri"] == false
-                            ? Color(0xFF22232A)
-                            : Color(0xFF2975CF),
-                        elevation: 0,
-                        side: BorderSide(
-                          color: Color(0xFF878E97),
-                          width: isSelectedWeekDay["fri"] == false ? 1 : 0,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      child: Text(
-                        '토',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay["sat"] == false
-                              ? Color(0xFF878E97)
-                              : Color(0xFFffffff),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isSelectedWeekDay["sat"] = !isSelectedWeekDay["sat"];
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(40, 40),
-                        padding: EdgeInsets.only(right: 0),
-                        fixedSize: const Size(40, 40),
-                        shape: const CircleBorder(),
-                        primary: isSelectedWeekDay["sat"] == false
-                            ? Color(0xFF22232A)
-                            : Color(0xFF2975CF),
-                        elevation: 0,
-                        side: BorderSide(
-                          color: Color(0xFF878E97),
-                          width: isSelectedWeekDay["sat"] == false ? 1 : 0,
+                        onPressed: () {
+                          setState(() {
+                            isSelectedWeekDay["wed"] = !isSelectedWeekDay["wed"];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          padding: EdgeInsets.all(0),
+                          fixedSize: Size(40, 40),
+                          shape: CircleBorder(),
+                          primary: isSelectedWeekDay["wed"] == false
+                              ? Color(0xFF22232A)
+                              : Color(0xFF2975CF),
+                          elevation: 0,
+                          side: BorderSide(
+                            color: Color(0xFF878E97),
+                            width: isSelectedWeekDay["wed"] == false ? 1 : 0,
+                          ),
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      child: Text(
-                        '일',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isSelectedWeekDay["sun"] == false
-                              ? Color(0xFF878E97)
-                              : Color(0xFFffffff),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: ElevatedButton(
+                        child: Text(
+                          '목',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isSelectedWeekDay["thu"] == false
+                                ? Color(0xFF878E97)
+                                : Color(0xFFffffff),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isSelectedWeekDay["thu"] = !isSelectedWeekDay["thu"];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          padding: EdgeInsets.all(0),
+                          fixedSize: const Size(40, 40),
+                          shape: const CircleBorder(),
+                          primary: isSelectedWeekDay["thu"] == false
+                              ? Color(0xFF22232A)
+                              : Color(0xFF2975CF),
+                          elevation: 0,
+                          side: BorderSide(
+                            color: Color(0xFF878E97),
+                            width: isSelectedWeekDay["thu"] == false ? 1 : 0,
+                          ),
                         ),
                       ),
-                      onPressed: () {
-                        setState(() {
-                          isSelectedWeekDay["sun"] = !isSelectedWeekDay["sun"];
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(40, 40),
-                        padding: EdgeInsets.only(right: 0),
-                        fixedSize: const Size(40, 40),
-                        shape: const CircleBorder(),
-                        primary: isSelectedWeekDay["sun"] == false
-                            ? Color(0xFF22232A)
-                            : Color(0xFF2975CF),
-                        elevation: 0,
-                        side: BorderSide(
-                          color: Color(0xFF878E97),
-                          width: isSelectedWeekDay["sun"] == false ? 1 : 0,
+                    ),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: ElevatedButton(
+                        child: Text(
+                          '금',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isSelectedWeekDay["fri"] == false
+                                ? Color(0xFF878E97)
+                                : Color(0xFFffffff),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isSelectedWeekDay["fri"] = !isSelectedWeekDay["fri"];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          padding: EdgeInsets.all(0),
+                          fixedSize: const Size(40, 40),
+                          shape: const CircleBorder(),
+                          primary: isSelectedWeekDay["fri"] == false
+                              ? Color(0xFF22232A)
+                              : Color(0xFF2975CF),
+                          elevation: 0,
+                          side: BorderSide(
+                            color: Color(0xFF878E97),
+                            width: isSelectedWeekDay["fri"] == false ? 1 : 0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: ElevatedButton(
+                        child: Text(
+                          '토',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isSelectedWeekDay["sat"] == false
+                                ? Color(0xFF878E97)
+                                : Color(0xFFffffff),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isSelectedWeekDay["sat"] = !isSelectedWeekDay["sat"];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          padding: EdgeInsets.all(0),
+                          fixedSize: const Size(40, 40),
+                          shape: const CircleBorder(),
+                          primary: isSelectedWeekDay["sat"] == false
+                              ? Color(0xFF22232A)
+                              : Color(0xFF2975CF),
+                          elevation: 0,
+                          side: BorderSide(
+                            color: Color(0xFF878E97),
+                            width: isSelectedWeekDay["sat"] == false ? 1 : 0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: ElevatedButton(
+                        child: Text(
+                          '일',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isSelectedWeekDay["sun"] == false
+                                ? Color(0xFF878E97)
+                                : Color(0xFFffffff),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isSelectedWeekDay["sun"] = !isSelectedWeekDay["sun"];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(40, 40),
+                          padding: EdgeInsets.all(0),
+                          fixedSize: const Size(40, 40),
+                          shape: const CircleBorder(),
+                          primary: isSelectedWeekDay["sun"] == false
+                              ? Color(0xFF22232A)
+                              : Color(0xFF2975CF),
+                          elevation: 0,
+                          side: BorderSide(
+                            color: Color(0xFF878E97),
+                            width: isSelectedWeekDay["sun"] == false ? 1 : 0,
+                          ),
                         ),
                       ),
                     ),

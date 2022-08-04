@@ -579,7 +579,7 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                         CupertinoButton(
                             child: Icon(Icons.send_sharp),
-                            onPressed: () => sendMessage(_textController.text))
+                            onPressed: () => sendMessage(_textController.text.toString()))
                       ],
                     ),
                   )

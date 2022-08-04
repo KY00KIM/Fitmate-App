@@ -132,13 +132,10 @@ class _HomePageState extends State<HomePage> {
         child: Container(
           width: size.width,
           //height: 60.0,
-          height: size.height * 0.08,
+          height: size.height * 0.085,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(
-                //width: 15,
-                width: size.width * 0.04,
-              ),
               TextButton(
                 style: TextButton.styleFrom(
                   splashFactory: NoSplash.splashFactory,
@@ -165,10 +162,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                //width: 10.0,
-                width: size.width * 0.025,
               ),
               TextButton(
                 style: TextButton.styleFrom(
@@ -216,10 +209,8 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(
-                //width: 80.0,
-                width: size.width * 0.24,
-              ),
+              SizedBox(width: 30,),
+              SizedBox(width: 30,),
               TextButton(
                 style: TextButton.styleFrom(
                   splashFactory: NoSplash.splashFactory,
@@ -265,9 +256,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                width: size.width * 0.025,
               ),
               TextButton(
                 style: TextButton.styleFrom(

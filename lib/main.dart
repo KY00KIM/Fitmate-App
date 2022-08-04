@@ -27,6 +27,7 @@ import 'dart:developer';
 
 
 void main() async {
+  //Constants.setEnvironment(Environment.PROD);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

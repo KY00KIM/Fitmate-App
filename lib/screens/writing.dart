@@ -564,6 +564,7 @@ class _WritingPageState extends State<WritingPage> {
                     height: 10,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
                         onPressed: () {
@@ -608,9 +609,6 @@ class _WritingPageState extends State<WritingPage> {
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        width: size.width * 0.03,
                       ),
                       ElevatedButton(
                         onPressed: () {

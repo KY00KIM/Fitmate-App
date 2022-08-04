@@ -31,7 +31,7 @@ late Map UserData = {
   "user_email": "",
   "user_profile_img": "",
   "user_schedule_time": 0,
-  "user_weekday": {},
+  "user_weekday": [],
   "user_introduce": "",
   "user_fitness_part": [
     ""
