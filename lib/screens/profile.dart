@@ -13,6 +13,7 @@ import 'package:fitmate/screens/writing.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'chatList.dart';
 import 'home.dart';
+import 'map.dart';
 import 'matching.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -262,8 +263,52 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              SizedBox(width: 30,),
-              SizedBox(width: 30,),
+              TextButton(
+                style: TextButton.styleFrom(
+                  splashFactory: NoSplash.splashFactory,
+                ),
+                onPressed: () {
+                  //Route route = MaterialPageRoute(builder: (context) => MatchingPage());
+                  //Navigator.pushReplacement(context, route);
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => MapPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                  /*
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => MatchingPage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return child;
+                      },
+                    ),
+                  );
+
+                   */
+                },
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.fitness_center,
+                      color: Color(0xFF757575),
+                      //size: 30.0,
+                      size: size.width * 0.0763,
+                    ),
+                    Text(
+                      '헬스장',
+                      style: TextStyle(
+                        color: Color(0xFF757575),
+                        //fontSize: 10.0,
+                        fontSize: size.width * 0.0253,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               TextButton(
                 style: TextButton.styleFrom(
                   splashFactory: NoSplash.splashFactory,
@@ -294,7 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     Icon(
-                      Icons.fitness_center,
+                      Icons.calendar_month,
                       color: Color(0xFF757575),
                       //size: 30.0,
                       size: size.width * 0.0763,
@@ -340,25 +385,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(top: 30.0),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Color(0xFF22232A),
-        ),
-        child: FloatingActionButton(
-            child: Icon(
-              Icons.add,
-              size: 40,
-            ),
-            backgroundColor: Color(0xFF303037),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => WritingPage()));
-            }
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),

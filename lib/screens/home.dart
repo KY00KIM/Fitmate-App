@@ -15,6 +15,7 @@ import 'dart:developer';
 
 
 import 'chatList.dart';
+import 'map.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -209,8 +210,52 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(width: 30,),
-              SizedBox(width: 30,),
+              TextButton(
+                style: TextButton.styleFrom(
+                  splashFactory: NoSplash.splashFactory,
+                ),
+                onPressed: () {
+                  //Route route = MaterialPageRoute(builder: (context) => MatchingPage());
+                  //Navigator.pushReplacement(context, route);
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => MapPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                  /*
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => MatchingPage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        return child;
+                      },
+                    ),
+                  );
+
+                   */
+                },
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.fitness_center,
+                      color: Color(0xFF757575),
+                      //size: 30.0,
+                      size: size.width * 0.0763,
+                    ),
+                    Text(
+                      '헬스장',
+                      style: TextStyle(
+                        color: Color(0xFF757575),
+                        //fontSize: 10.0,
+                        fontSize: size.width * 0.0253,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               TextButton(
                 style: TextButton.styleFrom(
                   splashFactory: NoSplash.splashFactory,
@@ -241,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     Icon(
-                      Icons.fitness_center,
+                      Icons.calendar_month,
                       color: Color(0xFF757575),
                       //size: 30.0,
                       size: size.width * 0.0763,
@@ -306,25 +351,17 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(top: 30.0),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Color(0xFF22232A),
-        ),
-        child: FloatingActionButton(
-            child: Icon(
-              Icons.add,
-              size: 40,
-            ),
-            backgroundColor: Color(0xFF303037),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => WritingPage()));
-            }
-        ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.add,
+            size: 40,
+          ),
+          backgroundColor: Color(0xFF303037),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => WritingPage()));
+          }
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: FutureBuilder<List> (
           future: getPost(),

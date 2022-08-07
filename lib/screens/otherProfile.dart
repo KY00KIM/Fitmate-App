@@ -610,6 +610,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                         future: getReviewProfile(otherId),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
+                            print("알룰라 : ${snapshot.data}");
                             return ListView.builder(
                               itemCount: snapshot.data,
                               itemBuilder: (context, index) {
