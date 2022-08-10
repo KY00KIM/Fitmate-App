@@ -73,7 +73,7 @@ class _SignupPageState extends State<SignupPage> {
     double latitude = position.latitude;
     double longitude = position.longitude;
 
-    final fcmToken = FirebaseMessaging.instance.getToken();
+    final fcmToken = await FirebaseMessaging.instance.getToken();
 
     String? deviceToken = await FirebaseMessaging.instance.getToken();
 
@@ -99,14 +99,19 @@ class _SignupPageState extends State<SignupPage> {
         "fitness_longitude": center['y'],
         "fitness_latitude": center['x']
       },
+      "device_token" : "$deviceToken"
+      /*
       "social" : {
         "device_token" : [
           "$deviceToken"
         ]
       }
+
+       */
     };
     log(deviceToken!);
     var body = json.encode(data);
+    log(data.toString());
     //log(IdToken);
     //if (IdToken != null)IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
@@ -115,9 +120,11 @@ class _SignupPageState extends State<SignupPage> {
         body: body
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print(response.statusCode);
     if(response.statusCode == 201) {
       UserId = resBody['data']['_id'];
       bool userdata = await UpdateUserData();
+      print(userdata);
       if(userdata == true) {
         Navigator.pushReplacement(
           context,

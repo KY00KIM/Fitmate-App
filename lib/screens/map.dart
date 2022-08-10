@@ -50,10 +50,14 @@ class _MapPageState extends State<MapPage> {
         ),
         backgroundColor: Color(0xFF22232A),
         title: Padding(
-          padding: EdgeInsets.only(left: 7.0),
-          child: Image.asset(
-            'assets/images/fitmate_logo.png',
-            height: 20,
+          padding: EdgeInsets.only(left: 5.0),
+          child: Text(
+            "헬스장",
+            style: TextStyle(
+              color: Color(0xFFffffff),
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         actions: [

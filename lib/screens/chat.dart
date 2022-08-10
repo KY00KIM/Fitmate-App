@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fitmate/screens/writing.dart';
 import 'package:fitmate/screens/detail.dart';
 import 'package:fitmate/screens/notice.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_chat_bubble/bubble_type.dart';
@@ -86,6 +87,32 @@ class _ChatPageState extends State<ChatPage> {
     }
     return Alignment.topLeft;
   }
+
+  /*
+  void ReportChats() async {
+    http.Response response = await http.delete(Uri.parse("${baseUrl}chats/${}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization' : 'bearer $IdToken',
+        },
+        body: body
+    );
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print(resBody);
+
+    if(response.statusCode == 201) {
+      FlutterToastBottom("신고가 접수되었습니다");
+      Navigator.of(context).pop();
+    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
+    } else {
+      FlutterToastBottom("오류가 발생하였습니다");
+    }
+
+  }
+
+   */
 
 
   @override
@@ -381,10 +408,15 @@ class _ChatPageState extends State<ChatPage> {
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: Text("Loading"),
+            child: Text(
+              "Loading",
+              style: TextStyle(
+                fontSize: 13,
+                color: Color(0xFFffffff),
+              ),
+            ),
           );
         }
-
         if (snapshot.hasData) {
           var data;
           return Scaffold(
@@ -452,7 +484,91 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10,),
+                SizedBox(width: 15,),
+                /*
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                          backgroundColor: Color(0xFF22232A),
+                          title: Text(
+                            '채팅방을 나가면 채팅 목록 및 대화 내용이 삭제되고 복구할 수 없습니다. 나가시겠습니까?',
+                            style: TextStyle(
+                              color: Color(0xFFffffff),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width - 150,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            ReportChats();
+                                          },
+                                          child: Text(
+                                            '네, 나갈래요',
+                                            style: TextStyle(
+                                              color: Color(0xFFffffff),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 0,
+                                            primary: Color(0xFF3889D1),
+                                          ),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          '취소',
+                                          style: TextStyle(
+                                            color: Color(0xFF757575),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Color(0xFF22232A),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: Padding(
+                    padding: EdgeInsets.only(right: 200),
+                    child: Icon(
+                      Icons.delete,
+                      color: Color(0xFFffffff),
+                      size: 30.0,
+                    ),
+                  ),
+                )
+
+                 */
               ],
             ),
 
@@ -480,78 +596,88 @@ class _ChatPageState extends State<ChatPage> {
                           print(document.toString());
                           print(data['msg']);
                           return Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: ChatBubble(
-                              clipper: ChatBubbleClipper6(
-                                nipSize: 0,
-                                radius: 0,
+                              elevation: 0,
+                              clipper: ChatBubbleClipper1(
+                                nipWidth: 10,
+                                nipHeight: 5,
                                 type: isSender(data['uid'].toString())
                                     ? BubbleType.sendBubble
                                     : BubbleType.receiverBubble,
+                                //nipSize: 8,
+                                //radius: 0,
+                                //type: isSender(data['uid'].toString())
+                                //    ? BubbleType.sendBubble
+                                //    : BubbleType.receiverBubble,
                               ),
                               alignment: getAlignment(data['uid'].toString()),
                               margin: EdgeInsets.only(top: 20),
                               backGroundColor: isSender(data['uid'].toString())
                                   ? Color(0xFF2975CF)
                                   : Color(0xff303037),
-                              child: Container(
-                                constraints: BoxConstraints(
-                                  maxWidth: MediaQuery.of(context).size.width * 0.7,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Flexible(
-                                          child: RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 100,
-                                            strutStyle: StrutStyle(fontSize: 14),
-                                            text: TextSpan(
-                                              text: data['msg'],
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xFFDADADA),
-                                                fontWeight: FontWeight.bold,
+                              child: IntrinsicWidth(
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: MediaQuery.of(context).size.width * 0.7,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 100,
+                                              strutStyle: StrutStyle(fontSize: 14),
+                                              text: TextSpan(
+                                                text: data['msg'],
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xFFDADADA),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        /*
-                                        Text(data['msg'],
+                                          /*
+                                          Text(data['msg'],
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xffffffff),
+                                                  //color: isSender(data['uid'].toString()) ? Colors.white : Colors.black
+                                              ),
+                                              maxLines: 100,
+                                              overflow: TextOverflow.ellipsis)
+
+                                           */
+                                        ],
+                                      ),
+                                      /*
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            data['createdOn'] == null
+                                                ? DateTime.now().toString()
+                                                : data['createdOn']
+                                                .toDate()
+                                                .toString(),
                                             style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xffffffff),
+                                                fontSize: 10,
+                                                color: Color(0xffffffff),
                                                 //color: isSender(data['uid'].toString()) ? Colors.white : Colors.black
                                             ),
-                                            maxLines: 100,
-                                            overflow: TextOverflow.ellipsis)
-
-                                         */
-                                      ],
-                                    ),
-                                    /*
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          data['createdOn'] == null
-                                              ? DateTime.now().toString()
-                                              : data['createdOn']
-                                              .toDate()
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              color: Color(0xffffffff),
-                                              //color: isSender(data['uid'].toString()) ? Colors.white : Colors.black
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                     */
-                                  ],
+                                          )
+                                        ],
+                                      )
+                                       */
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -567,9 +693,24 @@ class _ChatPageState extends State<ChatPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
+                            padding: const EdgeInsets.fromLTRB(18.0, 5, 0, 10),
                             child: TextField(
+                              style: TextStyle(
+                                color: Color(0xFF757575),
+                                fontSize: 17,
+                              ),
                               decoration: InputDecoration(
+                                //contentPadding: EdgeInsets.symmetric(vertical: 2.0),
+                                contentPadding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                ),
                                 filled: true,
                                 fillColor: Color(0xFF303037),
                               ),
@@ -578,8 +719,11 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                         ),
                         CupertinoButton(
-                            child: Icon(Icons.send_sharp),
-                            onPressed: () => sendMessage(_textController.text.toString()))
+                          child: Icon(Icons.send_sharp),
+                          onPressed: () => {
+                            sendMessage(_textController.value.text)
+                          }
+                        )
                       ],
                     ),
                   )

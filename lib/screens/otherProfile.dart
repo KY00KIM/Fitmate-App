@@ -39,6 +39,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   List<String> reviewContext = [];
 
   int reviewNumber = 0;
+  String reportContent = '';
 
   Future<int> getReviewProfile(String otherId) async {
     http.Response response = await http.get(Uri.parse("${baseUrl}reviews/${otherId}"),
@@ -138,6 +139,104 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     }
   }
 
+  void ReportPosets() async {
+    Map data = {
+      "reportedUserId": "${otherId}",
+      "reported_content": "$reportContent"
+    };
+    print(data);
+    var body = json.encode(data);
+
+    http.Response response = await http.post(Uri.parse("${baseUrl}report/user"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization' : 'bearer $IdToken',
+      },
+      body: body
+    );
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print(resBody);
+
+    if(response.statusCode == 201) {
+      FlutterToastBottom("신고가 접수되었습니다");
+      Navigator.of(context).pop();
+    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
+    } else {
+      FlutterToastBottom("오류가 발생하였습니다");
+    }
+
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          backgroundColor: Color(0xFF22232A),
+          title: new Text(
+            "사용자 신고",
+            style: TextStyle(
+              color: Color(0xFFffffff),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF15161B),
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                color: Color(0xFF878E97), //                   <--- border color
+                width: 1.0,
+              ),
+            ),
+            child: TextField(
+              onChanged: (value) {
+                reportContent = value;
+              },
+              keyboardType: TextInputType.multiline,
+              maxLines: 15,
+              minLines: 1,
+              style: TextStyle(
+                color: Color(0xFF757575)
+              ),
+              decoration: InputDecoration(
+                fillColor: Color(0xFF15161B),
+                border: InputBorder.none,
+              ),
+            ),
+            padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+          ),
+          actions: <Widget>[
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 130,
+                    child: ElevatedButton(
+                      child: Text(
+                        "신고 내용 보내기",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        ReportPosets();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -170,6 +269,38 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
             ),
           ),
         ),
+        actions: [
+          PopupMenuButton(
+            iconSize: 30,
+            color: Color(0xFF22232A),
+            shape: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xFF757575),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            elevation: 40,
+            onSelected: (value) async {
+              if (value == '/report') {
+                _showDialog();
+              }
+            },
+            itemBuilder: (BuildContext bc) {
+              return [
+                PopupMenuItem(
+                  child: Text(
+                    '신고하기',
+                    style: TextStyle(
+                      color: Color(0xFFffffff),
+                    ),
+                  ),
+                  value: '/report',
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: FutureBuilder<Map>(

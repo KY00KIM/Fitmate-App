@@ -79,10 +79,7 @@ class MyApp extends StatelessWidget {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     UserId = resBody['data']['user_id'];
 
-
     bool userdata = await UpdateUserData();
-
-    // ignore: unrelated_type_equality_checks
 
     return IdToken == null || UserId == null || userdata == false;
   }
@@ -98,7 +95,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-
+          //print('ss : ${snapshot.data}');
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
@@ -109,10 +106,9 @@ class MyApp extends StatelessWidget {
           }
           // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
           else {
-            print("값 받아옴 : ${snapshot.hasData}");
+            print("값 받아옴 : ${snapshot.data}");
             // ignore: avoid_print
-            print(snapshot.hasData);
-            return snapshot.hasData == true ? LoginPage() : HomePage();
+            return snapshot.data == true ? LoginPage() : HomePage();
           }
 
           //return HomePage();

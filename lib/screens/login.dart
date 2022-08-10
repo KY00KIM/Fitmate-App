@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:fitmate/firebase_service/firebase_auth_methods.dart';
@@ -155,11 +156,15 @@ class _LoginPageState extends State<LoginPage> {
 
                                 if(IdToken == 'error') {FlutterToastTop("알수 없는 에러가 발생하였습니다");}
                                 else {
+                                  String? deviceToken = await FirebaseMessaging.instance.getToken();
+                                  print('deviceToken : ${deviceToken}');
                                   //토큰을 받는 단계에서 에러가 나지 않았다면
-                                  http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v1/users/login"), headers: {
-                                    'Authorization' : 'bearer $IdToken'});
+                                  http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
+                                    'Authorization' : 'bearer $IdToken',
+                                    'deviceToken' : '${deviceToken}'
+                                  });
                                   var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-
+                                  print(resBody);
                                   if(response.statusCode == 200) {
                                     print("지금이니!");
                                     //사용자 정보가 완벽히 등록 되어있다면

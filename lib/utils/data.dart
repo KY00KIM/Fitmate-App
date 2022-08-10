@@ -69,19 +69,18 @@ Future<bool> UpdateUserData() async {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     
     UserData = resBody["data"];
+    print("fitness center id : ${UserData["fitness_center_id"].toString()}");
     http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${UserData["fitness_center_id"].toString()}"), headers: {
       // ignore: unnecessary_string_interpolations
       "Authorization" : "bearer ${IdToken.toString()}",
       "fitnesscenterId" : "${UserData["fitness_center_id"]}"});
-
+    log(UserData.toString());
     if(responseFitness.statusCode == 200) {
       var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
 
       UserCenterName = resBody2["data"]["center_name"];
-      return true;
-    } else {
-      return false;
     }
+    return true;
   } else {
     return false;
   }

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/screens/profile.dart';
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:fitmate/screens/writeLocation.dart';
 import 'package:flutter/cupertino.dart';
@@ -128,7 +129,19 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           UserData['user_profile_img'] = resbodyimg["data"].toString();
         }
       }
+
+      /*
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
+       */
       Navigator.pop(context);
+
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");

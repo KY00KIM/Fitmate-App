@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     http.Response response = await http.get(Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
       headers: {
         "Authorization" : "bearer $IdToken",
-        "userId" : "bearer ${UserData['_id']}"
+        "userId" : "${UserData['_id']}"
       },
     );
     print("response 완료 : ${response.statusCode}");

@@ -151,6 +151,29 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
     }
   }
 
+  void ReportPosets() async {
+    http.Response response = await http.post(Uri.parse("${baseUrl}report/${widget.postId}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization' : 'bearer $IdToken',
+          'postId' : '${widget.postId}'
+        },
+    );
+    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    print(resBody);
+
+    if(response.statusCode == 201) {
+      log(IdToken);
+      FlutterToastBottom("신고가 접수되었습니다");
+    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
+    } else {
+      FlutterToastBottom("오류가 발생하였습니다");
+    }
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -166,31 +189,58 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
         child: Container(
           margin: EdgeInsets.only(bottom: 10),
           width: size.width,
-          height: size.height * 0.085,
-          child: Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(size.width * 0.9, 45),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+          height: size.height * 0.075,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(size.width * 0.1, 45),
+                    primary: Color(0xFFC74646),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    elevation: 0,
+                  ),
+                  onPressed: () async {
+                    ReportPosets();
+                  },
+                  child: Text(
+                    '신고',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
                 ),
-                elevation: 0,
-              ),
-              onPressed: () async {
-                if(makerUserId != UserData['_id']) {
-                  bool addChatAnswer = await addChat();
-                  if (addChatAnswer == true) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name : makerUsersName, imageUrl : makerUserImage, uid : makerUserUid, userId : makerUserId)));
-                  }
-                }
-              },
-              child: Text(
-                '채팅하기',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                SizedBox(width: size.width * 0.02,),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(size.width * 0.75, 45),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    elevation: 0,
+                  ),
+                  onPressed: () async {
+                    if(makerUserId != UserData['_id']) {
+                      bool addChatAnswer = await addChat();
+                      if (addChatAnswer == true) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name : makerUsersName, imageUrl : makerUserImage, uid : makerUserUid, userId : makerUserId)));
+                      }
+                    }
+                  },
+                  child: Text(
+                    '채팅하기',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),

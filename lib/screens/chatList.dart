@@ -406,7 +406,7 @@ class _ChatListPageState extends State<ChatListPage> {
               return Text("${snapshot.error}");
             }
             // 기본적으로 로딩 Spinner를 보여줍니다.
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           },
         ),
         /*
