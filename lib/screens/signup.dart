@@ -18,7 +18,6 @@ import '../firebase_service/firebase_auth_methods.dart';
 import '../utils/data.dart';
 import 'home.dart';
 
-
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
 
@@ -45,29 +44,33 @@ class _SignupPageState extends State<SignupPage> {
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   void createUserInFirestore() {
-    users.where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+    users
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
         .limit(1)
         .get()
-        .then((QuerySnapshot querySnapshot){
-            if(querySnapshot.docs.isEmpty) {
-              users.add({
-                'name' : UserData['user_name'],
-                'uid' : FirebaseAuth.instance.currentUser?.uid
-              });
-            }
-          },
-        )
-        .catchError((error){});
+        .then(
+      (QuerySnapshot querySnapshot) {
+        if (querySnapshot.docs.isEmpty) {
+          users.add({
+            'name': UserData['user_name'],
+            'uid': FirebaseAuth.instance.currentUser?.uid
+          });
+        }
+      },
+    ).catchError((error) {});
   }
 
   void SignPost() async {
     int schedule = 0;
-    bool gender = true;   //남자면 true, 여자면 false
+    bool gender = true; //남자면 true, 여자면 false
 
-    if(isSelectedTime[1]) {schedule = 1;}
-    else if (isSelectedTime[2]) {schedule = 2;}
+    if (isSelectedTime[1]) {
+      schedule = 1;
+    } else if (isSelectedTime[2]) {
+      schedule = 2;
+    }
 
-    if(isSelectedSex[1]) gender = false;
+    if (isSelectedSex[1]) gender = false;
 
     Position position = await DeterminePosition();
     double latitude = position.latitude;
@@ -82,24 +85,24 @@ class _SignupPageState extends State<SignupPage> {
       "user_address": "$location",
       "user_schedule_time": schedule,
       "user_weekday": {
-        "mon" : isSelectedWeekDay['mon'],
-        "tue" : isSelectedWeekDay['tue'],
-        "wed" : isSelectedWeekDay['wed'],
-        "thu" : isSelectedWeekDay['thu'],
-        "fri" : isSelectedWeekDay['fri'],
-        "sat" : isSelectedWeekDay['sat'],
-        "sun" : isSelectedWeekDay['sun']
+        "mon": isSelectedWeekDay['mon'],
+        "tue": isSelectedWeekDay['tue'],
+        "wed": isSelectedWeekDay['wed'],
+        "thu": isSelectedWeekDay['thu'],
+        "fri": isSelectedWeekDay['fri'],
+        "sat": isSelectedWeekDay['sat'],
+        "sun": isSelectedWeekDay['sun']
       },
       "user_gender": gender,
       "user_longitude": longitude,
       "user_latitude": latitude,
       "fitness_center": {
         "center_name": "$centerName",
-        "center_address": "${center['assress_name']}",
+        "center_address": "${center['address_name']}",
         "fitness_longitude": center['y'],
         "fitness_latitude": center['x']
       },
-      "device_token" : "$deviceToken"
+      "device_token": "$deviceToken"
       /*
       "social" : {
         "device_token" : [
@@ -115,17 +118,20 @@ class _SignupPageState extends State<SignupPage> {
     //log(IdToken);
     //if (IdToken != null)IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-    http.Response response = await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),
-        headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
-        body: body
-    );
+    http.Response response =
+        await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),
+            headers: {
+              "Authorization": "bearer $IdToken",
+              "Content-Type": "application/json; charset=UTF-8"
+            },
+            body: body);
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print(response.statusCode);
-    if(response.statusCode == 201) {
+    if (response.statusCode == 201) {
       UserId = resBody['data']['_id'];
       bool userdata = await UpdateUserData();
       print(userdata);
-      if(userdata == true) {
+      if (userdata == true) {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
@@ -134,34 +140,39 @@ class _SignupPageState extends State<SignupPage> {
             reverseTransitionDuration: Duration.zero,
           ),
         );
-      }
-      else {
+      } else {
         FlutterToastTop("알수 없는 에러가 발생하였습니다");
       }
-    } else if(resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
-      
-      http.Response response = await http.post(Uri.parse("${baseUrl}users/oauth"),
-          headers: {'Authorization' : 'bearer $IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
-          body: body
-      );
+    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken =
+          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+              .token
+              .toString();
+
+      http.Response response =
+          await http.post(Uri.parse("${baseUrl}users/oauth"),
+              headers: {
+                'Authorization': 'bearer $IdToken',
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: body);
       var resBody = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if(response.statusCode == 201) {
+      if (response.statusCode == 201) {
         UserId = resBody['data']['_id'];
         bool userdata = await UpdateUserData();
 
-        if(userdata == true) {
+        if (userdata == true) {
           Navigator.pushReplacement(
             context,
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  HomePage(),
               transitionDuration: Duration.zero,
               reverseTransitionDuration: Duration.zero,
             ),
           );
-        }
-        else {
+        } else {
           FlutterToastTop("알수 없는 에러가 발생하였습니다");
         }
       } else {
@@ -170,8 +181,6 @@ class _SignupPageState extends State<SignupPage> {
     } else {
       FlutterToastTop("알수 없는 에러가 발생하였습니다");
     }
-
-
   }
 
   @override
@@ -449,7 +458,8 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay['mon'] = !isSelectedWeekDay['mon'];
+                            isSelectedWeekDay['mon'] =
+                                !isSelectedWeekDay['mon'];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -483,7 +493,8 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["tue"] = !isSelectedWeekDay["tue"];
+                            isSelectedWeekDay["tue"] =
+                                !isSelectedWeekDay["tue"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -517,7 +528,8 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["wed"] = !isSelectedWeekDay["wed"];
+                            isSelectedWeekDay["wed"] =
+                                !isSelectedWeekDay["wed"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -551,7 +563,8 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["thu"] = !isSelectedWeekDay["thu"];
+                            isSelectedWeekDay["thu"] =
+                                !isSelectedWeekDay["thu"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -585,7 +598,8 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["fri"] = !isSelectedWeekDay["fri"];
+                            isSelectedWeekDay["fri"] =
+                                !isSelectedWeekDay["fri"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -619,7 +633,8 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["sat"] = !isSelectedWeekDay["sat"];
+                            isSelectedWeekDay["sat"] =
+                                !isSelectedWeekDay["sat"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -653,7 +668,8 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["sun"] = !isSelectedWeekDay["sun"];
+                            isSelectedWeekDay["sun"] =
+                                !isSelectedWeekDay["sun"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -734,12 +750,13 @@ class _SignupPageState extends State<SignupPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  WriteLocationPage()),
+                              builder: (context) => WriteLocationPage()),
                         ).then((onValue) {
-                          onValue == null ? null : setState(() {
-                            location = onValue;
-                          });
+                          onValue == null
+                              ? null
+                              : setState(() {
+                                  location = onValue;
+                                });
                         });
                       },
                     ),
@@ -788,15 +805,16 @@ class _SignupPageState extends State<SignupPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  WriteCenterPage()),
+                              builder: (context) => WriteCenterPage()),
                         ).then((onValue) {
-                            onValue == null ? null : setState(() {
-                              center = onValue;
-                              centerName = onValue['place_name'];
-                            });
-                          });
-                        },
+                          onValue == null
+                              ? null
+                              : setState(() {
+                                  center = onValue;
+                                  centerName = onValue['place_name'];
+                                });
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -805,13 +823,41 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: nickname == '' || isSelectedSex[0] == false && isSelectedSex[1] == false || isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false || isSelectedWeekDay[0] == false && isSelectedWeekDay[1] == false && isSelectedWeekDay[2] == false && isSelectedWeekDay[3] == false  && isSelectedWeekDay[4] == false && isSelectedWeekDay[5] == false && isSelectedWeekDay[6] == false || location == '동네 입력' ? Color(0xFF878E97) : Color(0xFF3889D1),
-                    minimumSize: Size(size.width-40, 45),
+                    primary: nickname == '' ||
+                            isSelectedSex[0] == false &&
+                                isSelectedSex[1] == false ||
+                            isSelectedTime[0] == false &&
+                                isSelectedTime[1] == false &&
+                                isSelectedTime[2] == false ||
+                            isSelectedWeekDay[0] == false &&
+                                isSelectedWeekDay[1] == false &&
+                                isSelectedWeekDay[2] == false &&
+                                isSelectedWeekDay[3] == false &&
+                                isSelectedWeekDay[4] == false &&
+                                isSelectedWeekDay[5] == false &&
+                                isSelectedWeekDay[6] == false ||
+                            location == '동네 입력'
+                        ? Color(0xFF878E97)
+                        : Color(0xFF3889D1),
+                    minimumSize: Size(size.width - 40, 45),
                   ),
                   onPressed: () {
                     createUserInFirestore();
-                    nickname == '' || isSelectedSex[0] == false && isSelectedSex[1] == false || isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false || isSelectedWeekDay[0] == false && isSelectedWeekDay[1] == false && isSelectedWeekDay[2] == false && isSelectedWeekDay[3] == false  && isSelectedWeekDay[4] == false && isSelectedWeekDay[5] == false && isSelectedWeekDay[6] == false || location == '동네 입력' ?
-                    FlutterToastBottom("센터 등록 외의 모든 항목을 입력하여주세요")
+                    nickname == '' ||
+                            isSelectedSex[0] == false &&
+                                isSelectedSex[1] == false ||
+                            isSelectedTime[0] == false &&
+                                isSelectedTime[1] == false &&
+                                isSelectedTime[2] == false ||
+                            isSelectedWeekDay[0] == false &&
+                                isSelectedWeekDay[1] == false &&
+                                isSelectedWeekDay[2] == false &&
+                                isSelectedWeekDay[3] == false &&
+                                isSelectedWeekDay[4] == false &&
+                                isSelectedWeekDay[5] == false &&
+                                isSelectedWeekDay[6] == false ||
+                            location == '동네 입력'
+                        ? FlutterToastBottom("센터 등록 외의 모든 항목을 입력하여주세요")
                         : SignPost();
                   },
                   child: Text(
@@ -828,5 +874,4 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
   }
-
 }

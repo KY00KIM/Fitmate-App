@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1.apps.googleusercontent.com</string>
+	<string>1038411454604-15fhb7u15npj7fvuohel7616naott1dg.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1</string>
+	<string>com.googleusercontent.apps.1038411454604-15fhb7u15npj7fvuohel7616naott1dg</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>1038411454604-7568drml8ksi8mj535ue8ddbibu6t0i8.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.fitmate</string>
+	<string>com.hyeda.fitmate</string>
 	<key>PROJECT_ID</key>
 	<string>fitmate-cf118</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1038411454604:ios:04c304cf08288b40a703a9</string>
+	<string>1:1038411454604:ios:5f8178af201fdef2a703a9</string>
 </dict>
 </plist>

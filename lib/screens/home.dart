@@ -2,6 +2,7 @@ import 'dart:convert';
 //import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/screens/matching.dart';
 import 'package:fitmate/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,7 @@ import 'package:fitmate/screens/notice.dart';
 import 'package:http/http.dart' as http;
 import 'package:fitmate/utils/data.dart';
 import 'dart:developer';
-
+import 'dart:io' show Platform;
 
 import 'chatList.dart';
 import 'map.dart';
@@ -33,40 +34,68 @@ class _HomePageState extends State<HomePage> {
   List centerName = [];
 
   Future<List> getPost() async {
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
+    if (Platform.isIOS) {
+      var iosToken = await FirebaseMessaging.instance.getAPNSToken();
+      print('THIS IS ios APNS TOKEN :  ${iosToken}');
+    }
+    print('deviceToken : ${deviceToken}');
+
     print("idtoken : $IdToken");
     print("skflsjeifslf");
-    http.Response response = await http.get(Uri.parse("${baseUrl}posts"),
-      headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}posts"),
+      headers: {
+        "Authorization": "bearer $IdToken",
+        "Content-Type": "application/json; charset=UTF-8"
+      },
     );
     print("response 완료");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print("아 몰라");
-    if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+    if (response.statusCode != 200 &&
+        resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken =
+          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+              .token
+              .toString();
 
-      http.Response response = await http.post(Uri.parse("${baseUrl}posts"),
-        headers: {'Authorization' : 'bearer $IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
+      http.Response response = await http.post(
+        Uri.parse("${baseUrl}posts"),
+        headers: {
+          'Authorization': 'bearer $IdToken',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
       );
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
-    for(int i = 0; i < resBody['data'].length; i++) {
-      http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['promise_location'].toString()}"), headers: {
-        // ignore: unnecessary_string_interpolations
-        "Authorization" : "bearer ${IdToken.toString()}",
-        "fitnesscenterId" : "${resBody['data'][i]['promise_location'].toString()}"});
+    for (int i = 0; i < resBody['data'].length; i++) {
+      http.Response responseFitness = await http.get(
+          Uri.parse(
+              "${baseUrl}fitnesscenters/${resBody['data'][i]['promise_location'].toString()}"),
+          headers: {
+            // ignore: unnecessary_string_interpolations
+            "Authorization": "bearer ${IdToken.toString()}",
+            "fitnesscenterId":
+                "${resBody['data'][i]['promise_location'].toString()}"
+          });
 
-      if(responseFitness.statusCode == 200) {
+      if (responseFitness.statusCode == 200) {
         var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
 
         centerName.add(resBody2["data"]["center_name"]);
       }
 
-      http.Response responseUser = await http.get(Uri.parse("${baseUrl}users/${resBody['data'][i]['user_id'].toString()}"), headers: {
-        // ignore: unnecessary_string_interpolations
-        "Authorization" : "bearer ${IdToken.toString()}",
-        "Content-Type" : "application/json; charset=UTF-8",
-        "userId" : "${resBody['data'][i]['user_id'].toString()}"});
+      http.Response responseUser = await http.get(
+          Uri.parse(
+              "${baseUrl}users/${resBody['data'][i]['user_id'].toString()}"),
+          headers: {
+            // ignore: unnecessary_string_interpolations
+            "Authorization": "bearer ${IdToken.toString()}",
+            "Content-Type": "application/json; charset=UTF-8",
+            "userId": "${resBody['data'][i]['user_id'].toString()}"
+          });
       var resBody3 = jsonDecode(utf8.decode(responseUser.bodyBytes));
 
       userImage.add(resBody3['data']['user_profile_img']);
@@ -74,21 +103,20 @@ class _HomePageState extends State<HomePage> {
     }
 
     print("반환 준비 : ${response.statusCode}");
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       print("반환 갑니다잉");
       return resBody["data"];
-    }
-    else {
+    } else {
       print("what the fuck");
       throw Exception('Failed to load post');
     }
   }
 
-
   @override
   void initState() {
     super.initState();
   }
+
   // Text('${snapshot.data?[index]['post_title']}');
   @override
   Widget build(BuildContext context) {
@@ -115,7 +143,8 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, CupertinoPageRoute(builder : (context) => NoticePage()));
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => NoticePage()));
             },
             icon: Padding(
               padding: EdgeInsets.only(right: 200),
@@ -174,7 +203,8 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ChatListPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -220,7 +250,8 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MapPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MapPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -266,7 +297,8 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MatchingPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MatchingPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -311,7 +343,8 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ProfilePage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -358,12 +391,12 @@ class _HomePageState extends State<HomePage> {
           ),
           backgroundColor: Color(0xFF303037),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => WritingPage()));
-          }
-      ),
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => WritingPage()));
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
-        child: FutureBuilder<List> (
+        child: FutureBuilder<List>(
           future: getPost(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -380,11 +413,14 @@ class _HomePageState extends State<HomePage> {
                         shape: new RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(0),
                         ),
-                        primary: Color(0xFF22232A)
-                    ),
+                        primary: Color(0xFF22232A)),
                     onPressed: () {
                       print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailMachingPage(
+                                  '${snapshot.data?[index]['_id']}')));
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -400,9 +436,11 @@ class _HomePageState extends State<HomePage> {
                                   width: 100.0,
                                   height: 100.0,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
                                     return Image.asset(
-                                        'assets/images/dummy.jpg',
+                                      'assets/images/dummy.jpg',
                                       width: 100.0,
                                       height: 100.0,
                                       fit: BoxFit.cover,
@@ -417,11 +455,13 @@ class _HomePageState extends State<HomePage> {
                                 height: 100.0,
                                 child: Column(
                                   //mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           width: size.width - 155,
@@ -429,14 +469,18 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Flexible(
                                                 child: RichText(
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 2,
-                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  strutStyle:
+                                                      StrutStyle(fontSize: 16),
                                                   text: TextSpan(
-                                                    text: '${snapshot.data?[index]['post_title']}',
+                                                    text:
+                                                        '${snapshot.data?[index]['post_title']}',
                                                     style: TextStyle(
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),
@@ -453,14 +497,18 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Flexible(
                                                 child: RichText(
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 1,
-                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  strutStyle:
+                                                      StrutStyle(fontSize: 16),
                                                   text: TextSpan(
-                                                    text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                    text:
+                                                        '${snapshot.data?[index]['promise_date'].toString().substring(5, 7)}/${snapshot.data?[index]['promise_date'].toString().substring(8, 10)}  |  ${centerName[index]}',
                                                     style: TextStyle(
                                                       fontSize: 14,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: Color(0xFF757575),
                                                     ),
                                                   ),
@@ -474,13 +522,16 @@ class _HomePageState extends State<HomePage> {
                                     Row(
                                       children: [
                                         ClipRRect(
-                                          borderRadius: BorderRadius.circular(50.0),
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
                                           child: Image.network(
                                             '${userImage[index]}',
                                             width: 25.0,
                                             height: 25.0,
                                             fit: BoxFit.cover,
-                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
                                               return Image.asset(
                                                 'assets/images/dummy.jpg',
                                                 width: 25.0,
@@ -499,15 +550,18 @@ class _HomePageState extends State<HomePage> {
                                             children: [
                                               Flexible(
                                                 child: RichText(
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 1,
-                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  strutStyle:
+                                                      StrutStyle(fontSize: 16),
                                                   text: TextSpan(
                                                     text: '${usersName[index]}',
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Color(0xFF757575),
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),

@@ -38,6 +38,14 @@
           }
         },
         {
+          "client_id": "1038411454604-qem4n2b8v4fhlu6t6bej7ecvdejnbd1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.examples.fitmate",
+            "certificate_hash": "4dff3028bf537294d7d7969fe77649f6cc4ba5c8"
+          }
+        },
+        {
           "client_id": "1038411454604-tq6una6hq0h17tn4fbksm2ebj5bc62bc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

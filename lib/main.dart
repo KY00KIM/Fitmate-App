@@ -1,15 +1,18 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/home.dart';
 import 'package:fitmate/screens/login.dart';
 import 'package:fitmate/screens/profile.dart';
 import 'package:fitmate/screens/review.dart';
 import 'package:fitmate/screens/signup.dart';
+// import 'package:fitmate/src/controller/notification_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/bindings_interface.dart';
 import 'firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
@@ -25,7 +28,6 @@ import 'package:fitmate/utils/data.dart';
 import 'dart:convert';
 import 'dart:developer';
 
-
 void main() async {
   //Constants.setEnvironment(Environment.PROD);
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +39,7 @@ void main() async {
 
   //User? tokenResult = await FirebaseAuth.instance.currentUser;
   //var idToken = await tokenResult?.getIdToken();
-  //print("id token : $idToken");  
+  //print("id token : $idToken");
 
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 
@@ -51,31 +53,29 @@ void main() async {
 
   //IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
   //print("token : $IdToken");
-
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   // ignore: prefer_typing_uninitialized_variables
-  
-  Future<bool> getToken() async {
 
+  Future<bool> getToken() async {
     // ignore: await_only_futures
-    
+
     User? tokenResult = await FirebaseAuth.instance.currentUser;
     //log(tokenResult.toString());
-    if(tokenResult == null) return true;
+    if (tokenResult == null) return true;
     // ignore: unused_local_variable
     var idToken = await tokenResult.getIdToken();
     //log(idToken.toString());
-    
+
     // ignore: avoid_print
     //print("idToken : $idToken");
     //if(idToken == null) return true;
     IdToken = idToken.toString();
-    
-    http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
-      'Authorization' : 'bearer $IdToken'});
+
+    http.Response response = await http.get(Uri.parse("${baseUrl}users/login"),
+        headers: {'Authorization': 'bearer $IdToken'});
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     UserId = resBody['data']['user_id'];
 
@@ -87,11 +87,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FitMate',
       // ignore: unrelated_type_equality_checks, prefer_const_constructors
       //home: getToken() == true ? LoginPage() : HomePage(),
+      // initialBinding: BindingsBuilder(
+      //   () {
+      //     Get.put(NotificationController());
+      //   },
+      // ),
       home: FutureBuilder(
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -118,13 +123,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class $ {
-}
+class $ {}
 
-class $idToken {
-}
-
-
+class $idToken {}
 
 /*
 // Copyright 2019 Aleksander Woźniak
