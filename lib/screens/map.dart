@@ -456,12 +456,14 @@ class _MapPageState extends State<MapPage> {
                   boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 3)]),
               margin: EdgeInsets.only(bottom: 16),
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              child: Text(
-                title,
-                style: TextStyle(
-                    color: _mapType == type ? Colors.white : Colors.black87,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13),
+              child: Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      color: _mapType == type ? Colors.white : Colors.black87,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13),
+                ),
               ),
             ),
           );

@@ -30,6 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool refresh = false;
+  int count = 0;
 
   @override
   void initState() {
@@ -44,6 +45,9 @@ class _HomePageState extends State<HomePage> {
       refresh = false;
       return HomePosts;
     }
+
+    print("getPost 실행 : $count");
+    count += 1;
 
     HomePosts.clear();
     usersName.clear();
@@ -68,6 +72,7 @@ class _HomePageState extends State<HomePage> {
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
+    /*
     for(int i = 0; i < resBody['data'].length; i++) {
       http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['promise_location'].toString()}"), headers: {
         // ignore: unnecessary_string_interpolations
@@ -90,6 +95,8 @@ class _HomePageState extends State<HomePage> {
       userImage.add(resBody3['data']['user_profile_img']);
       usersName.add(resBody3['data']['user_nickname']);
     }
+
+     */
 
     if(isPosts == false) {
       refresh = true;
@@ -644,7 +651,7 @@ class _HomePageState extends State<HomePage> {
                                                     maxLines: 1,
                                                     strutStyle: StrutStyle(fontSize: 16),
                                                     text: TextSpan(
-                                                      text: '${HomePosts[index]['promise_date'].toString().substring(5,7)}/${HomePosts[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                      text: '${HomePosts[index]['promise_date'].toString().substring(5,7)}/${HomePosts[index]['promise_date'].toString().substring(8,10)}  |  ${HomePosts[index]['promise_location']['center_name']}',
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.bold,
@@ -663,7 +670,8 @@ class _HomePageState extends State<HomePage> {
                                           ClipRRect(
                                             borderRadius: BorderRadius.circular(50.0),
                                             child: Image.network(
-                                              '${userImage[index]}',
+                                              //'${userImage[index]}',
+                                              '${HomePosts[index]['user_id']['user_profile_img']}',
                                               width: 25.0,
                                               height: 25.0,
                                               fit: BoxFit.cover,
@@ -690,7 +698,7 @@ class _HomePageState extends State<HomePage> {
                                                     maxLines: 1,
                                                     strutStyle: StrutStyle(fontSize: 16),
                                                     text: TextSpan(
-                                                      text: '${usersName[index]}',
+                                                      text: '${HomePosts[index]['user_id']['user_nickname']}',
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         color: Color(0xFF757575),

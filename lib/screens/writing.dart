@@ -34,6 +34,7 @@ class _WritingPageState extends State<WritingPage> {
   String postId = "";
 
   File? _image;
+  bool flag = false;
 
   final _picker = ImagePicker();
 
@@ -63,63 +64,70 @@ class _WritingPageState extends State<WritingPage> {
   }
 
   void PostPosets() async {
-    List<int> imageBytes = _image!.readAsBytesSync();
-    String base64Image = base64Encode(imageBytes);
-    List textPart = ["${fitnessPartGetKey(_selectedpart)}"];
-    Map data = {
-      "user_id" : "$UserId",
-      "location_id" : "${UserData["location_id"]}",
-      "post_fitness_part" : textPart,
-      "post_title" : "$title",
-      "promise_location": {
-        "center_name": "$centerName",
-        "center_address": "${center['address_name']}",
-        "center_longitude": center['y'],
-        "center_latitude": center['x']
-      },
-      "promise_date" : "${_selectedDate}T${_selectedTime}:00",
-      "post_img" : "",
-      "post_main_text" : "$description"
-    };
-    print(data);
-    var body = json.encode(data);
+    if(flag = false) {
+      List<int> imageBytes = _image!.readAsBytesSync();
+      String base64Image = base64Encode(imageBytes);
+      List textPart = ["${fitnessPartGetKey(_selectedpart)}"];
 
-    http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : 'bearer $IdToken',
-      }, // this header is essential to send json data
-      body: body
-    );
-    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    print(resBody);
+      Map data = {
+        "user_id" : "$UserId",
+        "location_id" : "${UserData["location_id"]}",
+        "post_fitness_part" : textPart,
+        "post_title" : "$title",
+        "promise_location": {
+          "center_name": "$centerName",
+          "center_address": "${center['address_name']}구",
+          "center_longitude": center['y'],
+          "center_latitude": center['x']
+        },
+        "promise_date" : "${_selectedDate}T${_selectedTime}:00",
+        "post_img" : "",
+        "post_main_text" : "$description"
+      };
+      print(data);
+      var body = json.encode(data);
 
-    if(response.statusCode == 201) {
-      postId = resBody["data"]["_id"].toString();
 
-      // ignore: unused_local_variable
-      var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
-      request.headers.addAll({"Authorization" : "bearer $IdToken", "postId" : "$postId"});
-      request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
-      var res = await request.send();
-      print('$postId');
-      log(IdToken);
-      print(res.statusCode);
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload : true),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
+      http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization' : 'bearer $IdToken',
+          }, // this header is essential to send json data
+          body: body
       );
-    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
-      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
-    } else {
-      FlutterToastBottom("오류가 발생하였습니다");
-    }
+      var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+      print(resBody);
 
+      if(response.statusCode == 201) {
+        postId = resBody["data"]["_id"].toString();
+
+        // ignore: unused_local_variable
+        var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
+        request.headers.addAll({"Authorization" : "bearer $IdToken", "postId" : "$postId"});
+        request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+        var res = await request.send();
+        print('$postId');
+        log(IdToken);
+        print(res.statusCode);
+        flag = false;
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload : true),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
+
+      } else if (resBody["error"]["code"] == "auth/id-token-expired") {
+        flag = false;
+        IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+        FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
+      } else {
+        flag = false;
+        FlutterToastBottom("오류가 발생하였습니다");
+      }
+    }
   }
 
   @override
@@ -163,7 +171,7 @@ class _WritingPageState extends State<WritingPage> {
               onPressed: () {
                 _image == null || title == "" || _selectedpart == '부위' || centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택'  ?
                     FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
-                        : PostPosets();
+                        : {flag = true, PostPosets()};
               },
               child: Text(
                 '완료',

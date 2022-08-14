@@ -36,6 +36,13 @@ class _ProfilePageState extends State<ProfilePage> {
     else return "저녁";
   }
 
+  @override
+  void initState() {
+    super.initState();
+    var sl = 'sefes';
+    print("지금 내 유전 _id : ${UserData['_id']}");
+  }
+
   Future<int> getReviewProfile() async {
     http.Response response = await http.get(Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
       headers: {
@@ -70,12 +77,6 @@ class _ProfilePageState extends State<ProfilePage> {
       print("what the fuck");
       throw Exception('Failed to load post');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    print("지금 내 유전 _id : ${UserData['_id']}");
   }
 
   @override

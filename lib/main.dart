@@ -104,6 +104,7 @@ class MyApp extends StatelessWidget {
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
 
+          /*
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
@@ -117,7 +118,9 @@ class MyApp extends StatelessWidget {
             return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
           }
 
-          //return MarkerMapPage();
+           */
+
+          return LoginPage();
         },
       ),
     );
