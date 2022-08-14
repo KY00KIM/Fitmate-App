@@ -35,34 +35,45 @@ class _ChatPageState extends State<ChatPage> {
   var chatDocId;
   var _textController = new TextEditingController();
   var data;
+
+
   @override
   void initState() {
     super.initState();
-    checkUser();
   }
 
-  void checkUser() async {
-    await chats
-        .where('users', isEqualTo: {widget.uid: null, UserData['social']['user_id']: null})
-        .limit(1)
-        .get()
-        .then(
-          (QuerySnapshot querySnapshot) async {
-        if (querySnapshot.docs.isNotEmpty) {
-          setState(() {
-            chatDocId = querySnapshot.docs.single.id;
-          });
+  Future<bool> checkUser() async {
+    while(chatDocId.runtimeType.toString() != 'String') {
+      await chats
+          .where('users', isEqualTo: {widget.uid: null, UserData['social']['user_id']: null})
+          .limit(1)
+          .get()
+          .then(
+            (QuerySnapshot querySnapshot) async {
+          if (querySnapshot.docs.isNotEmpty) {
+            print("if 문으로 빠졌다");
+            setState(() {
+              chatDocId = querySnapshot.docs.single.id;
+            });
 
-          print(chatDocId);
-        } else {
-          await chats.add({
-            'users': {widget.uid: null, UserData['social']['user_id']: null},
-            'names':{widget.uid:widget.name, UserData['social']['user_id']:UserData['social']['user_name'] }
-          }).then((value) => {chatDocId = value});
-        }
-      },
-    )
-        .catchError((error) {});
+            print('이거 : ${chatDocId.runtimeType}');
+          } else {
+            print("else 문으로 빠졌다.");
+            await chats.add({
+              'users': {widget.uid: null, UserData['social']['user_id']: null},
+              'names':{widget.uid:widget.name, UserData['social']['user_id']:UserData['social']['user_name'] }
+            }).then((value) {
+              setState(() {
+                chatDocId = value;
+              });
+            });
+          }
+        },
+      )
+          .catchError((error) {
+      });
+    }
+    return true;
   }
 
   void sendMessage(String msg) {
@@ -393,348 +404,366 @@ class _ChatPageState extends State<ChatPage> {
     );
 
      */
-    return StreamBuilder<QuerySnapshot>(
-      stream: chats
-          .doc(chatDocId)
-          .collection('messages')
-          .orderBy('createdOn', descending: true)
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text("Something went wrong"),
-          );
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: Text(
-              "Loading",
-              style: TextStyle(
-                fontSize: 13,
-                color: Color(0xFFffffff),
-              ),
-            ),
-          );
-        }
+    print("docId : $chatDocId");
+    return FutureBuilder(
+      future: checkUser(),
+      builder: (context, snapshot) {
+        print("snapshot : ${snapshot.data}");
         if (snapshot.hasData) {
-          var data;
-          return Scaffold(
-            backgroundColor: Color(0xFF22232A),
-            appBar: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                ),
-              ),
-              elevation: 0.0,
-              shape: Border(
-                bottom: BorderSide(
-                  color: Color(0xFF3D3D3D),
-                  width: 1,
-                ),
-              ),
-              backgroundColor: Color(0xFF22232A),
-              title: Transform(
-                transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-                child: Text(
-                  "${widget.name}",
-                  style: TextStyle(
-                    color: Color(0xFFffffff),
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+          return StreamBuilder<QuerySnapshot>(
+            stream: chats
+                .doc(chatDocId)
+                .collection('messages')
+                .orderBy('createdOn', descending: true)
+                .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              print("snapshot : $snapshot");
+              print("snapshot data : ${snapshot.data}");
+              print("snapshot hasdata : ${snapshot.hasData}");
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Something went wrong"),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Text(
+                    "Loading",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFFffffff),
+                    ),
                   ),
-                ),
-              ),
-              actions: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) => MakePromisePage(partnerId: widget.userId),
-                          transitionDuration: Duration.zero,
-                          reverseTransitionDuration: Duration.zero,
+                );
+              }
+              if (snapshot.hasData) {
+                print('snapshot data : ${snapshot.data}');
+                var data;
+                return Scaffold(
+                  backgroundColor: Color(0xFF22232A),
+                  appBar: AppBar(
+                    leading: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                      ),
+                    ),
+                    elevation: 0.0,
+                    shape: Border(
+                      bottom: BorderSide(
+                        color: Color(0xFF3D3D3D),
+                        width: 1,
+                      ),
+                    ),
+                    backgroundColor: Color(0xFF22232A),
+                    title: Transform(
+                      transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                      child: Text(
+                        "${widget.name}",
+                        style: TextStyle(
+                          color: Color(0xFFffffff),
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(80, 35),
-                      primary: Color(0xFF22232A),
-                      alignment: Alignment.center,
-                      side: BorderSide(
-                        width: 1.5,
-                        color: Color(0xFFffffff),
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
-                    ),
-                    child:Text(
-                      '약속잡기',
-                      style: TextStyle(
-                        color: Color(0xFFffffff),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(width: 15,),
-                /*
-                IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                          backgroundColor: Color(0xFF22232A),
-                          title: Text(
-                            '채팅방을 나가면 채팅 목록 및 대화 내용이 삭제되고 복구할 수 없습니다. 나가시겠습니까?',
+                    actions: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation, secondaryAnimation) => MakePromisePage(partnerId: widget.userId),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(80, 35),
+                            primary: Color(0xFF22232A),
+                            alignment: Alignment.center,
+                            side: BorderSide(
+                              width: 1.5,
+                              color: Color(0xFFffffff),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7.0)),
+                          ),
+                          child:Text(
+                            '약속잡기',
                             style: TextStyle(
                               color: Color(0xFFffffff),
+                              fontSize: 16.0,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
                             ),
                           ),
-                          actions: <Widget>[
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        width: MediaQuery.of(context).size.width - 150,
-                                        child: ElevatedButton(
+                        ),
+                      ),
+                      SizedBox(width: 15,),
+                      /*
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                            backgroundColor: Color(0xFF22232A),
+                            title: Text(
+                              '채팅방을 나가면 채팅 목록 및 대화 내용이 삭제되고 복구할 수 없습니다. 나가시겠습니까?',
+                              style: TextStyle(
+                                color: Color(0xFFffffff),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            actions: <Widget>[
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width - 150,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              ReportChats();
+                                            },
+                                            child: Text(
+                                              '네, 나갈래요',
+                                              style: TextStyle(
+                                                color: Color(0xFFffffff),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0,
+                                              primary: Color(0xFF3889D1),
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
                                           onPressed: () {
-                                            ReportChats();
+                                            Navigator.pop(context);
                                           },
                                           child: Text(
-                                            '네, 나갈래요',
+                                            '취소',
                                             style: TextStyle(
-                                              color: Color(0xFFffffff),
+                                              color: Color(0xFF757575),
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
                                             ),
                                           ),
                                           style: ElevatedButton.styleFrom(
-                                            elevation: 0,
-                                            primary: Color(0xFF3889D1),
+                                            primary: Color(0xFF22232A),
                                           ),
                                         ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          '취소',
-                                          style: TextStyle(
-                                            color: Color(0xFF757575),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Color(0xFF22232A),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  icon: Padding(
-                    padding: EdgeInsets.only(right: 200),
-                    child: Icon(
-                      Icons.delete,
-                      color: Color(0xFFffffff),
-                      size: 30.0,
-                    ),
-                  ),
-                )
-
-                 */
-              ],
-            ),
-
-            /*
-            navigationBar: CupertinoNavigationBar(
-              middle: Text('sfeefes'),
-              trailing: CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {},
-                child: Icon(CupertinoIcons.phone),
-              ),
-              previousPageTitle: "Back",
-            ),
-
-             */
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      reverse: true,
-                      children: snapshot.data!.docs.map(
-                            (DocumentSnapshot document) {
-                          data = document.data()!;
-                          print(document.toString());
-                          print(data['msg']);
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: ChatBubble(
-                              elevation: 0,
-                              clipper: ChatBubbleClipper1(
-                                nipWidth: 10,
-                                nipHeight: 5,
-                                type: isSender(data['uid'].toString())
-                                    ? BubbleType.sendBubble
-                                    : BubbleType.receiverBubble,
-                                //nipSize: 8,
-                                //radius: 0,
-                                //type: isSender(data['uid'].toString())
-                                //    ? BubbleType.sendBubble
-                                //    : BubbleType.receiverBubble,
-                              ),
-                              alignment: getAlignment(data['uid'].toString()),
-                              margin: EdgeInsets.only(top: 20),
-                              backGroundColor: isSender(data['uid'].toString())
-                                  ? Color(0xFF2975CF)
-                                  : Color(0xff303037),
-                              child: IntrinsicWidth(
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                    maxWidth: MediaQuery.of(context).size.width * 0.7,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 100,
-                                              strutStyle: StrutStyle(fontSize: 14),
-                                              text: TextSpan(
-                                                text: data['msg'],
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Color(0xFFDADADA),
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          /*
-                                          Text(data['msg'],
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xffffffff),
-                                                  //color: isSender(data['uid'].toString()) ? Colors.white : Colors.black
-                                              ),
-                                              maxLines: 100,
-                                              overflow: TextOverflow.ellipsis)
-
-                                           */
-                                        ],
-                                      ),
-                                      /*
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            data['createdOn'] == null
-                                                ? DateTime.now().toString()
-                                                : data['createdOn']
-                                                .toDate()
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Color(0xffffffff),
-                                                //color: isSender(data['uid'].toString()) ? Colors.white : Colors.black
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                       */
-                                    ],
-                                  ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
+                            ],
                           );
                         },
-                      ).toList(),
+                      );
+                    },
+                    icon: Padding(
+                      padding: EdgeInsets.only(right: 200),
+                      child: Icon(
+                        Icons.delete,
+                        color: Color(0xFFffffff),
+                        size: 30.0,
+                      ),
                     ),
+                  )
+
+                   */
+                    ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                  /*
+              navigationBar: CupertinoNavigationBar(
+                middle: Text('sfeefes'),
+                trailing: CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                  child: Icon(CupertinoIcons.phone),
+                ),
+                previousPageTitle: "Back",
+              ),
+
+               */
+                  body: SafeArea(
+                    child: Column(
                       children: [
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(18.0, 5, 0, 10),
-                            child: TextField(
-                              style: TextStyle(
-                                color: Color(0xFF757575),
-                                fontSize: 17,
-                              ),
-                              decoration: InputDecoration(
-                                //contentPadding: EdgeInsets.symmetric(vertical: 2.0),
-                                contentPadding: EdgeInsets.fromLTRB(15, 0, 10, 0),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                filled: true,
-                                fillColor: Color(0xFF303037),
-                              ),
-                              controller: _textController,
-                            ),
+                          child: ListView(
+                            reverse: true,
+                            children: snapshot.data!.docs.map(
+                                  (DocumentSnapshot document) {
+                                data = document.data()!;
+                                print('document : ${document.toString()}');
+                                print(data['msg']);
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: ChatBubble(
+                                    elevation: 0,
+                                    clipper: ChatBubbleClipper1(
+                                      nipWidth: 10,
+                                      nipHeight: 5,
+                                      type: isSender(data['uid'].toString())
+                                          ? BubbleType.sendBubble
+                                          : BubbleType.receiverBubble,
+                                      //nipSize: 8,
+                                      //radius: 0,
+                                      //type: isSender(data['uid'].toString())
+                                      //    ? BubbleType.sendBubble
+                                      //    : BubbleType.receiverBubble,
+                                    ),
+                                    alignment: getAlignment(data['uid'].toString()),
+                                    margin: EdgeInsets.only(top: 20),
+                                    backGroundColor: isSender(data['uid'].toString())
+                                        ? Color(0xFF2975CF)
+                                        : Color(0xff303037),
+                                    child: IntrinsicWidth(
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context).size.width * 0.7,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Flexible(
+                                                  child: RichText(
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 100,
+                                                    strutStyle: StrutStyle(fontSize: 14),
+                                                    text: TextSpan(
+                                                      text: data['msg'],
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Color(0xFFDADADA),
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                /*
+                                            Text(data['msg'],
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xffffffff),
+                                                    //color: isSender(data['uid'].toString()) ? Colors.white : Colors.black
+                                                ),
+                                                maxLines: 100,
+                                                overflow: TextOverflow.ellipsis)
+
+                                             */
+                                              ],
+                                            ),
+                                            /*
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              data['createdOn'] == null
+                                                  ? DateTime.now().toString()
+                                                  : data['createdOn']
+                                                  .toDate()
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Color(0xffffffff),
+                                                  //color: isSender(data['uid'].toString()) ? Colors.white : Colors.black
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                         */
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ).toList(),
                           ),
                         ),
-                        CupertinoButton(
-                          child: Icon(Icons.send_sharp),
-                          onPressed: () => {
-                            sendMessage(_textController.value.text)
-                          }
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(18.0, 5, 0, 10),
+                                  child: TextField(
+                                    style: TextStyle(
+                                      color: Color(0xFF757575),
+                                      fontSize: 17,
+                                    ),
+                                    decoration: InputDecoration(
+                                      //contentPadding: EdgeInsets.symmetric(vertical: 2.0),
+                                      contentPadding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Color(0xFF303037),
+                                    ),
+                                    controller: _textController,
+                                  ),
+                                ),
+                              ),
+                              CupertinoButton(
+                                  child: Icon(Icons.send_sharp),
+                                  onPressed: () {
+                                    sendMessage(_textController.value.text.toString());
+                                  }
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
-                  )
-                ],
-              ),
-            ),
+                  ),
+                );
+              } else {
+                print("시발");
+                return Container();
+              }
+            },
           );
-        } else {
-          return Container();
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
         }
+        // 기본적으로 로딩 Spinner를 보여줍니다.
+        return Center(child: CircularProgressIndicator());
       },
+
     );
   }
 }

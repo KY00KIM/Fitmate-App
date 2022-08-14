@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,6 +8,14 @@ import 'dart:developer';
 
 late String IdToken;
 late String UserId;
+
+List HomePosts = [];
+List usersName = [];
+List userImage = [];
+List centerName = [];
+
+
+
 //late String FirebasePlatform = "Facebook";
 
 String baseUrl = "https://fitmate.co.kr/v1/";

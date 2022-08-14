@@ -6,6 +6,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/profile.dart';
+import 'package:fitmate/screens/review.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +22,7 @@ import 'chatList.dart';
 import 'home.dart';
 import 'map.dart';
 import 'notice.dart';
+import 'otherProfile.dart';
 
 
 class Event {
@@ -54,7 +56,8 @@ class _MatchingPageState extends State<MatchingPage> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-  List<Event> A = [Event({'k' : 'Evensdfsfsfseft '})];
+  List<String> partnerName = [];
+  List<String> matchingPlace = [];
 
   late Map<DateTime, List<Event>> _kEventSource;
   var kEvents;
@@ -76,9 +79,7 @@ class _MatchingPageState extends State<MatchingPage> {
     http.Response response = await http.get(Uri.parse("${baseUrl}appointments"),
       headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
     );
-    print("response 완료");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    print("아 몰라");
     if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
@@ -91,32 +92,56 @@ class _MatchingPageState extends State<MatchingPage> {
     if(response.statusCode != 200) {
       FlutterToastBottom("매칭 값을 가져오지 못했습니다");
     }
-    //log(resBody['data'].toString());
 
-
-    _kEventSource = Map.fromIterable(List.generate(resBody['data'].length, (index) => index),
-        key: (item) => DateTime.utc(kToday.year, kToday.month, kToday.day),
+    _kEventSource = Map.fromIterable(List.generate(0, (index) => index),
+        key: (item) => DateTime.utc(1999, 01, 01),
         value: (item) => List.generate(
             item % 4 + 1, (index) => Event({'k' : 'Event $item | ${index + 1}'})));
 
-    //_kEventSource = Map({ DataTime.utc(2022, 08, 10) : [Event({'k' : 'sfesfes'}), Event({'k' : 'sfesfes'})]});
 
-    //print('dksle :  ${_kEventSource[DateTime.utc(2022, 08, 10)]}');
+    var temp;
+    for(int i = 0; i < resBody['data'].length; i++) {
+      temp = Event(resBody['data'][i]);
+      http.Response response2 = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['center_id']}"),
+        headers: {"Authorization" : "bearer $IdToken", "fitnesscenterId": "${resBody['data'][i]['center_id']}"},
+      );
+      var resBody2 = jsonDecode(utf8.decode(response2.bodyBytes));
+      if(response2.statusCode != 200 && resBody2["error"]["code"] == "auth/id-token-expired") {
+        IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-    A.clear();
-    _kEventSource.keys.forEach((key) {
-      print(key);
-    });
-    print("sefsef : ${_kEventSource[DateTime.utc(kToday.year, kToday.month, kToday.day)]}");
-    _kEventSource[DateTime.utc(kToday.year, kToday.month, kToday.day+1)] = [Event({'k' : 'Event '}), Event({'k' : 'Event '}), Event({'k' : 'Event '})];
+        response2 = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['center_id']}"),
+          headers: {"Authorization" : "bearer $IdToken", "fitnesscenterId": "${resBody['data'][i]['center_id']}"},
+        );
+        resBody2 = jsonDecode(utf8.decode(response.bodyBytes));
+      }
+      temp.content['centerName'] = "${resBody2['data']['center_name']}";
 
-    _kEventSource[DateTime.utc(kToday.year, kToday.month, kToday.day+1)]?.forEach((element) { A.add(element);});
-    A.add(Event({'k' : 'Evensdfsfsfseft '}));
-    print(A);
-    _kEventSource[DateTime.utc(kToday.year, kToday.month, kToday.day+1)] = A;
+      String partnerId = resBody['data'][i]['match_start_id'] == UserData['_id'] ? resBody['data'][i]['match_join_id'] : resBody['data'][i]['match_start_id'];
+      http.Response response3 = await http.get(Uri.parse("${baseUrl}users/${partnerId}"),
+        headers: {"Authorization" : "bearer $IdToken", "userId": "${partnerId}"},
+      );
+      var resBody3 = jsonDecode(utf8.decode(response3.bodyBytes));
+      if(response3.statusCode != 200 && resBody3["error"]["code"] == "auth/id-token-expired") {
+        IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-    print(_kEventSource[DateTime.utc(kToday.year, kToday.month, kToday.day+1)]);
-    //_kEventSource.update(DateTime.utc(kToday.year, kToday.month, kToday.day+1), (value) => [value., Event({'k' : 'Event fsdfsdfs'})]);
+        response3 = await http.get(Uri.parse("${baseUrl}users/${partnerId}"),
+          headers: {"Authorization" : "bearer $IdToken", "userId": "${partnerId}"},
+        );
+        resBody3 = jsonDecode(utf8.decode(response.bodyBytes));
+      }
+      temp.content['partnerName'] = "${resBody3['data']['user_nickname']}";
+
+
+      if(_kEventSource.containsKey(DateTime.utc(int.parse(resBody['data'][i]['appointment_date'].toString().substring(0, 4)), int.parse(resBody['data'][i]['appointment_date'].toString().substring(5, 7)), int.parse(resBody['data'][i]['appointment_date'].toString().substring(8, 10)))) == true) {
+        //기존 날짜에 해당 날짜가 있음
+        _kEventSource[DateTime.utc(int.parse(resBody['data'][i]['appointment_date'].toString().substring(0, 4)), int.parse(resBody['data'][i]['appointment_date'].toString().substring(5, 7)), int.parse(resBody['data'][i]['appointment_date'].toString().substring(8, 10)))]?.add(temp);
+      }
+      else{
+        //없띠
+        _kEventSource[DateTime.utc(int.parse(resBody['data'][i]['appointment_date'].toString().substring(0, 4)), int.parse(resBody['data'][i]['appointment_date'].toString().substring(5, 7)), int.parse(resBody['data'][i]['appointment_date'].toString().substring(8, 10)))] = [temp];
+      }
+
+    }
 
     kEvents = LinkedHashMap<DateTime, List<Event>>(
       equals: isSameDay,
@@ -130,22 +155,6 @@ class _MatchingPageState extends State<MatchingPage> {
   @override
   void initState() {
     super.initState();
-
-    //getMatching();
-
-    /*
-    _kEventSource = Map.fromIterable(List.generate(0, (index) => index),
-        key: (item) => DateTime.utc(kToday.year, kToday.month, kToday.day),
-        value: (item) => List.generate(
-            item % 4 + 1, (index) => Event({'k' : 'Event $item | ${index + 1}'})));
-
-
-    kEvents = LinkedHashMap<DateTime, List<Event>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    )..addAll(_kEventSource);
-    */
-
   }
 
   @override
@@ -231,8 +240,8 @@ class _MatchingPageState extends State<MatchingPage> {
         actions: [
           IconButton(
             onPressed: () {
-              //Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticePage()));
-              Navigator.push(context, CupertinoPageRoute(builder: (context) => TableEventsExample()));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticePage()));
+              //Navigator.push(context, CupertinoPageRoute(builder: (context) => TableEventsExample()));
             },
             icon: Padding(
               padding: EdgeInsets.only(right: 200),
@@ -264,7 +273,7 @@ class _MatchingPageState extends State<MatchingPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload: false,),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -376,13 +385,13 @@ class _MatchingPageState extends State<MatchingPage> {
                 child: Column(
                   children: [
                     Icon(
-                      Icons.fitness_center,
+                      Icons.map,
                       color: Color(0xFF757575),
                       //size: 30.0,
                       size: size.width * 0.0763,
                     ),
                     Text(
-                      '헬스장',
+                      '피트니스장',
                       style: TextStyle(
                         color: Color(0xFF757575),
                         //fontSize: 10.0,
@@ -594,9 +603,11 @@ class _MatchingPageState extends State<MatchingPage> {
                     child: ValueListenableBuilder<List<Event>>(
                       valueListenable: _selectedEvents,
                       builder: (context, value, _) {
+                        print("value length : ${value.length}");
                         return ListView.builder(
                           itemCount: value.length,
                           itemBuilder: (context, index) {
+                            /*
                             return Container(
                               height: 100,
                               margin: const EdgeInsets.symmetric(
@@ -609,76 +620,316 @@ class _MatchingPageState extends State<MatchingPage> {
                               ),
                               child: ListTile(
                                 onTap: () => print('${value[index]}'),
-                                title: Text('이게 ddv머지 ${value[index].content['k']}'),
+                                title: Text('이게 ddv머지 ${value[index].content['match_join_id']}'),
                               ),
                             );
+                             */
+                            if (value[index].content['isReviewed'] == false) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 2.0,
+                                      vertical: 6.0,
+                                    ),
+                                    width: size.width - 50,
+                                    height: 80,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Color(0xFF2975CF),
+                                          //borderRadius: BorderRadius.circular(40),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          )
+                                      ),
+                                      onPressed: () {
+                                        if(value[index].content['match_start_id'] == UserData['_id']) {
+                                          Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_join_id'], profileName : '매칭 대상')));
+                                        } else {
+                                          Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_start_id'], profileName : '매칭 대상')));
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: size.width - 95,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: RichText(
+                                                          overflow: TextOverflow.ellipsis,
+                                                          maxLines: 1,
+                                                          strutStyle: StrutStyle(fontSize: 16),
+                                                          text: TextSpan(
+                                                            text: '${value[index].content['partnerName']}님과 매칭 운동 Day입니다!',
+                                                            style: TextStyle(
+                                                              color: Color(0xFFffffff),
+                                                              fontSize: 17,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 3,
+                                                  ),
+                                                  Text(
+                                                    '장소 : ${value[index].content['centerName']}      시간 : ${int.parse(value[index].content['appointment_date'].toString().substring(11, 13)) > 12 ? (int.parse(value[index].content['appointment_date'].toString().substring(11, 13)) - 12).toString() : int.parse(value[index].content['appointment_date'].toString().substring(11, 13)).toString()}:${value[index].content['appointment_date'].toString().substring(14, 16)}${int.parse(value[index].content['appointment_date'].toString().substring(11, 13)) > 12 ? "pm" : "am"}',
+                                                    style: TextStyle(
+                                                      color: Color(0xFFDADADA),
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                  /*
+                                                Row(
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(50.0),
+                                                      child: Image.network(
+                                                        'https://picsum.photos/250?image=9',
+                                                        width: 20.0,
+                                                        height: 20.0,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    Text(
+                                                      '토마스 박',
+                                                      style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Color(0xFFDADADA),
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                 */
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 2.0,
+                                      vertical: 6.0,
+                                    ),
+                                    width: size.width - 50,
+                                    height: 80,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Color(0xFF2B2C39),
+                                          //borderRadius: BorderRadius.circular(40),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          )
+                                      ),
+                                      onPressed: () {
+                                        //리뷰 페이지로 전환
+                                        print('이거 머냐 : ${value[index].content}');
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewPage(
+                                            recv_id : "${value[index].content['match_start_id'] == UserData['_id'] ? value[index].content['match_join_id'] : value[index].content['match_start_id']}",
+                                            appointmentId : "${value[index].content['_id']}")
+                                          )
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: size.width - 95,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: RichText(
+                                                          overflow: TextOverflow.ellipsis,
+                                                          maxLines: 1,
+                                                          strutStyle: StrutStyle(fontSize: 16),
+                                                          text: TextSpan(
+                                                            text: '${value[index].content['partnerName']}님과의 매칭은 어떠셨나요?',
+                                                            style: TextStyle(
+                                                              color: Color(0xFFffffff),
+                                                              fontSize: 17,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 3,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        '리뷰하러가기 >',
+                                                        style: TextStyle(
+                                                          color: Color(0xFFDADADA),
+                                                          fontSize: 12,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  /*
+                                                Row(
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(50.0),
+                                                      child: Image.network(
+                                                        'https://picsum.photos/250?image=9',
+                                                        width: 20.0,
+                                                        height: 20.0,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 15,
+                                                    ),
+                                                    Text(
+                                                      '토마스 박',
+                                                      style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Color(0xFFDADADA),
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                 */
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 2.0,
+                                  vertical: 6.0,
+                                ),
+                                width: size.width - 50,
+                                height: 80,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFF2975CF),
+                                      //borderRadius: BorderRadius.circular(40),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      )
+                                  ),
+                                  onPressed: () {
+                                    if(value[index].content['match_start_id'] == UserData['_id']) {
+                                      Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_join_id'], profileName : '매칭 대상')));
+                                    } else {
+                                      Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_start_id'], profileName : '매칭 대상')));
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.width - 105,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Flexible(
+                                                    child: RichText(
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      strutStyle: StrutStyle(fontSize: 16),
+                                                      text: TextSpan(
+                                                        text: '${value[index].content['partnerName']}님과 매칭 운동 Day입니다!',
+                                                        style: TextStyle(
+                                                          color: Color(0xFFffffff),
+                                                          fontSize: 17,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              Text(
+                                                '장소 : ${value[index].content['centerName']}      시간 : ${int.parse(value[index].content['appointment_date'].toString().substring(11, 13)) > 12 ? (int.parse(value[index].content['appointment_date'].toString().substring(11, 13)) - 12).toString() : int.parse(value[index].content['appointment_date'].toString().substring(11, 13)).toString()}:${value[index].content['appointment_date'].toString().substring(14, 16)}${int.parse(value[index].content['appointment_date'].toString().substring(11, 13)) > 12 ? "pm" : "am"}',
+                                                style: TextStyle(
+                                                  color: Color(0xFFDADADA),
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              /*
+                                            Row(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius: BorderRadius.circular(50.0),
+                                                  child: Image.network(
+                                                    'https://picsum.photos/250?image=9',
+                                                    width: 20.0,
+                                                    height: 20.0,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Text(
+                                                  '토마스 박',
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Color(0xFFDADADA),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                             */
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
                           },
                         );
                       },
                     ),
                   ),
                   /*
-                Container(
-                  width: size.width - 50,
-                  child: TableCalendar(
-                    headerStyle: HeaderStyle(
-                      formatButtonVisible: false,
-                      leftChevronVisible: false,
-                      rightChevronVisible: false,
-                      titleTextStyle: TextStyle(
-                        color: Color(0xFFffffff),
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      headerMargin: EdgeInsets.only(bottom: 10),
-                    ),
-                    daysOfWeekHeight:30,
-                    locale: 'ko_KO',
-                    focusedDay: DateTime.now(),
-                    firstDay: DateTime(2022,7,1),
-                    lastDay: DateTime(2122,8,1),
-                    //headerVisible: false,
-                    calendarStyle: CalendarStyle(
-                      defaultTextStyle: TextStyle(
-                        color: Color(0xFFDADADA),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                      weekendTextStyle: TextStyle(
-                        color: Color(0xFFDADADA),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                      todayDecoration: BoxDecoration(
-                        color: Color(0xFF2975CF),
-                        shape: BoxShape.circle,
-                      ),
-                      todayTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFDADADA),
-                        fontSize: 17,
-                      ),
-                      outsideDaysVisible: false,
-                    ),
-                  ),
-                ),
-
-                 */
-                  /*
-                SizedBox(height: 5,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 3,
-                      color: Color(0xFF3D3D3D),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
                 Container(
                   width: size.width - 50,
                   height: 105,

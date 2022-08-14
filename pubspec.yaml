@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.0+3
+version: 1.1.1+4
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -56,6 +56,10 @@ dependencies:
   flutter_launcher_icons: ^0.9.3
   flutter_native_splash: ^2.1.6
   flutter_chat_bubble: ^2.0.0
+  #naver_map_plugin: ^0.9.6
+  naver_map_plugin:
+    git: https://github.com/LBSTECH/naver_map_plugin.git
+
 
 flutter_icons:
   android: "launcher_icon"

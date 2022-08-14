@@ -111,7 +111,7 @@ class _ChatListPageState extends State<ChatListPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload: false,),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -204,13 +204,13 @@ class _ChatListPageState extends State<ChatListPage> {
                 child: Column(
                   children: [
                     Icon(
-                      Icons.fitness_center,
+                      Icons.map,
                       color: Color(0xFF757575),
                       //size: 30.0,
                       size: size.width * 0.0763,
                     ),
                     Text(
-                      '헬스장',
+                      '피트니스장',
                       style: TextStyle(
                         color: Color(0xFF757575),
                         //fontSize: 10.0,
@@ -375,6 +375,14 @@ class _ChatListPageState extends State<ChatListPage> {
                                     width: 45.0,
                                     height: 45.0,
                                     fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/dummy.jpg',
+                                        width: 45.0,
+                                        height: 45.0,
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
                                   ),
                                 ),
                                 SizedBox(

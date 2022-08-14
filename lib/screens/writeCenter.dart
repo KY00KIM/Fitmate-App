@@ -176,6 +176,7 @@ class _WriteCenterPageState extends State<WriteCenterPage> {
 
                */
               onPressed: () {
+                print(data[index]);
                 Navigator.of(context, rootNavigator: true).pop(data[index]);
               },
               //onPressed: () {print(data[index]);},

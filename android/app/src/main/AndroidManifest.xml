@@ -67,5 +67,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="6ze5gew3m2" />
     </application>
 </manifest>
