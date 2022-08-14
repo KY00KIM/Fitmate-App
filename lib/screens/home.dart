@@ -18,7 +18,8 @@ import 'chatList.dart';
 import 'map.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  bool reload;
+  HomePage({Key? key, required this.reload}) : super(key: key);
   //const HomePage({Key? key, required String this.idToken, required String this.userId}) : super(key: key);
   //final String idToken;
   //final String userId;
@@ -28,13 +29,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List usersName = [];
-  List userImage = [];
-  List centerName = [];
+  bool refresh = false;
 
-  Future<List> getPost() async {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<List> getPost(bool isPosts) async {
+    print("homeposts : ${HomePosts.length == 0}");
+    print("reload : ${widget.reload}");
+    if(isPosts == true && widget.reload == false) return HomePosts;
+    if(isPosts == true && refresh == true) {
+      refresh = false;
+      return HomePosts;
+    }
+
+    HomePosts.clear();
+    usersName.clear();
+    userImage.clear();
+    centerName.clear();
+
     print("idtoken : $IdToken");
     print("skflsjeifslf");
+
     http.Response response = await http.get(Uri.parse("${baseUrl}posts"),
       headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
     );
@@ -73,10 +91,20 @@ class _HomePageState extends State<HomePage> {
       usersName.add(resBody3['data']['user_nickname']);
     }
 
+    if(isPosts == false) {
+      refresh = true;
+      setState(() {
+
+      });
+    }
+
     print("반환 준비 : ${response.statusCode}");
     if(response.statusCode == 200) {
+
       print("반환 갑니다잉");
-      return resBody["data"];
+      log(resBody['data'].toString());
+      HomePosts = resBody['data'];
+      return HomePosts;
     }
     else {
       print("what the fuck");
@@ -84,16 +112,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
-  @override
-  void initState() {
-    super.initState();
-  }
   // Text('${snapshot.data?[index]['post_title']}');
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    print(UserData);
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(
@@ -240,13 +262,13 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     Icon(
-                      Icons.fitness_center,
+                      Icons.map,
                       color: Color(0xFF757575),
                       //size: 30.0,
                       size: size.width * 0.0763,
                     ),
                     Text(
-                      '헬스장',
+                      '피트니스장',
                       style: TextStyle(
                         color: Color(0xFF757575),
                         //fontSize: 10.0,
@@ -363,13 +385,17 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
-        child: FutureBuilder<List> (
-          future: getPost(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data?.length,
-                itemBuilder: (context, index) {
+        child: RefreshIndicator(
+          onRefresh: () => getPost(false),
+          child: FutureBuilder<List> (
+            future: getPost(true),
+            builder: (context, snapshot) {
+              print("snapshot : ${snapshot.data}");
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: HomePosts.length,
+                  itemBuilder: (context, index) {
+                    /*
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
@@ -531,6 +557,841 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   );
+                   */
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size(size.width, 144),
+                          maximumSize: Size(size.width, 144),
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(0),
+                          ),
+                          primary: Color(0xFF22232A)
+                      ),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${HomePosts[index]['_id']}')));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image.network(
+                                    "${HomePosts[index]['post_img']}",
+                                    width: 100.0,
+                                    height: 100.0,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/dummy.jpg',
+                                        width: 100.0,
+                                        height: 100.0,
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  height: 100.0,
+                                  child: Column(
+                                    //mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: size.width - 155,
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  child: RichText(
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    strutStyle: StrutStyle(fontSize: 16),
+                                                    text: TextSpan(
+                                                      text: '${HomePosts[index]['post_title']}',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 2,
+                                          ),
+                                          Container(
+                                            width: size.width - 155,
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  child: RichText(
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    strutStyle: StrutStyle(fontSize: 16),
+                                                    text: TextSpan(
+                                                      text: '${HomePosts[index]['promise_date'].toString().substring(5,7)}/${HomePosts[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Color(0xFF757575),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(50.0),
+                                            child: Image.network(
+                                              '${userImage[index]}',
+                                              width: 25.0,
+                                              height: 25.0,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                return Image.asset(
+                                                  'assets/images/dummy.jpg',
+                                                  width: 25.0,
+                                                  height: 25.0,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Container(
+                                            width: size.width - 190,
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  child: RichText(
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                    strutStyle: StrutStyle(fontSize: 16),
+                                                    text: TextSpan(
+                                                      text: '${usersName[index]}',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Color(0xFF757575),
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 2,
+                              width: size.width - 40,
+                              color: Color(0xFF303037),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              // 기본적으로 로딩 Spinner를 보여줍니다.
+              return Center(child: CircularProgressIndicator());
+            },
+          ),
+          /*
+          child: ListView.builder(
+          itemCount: HomePosts.length,
+          itemBuilder: (context, index) {
+            /*
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size(size.width, 144),
+                        maximumSize: Size(size.width, 144),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(0),
+                        ),
+                        primary: Color(0xFF22232A)
+                    ),
+                    onPressed: () {
+                      print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  "${snapshot.data?[index]['post_img']}",
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return Image.asset(
+                                        'assets/images/dummy.jpg',
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Container(
+                                height: 100.0,
+                                child: Column(
+                                  //mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${snapshot.data?[index]['post_title']}',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color(0xFF757575),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(50.0),
+                                          child: Image.network(
+                                            '${userImage[index]}',
+                                            width: 25.0,
+                                            height: 25.0,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/dummy.jpg',
+                                                width: 25.0,
+                                                height: 25.0,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          width: size.width - 190,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${usersName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color(0xFF757575),
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 2,
+                            width: size.width - 40,
+                            color: Color(0xFF303037),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                   */
+            return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size(size.width, 144),
+                  maximumSize: Size(size.width, 144),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(0),
+                  ),
+                  primary: Color(0xFF22232A)
+              ),
+              onPressed: () {
+                print("버튼 클릭 : ${HomePosts[index]['_id']}");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${HomePosts[index]['_id']}')));
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                            "${HomePosts[index]['post_img']}",
+                            width: 100.0,
+                            height: 100.0,
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return Image.asset(
+                                'assets/images/dummy.jpg',
+                                width: 100.0,
+                                height: 100.0,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Container(
+                          height: 100.0,
+                          child: Column(
+                            //mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: size.width - 155,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            strutStyle: StrutStyle(fontSize: 16),
+                                            text: TextSpan(
+                                              text: '${HomePosts[index]['post_title']}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 2,
+                                  ),
+                                  Container(
+                                    width: size.width - 155,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            strutStyle: StrutStyle(fontSize: 16),
+                                            text: TextSpan(
+                                              text: '${HomePosts[index]['promise_date'].toString().substring(5,7)}/${HomePosts[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF757575),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    child: Image.network(
+                                      '${userImage[index]}',
+                                      width: 25.0,
+                                      height: 25.0,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/dummy.jpg',
+                                          width: 25.0,
+                                          height: 25.0,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    width: size.width - 190,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            strutStyle: StrutStyle(fontSize: 16),
+                                            text: TextSpan(
+                                              text: '${usersName[index]}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF757575),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      height: 2,
+                      width: size.width - 40,
+                      color: Color(0xFF303037),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+
+           */
+        ),
+        /*
+        child: FutureBuilder<List> (
+          future: getPost(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data?.length,
+                itemBuilder: (context, index) {
+                  /*
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size(size.width, 144),
+                        maximumSize: Size(size.width, 144),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(0),
+                        ),
+                        primary: Color(0xFF22232A)
+                    ),
+                    onPressed: () {
+                      print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  "${snapshot.data?[index]['post_img']}",
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return Image.asset(
+                                        'assets/images/dummy.jpg',
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Container(
+                                height: 100.0,
+                                child: Column(
+                                  //mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${snapshot.data?[index]['post_title']}',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color(0xFF757575),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(50.0),
+                                          child: Image.network(
+                                            '${userImage[index]}',
+                                            width: 25.0,
+                                            height: 25.0,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/dummy.jpg',
+                                                width: 25.0,
+                                                height: 25.0,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          width: size.width - 190,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${usersName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color(0xFF757575),
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 2,
+                            width: size.width - 40,
+                            color: Color(0xFF303037),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                   */
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size(size.width, 144),
+                        maximumSize: Size(size.width, 144),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(0),
+                        ),
+                        primary: Color(0xFF22232A)
+                    ),
+                    onPressed: () {
+                      print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  "${HomePosts[index]['post_img']}",
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/dummy.jpg',
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Container(
+                                height: 100.0,
+                                child: Column(
+                                  //mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${HomePosts[index]['post_title']}',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                        Container(
+                                          width: size.width - 155,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${HomePosts[index]['promise_date'].toString().substring(5,7)}/${HomePosts[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color(0xFF757575),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(50.0),
+                                          child: Image.network(
+                                            '${userImage[index]}',
+                                            width: 25.0,
+                                            height: 25.0,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/dummy.jpg',
+                                                width: 25.0,
+                                                height: 25.0,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          width: size.width - 190,
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: StrutStyle(fontSize: 16),
+                                                  text: TextSpan(
+                                                    text: '${usersName[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color(0xFF757575),
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 2,
+                            width: size.width - 40,
+                            color: Color(0xFF303037),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 },
               );
             } else if (snapshot.hasError) {
@@ -540,6 +1401,7 @@ class _HomePageState extends State<HomePage> {
             return Center(child: CircularProgressIndicator());
           },
         ),
+         */
       ),
     );
   }

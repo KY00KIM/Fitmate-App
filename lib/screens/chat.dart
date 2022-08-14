@@ -35,6 +35,7 @@ class _ChatPageState extends State<ChatPage> {
   var chatDocId;
   var _textController = new TextEditingController();
   var data;
+
   @override
   void initState() {
     super.initState();
@@ -49,20 +50,27 @@ class _ChatPageState extends State<ChatPage> {
         .then(
           (QuerySnapshot querySnapshot) async {
         if (querySnapshot.docs.isNotEmpty) {
+          print("if 문으로 빠졌다");
           setState(() {
             chatDocId = querySnapshot.docs.single.id;
           });
 
-          print(chatDocId);
+          print('이거 : ${chatDocId.runtimeType}');
         } else {
+          print("else 문으로 빠졌다.");
           await chats.add({
             'users': {widget.uid: null, UserData['social']['user_id']: null},
             'names':{widget.uid:widget.name, UserData['social']['user_id']:UserData['social']['user_name'] }
-          }).then((value) => {chatDocId = value});
+          }).then((value) {
+            setState(() {
+              chatDocId = value;
+            });
+          });
         }
       },
     )
-        .catchError((error) {});
+        .catchError((error) {
+    });
   }
 
   void sendMessage(String msg) {
@@ -393,6 +401,7 @@ class _ChatPageState extends State<ChatPage> {
     );
 
      */
+    print("docId : $chatDocId");
     return StreamBuilder<QuerySnapshot>(
       stream: chats
           .doc(chatDocId)
@@ -400,12 +409,14 @@ class _ChatPageState extends State<ChatPage> {
           .orderBy('createdOn', descending: true)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        print("snapshot : $snapshot");
+        print("snapshot data : ${snapshot.data}");
+        print("snapshot hasdata : ${snapshot.hasData}");
         if (snapshot.hasError) {
           return Center(
             child: Text("Something went wrong"),
           );
         }
-
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: Text(
@@ -418,6 +429,7 @@ class _ChatPageState extends State<ChatPage> {
           );
         }
         if (snapshot.hasData) {
+          print('snapshot data : ${snapshot.data}');
           var data;
           return Scaffold(
             backgroundColor: Color(0xFF22232A),
@@ -593,7 +605,7 @@ class _ChatPageState extends State<ChatPage> {
                       children: snapshot.data!.docs.map(
                             (DocumentSnapshot document) {
                           data = document.data()!;
-                          print(document.toString());
+                          print('document : ${document.toString()}');
                           print(data['msg']);
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -703,13 +715,13 @@ class _ChatPageState extends State<ChatPage> {
                                 //contentPadding: EdgeInsets.symmetric(vertical: 2.0),
                                 contentPadding: EdgeInsets.fromLTRB(15, 0, 10, 0),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 filled: true,
                                 fillColor: Color(0xFF303037),
@@ -720,8 +732,8 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                         CupertinoButton(
                           child: Icon(Icons.send_sharp),
-                          onPressed: () => {
-                            sendMessage(_textController.value.text)
+                          onPressed: () {
+                            sendMessage(_textController.value.text.toString());
                           }
                         )
                       ],
@@ -732,6 +744,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           );
         } else {
+          print("시발");
           return Container();
         }
       },

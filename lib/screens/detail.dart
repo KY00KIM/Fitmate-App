@@ -228,7 +228,14 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                     if(makerUserId != UserData['_id']) {
                       bool addChatAnswer = await addChat();
                       if (addChatAnswer == true) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(name : makerUsersName, imageUrl : makerUserImage, uid : makerUserUid, userId : makerUserId)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
+                            name : makerUsersName,
+                            imageUrl : makerUserImage,
+                            uid : makerUserUid,
+                            userId : makerUserId
+                            )
+                          )
+                        );
                       }
                     }
                   },
@@ -472,7 +479,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
               return Text("${snapshot.error}");
             }
             // 기본적으로 로딩 Spinner를 보여줍니다.
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           },
         ),
       ),

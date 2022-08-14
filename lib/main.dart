@@ -24,6 +24,14 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:fitmate/utils/data.dart';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:fitmate/map/circle_map.dart';
+
+import 'map/base_map.dart';
+import 'map/marker_map_page.dart';
+import 'map/padding_test.dart';
+import 'map/path_map.dart';
+import 'map/polygon_map.dart';
+import 'map/text_field_page.dart';
 
 
 void main() async {
@@ -95,23 +103,21 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          //print('ss : ${snapshot.data}');
+
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
           //error가 발생하게 될 경우 반환하게 되는 부분
           else if (snapshot.hasError) {
-            print("error");
             return LoginPage();
           }
           // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
           else {
-            print("값 받아옴 : ${snapshot.data}");
             // ignore: avoid_print
-            return snapshot.data == true ? LoginPage() : HomePage();
+            return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
           }
 
-          //return HomePage();
+          //return MarkerMapPage();
         },
       ),
     );
@@ -123,6 +129,8 @@ class $ {
 
 class $idToken {
 }
+
+
 
 
 
@@ -189,6 +197,132 @@ class _StartPageState extends State<StartPage> {
         ),
       ),
     );
+  }
+}
+
+
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MainPage(),
+    );
+  }
+}
+
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  List<String> menuText = [
+    '기본 지도 예제',
+    '마커 예제',
+    '패스 예제',
+    '원형 오버레이 예제',
+    '컨트롤러 테스트',
+    '폴리곤 예제',
+    'GLSurface Thread collision test',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: menuText
+              .map((text) => GestureDetector(
+            onTap: () => _onTapMenuItem(text),
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 8),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: Colors.indigo),
+              ),
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ))
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  _onTapMenuItem(String text) {
+    final index = menuText.indexOf(text);
+    switch (index) {
+      case 0:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BaseMapPage(),
+            ));
+        break;
+      case 1:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MarkerMapPage(),
+            ));
+        break;
+      case 2:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PathMapPage(),
+            ));
+        break;
+      case 3:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CircleMapPage(),
+            ));
+        break;
+      case 4:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaddingTest(),
+            ));
+        break;
+      case 5:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PolygonMap(),
+            ));
+        break;
+      case 6:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => TextFieldPage(),
+            ));
+    }
   }
 }
 

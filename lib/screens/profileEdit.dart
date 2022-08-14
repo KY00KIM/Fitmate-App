@@ -140,7 +140,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         ),
       );
        */
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
 
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
@@ -776,9 +783,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ),
                     ),
                   ],
-                ),
-                SizedBox(
-                  height: 20,
                 ),
                 /*
                 Row(

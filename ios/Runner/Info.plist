@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>fitmate</string>
+	<string>핏메이트</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1</string>
+				<string>com.googleusercontent.apps.1038411454604-15fhb7u15npj7fvuohel7616naott1dg</string>
 			</array>
 		</dict>
 	</array>
@@ -79,6 +79,11 @@
 	<string>Example: You should fill this in</string>
 	<key>NSVideoSubscriberAccountUsageDescription</key>
 	<string>Example: You should fill this in</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

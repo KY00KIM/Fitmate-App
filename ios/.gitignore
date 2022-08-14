@@ -32,3 +32,10 @@ Runner/GeneratedPluginRegistrant.*
 !default.mode2v3
 !default.pbxuser
 !default.perspectivev3
+
+
+Podfile.lock
+Flutter/flutter_export_environment.sh
+Flutter/Generated.xcconfig
+Runner/Runner.entitlements
+Runner.xcodeproj/

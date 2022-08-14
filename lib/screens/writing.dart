@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/data.dart';
+import 'home.dart';
 
 class WritingPage extends StatefulWidget {
   const WritingPage({Key? key}) : super(key: key);
@@ -104,7 +105,14 @@ class _WritingPageState extends State<WritingPage> {
       print('$postId');
       log(IdToken);
       print(res.statusCode);
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload : true),
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+        ),
+      );
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
       FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");

@@ -416,6 +416,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "naver_map_plugin",
+      "rootUri": "file:///Users/gimboseok/development/flutter/.pub-cache/git/naver_map_plugin-d6029c020e13c926ff5f94b445b4f65abb48b85f/",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "page_transition",
       "rootUri": "file:///Users/gimboseok/development/flutter/.pub-cache/hosted/pub.dartlang.org/page_transition-2.0.9",
       "packageUri": "lib/",
@@ -608,7 +614,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-08-04T12:57:56.606936Z",
+  "generated": "2022-08-13T12:12:11.647310Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

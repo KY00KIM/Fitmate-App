@@ -95,7 +95,7 @@ class _SignupPageState extends State<SignupPage> {
       "user_latitude": latitude,
       "fitness_center": {
         "center_name": "$centerName",
-        "center_address": "${center['assress_name']}",
+        "center_address": "${center['address_name']}",
         "fitness_longitude": center['y'],
         "fitness_latitude": center['x']
       },
@@ -129,7 +129,7 @@ class _SignupPageState extends State<SignupPage> {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+            pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload : true),
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,
           ),
@@ -155,7 +155,7 @@ class _SignupPageState extends State<SignupPage> {
           Navigator.pushReplacement(
             context,
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
+              pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload : true),
               transitionDuration: Duration.zero,
               reverseTransitionDuration: Duration.zero,
             ),
