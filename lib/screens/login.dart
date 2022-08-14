@@ -60,7 +60,10 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         '계정으로 접속하고\nMate로 합류하세요',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 23.0),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 23.0),
                       ),
                       SizedBox(
                         height: 30.0,
@@ -72,20 +75,42 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             ElevatedButton(
                               onPressed: () async {
-                                IdToken = await FirebaseAuthMethods(FirebaseAuth.instance).signInWithGoogle(context);
-                                IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+                                IdToken = await FirebaseAuthMethods(
+                                        FirebaseAuth.instance)
+                                    .signInWithGoogle(context);
+                                IdToken = (await FirebaseAuth
+                                        .instance.currentUser
+                                        ?.getIdTokenResult(true))!
+                                    .token
+                                    .toString();
 
-                                if(IdToken == 'error') {
+                                if (IdToken == 'error') {
                                   FlutterToastTop("알수 없는 에러가 발생하였습니다");
-                                }
-                                else {
-                                  String? deviceToken = await FirebaseMessaging.instance.getToken();
+                                } else {
+                                  String? deviceToken = await FirebaseMessaging
+                                      .instance
+                                      .getToken();
+                                  var iosToken = await FirebaseMessaging
+                                      .instance
+                                      .getAPNSToken();
+                                  print(
+                                      'THIS IS ios APNS TOKEN :  ${iosToken}');
+
+                                  print('deviceToken : ${deviceToken}');
+
+                                  // ignore: avoid_print
+                                  print("device token : ${deviceToken}");
                                   //토큰을 받는 단계에서 에러가 나지 않았다면
-                                  http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
-                                    'Authorization' : 'bearer $IdToken',
-                                    'deviceToken' : '${deviceToken}'
-                                  });
-                                  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                  http.Response response = await http.get(
+                                      Uri.parse("${baseUrl}users/login"),
+                                      headers: {
+                                        'Authorization': 'bearer $IdToken',
+                                        // ignore: unnecessary_brace_in_string_interps
+                                        'device': '${deviceToken}'
+                                      });
+                                  var resBody = jsonDecode(
+                                      utf8.decode(response.bodyBytes));
+                                  print(resBody);
 
                                   if (response.statusCode == 200) {
                                     //사용자 정보가 완벽히 등록 되어있다면
@@ -97,14 +122,17 @@ class _LoginPageState extends State<LoginPage> {
                                       Navigator.pushReplacement(
                                         context,
                                         PageRouteBuilder(
-                                          pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload: true,),
+                                          pageBuilder: (context, animation,
+                                                  secondaryAnimation) =>
+                                              HomePage(
+                                            reload: true,
+                                          ),
                                           transitionDuration: Duration.zero,
                                           reverseTransitionDuration:
                                               Duration.zero,
                                         ),
                                       );
-                                    }
-                                    else {
+                                    } else {
                                       print("else 문 에러");
                                       FlutterToastTop("알수 없는 에러가 발생하였습니다");
                                     }
@@ -140,7 +168,10 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   Text(
                                     '구글로 시작하기',
-                                    style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.54), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(0, 0, 0, 0.54),
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Opacity(
                                     opacity: 0.0,
@@ -150,16 +181,16 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                               style: ElevatedButton.styleFrom(
-                                side: BorderSide(width: 0.0, color: Color(0xff878E97)),
+                                side: BorderSide(
+                                    width: 0.0, color: Color(0xff878E97)),
                                 primary: Color(0xFFffffff),
                                 //shadowColor: Colors.black, 그림자 추가하는 속성
 
                                 minimumSize: Size.fromHeight(50), // 높이만 50으로 설정
                                 elevation: 1.0,
                                 shape: RoundedRectangleBorder(
-                                  // shape : 버튼의 모양을 디자인 하는 기능
-                                    borderRadius: BorderRadius.circular(25.0)
-                                ),
+                                    // shape : 버튼의 모양을 디자인 하는 기능
+                                    borderRadius: BorderRadius.circular(25.0)),
                               ),
                             ),
 
