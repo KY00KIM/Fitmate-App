@@ -402,6 +402,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: 70.0,
                                 height: 70.0,
                                 fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/dummy.jpg',
+                                    width: 100.0,
+                                    height: 100.0,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
                               ),
                             ),
                             SizedBox(

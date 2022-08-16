@@ -64,7 +64,7 @@ class _WritingPageState extends State<WritingPage> {
   }
 
   void PostPosets() async {
-    if(flag = false) {
+    if(true == true) {
       List<int> imageBytes = _image!.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       List textPart = ["${fitnessPartGetKey(_selectedpart)}"];
@@ -76,7 +76,7 @@ class _WritingPageState extends State<WritingPage> {
         "post_title" : "$title",
         "promise_location": {
           "center_name": "$centerName",
-          "center_address": "${center['address_name']}구",
+          "center_address": "${center['address_name']}",
           "center_longitude": center['y'],
           "center_latitude": center['x']
         },
@@ -96,7 +96,7 @@ class _WritingPageState extends State<WritingPage> {
           body: body
       );
       var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-      print(resBody);
+      print('resBody : ${resBody}');
 
       if(response.statusCode == 201) {
         postId = resBody["data"]["_id"].toString();
@@ -108,7 +108,7 @@ class _WritingPageState extends State<WritingPage> {
         var res = await request.send();
         print('$postId');
         log(IdToken);
-        print(res.statusCode);
+        //print(res.statusCode);
         flag = false;
         Navigator.pushReplacement(
           context,
@@ -169,9 +169,9 @@ class _WritingPageState extends State<WritingPage> {
           actions: [
             TextButton(
               onPressed: () {
-                _image == null || title == "" || _selectedpart == '부위' || centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택'  ?
+                /*_image == null ||*/ title == "" || _selectedpart == '부위' || centerName == '만날 피트니스장을 선택해주세요' || _selectedDate == '날짜 선택' || _selectedTime == '시간 선택'  ?
                     FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
-                        : {flag = true, PostPosets()};
+                        : PostPosets();
               },
               child: Text(
                 '완료',

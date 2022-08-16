@@ -3,6 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/home.dart';
 import 'package:fitmate/screens/login.dart';
+import 'package:fitmate/screens/map.dart';
+import 'package:fitmate/screens/matching.dart';
 import 'package:fitmate/screens/profile.dart';
 import 'package:fitmate/screens/review.dart';
 import 'package:fitmate/screens/signup.dart';
@@ -27,14 +29,14 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:fitmate/utils/data.dart';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:fitmate/map/circle_map.dart';
 
-import 'map/base_map.dart';
-import 'map/marker_map_page.dart';
-import 'map/padding_test.dart';
-import 'map/path_map.dart';
-import 'map/polygon_map.dart';
-import 'map/text_field_page.dart';
+
+//import 'map/base_map.dart';
+//import 'map/marker_map_page.dart';
+//import 'map/padding_test.dart';
+//import 'map/path_map.dart';
+//import 'map/polygon_map.dart';
+//import 'map/text_field_page.dart';
 
 
 void main() async {
@@ -110,7 +112,6 @@ class MyApp extends StatelessWidget {
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
 
-          /*
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
@@ -124,9 +125,7 @@ class MyApp extends StatelessWidget {
             return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
           }
 
-           */
-
-          return LoginPage();
+          //return LoginPage();
         },
       ),
     );

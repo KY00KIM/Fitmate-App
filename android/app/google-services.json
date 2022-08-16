@@ -79,10 +79,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1038411454604-bio1dngu17aq0ur6cquive4hi4aprrk1.apps.googleusercontent.com",
+              "client_id": "1038411454604-15fhb7u15npj7fvuohel7616naott1dg.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.fitmate"
+                "bundle_id": "com.hyeda.fitmate"
               }
             }
           ]
