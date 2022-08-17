@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 
 
 import '../pages/events_example.dart';
+import '../utils/bottomNavigationBar.dart';
 import 'chatList.dart';
 import 'home.dart';
 import 'map.dart';
@@ -254,6 +255,7 @@ class _MatchingPageState extends State<MatchingPage> {
           ),
         ],
       ),
+      /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),
         child: Container(
@@ -489,6 +491,9 @@ class _MatchingPageState extends State<MatchingPage> {
           ),
         ),
       ),
+
+       */
+      bottomNavigationBar: bottomNavigationBar(context, 4),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.fromLTRB(25, 10, 25, 0),

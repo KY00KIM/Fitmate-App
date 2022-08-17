@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/screens/matching.dart';
 import 'package:fitmate/screens/profile.dart';
+import 'package:fitmate/screens/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fitmate/screens/writing.dart';
@@ -14,7 +15,10 @@ import 'package:http/http.dart' as http;
 import 'package:fitmate/utils/data.dart';
 import 'dart:developer';
 import 'dart:io' show Platform;
+import 'package:iconsax/iconsax.dart';
 
+
+import '../utils/bottomNavigationBar.dart';
 import 'chatList.dart';
 import 'map.dart';
 
@@ -157,8 +161,8 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => NoticePage()));
+              //Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticePage()));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => TestScreen()));
             },
             icon: Padding(
               padding: EdgeInsets.only(right: 200),
@@ -171,6 +175,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),
         child: Container(
@@ -188,23 +193,11 @@ class _HomePageState extends State<HomePage> {
                   //Route route = MaterialPageRoute(builder: (context) => HomePage());
                   //Navigator.pushReplacement(context, route);
                 },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.home_filled,
-                      color: Color(0xFFffffff),
-                      //size: 30.0,
-                      size: size.width * 0.0763,
-                    ),
-                    Text(
-                      '홈',
-                      style: TextStyle(
-                        color: Color(0xFFffffff),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
-                  ],
+                child: Icon(
+                  Icons.home_filled,
+                  color: Color(0xFFffffff),
+                  //size: 30.0,
+                  size: size.width * 0.0763,
                 ),
               ),
               TextButton(
@@ -242,14 +235,6 @@ class _HomePageState extends State<HomePage> {
                       color: Color(0xFF757575),
                       //size: 30.0,
                       size: size.width * 0.0763,
-                    ),
-                    Text(
-                      '내 대화',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
                     ),
                   ],
                 ),
@@ -290,14 +275,6 @@ class _HomePageState extends State<HomePage> {
                       //size: 30.0,
                       size: size.width * 0.0763,
                     ),
-                    Text(
-                      '피트니스장',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -337,14 +314,6 @@ class _HomePageState extends State<HomePage> {
                       //size: 30.0,
                       size: size.width * 0.0763,
                     ),
-                    Text(
-                      '매칭',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -383,14 +352,6 @@ class _HomePageState extends State<HomePage> {
                       color: Color(0xFF757575),
                       size: size.width * 0.0763,
                     ),
-                    Text(
-                      '프로필',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -398,6 +359,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+       */
+      bottomNavigationBar: bottomNavigationBar(context, 1),
       floatingActionButton: FloatingActionButton(
           child: Icon(
             Icons.add,

@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:fitmate/screens/writing.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import '../utils/bottomNavigationBar.dart';
 import 'chatList.dart';
 import 'home.dart';
 import 'map.dart';
@@ -96,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Padding(
           padding: EdgeInsets.only(left: 5.0),
           child: Text(
-            "프로필",
+            "내 정보",
             style: TextStyle(
               color: Color(0xFFffffff),
               fontSize: 20.0,
@@ -156,6 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+      /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),
         child: Container(
@@ -379,6 +381,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
+
+       */
+      bottomNavigationBar: bottomNavigationBar(context, 5),
       body: SafeArea(
         child : FutureBuilder<int> (
           future: getReviewProfile(),

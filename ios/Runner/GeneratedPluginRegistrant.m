@@ -78,6 +78,12 @@
 @import naver_map_plugin;
 #endif
 
+#if __has_include(<sign_in_with_apple/SignInWithApplePlugin.h>)
+#import <sign_in_with_apple/SignInWithApplePlugin.h>
+#else
+@import sign_in_with_apple;
+#endif
+
 #if __has_include(<video_player_avfoundation/FLTVideoPlayerPlugin.h>)
 #import <video_player_avfoundation/FLTVideoPlayerPlugin.h>
 #else
@@ -105,6 +111,7 @@
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [NaverMapPlugin registerWithRegistrar:[registry registrarForPlugin:@"NaverMapPlugin"]];
+  [SignInWithApplePlugin registerWithRegistrar:[registry registrarForPlugin:@"SignInWithApplePlugin"]];
   [FLTVideoPlayerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTVideoPlayerPlugin"]];
   [FLTWebViewFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTWebViewFlutterPlugin"]];
 }

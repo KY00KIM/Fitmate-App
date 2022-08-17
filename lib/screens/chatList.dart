@@ -9,6 +9,7 @@ import 'package:fitmate/screens/detail.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:fitmate/screens/writing.dart';
+import '../utils/bottomNavigationBar.dart';
 import '../utils/data.dart';
 import 'home.dart';
 import 'map.dart';
@@ -92,6 +93,7 @@ class _ChatListPageState extends State<ChatListPage> {
           ),
         ],
       ),
+      /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),
         child: Container(
@@ -315,6 +317,9 @@ class _ChatListPageState extends State<ChatListPage> {
           ),
         ),
       ),
+
+       */
+      bottomNavigationBar: bottomNavigationBar(context, 2),
       body: SafeArea(
         child: FutureBuilder<List> (
           future: getChatList(),

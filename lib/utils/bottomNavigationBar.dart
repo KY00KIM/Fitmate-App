@@ -1,0 +1,167 @@
+
+import 'package:fitmate/screens/home.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+
+import '../screens/chatList.dart';
+import '../screens/map.dart';
+import '../screens/matching.dart';
+import '../screens/profile.dart';
+
+Widget bottomNavigationBar(BuildContext context, int pages) {
+  final Size size = MediaQuery.of(context).size;
+  return BottomAppBar(
+    color: Color(0xFF22232A),
+    child: Container(
+      width: size.width,
+      //height: 60.0,
+      height: size.height * 0.07,
+      child: Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            /*
+                IconButton(
+                  onPressed: () {
+                  },
+                  icon: Icon( // 5
+                    Iconsax.home_1,
+                    color: Color(0xFFffffff),
+                    size: size.width * 0.065,
+                  ),
+                ),
+
+                 */
+            IconButton(
+              onPressed: () {
+                if(pages != 1) {
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          HomePage(reload: false),
+                      transitionsBuilder: (context, animation, secondaryAnimation,
+                          child) {
+                        return child;
+                      },
+                    ),
+                  );
+                }
+              },
+              icon: pages == 1 ? Icon( // 5
+                Iconsax.home5,
+                color: Color(0xFFffffff),
+                size: size.width * 0.065,
+              ) : Icon( // 5
+                Iconsax.home_1,
+                color: Color(0xFF757575),
+                size: size.width * 0.065,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                if(pages != 2) {
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ChatListPage(),
+                      transitionsBuilder: (context, animation, secondaryAnimation,
+                          child) {
+                        return child;
+                      },
+                    ),
+                  );
+                }
+              },
+              icon: pages == 2 ? Icon(
+                Iconsax.message5,
+                color: Color(0xFFffffff),
+                size: size.width * 0.065,
+              ) : Icon(
+                Iconsax.message,
+                color: Color(0xFF757575),
+                size: size.width * 0.065,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                if(pages != 3) {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MapPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                }
+              },
+              icon: pages == 3 ? Icon(
+                Iconsax.location5,
+                color: Color(0xFFffffff),
+                size: size.width * 0.065,
+              ) : Icon(
+                Iconsax.location,
+                color: Color(0xFF757575),
+                size: size.width * 0.065,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                if(pages != 4) {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MatchingPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                }
+              },
+              icon: pages == 4 ? Icon(
+                Iconsax.calendar5,
+                color: Color(0xFFffffff),
+                size: size.width * 0.065,
+              ) : Icon(
+                Iconsax.calendar_1,
+                color: Color(0xFF757575),
+                size: size.width * 0.065,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                if(pages != 5) {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ProfilePage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                }
+              },
+              icon: pages == 5 ? Icon(
+                Iconsax.profile_circle5,
+                color: Color(0xFFffffff),
+                size: size.width * 0.065,
+              ) : Icon(
+                Iconsax.profile_circle,
+                color: Color(0xFF757575),
+                size: size.width * 0.065,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}

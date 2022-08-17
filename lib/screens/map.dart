@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 
+import '../utils/bottomNavigationBar.dart';
 import 'chatList.dart';
 import 'home.dart';
 
@@ -113,6 +114,7 @@ class _MapPageState extends State<MapPage> {
            */
         ],
       ),
+      /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),
         child: Container(
@@ -337,6 +339,8 @@ class _MapPageState extends State<MapPage> {
           ),
         ),
       ),
+       */
+      bottomNavigationBar: bottomNavigationBar(context, 3),
       body: Stack(
         children: <Widget>[
           NaverMap(
