@@ -25,29 +25,17 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            /*
-                IconButton(
-                  onPressed: () {
-                  },
-                  icon: Icon( // 5
-                    Iconsax.home_1,
-                    color: Color(0xFFffffff),
-                    size: size.width * 0.065,
-                  ),
-                ),
-
-                 */
             IconButton(
               onPressed: () {
                 if(pages != 1) {
-                  Navigator.of(context).push(
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  Navigator.pushReplacement(
+                    context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           HomePage(reload: false),
-                      transitionsBuilder: (context, animation, secondaryAnimation,
-                          child) {
-                        return child;
-                      },
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
                     ),
                   );
                 }
@@ -65,14 +53,14 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 2) {
-                  Navigator.of(context).push(
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  Navigator.pushReplacement(
+                    context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           ChatListPage(),
-                      transitionsBuilder: (context, animation, secondaryAnimation,
-                          child) {
-                        return child;
-                      },
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
                     ),
                   );
                 }
@@ -90,6 +78,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 3) {
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
@@ -114,6 +103,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 4) {
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
@@ -138,6 +128,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 5) {
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(

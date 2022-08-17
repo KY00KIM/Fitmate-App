@@ -161,8 +161,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              //Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticePage()));
-              Navigator.push(context, CupertinoPageRoute(builder: (context) => TestScreen()));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticePage()));
             },
             icon: Padding(
               padding: EdgeInsets.only(right: 200),
