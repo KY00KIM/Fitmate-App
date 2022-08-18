@@ -72,9 +72,16 @@ class _SignupPageState extends State<SignupPage> {
 
     if (isSelectedSex[1]) gender = false;
 
-    Position position = await DeterminePosition();
-    double latitude = position.latitude;
-    double longitude = position.longitude;
+    LocationPermission permission = await Geolocator.requestPermission();
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      latitude = 0;
+      longitude = 0;
+    } else {
+      Position position = await DeterminePosition();
+      latitude = position.latitude;
+      longitude = position.longitude;
+    }
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
