@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:fitmate/screens/writing.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import '../firebase_service/firebase_auth_methods.dart';
+import '../utils/bottomNavigationBar.dart';
 import 'chatList.dart';
 import 'home.dart';
 import 'map.dart';
@@ -41,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     var sl = 'sefes';
     print("지금 내 유전 _id : ${UserData['_id']}");
+    print("유저 정보 : ${UserData}");
   }
 
   Future<int> getReviewProfile() async {
@@ -96,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Padding(
           padding: EdgeInsets.only(left: 5.0),
           child: Text(
-            "프로필",
+            "내 정보",
             style: TextStyle(
               color: Color(0xFFffffff),
               fontSize: 20.0,
@@ -120,7 +123,26 @@ class _ProfilePageState extends State<ProfilePage> {
               if (value == '/edit') Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditPage()));
               else if (value == '/logout'){
                 print('로그아웃');
-                await FirebaseAuth.instance.signOut();
+                await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+              } else if(value == '/signout') {
+                CollectionReference users = FirebaseFirestore.instance.collection('users');
+                users.doc(UserData['social']['user_id']).delete();
+                User? user = FirebaseAuth.instance.currentUser;
+                user?.delete();
+
+                await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
+                // Firebase 로그아웃
+                //await _auth.signOut();
+                //await _googleSignIn.signOut();
+
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
@@ -151,11 +173,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   value: '/logout',
                 ),
+                PopupMenuItem(
+                  child: Text(
+                    '회원탈퇴',
+                    style: TextStyle(
+                      color: Color(0xFFffffff),
+                    ),
+                  ),
+                  value: '/signout',
+                ),
               ];
             },
           ),
         ],
       ),
+      /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),
         child: Container(
@@ -379,6 +411,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
+
+       */
+      bottomNavigationBar: bottomNavigationBar(context, 5),
       body: SafeArea(
         child : FutureBuilder<int> (
           future: getReviewProfile(),
