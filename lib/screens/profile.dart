@@ -133,6 +133,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 );
               } else if(value == '/signout') {
+                CollectionReference users = FirebaseFirestore.instance.collection('users');
+                users.doc(UserData['social']['user_id']).delete();
+                User? user = FirebaseAuth.instance.currentUser;
+                user?.delete();
+
                 http.Response response = await http.delete(Uri.parse("${baseUrl}users"),
                   headers: {
                     "Authorization" : "bearer $IdToken",
@@ -149,11 +154,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                   resBody = jsonDecode(utf8.decode(response.bodyBytes));
                 }
-
-                CollectionReference users = FirebaseFirestore.instance.collection('users');
-                users.doc(UserData['social']['user_id']).delete();
-                User? user = FirebaseAuth.instance.currentUser;
-                user?.delete();
 
                 await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
                 // Firebase 로그아웃
