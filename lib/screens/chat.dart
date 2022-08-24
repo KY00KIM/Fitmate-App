@@ -2,22 +2,15 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitmate/screens/makePromise.dart';
-import 'package:fitmate/screens/matching.dart';
-import 'package:fitmate/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fitmate/screens/writing.dart';
-import 'package:fitmate/screens/detail.dart';
-import 'package:fitmate/screens/notice.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 
 import '../utils/data.dart';
-import 'chatList.dart';
 
 class ChatPage extends StatefulWidget {
   String name;

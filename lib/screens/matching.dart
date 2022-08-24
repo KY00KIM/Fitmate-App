@@ -5,7 +5,6 @@ import 'dart:developer';
 
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/profile.dart';
 import 'package:fitmate/screens/review.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +16,7 @@ import 'package:fitmate/utils/data.dart';
 import 'package:http/http.dart' as http;
 
 
-import '../pages/events_example.dart';
 import '../utils/bottomNavigationBar.dart';
-import 'chatList.dart';
-import 'home.dart';
-import 'map.dart';
 import 'notice.dart';
 import 'otherProfile.dart';
 

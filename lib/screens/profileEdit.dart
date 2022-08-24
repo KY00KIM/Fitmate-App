@@ -5,8 +5,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/profile.dart';
-import 'package:fitmate/screens/writeCenter.dart';
-import 'package:fitmate/screens/writeLocation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

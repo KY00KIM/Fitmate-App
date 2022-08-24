@@ -2,18 +2,12 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/chat.dart';
-import 'package:fitmate/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fitmate/screens/detail.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:fitmate/screens/writing.dart';
 import '../utils/bottomNavigationBar.dart';
 import '../utils/data.dart';
-import 'home.dart';
-import 'map.dart';
-import 'matching.dart';
 import 'notice.dart';
 
 

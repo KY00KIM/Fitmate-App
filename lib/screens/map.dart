@@ -1,24 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/matching.dart';
-import 'package:fitmate/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fitmate/screens/writing.dart';
-import 'package:fitmate/screens/detail.dart';
-import 'package:fitmate/screens/notice.dart';
 import 'package:http/http.dart' as http;
 import 'package:fitmate/utils/data.dart';
-import 'dart:developer';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 import 'package:flutter/foundation.dart';
 
 import '../utils/bottomNavigationBar.dart';
-import 'chatList.dart';
-import 'home.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);

@@ -3,40 +3,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/home.dart';
 import 'package:fitmate/screens/login.dart';
-import 'package:fitmate/screens/map.dart';
-import 'package:fitmate/screens/matching.dart';
-import 'package:fitmate/screens/profile.dart';
-import 'package:fitmate/screens/review.dart';
-import 'package:fitmate/screens/signup.dart';
-// import 'package:fitmate/src/controller/notification_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/bindings_interface.dart';
 import 'firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:fitmate/utils/data.dart';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'firebase_service/firebase_auth_methods.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:fitmate/utils/data.dart';
 import 'dart:convert';
-import 'dart:developer';
-
-
-//import 'map/base_map.dart';
-//import 'map/marker_map_page.dart';
-//import 'map/padding_test.dart';
-//import 'map/path_map.dart';
-//import 'map/polygon_map.dart';
-//import 'map/text_field_page.dart';
 
 
 void main() async {

@@ -1,10 +1,8 @@
 //import 'dart:html' as http;
 import 'dart:convert';
-//import 'dart:math';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/main.dart';
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';

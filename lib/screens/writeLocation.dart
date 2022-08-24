@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:fitmate/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 
 class WriteLocationPage extends StatefulWidget {
   const WriteLocationPage({Key? key}) : super(key: key);

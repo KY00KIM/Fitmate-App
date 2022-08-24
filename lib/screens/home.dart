@@ -1,11 +1,6 @@
 import 'dart:convert';
-//import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:fitmate/screens/matching.dart';
-import 'package:fitmate/screens/profile.dart';
-import 'package:fitmate/screens/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fitmate/screens/writing.dart';
@@ -15,12 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:fitmate/utils/data.dart';
 import 'dart:developer';
 import 'dart:io' show Platform;
-import 'package:iconsax/iconsax.dart';
 
 
 import '../utils/bottomNavigationBar.dart';
-import 'chatList.dart';
-import 'map.dart';
 
 class HomePage extends StatefulWidget {
   bool reload;

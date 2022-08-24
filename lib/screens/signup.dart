@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/login.dart';
 import 'package:fitmate/screens/writeCenter.dart';
 import 'package:fitmate/screens/writeLocation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../firebase_service/firebase_auth_methods.dart';
 import '../utils/data.dart';
 import 'home.dart';
 

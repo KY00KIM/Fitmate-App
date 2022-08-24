@@ -1,23 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:fitmate/screens/login.dart';
 import 'package:fitmate/screens/profileEdit.dart';
 import 'package:fitmate/utils/data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:fitmate/screens/writing.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import '../firebase_service/firebase_auth_methods.dart';
 import '../utils/bottomNavigationBar.dart';
-import 'chatList.dart';
-import 'home.dart';
-import 'map.dart';
-import 'matching.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
