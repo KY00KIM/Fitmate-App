@@ -382,7 +382,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                     fit: BoxFit.cover,
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                       return Image.asset(
-                                        'assets/images/dummy.jpg',
+                                        'assets/images/profile_null_image.png',
                                         width: 45.0,
                                         height: 45.0,
                                         fit: BoxFit.cover,

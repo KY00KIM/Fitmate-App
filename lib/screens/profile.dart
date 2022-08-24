@@ -439,9 +439,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fit: BoxFit.cover,
                                 errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                   return Image.asset(
-                                    'assets/images/dummy.jpg',
-                                    width: 100.0,
-                                    height: 100.0,
+                                    'assets/images/profile_null_image.png',
+                                    width: 70.0,
+                                    height: 70.0,
                                     fit: BoxFit.cover,
                                   );
                                 },
@@ -868,6 +868,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                         width: 35.0,
                                         height: 35.0,
                                         fit: BoxFit.cover,
+                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/profile_null_image.png',
+                                            fit: BoxFit.cover,
+                                            width: 35.0,
+                                            height: 35.0,
+                                          );
+                                        },
                                       ),
                                     ),
                                     SizedBox(

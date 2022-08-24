@@ -424,7 +424,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                                           fit: BoxFit.cover,
                                           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                             return Image.asset(
-                                              'assets/images/dummy.jpg',
+                                              'assets/images/profile_null_image.png',
                                               width: 60.0,
                                               height: 60.0,
                                               fit: BoxFit.cover,

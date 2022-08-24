@@ -657,7 +657,7 @@ class _HomePageState extends State<HomePage> {
                                               fit: BoxFit.cover,
                                               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                                 return Image.asset(
-                                                  'assets/images/dummy.jpg',
+                                                  'assets/images/profile_null_image.png',
                                                   width: 25.0,
                                                   height: 25.0,
                                                   fit: BoxFit.cover,

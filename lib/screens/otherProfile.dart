@@ -847,7 +847,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                   fit: BoxFit.cover,
                                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                     return Image.asset(
-                                      'assets/images/dummy.jpg',
+                                      'assets/images/profile_null_image.png',
                                       fit: BoxFit.cover,
                                       width: 70,
                                       height: 70,
@@ -1275,6 +1275,14 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                           width: 35.0,
                                           height: 35.0,
                                           fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/profile_null_image.png',
+                                              fit: BoxFit.cover,
+                                              width: 35.0,
+                                              height: 35.0,
+                                            );
+                                          },
                                         ),
                                       ),
                                       SizedBox(
