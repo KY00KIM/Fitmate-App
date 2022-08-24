@@ -72,6 +72,7 @@ class _SignupPageState extends State<SignupPage> {
 
     LocationPermission permission = await Geolocator.requestPermission();
     permission = await Geolocator.checkPermission();
+
     if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
       latitude = 0;
       longitude = 0;
@@ -80,10 +81,6 @@ class _SignupPageState extends State<SignupPage> {
       latitude = position.latitude;
       longitude = position.longitude;
     }
-    //Position position = await DeterminePosition();
-    //double latitude = position.latitude;
-    //double longitude = position.longitude;
-    print('per2 : $permission');
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
 

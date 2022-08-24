@@ -130,6 +130,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 User? user = FirebaseAuth.instance.currentUser;
                 user?.delete();
 
+                http.Response response = await http.delete(Uri.parse("${baseUrl}users"),
+                  headers: {
+                    "Authorization" : "bearer $IdToken",
+                  },
+                );
+                var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+                  IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+                  response = await http.delete(Uri.parse("${baseUrl}users"),
+                    headers: {
+                      "Authorization" : "bearer $IdToken",
+                    },
+                  );
+                  resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                }
+
                 await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
                 // Firebase 로그아웃
                 //await _auth.signOut();
@@ -404,6 +421,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
 
+<<<<<<< HEAD
        */
       bottomNavigationBar: bottomNavigationBar(context, 5),
       body: SafeArea(
