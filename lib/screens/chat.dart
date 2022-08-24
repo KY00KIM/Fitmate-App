@@ -426,6 +426,8 @@ class _ChatPageState extends State<ChatPage> {
                 );
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+                /*
                 return Center(
                   child: Text(
                     "Loading",
@@ -435,6 +437,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                 );
+                 */
               }
               if (snapshot.hasData) {
                 print('snapshot data : ${snapshot.data}');

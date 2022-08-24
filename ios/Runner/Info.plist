@@ -41,48 +41,18 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NFCReaderUsageDescription</key>
-	<string>Example: You should fill this in</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>Example: You should fill this in</string>
+	<string>Need to upload image</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Need to upload image</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSHomeKitUsageDescription</key>
-	<string>Example: You should fill this in</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Example: You should fill this in</string>
+	<string>사용자의 현재 위치가 지도상에 표시되며 사용자 주변 게시글을 제공하는데에 사용용됩니다.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Example: You should fill this in</string>
+	<string>사용자의 현재 위치가 지도상에 표시되며 사용자 주변 게시글을 제공하는데에 사용용됩니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Need to upload image</string>
-	<key>NSMotionUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Example: You should fill this in</string>
+	<string>사용자의 현재 위치가 지도상에 표시되며 사용자 주변 게시글을 제공하는데에 사용용됩니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need to upload image</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSSiriUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Example: You should fill this in</string>
-	<key>NSVideoSubscriberAccountUsageDescription</key>
-	<string>Example: You should fill this in</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -108,16 +78,16 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NMFClientId</key>
- 	<string>6ze5gew3m2</string>
-  <key>io.flutter.embedded_views_preview</key>
-  <true/>
-  <key>NSAllowsArbitraryLoads</key>
-  <true/>
-  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>[USAGE PERPOSE]</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>[USAGE PERPOSE]</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>[USAGE PERPOSE]</string>
+	<string>6ze5gew3m2</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>사용자의 현재 위치가 지도상에 표시되며 사용자 주변 게시글을 제공하는데에 사용용됩니다.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
 </dict>
 </plist>

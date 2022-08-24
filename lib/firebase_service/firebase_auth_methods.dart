@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,8 +14,20 @@ import '../utils/showSnackBar.dart';
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
+  final GoogleSignIn _googleSignIn = new GoogleSignIn();
+
+  Future<void> signOut() async {
+    await Firebase.initializeApp();
+
+    await FirebaseAuth.instance.signOut();
+    await _googleSignIn.signOut();
+
+    await _auth.signOut();
+    //await _googleSignIn.signOut();
+  }
 
   Future<String> signInWithApple() async {
+    await Firebase.initializeApp();
     String output = '';
     try {
       final User? user = _auth.currentUser;
@@ -46,9 +59,11 @@ class FirebaseAuthMethods {
 
   //Google Sign in
   Future<String> signInWithGoogle(BuildContext context) async {
+    await Firebase.initializeApp();
     String output = '';
     try{
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      //final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
       final User? user = _auth.currentUser;
       if(googleAuth?.accessToken != null && googleAuth?.idToken != null) {
@@ -59,7 +74,8 @@ class FirebaseAuthMethods {
         var asd = await user?.getIdToken();
         //log(asd.toString());
         output = asd.toString();
-        UserCredential userCredential = await _auth.signInWithCredential(credential);
+        //UserCredential userCredential = await _auth.signInWithCredential(credential);
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
         if (userCredential.user != null) {
           if (userCredential.additionalUserInfo!.isNewUser) {}
         }
@@ -97,5 +113,4 @@ class FirebaseAuthMethods {
     }
     return output;
   }
-
 }

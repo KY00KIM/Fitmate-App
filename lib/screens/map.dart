@@ -12,11 +12,9 @@ import 'package:fitmate/screens/notice.dart';
 import 'package:http/http.dart' as http;
 import 'package:fitmate/utils/data.dart';
 import 'dart:developer';
-import 'package:naver_map_plugin/naver_map_plugin.dart';
+//import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 import '../utils/bottomNavigationBar.dart';
 import 'chatList.dart';
@@ -33,6 +31,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  /*
   Completer<NaverMapController> _controller = Completer();
   //MapType _mapType = MapType.Basic;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -560,6 +559,12 @@ class _MapPageState extends State<MapPage> {
             );
           });
     });
+  }
+
+   */
+  @override
+  Widget build(BuildContext context) {
+    return Text('');
   }
 
 }

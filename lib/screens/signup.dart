@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-//import 'dart:developer';
-//import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,6 +39,8 @@ class _SignupPageState extends State<SignupPage> {
   String location = '동네 입력';
   String centerName = '센터 등록';
   late Map center;
+  double latitude = 0;
+  double longitude = 0;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   void createUserInFirestore() {
@@ -72,9 +72,20 @@ class _SignupPageState extends State<SignupPage> {
 
     if (isSelectedSex[1]) gender = false;
 
-    Position position = await DeterminePosition();
-    double latitude = position.latitude;
-    double longitude = position.longitude;
+    LocationPermission permission = await Geolocator.requestPermission();
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+      latitude = 0;
+      longitude = 0;
+    } else {
+      Position position = await DeterminePosition();
+      latitude = position.latitude;
+      longitude = position.longitude;
+    }
+    //Position position = await DeterminePosition();
+    //double latitude = position.latitude;
+    //double longitude = position.longitude;
+    print('per2 : $permission');
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
@@ -94,8 +105,8 @@ class _SignupPageState extends State<SignupPage> {
         "sun": isSelectedWeekDay['sun']
       },
       "user_gender": gender,
-      "user_longitude": longitude,
-      "user_latitude": latitude,
+      "user_longitude": 0,
+      "user_latitude": 0,
       "fitness_center": {
         "center_name": "$centerName",
         "center_address": "${center['address_name']}",

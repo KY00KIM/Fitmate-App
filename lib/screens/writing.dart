@@ -749,6 +749,16 @@ class _WritingPageState extends State<WritingPage> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    ' 운동 부위 선택',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 14.0),
+                  ),
                 ],
               ),
             ),
