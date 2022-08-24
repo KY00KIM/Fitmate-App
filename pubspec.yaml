@@ -57,8 +57,8 @@ dependencies:
   flutter_native_splash: ^2.1.6
   flutter_chat_bubble: ^2.0.0
 
-  #naver_map_plugin:
-  #  git: https://github.com/LBSTECH/naver_map_plugin.git
+  naver_map_plugin:
+    git: https://github.com/LBSTECH/naver_map_plugin.git
   sign_in_with_apple: ^4.1.0
   iconsax: ^0.0.8
 

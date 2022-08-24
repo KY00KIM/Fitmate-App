@@ -11,12 +11,13 @@ import '../screens/profile.dart';
 
 Widget bottomNavigationBar(BuildContext context, int pages) {
   final Size size = MediaQuery.of(context).size;
+  final double iconSize = 26.0;
   return BottomAppBar(
     color: Color(0xFF22232A),
     child: Container(
       width: size.width,
-      //height: 60.0,
-      height: size.height * 0.07,
+      height: 50.0,
+      //height: size.height * 0.07,
       child: Theme(
         data: ThemeData(
           splashColor: Colors.transparent,
@@ -43,11 +44,13 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
               icon: pages == 1 ? Icon( // 5
                 Iconsax.home5,
                 color: Color(0xFFffffff),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ) : Icon( // 5
                 Iconsax.home_1,
                 color: Color(0xFF757575),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ),
             ),
             IconButton(
@@ -68,11 +71,13 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
               icon: pages == 2 ? Icon(
                 Iconsax.message5,
                 color: Color(0xFFffffff),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ) : Icon(
                 Iconsax.message,
                 color: Color(0xFF757575),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ),
             ),
             IconButton(
@@ -93,11 +98,13 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
               icon: pages == 3 ? Icon(
                 Iconsax.location5,
                 color: Color(0xFFffffff),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ) : Icon(
                 Iconsax.location,
                 color: Color(0xFF757575),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ),
             ),
             IconButton(
@@ -118,11 +125,13 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
               icon: pages == 4 ? Icon(
                 Iconsax.calendar5,
                 color: Color(0xFFffffff),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ) : Icon(
                 Iconsax.calendar_1,
                 color: Color(0xFF757575),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ),
             ),
             IconButton(
@@ -143,11 +152,13 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
               icon: pages == 5 ? Icon(
                 Iconsax.profile_circle5,
                 color: Color(0xFFffffff),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ) : Icon(
                 Iconsax.profile_circle,
                 color: Color(0xFF757575),
-                size: size.width * 0.065,
+                //size: size.width * 0.065,
+                size: iconSize,
               ),
             ),
           ],
