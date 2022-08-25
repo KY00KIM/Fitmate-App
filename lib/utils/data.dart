@@ -14,10 +14,6 @@ List usersName = [];
 List userImage = [];
 List centerName = [];
 
-
-
-//late String FirebasePlatform = "Facebook";
-
 String baseUrl = "https://fitmate.co.kr/v1/";
 
 Map fitnessPart = {
@@ -30,6 +26,17 @@ Map fitnessPart = {
   '62c670664b8212e4674dbe36' : '하체',
   '62c670a04b8212e4674dbe3a' : '유산소'
  };
+
+Map fitnessPartConverse = {
+  '등' : "62c670514b8212e4674dbe34",
+  '어깨' : '62c670404b8212e4674dbe33',
+  '이두' : '62c6706e4b8212e4674dbe37',
+  '가슴' : '62c6705e4b8212e4674dbe35',
+  '삼두' : '62c6707f4b8212e4674dbe38',
+  '복근' : '62c670874b8212e4674dbe39',
+  '하체' : '62c670664b8212e4674dbe36',
+  '유산소' : '62c670a04b8212e4674dbe3a'
+};
 
 String UserCenterName = '';
 late Map UserData = {

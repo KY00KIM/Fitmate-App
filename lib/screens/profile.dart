@@ -520,7 +520,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   color: UserData["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
                                 ),
                               ),
-
                               alignment: Alignment.center,
                               child: Text(
                                 '월',
