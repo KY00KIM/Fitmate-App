@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/chat.dart';
@@ -37,6 +38,8 @@ class _ChatListPageState extends State<ChatListPage> {
     print("반환 준비 : ${response.statusCode}");
     if(response.statusCode == 200) {
       print("반환 갑니다잉");
+      log(resBody['data'].toString());
+      log(UserData.toString());
       return resBody["data"];
     }
     else {

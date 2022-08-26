@@ -111,6 +111,10 @@ class _ProfilePageState extends State<ProfilePage> {
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             elevation: 40,
+            child: Padding(
+              padding: const EdgeInsets.only(right : 15.0),
+              child: Icon(Icons.settings),
+            ),
             onSelected: (value) async {
               if (value == '/edit') Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditPage()));
               else if (value == '/logout'){

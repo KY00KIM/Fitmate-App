@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/screens/chatList.dart';
 import 'package:fitmate/screens/makePromise.dart';
+import 'package:fitmate/screens/profileEdit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
@@ -500,7 +504,97 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 15,),
+                      PopupMenuButton(
+                        iconSize: 30,
+                        color: Color(0xFF22232A),
+                        shape: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF757575),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        ),
+                        elevation: 40,
+                        onSelected: (value) async {
+                          if (value == '/chatout') {
+                            showDialog(
+                              context: context,
+                              //barrierDismissible: false,
+                              builder: (BuildContext ctx) {
+                                return AlertDialog(
+                                  backgroundColor: Color(0xFF22232A),
+                                  content: Text(
+                                    '채팅방을 나가시면 채팅 목록 및 대화 내용이 삭제되고 복구 할 수 없어요. 채팅방을 나가시겠어요?',
+                                    style: TextStyle(
+                                      color: Color(0xFFffffff),
+                                    ),
+                                  ),
+
+                                  actions: [
+                                    Center(
+                                      child: Column(
+                                        children: [
+                                          TextButton(
+                                            child: Text('네, 나갈레요.'),
+                                            onPressed: () async {
+                                              http.Response response = await http.delete(Uri.parse("${baseUrl}chats/"),
+                                                headers: {
+                                                  "Authorization" : "bearer $IdToken",
+                                                  "chatroomId" : ""
+                                                },
+                                              );
+                                              var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                              if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+                                                IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+                                                response = await http.delete(Uri.parse("${baseUrl}chats/"),
+                                                  headers: {
+                                                    "Authorization" : "bearer $IdToken",
+                                                    "chatroomId" : ""
+                                                  },
+                                                );
+                                                resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                              }
+
+                                              Navigator.pushReplacement(
+                                                context,
+                                                PageRouteBuilder(
+                                                  pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
+                                                  transitionDuration: Duration.zero,
+                                                  reverseTransitionDuration: Duration.zero,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('취소'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        itemBuilder: (BuildContext bc) {
+                          return [
+                            PopupMenuItem(
+                              child: Text(
+                                '채팅방 나가기',
+                                style: TextStyle(
+                                  color: Color(0xFFffffff),
+                                ),
+                              ),
+                              value: '/chatout',
+                            ),
+                          ];
+                        },
+                      ),
                       /*
                   IconButton(
                     onPressed: () {
@@ -759,7 +853,6 @@ class _ChatPageState extends State<ChatPage> {
         // 기본적으로 로딩 Spinner를 보여줍니다.
         return Center(child: CircularProgressIndicator());
       },
-
     );
   }
 }
