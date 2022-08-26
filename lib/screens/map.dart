@@ -54,6 +54,7 @@ class _MapPageState extends State<MapPage> {
     final Size size = MediaQuery.of(context).size;
     print(UserData);
     return Scaffold(
+      extendBody: true,
       key: scaffoldKey,
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(
@@ -343,7 +344,7 @@ class _MapPageState extends State<MapPage> {
             mapType: _mapType,
             markers: _markers,
             //initLocationTrackingMode: _trackingMode,
-            locationButtonEnable: true,
+            locationButtonEnable: false,
             indoorEnable: true,
             onCameraChange: _onCameraChange,
             onCameraIdle: _onCameraIdle,

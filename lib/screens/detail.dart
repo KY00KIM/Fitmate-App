@@ -180,18 +180,105 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
 
   }
 
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          backgroundColor: Color(0xFF22232A),
+          title: new Text(
+            "사용자 신고",
+            style: TextStyle(
+              color: Color(0xFFffffff),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF15161B),
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                color: Color(0xFF878E97), //                   <--- border color
+                width: 1.0,
+              ),
+            ),
+            child: TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: 15,
+              minLines: 1,
+              style: TextStyle(
+                  color: Color(0xFF757575)
+              ),
+              decoration: InputDecoration(
+                fillColor: Color(0xFF15161B),
+                border: InputBorder.none,
+              ),
+            ),
+            padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+          ),
+          actions: <Widget>[
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 130,
+                    child: ElevatedButton(
+                      child: Text(
+                        "신고 내용 보내기",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: () {
+                        ReportPosets();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
   }
 
+  /*
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              color: Color(0xFFffffff),
+                            ),
+                          ),
+                        ),
+
+                         */
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      extendBodyBehindAppBar: true,
+        extendBody: true,
       backgroundColor: Color(0xFF22232A),
       bottomNavigationBar: BottomAppBar(
-        color: Color(0xFF22232A),
+        color: Colors.transparent, // <-- this
+        //shadowColor: Colors.transparent,
+        //color: Color(0xFF22232A),
         child: Container(
           margin: EdgeInsets.only(bottom: 10),
           width: size.width,
@@ -203,28 +290,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(size.width * 0.1, 45),
-                    primary: Color(0xFFC74646),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    elevation: 0,
-                  ),
-                  onPressed: () async {
-                    ReportPosets();
-                  },
-                  child: Text(
-                    '신고',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                SizedBox(width: size.width * 0.02,),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(size.width * 0.75, 45),
+                    minimumSize: Size(size.width * 0.87, 45),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -259,236 +325,267 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: FutureBuilder<List> (
-          future: getPostDetail(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              String? time = snapshot.data?[0]['promise_date'].toString().substring(11,13);
-              String slot = int.parse(time!) > 12 ? '오후' : '오전';
-              return ListView.builder(
-                itemCount: snapshot.data?.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Image.network(
-                            '${snapshot.data?[0]['post_img']}',
-                            fit: BoxFit.fitWidth,
-                            width: size.width,
-                            color: Color.fromRGBO(255, 255, 255, 0.8),
-                            colorBlendMode: BlendMode.modulate,
-                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return Image.asset(
-                                'assets/images/dummy.jpg',
-                                fit: BoxFit.fitWidth,
-                                width: size.width,
-                                color: Color.fromRGBO(255, 255, 255, 0.8),
-                                colorBlendMode: BlendMode.modulate,
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: Color(0xFFffffff),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        width: size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Color(0xFF22232A),
+      body: FutureBuilder<List> (
+        future: getPostDetail(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            String? time = snapshot.data?[0]['promise_date'].toString().substring(11,13);
+            String slot = int.parse(time!) > 12 ? '오후' : '오전';
+            return ListView.builder(
+              itemCount: 1,
+              itemBuilder: (context, index) {
+                return Stack(
+                  children : [
+                    Column(
+                      children: [
+                        Image.network(
+                          '${snapshot.data?[0]['post_img']}',
+                          fit: BoxFit.fitWidth,
+                          width: size.width,
+                          color: Color.fromRGBO(255, 255, 255, 0.8),
+                          colorBlendMode: BlendMode.modulate,
+                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                            return Image.asset(
+                              'assets/images/dummy.jpg',
+                              fit: BoxFit.fitWidth,
+                              width: size.width,
+                              color: Color.fromRGBO(255, 255, 255, 0.8),
+                              colorBlendMode: BlendMode.modulate,
+                            );
+                          },
                         ),
-                        transform: Matrix4.translationValues(0.0, -37.0, 0.0),
-                        child:Padding(
-                          padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 60,
-                                height: 30,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Color(0xFF2975CF),
-                                ),
-                                child: Text(
-                                  '${fitnessPart[snapshot.data?[0]['post_fitness_part'][0]]}',
-                                  style: TextStyle(
-                                    color: Color(0xFFffffff),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                width: size.width - 50,
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 5,
-                                        strutStyle: StrutStyle(fontSize: 16),
-                                        text: TextSpan(
-                                          text: '${snapshot.data?[0]['post_title']}',
-                                          style: TextStyle(
-                                            color: Color(0xFFffffff),
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_pin,
+                        Container(
+                          width: size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Color(0xFF22232A),
+                          ),
+                          transform: Matrix4.translationValues(0.0, -37.0, 0.0),
+                          child:Padding(
+                            padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 30,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
                                     color: Color(0xFF2975CF),
-                                    size: 20,
                                   ),
-                                  Text(
-                                    '  $makerLocationName / $makerCenterName',
+                                  child: Text(
+                                    '${fitnessPart[snapshot.data?[0]['post_fitness_part'][0]]}',
                                     style: TextStyle(
-                                      color: Color(0xFFDADADA),
-                                      fontSize: 14.0,
+                                      color: Color(0xFFffffff),
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 13,
                                     ),
                                   ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.schedule,
-                                    color: Color(0xFF2975CF),
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${slot} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
-                                    style: TextStyle(
-                                      color: Color(0xFFDADADA),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 25,
-                              ),
-                              Text(
-                                '상세설명',
-                                style: TextStyle(
-                                  color: Color(0xffFFFFFF),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 10, 0, 35),
-                                width: size.width,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$makerUsersName')));
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFF22232A),
-                                      elevation: 0
-                                  ),
-                                  child: Column(
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  width: size.width - 50,
+                                  child: Row(
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(100.0),
-                                        child: Image.network(
-                                          '$makerUserImage',
-                                          width: 60.0,
-                                          height: 60.0,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                            return Image.asset(
-                                              'assets/images/profile_null_image.png',
-                                              width: 60.0,
-                                              height: 60.0,
-                                              fit: BoxFit.cover,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        '$makerUsersName',
-                                        style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                      Flexible(
+                                        child: RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 5,
+                                          strutStyle: StrutStyle(fontSize: 16),
+                                          text: TextSpan(
+                                            text: '${snapshot.data?[0]['post_title']}',
+                                            style: TextStyle(
+                                              color: Color(0xFFffffff),
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Container(
-                                width: size.width - 50,
-                                child: Row(
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
                                   children: [
-                                    Flexible(
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 50,
-                                        strutStyle: StrutStyle(fontSize: 12),
-                                        text: TextSpan(
-                                          text: '${snapshot.data?[0]['post_main_text']}',
-                                          style: TextStyle(
-                                            color: Color(0xFFffffff),
-                                          ),
-                                        ),
+                                    Icon(
+                                      Icons.location_pin,
+                                      color: Color(0xFF2975CF),
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      '  $makerLocationName / $makerCenterName',
+                                      style: TextStyle(
+                                        color: Color(0xFFDADADA),
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.schedule,
+                                      color: Color(0xFF2975CF),
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${slot} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
+                                      style: TextStyle(
+                                        color: Color(0xFFDADADA),
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 25,
+                                ),
+                                Text(
+                                  '상세설명',
+                                  style: TextStyle(
+                                    color: Color(0xffFFFFFF),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 10, 0, 35),
+                                  width: size.width,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$makerUsersName')));
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFF22232A),
+                                        elevation: 0
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(100.0),
+                                          child: Image.network(
+                                            '$makerUserImage',
+                                            width: 60.0,
+                                            height: 60.0,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/profile_null_image.png',
+                                                width: 60.0,
+                                                height: 60.0,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          '$makerUsersName',
+                                          style: TextStyle(
+                                            color: Color(0xffFFFFFF),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: size.width - 50,
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 50,
+                                          strutStyle: StrutStyle(fontSize: 12),
+                                          text: TextSpan(
+                                            text: '${snapshot.data?[0]['post_main_text']}',
+                                            style: TextStyle(
+                                              color: Color(0xFFffffff),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                    AppBar(
+                      leading: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                        ),
                       ),
-                    ],
-                  );
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            // 기본적으로 로딩 Spinner를 보여줍니다.
-            return Center(child: CircularProgressIndicator());
-          },
-        ),
+                      actions: [
+                        PopupMenuButton(
+                          iconSize: 30,
+                          color: Color(0xFF22232A),
+                          shape: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF757575),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          ),
+                          elevation: 40,
+                          onSelected: (value) async {
+                            if (value == '/report') {
+                              _showDialog();
+                            }
+                          },
+                          itemBuilder: (BuildContext bc) {
+                            return [
+                              PopupMenuItem(
+                                child: Text(
+                                  '게시글 신고',
+                                  style: TextStyle(
+                                    color: Color(0xFFffffff),
+                                  ),
+                                ),
+                                value: '/report',
+                              ),
+                            ];
+                          },
+                        ),
+                      ],
+                      //backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                      backgroundColor: Colors.transparent, // <-- this
+                      shadowColor: Colors.transparent,
+                    ),
+                  ]
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          // 기본적으로 로딩 Spinner를 보여줍니다.
+          return Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }

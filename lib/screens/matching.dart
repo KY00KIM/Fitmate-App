@@ -644,9 +644,9 @@ class _MatchingPageState extends State<MatchingPage> {
                                       ),
                                       onPressed: () {
                                         if(value[index].content['match_start_id'] == UserData['_id']) {
-                                          Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_join_id'], profileName : '매칭 대상')));
+                                          Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_join_id'], profileName : '내 파트너')));
                                         } else {
-                                          Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_start_id'], profileName : '매칭 대상')));
+                                          Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : value[index].content['match_start_id'], profileName : '내 파트너')));
                                         }
                                       },
                                       child: Padding(
