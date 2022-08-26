@@ -26,6 +26,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
   String makerCenterName = '';
   String makerUserId = '';
   String makerUserUid = '';
+  String chatId = '';
 
   Future<bool> addChat() async{
     //기존 채팅방이 있는지 확인
@@ -40,7 +41,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
     if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-      http.Response response = await http.get(Uri.parse("${baseUrl}chats/"),
+      response = await http.get(Uri.parse("${baseUrl}chats/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization' : 'bearer $IdToken',
@@ -51,6 +52,8 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
 
     for(int i = 0; i < resBody['data'].length; i++) {
       if((resBody['data'][i]['chat_start_id'] == UserData['_id'] && resBody['data'][i]['chat_join_id'] == makerUserId) || (resBody['data'][i]['chat_join_id'] == UserData['_id'] && resBody['data'][i]['chat_start_id'] == makerUserId)) {
+        //이미 채팅방이 있을 때
+        chatId = resBody['data'][i]['_id'];
         return true;
       }
     }
@@ -83,7 +86,10 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
       resBody2 = jsonDecode(utf8.decode(response2.bodyBytes));
     }
 
-    if(response2.statusCode == 201) return true;
+    if(response2.statusCode == 201) {
+      chatId = resBody2['data']['_id'];
+      return true;
+    }
     else return false;
   }
 
@@ -232,7 +238,8 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                             name : makerUsersName,
                             imageUrl : makerUserImage,
                             uid : makerUserUid,
-                            userId : makerUserId
+                            userId : makerUserId,
+                            chatId: chatId,
                             )
                           )
                         );

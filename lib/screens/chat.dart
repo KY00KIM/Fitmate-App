@@ -21,7 +21,8 @@ class ChatPage extends StatefulWidget {
   String imageUrl;
   String uid;
   String userId;
-  ChatPage({Key? key, required this.name, required this.imageUrl, required this.uid, required this.userId}) : super(key: key);
+  String chatId;
+  ChatPage({Key? key, required this.chatId, required this.name, required this.imageUrl, required this.uid, required this.userId}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -48,14 +49,11 @@ class _ChatPageState extends State<ChatPage> {
           .then(
             (QuerySnapshot querySnapshot) async {
           if (querySnapshot.docs.isNotEmpty) {
-            print("if 문으로 빠졌다");
             setState(() {
               chatDocId = querySnapshot.docs.single.id;
             });
 
-            print('이거 : ${chatDocId.runtimeType}');
           } else {
-            print("else 문으로 빠졌다.");
             await chats.add({
               'users': {widget.uid: null, UserData['social']['user_id']: null},
               'names':{widget.uid:widget.name, UserData['social']['user_id']:UserData['social']['user_name'] }
@@ -401,6 +399,7 @@ class _ChatPageState extends State<ChatPage> {
     );
 
      */
+    print("chat Id : ${widget.chatId}");
     print("docId : $chatDocId");
     return FutureBuilder(
       future: checkUser(),
@@ -537,25 +536,24 @@ class _ChatPageState extends State<ChatPage> {
                                           ElevatedButton(
                                             child: Text('네, 나갈레요.'),
                                             onPressed: () async {
-                                              http.Response response = await http.delete(Uri.parse("${baseUrl}chats/"),
+                                              http.Response response = await http.delete(Uri.parse("${baseUrl}chats/${widget.chatId}"),
                                                 headers: {
                                                   "Authorization" : "bearer $IdToken",
-                                                  "chatroomId" : ""
+                                                  "chatroomId" : "${widget.chatId}"
                                                 },
                                               );
                                               var resBody = jsonDecode(utf8.decode(response.bodyBytes));
                                               if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
                                                 IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-                                                response = await http.delete(Uri.parse("${baseUrl}chats/"),
+                                                response = await http.delete(Uri.parse("${baseUrl}chats/${widget.chatId}"),
                                                   headers: {
                                                     "Authorization" : "bearer $IdToken",
-                                                    "chatroomId" : ""
+                                                    "chatroomId" : "${widget.chatId}"
                                                   },
                                                 );
                                                 resBody = jsonDecode(utf8.decode(response.bodyBytes));
                                               }
-
                                               Navigator.pushReplacement(
                                                 context,
                                                 PageRouteBuilder(

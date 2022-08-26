@@ -344,6 +344,7 @@ class _ChatListPageState extends State<ChatListPage> {
                             imageUrl : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img'],
                             uid : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['social']['user_id'] : snapshot.data![index]['chat_start_id']['social']['user_id'],
                             userId : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['_id'] : snapshot.data![index]['chat_start_id']['_id'],
+                            chatId: snapshot.data![index]['_id'],
                             )
                           )
                         );
