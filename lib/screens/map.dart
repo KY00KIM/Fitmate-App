@@ -355,10 +355,12 @@ class _MapPageState extends State<MapPage> {
             maxZoom: 17,
             minZoom: 15,
           ),
+          /*
           Padding(
             padding: EdgeInsets.all(16),
             child: _mapTypeSelector(),
           ),
+           */
           //_trackingModeSelector(),
         ],
       ),
