@@ -352,8 +352,8 @@ class _MapPageState extends State<MapPage> {
             onMapDoubleTap: _onMapDoubleTap,
             onMapTwoFingerTap: _onMapTwoFingerTap,
             //onSymbolTap: _onMarkerTap,
-            maxZoom: 17,
-            minZoom: 15,
+            //maxZoom: 17,
+            //minZoom: 15,
           ),
           /*
           Padding(

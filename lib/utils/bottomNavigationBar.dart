@@ -15,7 +15,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
     color: Color(0xFF22232A),
     child: Container(
       width: size.width,
-      height: 50.0,
+      height: 55.0,
       //height: size.height * 0.07,
       child: Theme(
         data: ThemeData(

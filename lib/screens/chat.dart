@@ -534,7 +534,7 @@ class _ChatPageState extends State<ChatPage> {
                                     Center(
                                       child: Column(
                                         children: [
-                                          TextButton(
+                                          ElevatedButton(
                                             child: Text('네, 나갈레요.'),
                                             onPressed: () async {
                                               http.Response response = await http.delete(Uri.parse("${baseUrl}chats/"),
@@ -566,7 +566,7 @@ class _ChatPageState extends State<ChatPage> {
                                               );
                                             },
                                           ),
-                                          TextButton(
+                                          ElevatedButton(
                                             child: Text('취소'),
                                             onPressed: () {
                                               Navigator.pop(context);
