@@ -562,7 +562,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${HomePosts[index]['_id']}')));
                         },
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -699,6 +699,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               Container(
+                                margin : EdgeInsets.only(bottom: 20),
                                 height: 2,
                                 width: size.width - 40,
                                 color: Color(0xFF303037),

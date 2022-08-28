@@ -357,7 +357,7 @@ class _MapPageState extends State<MapPage> {
             onMapTwoFingerTap: _onMapTwoFingerTap,
             //onSymbolTap: _onMarkerTap,
             //maxZoom: 17,
-            //minZoom: 15,
+            minZoom: 15,
           ),
           ElevatedButton(
             onPressed: () {
@@ -378,12 +378,16 @@ class _MapPageState extends State<MapPage> {
   }
 
   _onMapTap(LatLng position) async {
+    //지도 터치 효과
+    /*
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
       Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),
       duration: Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
+
+     */
   }
 
   _onMapLongTap(LatLng position) {
