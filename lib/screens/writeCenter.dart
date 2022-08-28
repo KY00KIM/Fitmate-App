@@ -134,6 +134,7 @@ class _WriteCenterPageState extends State<WriteCenterPage> {
                   color: Colors.white,
                 ),
                 keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                     fillColor: Color(0xFF15161B),
                     filled: true,

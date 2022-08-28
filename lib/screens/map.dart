@@ -368,11 +368,15 @@ class _MapPageState extends State<MapPage> {
             //maxZoom: 17,
             minZoom: 15,  //최대 지도 범위
           ),
-          ElevatedButton(
-            onPressed: () {
+          Positioned(
+            right: 25,
+            bottom: 75,
+            child: ElevatedButton(
+              onPressed: () {
 
-            },
-            child: Text('내위치'),
+              },
+              child: Text('내위치'),
+            ),
           ),
           /*
           Padding(
