@@ -63,7 +63,7 @@ class _ChatListPageState extends State<ChatListPage> {
             width: 1,
           ),
         ),
-        
+
          */
         backgroundColor: Color(0xFF22232A),
         title: Padding(
@@ -407,11 +407,14 @@ class _ChatListPageState extends State<ChatListPage> {
                               ],
                             ),
                           ),
+                          /*
                           Container(
                             height: 1,
                             width: size.width,
                             color: Color(0xFF303037),
                           ),
+
+                           */
                         ],
                       ),
                     );
