@@ -356,6 +356,12 @@ class _MapPageState extends State<MapPage> {
             //maxZoom: 17,
             //minZoom: 15,
           ),
+          ElevatedButton(
+            onPressed: () {
+
+            },
+            child: Text('내위치'),
+          ),
           /*
           Padding(
             padding: EdgeInsets.all(16),

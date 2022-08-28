@@ -76,6 +76,7 @@ late Map UserData = {
 
 // ignore: non_constant_identifier_names
 Future<bool> UpdateUserData() async {
+  log(IdToken.toString());
   http.Response response = await http.get(Uri.parse("${baseUrl}users/${UserId.toString()}"), headers: {
     // ignore: unnecessary_string_interpolations
     "Authorization" : "bearer ${IdToken.toString()}",
@@ -98,6 +99,7 @@ Future<bool> UpdateUserData() async {
     }
     return true;
   } else {
+    print("유저 정보 가져오지 못함");
     return false;
   }
 }

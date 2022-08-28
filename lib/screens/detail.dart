@@ -271,9 +271,370 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    return FutureBuilder<List>(
+      future: getPostDetail(),
+      builder: (context, snapshot) {
+        print("여기까지");
+        if(snapshot.hasData) {
+          print("머냐 이거");
+          String? time = snapshot.data?[0]['promise_date'].toString().substring(11,13);
+          String slot = int.parse(time!) > 12 ? '오후' : '오전';
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                ),
+              ),
+              actions: [
+                PopupMenuButton(
+                  iconSize: 30,
+                  color: Color(0xFF22232A),
+                  shape: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF757575),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                  elevation: 40,
+                  onSelected: (value) async {
+                    if (value == '/report') {
+                      _showDialog();
+                    }
+                  },
+                  itemBuilder: (BuildContext bc) {
+                    return [
+                      PopupMenuItem(
+                        child: Text(
+                          '게시글 신고',
+                          style: TextStyle(
+                            color: Color(0xFFffffff),
+                          ),
+                        ),
+                        value: '/report',
+                      ),
+                    ];
+                  },
+                ),
+              ],
+              elevation: 0.0,
+              backgroundColor: Colors.transparent, // <-- this
+              //shadowColor: Colors.transparent,
+            ),
+            bottomNavigationBar: BottomAppBar(
+              color: Colors.transparent, // <-- this
+              //shadowColor: Colors.transparent,
+              //color: Color(0xFF22232A),
+              child: Container(
+                margin: EdgeInsets.only(bottom: 10),
+                width: size.width,
+                height: size.height * 0.075,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(size.width * 0.87, 45),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          elevation: 0,
+                        ),
+                        onPressed: () async {
+                          if(makerUserId != UserData['_id']) {
+                            bool addChatAnswer = await addChat();
+                            if (addChatAnswer == true) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
+                                name : makerUsersName,
+                                imageUrl : makerUserImage,
+                                uid : makerUserUid,
+                                userId : makerUserId,
+                                chatId: chatId,
+                              )
+                              )
+                              );
+                            }
+                          }
+                        },
+                        child: Text(
+                          '채팅하기',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            extendBodyBehindAppBar: true,
+            extendBody: true,
+            backgroundColor: Color(0xFF22232A),
+            body: SingleChildScrollView(
+              child: Column(
+              children: [
+                Image.network(
+                  '${snapshot.data?[0]['post_img']}',
+                  fit: BoxFit.fitWidth,
+                  width: size.width,
+                  color: Color.fromRGBO(255, 255, 255, 0.8),
+                  colorBlendMode: BlendMode.modulate,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return Image.asset(
+                      'assets/images/dummy.jpg',
+                      fit: BoxFit.fitWidth,
+                      width: size.width,
+                      color: Color.fromRGBO(255, 255, 255, 0.8),
+                      colorBlendMode: BlendMode.modulate,
+                    );
+                  },
+                ),
+                Container(
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Color(0xFF22232A),
+                  ),
+                  transform: Matrix4.translationValues(0.0, -37.0, 0.0),
+                  child:Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 30,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Color(0xFF2975CF),
+                          ),
+                          child: Text(
+                            '${fitnessPart[snapshot.data?[0]['post_fitness_part'][0]]}',
+                            style: TextStyle(
+                              color: Color(0xFFffffff),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: size.width - 50,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 5,
+                                  strutStyle: StrutStyle(fontSize: 16),
+                                  text: TextSpan(
+                                    text: '${snapshot.data?[0]['post_title']}',
+                                    style: TextStyle(
+                                      color: Color(0xFFffffff),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_pin,
+                              color: Color(0xFF2975CF),
+                              size: 20,
+                            ),
+                            Text(
+                              '  $makerLocationName / $makerCenterName',
+                              style: TextStyle(
+                                color: Color(0xFFDADADA),
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.schedule,
+                              color: Color(0xFF2975CF),
+                              size: 20,
+                            ),
+                            Text(
+                              '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${slot} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
+                              style: TextStyle(
+                                color: Color(0xFFDADADA),
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          '상세설명',
+                          style: TextStyle(
+                            color: Color(0xffFFFFFF),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 35),
+                          width: size.width,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$makerUsersName')));
+                            },
+                            style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF22232A),
+                                elevation: 0
+                            ),
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.0),
+                                  child: Image.network(
+                                    '$makerUserImage',
+                                    width: 60.0,
+                                    height: 60.0,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/profile_null_image.png',
+                                        width: 60.0,
+                                        height: 60.0,
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  '$makerUsersName',
+                                  style: TextStyle(
+                                    color: Color(0xffFFFFFF),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: size.width - 50,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 50,
+                                  strutStyle: StrutStyle(fontSize: 12),
+                                  text: TextSpan(
+                                    text: '${snapshot.data?[0]['post_main_text']}',
+                                    style: TextStyle(
+                                      color: Color(0xFFffffff),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          print("에러입니당");
+          return Text("${snapshot.error}");
+        }
+        // 기본적으로 로딩 Spinner를 보여줍니다.
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+
+
+    /*
     return Scaffold(
       extendBodyBehindAppBar: true,
-        extendBody: true,
+      extendBody: true,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+        ),
+        actions: [
+          PopupMenuButton(
+            iconSize: 30,
+            color: Color(0xFF22232A),
+            shape: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xFF757575),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            elevation: 40,
+            onSelected: (value) async {
+              if (value == '/report') {
+                _showDialog();
+              }
+            },
+            itemBuilder: (BuildContext bc) {
+              return [
+                PopupMenuItem(
+                  child: Text(
+                    '게시글 신고',
+                    style: TextStyle(
+                      color: Color(0xFFffffff),
+                    ),
+                  ),
+                  value: '/report',
+                ),
+              ];
+            },
+          ),
+        ],
+        //backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        backgroundColor: Colors.transparent, // <-- this
+        shadowColor: Colors.transparent,
+      ),
       backgroundColor: Color(0xFF22232A),
       bottomNavigationBar: BottomAppBar(
         color: Colors.transparent, // <-- this
@@ -334,249 +695,199 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
             return ListView.builder(
               itemCount: 1,
               itemBuilder: (context, index) {
-                return Stack(
-                  children : [
-                    Column(
-                      children: [
-                        Image.network(
-                          '${snapshot.data?[0]['post_img']}',
+                return Column(
+                  children: [
+                    Image.network(
+                      '${snapshot.data?[0]['post_img']}',
+                      fit: BoxFit.fitWidth,
+                      width: size.width,
+                      color: Color.fromRGBO(255, 255, 255, 0.8),
+                      colorBlendMode: BlendMode.modulate,
+                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                        return Image.asset(
+                          'assets/images/dummy.jpg',
                           fit: BoxFit.fitWidth,
                           width: size.width,
                           color: Color.fromRGBO(255, 255, 255, 0.8),
                           colorBlendMode: BlendMode.modulate,
-                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                            return Image.asset(
-                              'assets/images/dummy.jpg',
-                              fit: BoxFit.fitWidth,
-                              width: size.width,
-                              color: Color.fromRGBO(255, 255, 255, 0.8),
-                              colorBlendMode: BlendMode.modulate,
-                            );
-                          },
-                        ),
-                        Container(
-                          width: size.width,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Color(0xFF22232A),
-                          ),
-                          transform: Matrix4.translationValues(0.0, -37.0, 0.0),
-                          child:Padding(
-                            padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 60,
-                                  height: 30,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: Color(0xFF2975CF),
-                                  ),
-                                  child: Text(
-                                    '${fitnessPart[snapshot.data?[0]['post_fitness_part'][0]]}',
-                                    style: TextStyle(
-                                      color: Color(0xFFffffff),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                    ),
-                                  ),
+                        );
+                      },
+                    ),
+                    Container(
+                      width: size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Color(0xFF22232A),
+                      ),
+                      transform: Matrix4.translationValues(0.0, -37.0, 0.0),
+                      child:Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 30,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Color(0xFF2975CF),
+                              ),
+                              child: Text(
+                                '${fitnessPart[snapshot.data?[0]['post_fitness_part'][0]]}',
+                                style: TextStyle(
+                                  color: Color(0xFFffffff),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  width: size.width - 50,
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        child: RichText(
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 5,
-                                          strutStyle: StrutStyle(fontSize: 16),
-                                          text: TextSpan(
-                                            text: '${snapshot.data?[0]['post_title']}',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: size.width - 50,
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 5,
+                                      strutStyle: StrutStyle(fontSize: 16),
+                                      text: TextSpan(
+                                        text: '${snapshot.data?[0]['post_title']}',
+                                        style: TextStyle(
+                                          color: Color(0xFFffffff),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_pin,
-                                      color: Color(0xFF2975CF),
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      '  $makerLocationName / $makerCenterName',
-                                      style: TextStyle(
-                                        color: Color(0xFFDADADA),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.schedule,
-                                      color: Color(0xFF2975CF),
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${slot} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
-                                      style: TextStyle(
-                                        color: Color(0xFFDADADA),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 25,
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_pin,
+                                  color: Color(0xFF2975CF),
+                                  size: 20,
                                 ),
                                 Text(
-                                  '상세설명',
+                                  '  $makerLocationName / $makerCenterName',
                                   style: TextStyle(
-                                    color: Color(0xffFFFFFF),
+                                    color: Color(0xFFDADADA),
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, 10, 0, 35),
-                                  width: size.width,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$makerUsersName')));
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Color(0xFF22232A),
-                                        elevation: 0
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(100.0),
-                                          child: Image.network(
-                                            '$makerUserImage',
-                                            width: 60.0,
-                                            height: 60.0,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                              return Image.asset(
-                                                'assets/images/profile_null_image.png',
-                                                width: 60.0,
-                                                height: 60.0,
-                                                fit: BoxFit.cover,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          '$makerUsersName',
-                                          style: TextStyle(
-                                            color: Color(0xffFFFFFF),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: size.width - 50,
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        child: RichText(
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 50,
-                                          strutStyle: StrutStyle(fontSize: 12),
-                                          text: TextSpan(
-                                            text: '${snapshot.data?[0]['post_main_text']}',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    AppBar(
-                      leading: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                        ),
-                      ),
-                      actions: [
-                        PopupMenuButton(
-                          iconSize: 30,
-                          color: Color(0xFF22232A),
-                          shape: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFF757575),
-                              width: 1,
+                            SizedBox(
+                              height: 10,
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          ),
-                          elevation: 40,
-                          onSelected: (value) async {
-                            if (value == '/report') {
-                              _showDialog();
-                            }
-                          },
-                          itemBuilder: (BuildContext bc) {
-                            return [
-                              PopupMenuItem(
-                                child: Text(
-                                  '게시글 신고',
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.schedule,
+                                  color: Color(0xFF2975CF),
+                                  size: 20,
+                                ),
+                                Text(
+                                  '  ${snapshot.data?[0]['promise_date'].toString().substring(2,4)}. ${snapshot.data?[0]['promise_date'].toString().substring(5,7)}. ${snapshot.data?[0]['promise_date'].toString().substring(8,10)}.  ${slot} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}:${snapshot.data?[0]['promise_date'].toString().substring(14,16)}',
                                   style: TextStyle(
-                                    color: Color(0xFFffffff),
+                                    color: Color(0xFFDADADA),
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                value: '/report',
+                              ],
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Text(
+                              '상세설명',
+                              style: TextStyle(
+                                color: Color(0xffFFFFFF),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
                               ),
-                            ];
-                          },
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, 10, 0, 35),
+                              width: size.width,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context, CupertinoPageRoute(builder : (context) => OtherProfilePage(profileId : snapshot.data?[0]['user_id'], profileName : '$makerUsersName')));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color(0xFF22232A),
+                                    elevation: 0
+                                ),
+                                child: Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(100.0),
+                                      child: Image.network(
+                                        '$makerUserImage',
+                                        width: 60.0,
+                                        height: 60.0,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/profile_null_image.png',
+                                            width: 60.0,
+                                            height: 60.0,
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      '$makerUsersName',
+                                      style: TextStyle(
+                                        color: Color(0xffFFFFFF),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: size.width - 50,
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 50,
+                                      strutStyle: StrutStyle(fontSize: 12),
+                                      text: TextSpan(
+                                        text: '${snapshot.data?[0]['post_main_text']}',
+                                        style: TextStyle(
+                                          color: Color(0xFFffffff),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                      //backgroundColor: Colors.transparent,
-                      elevation: 0.0,
-                      backgroundColor: Colors.transparent, // <-- this
-                      shadowColor: Colors.transparent,
+                      ),
                     ),
-                  ]
+                  ],
                 );
               },
             );
@@ -588,6 +899,10 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
         },
       ),
     );
+
+     */
+
+
   }
 }
 
