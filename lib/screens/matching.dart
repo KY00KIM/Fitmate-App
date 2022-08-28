@@ -229,7 +229,7 @@ class _MatchingPageState extends State<MatchingPage> {
         title: Padding(
           padding: EdgeInsets.only(left: 5.0),
           child: Text(
-            "매칭",
+            "일정",
             style: TextStyle(
               color: Color(0xFFffffff),
               fontSize: 20.0,

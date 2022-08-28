@@ -357,7 +357,7 @@ class _MapPageState extends State<MapPage> {
             onMapTwoFingerTap: _onMapTwoFingerTap,
             //onSymbolTap: _onMarkerTap,
             //maxZoom: 17,
-            minZoom: 15,
+            minZoom: 15,  //최대 지도 범위
           ),
           ElevatedButton(
             onPressed: () {
@@ -391,39 +391,51 @@ class _MapPageState extends State<MapPage> {
   }
 
   _onMapLongTap(LatLng position) {
+    /*
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
           '[onLongTap] lat: ${position.latitude}, lon: ${position.longitude}'),
       duration: Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
+
+     */
   }
 
   _onMapDoubleTap(LatLng position) {
+    /*
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
           '[onDoubleTap] lat: ${position.latitude}, lon: ${position.longitude}'),
       duration: Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
+
+     */
   }
 
   _onMapTwoFingerTap(LatLng position) {
+    /*
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
           '[onTwoFingerTap] lat: ${position.latitude}, lon: ${position.longitude}'),
       duration: Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
+
+     */
   }
 
   _onSymbolTap(LatLng position, String caption) {
+    /*
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
           '[onSymbolTap] caption: $caption, lat: ${position.latitude}, lon: ${position.longitude}'),
       duration: Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
+
+     */
   }
 
   _mapTypeSelector() {

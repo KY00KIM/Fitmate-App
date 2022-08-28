@@ -28,7 +28,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 1) {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
