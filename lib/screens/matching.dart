@@ -213,6 +213,7 @@ class _MatchingPageState extends State<MatchingPage> {
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
+
       appBar: AppBar(
         elevation: 0.0,
         /*
@@ -256,6 +257,7 @@ class _MatchingPageState extends State<MatchingPage> {
 
          */
       ),
+
       /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),

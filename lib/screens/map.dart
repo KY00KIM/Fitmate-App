@@ -57,6 +57,7 @@ class _MapPageState extends State<MapPage> {
       extendBody: true,
       key: scaffoldKey,
       backgroundColor: Color(0xFF22232A),
+      /*
       appBar: AppBar(
         elevation: 0.0,
         shape: Border(
@@ -104,6 +105,8 @@ class _MapPageState extends State<MapPage> {
            */
         ],
       ),
+
+       */
       /*
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF22232A),

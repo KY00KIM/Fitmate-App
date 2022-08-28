@@ -371,178 +371,19 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: RefreshIndicator(
+          color: Color(0xFF22232A),
           onRefresh: () => getPost(false),
           child: FutureBuilder<List> (
             future: getPost(true),
             builder: (context, snapshot) {
               print("snapshot : ${snapshot.data}");
               if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: HomePosts.length,
-                  itemBuilder: (context, index) {
-                    /*
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.zero,
-                        minimumSize: Size(size.width, 144),
-                        maximumSize: Size(size.width, 144),
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(0),
-                        ),
-                        primary: Color(0xFF22232A)
-                    ),
-                    onPressed: () {
-                      print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(
-                                  "${snapshot.data?[index]['post_img']}",
-                                  width: 100.0,
-                                  height: 100.0,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                    return Image.asset(
-                                        'assets/images/dummy.jpg',
-                                      width: 100.0,
-                                      height: 100.0,
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Container(
-                                height: 100.0,
-                                child: Column(
-                                  //mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: size.width - 155,
-                                          child: Row(
-                                            children: [
-                                              Flexible(
-                                                child: RichText(
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  strutStyle: StrutStyle(fontSize: 16),
-                                                  text: TextSpan(
-                                                    text: '${snapshot.data?[index]['post_title']}',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 2,
-                                        ),
-                                        Container(
-                                          width: size.width - 155,
-                                          child: Row(
-                                            children: [
-                                              Flexible(
-                                                child: RichText(
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  strutStyle: StrutStyle(fontSize: 16),
-                                                  text: TextSpan(
-                                                    text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Color(0xFF757575),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(50.0),
-                                          child: Image.network(
-                                            '${userImage[index]}',
-                                            width: 25.0,
-                                            height: 25.0,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                              return Image.asset(
-                                                'assets/images/dummy.jpg',
-                                                width: 25.0,
-                                                height: 25.0,
-                                                fit: BoxFit.cover,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                          width: size.width - 190,
-                                          child: Row(
-                                            children: [
-                                              Flexible(
-                                                child: RichText(
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  strutStyle: StrutStyle(fontSize: 16),
-                                                  text: TextSpan(
-                                                    text: '${usersName[index]}',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Color(0xFF757575),
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 2,
-                            width: size.width - 40,
-                            color: Color(0xFF303037),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                   */
+                return ScrollConfiguration(
+                  behavior: const ScrollBehavior().copyWith(overscroll: false),
+                  child: ListView.builder(
+                    itemCount: HomePosts.length,
+                    itemBuilder: (context, index) {
+                      /*
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           elevation: 0,
@@ -556,7 +397,8 @@ class _HomePageState extends State<HomePage> {
                           primary: Color(0xFF22232A)
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${HomePosts[index]['_id']}')));
+                        print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
                       },
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -568,13 +410,13 @@ class _HomePageState extends State<HomePage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Image.network(
-                                    "${HomePosts[index]['post_img']}",
+                                    "${snapshot.data?[index]['post_img']}",
                                     width: 100.0,
                                     height: 100.0,
                                     fit: BoxFit.cover,
                                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                       return Image.asset(
-                                        'assets/images/dummy.jpg',
+                                          'assets/images/dummy.jpg',
                                         width: 100.0,
                                         height: 100.0,
                                         fit: BoxFit.cover,
@@ -605,7 +447,7 @@ class _HomePageState extends State<HomePage> {
                                                     maxLines: 2,
                                                     strutStyle: StrutStyle(fontSize: 16),
                                                     text: TextSpan(
-                                                      text: '${HomePosts[index]['post_title']}',
+                                                      text: '${snapshot.data?[index]['post_title']}',
                                                       style: TextStyle(
                                                         fontSize: 16,
                                                         fontWeight: FontWeight.bold,
@@ -629,7 +471,7 @@ class _HomePageState extends State<HomePage> {
                                                     maxLines: 1,
                                                     strutStyle: StrutStyle(fontSize: 16),
                                                     text: TextSpan(
-                                                      text: '${HomePosts[index]['promise_date'].toString().substring(5,7)}/${HomePosts[index]['promise_date'].toString().substring(8,10)}  |  ${HomePosts[index]['promise_location']['center_name']}',
+                                                      text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.bold,
@@ -648,14 +490,13 @@ class _HomePageState extends State<HomePage> {
                                           ClipRRect(
                                             borderRadius: BorderRadius.circular(50.0),
                                             child: Image.network(
-                                              //'${userImage[index]}',
-                                              '${HomePosts[index]['user_id']['user_profile_img']}',
+                                              '${userImage[index]}',
                                               width: 25.0,
                                               height: 25.0,
                                               fit: BoxFit.cover,
                                               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                                 return Image.asset(
-                                                  'assets/images/profile_null_image.png',
+                                                  'assets/images/dummy.jpg',
                                                   width: 25.0,
                                                   height: 25.0,
                                                   fit: BoxFit.cover,
@@ -676,7 +517,7 @@ class _HomePageState extends State<HomePage> {
                                                     maxLines: 1,
                                                     strutStyle: StrutStyle(fontSize: 16),
                                                     text: TextSpan(
-                                                      text: '${HomePosts[index]['user_id']['user_nickname']}',
+                                                      text: '${usersName[index]}',
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         color: Color(0xFF757575),
@@ -704,7 +545,170 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     );
-                  },
+                     */
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size(size.width, 144),
+                            maximumSize: Size(size.width, 144),
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(0),
+                            ),
+                            primary: Color(0xFF22232A)
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${HomePosts[index]['_id']}')));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.network(
+                                      "${HomePosts[index]['post_img']}",
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/dummy.jpg',
+                                          width: 100.0,
+                                          height: 100.0,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Container(
+                                    height: 100.0,
+                                    child: Column(
+                                      //mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: size.width - 155,
+                                              child: Row(
+                                                children: [
+                                                  Flexible(
+                                                    child: RichText(
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 2,
+                                                      strutStyle: StrutStyle(fontSize: 16),
+                                                      text: TextSpan(
+                                                        text: '${HomePosts[index]['post_title']}',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 2,
+                                            ),
+                                            Container(
+                                              width: size.width - 155,
+                                              child: Row(
+                                                children: [
+                                                  Flexible(
+                                                    child: RichText(
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      strutStyle: StrutStyle(fontSize: 16),
+                                                      text: TextSpan(
+                                                        text: '${HomePosts[index]['promise_date'].toString().substring(5,7)}/${HomePosts[index]['promise_date'].toString().substring(8,10)}  |  ${HomePosts[index]['promise_location']['center_name']}',
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Color(0xFF757575),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(50.0),
+                                              child: Image.network(
+                                                //'${userImage[index]}',
+                                                '${HomePosts[index]['user_id']['user_profile_img']}',
+                                                width: 25.0,
+                                                height: 25.0,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/images/profile_null_image.png',
+                                                    width: 25.0,
+                                                    height: 25.0,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              width: size.width - 190,
+                                              child: Row(
+                                                children: [
+                                                  Flexible(
+                                                    child: RichText(
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      strutStyle: StrutStyle(fontSize: 16),
+                                                      text: TextSpan(
+                                                        text: '${HomePosts[index]['user_id']['user_nickname']}',
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Color(0xFF757575),
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                height: 2,
+                                width: size.width - 40,
+                                color: Color(0xFF303037),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
