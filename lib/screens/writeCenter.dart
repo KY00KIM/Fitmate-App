@@ -74,11 +74,17 @@ class _WriteCenterPageState extends State<WriteCenterPage> {
                       color: Color(0xFFDADADA),
                     ),
                   ),
-                  Text(
-                    data[index]['address_name'].toString(),
-                    style: TextStyle(
-                      color: Color(0xFF757575),
-                      fontSize: 13,
+                  Flexible(
+                    child: RichText(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      text: TextSpan(
+                        text: data[index]['address_name'].toString(),
+                        style: TextStyle(
+                          color: Color(0xFF757575),
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
                   ),
                 ]
@@ -194,11 +200,18 @@ class _WriteCenterPageState extends State<WriteCenterPage> {
                           color: Color(0xFFDADADA),
                         ),
                       ),
-                      Text(
-                        data[index]['address_name'].toString(),
-                        style: TextStyle(
-                          color: Color(0xFF757575),
-                          fontSize: 13,
+                      SizedBox(width: 20,),
+                      Flexible(
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          text: TextSpan(
+                            text: data[index]['address_name'].toString(),
+                            style: TextStyle(
+                              color: Color(0xFF757575),
+                              fontSize: 13,
+                            ),
+                          ),
                         ),
                       ),
                     ]
