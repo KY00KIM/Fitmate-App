@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:fitmate/utils/data.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
@@ -54,9 +55,17 @@ class _MapPageState extends State<MapPage> {
     final Size size = MediaQuery.of(context).size;
     print(UserData);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       extendBody: true,
       key: scaffoldKey,
       backgroundColor: Color(0xFF22232A),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF22232A),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       /*
       appBar: AppBar(
         elevation: 0.0,
