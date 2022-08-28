@@ -215,12 +215,15 @@ class _MatchingPageState extends State<MatchingPage> {
       backgroundColor: Color(0xFF22232A),
       appBar: AppBar(
         elevation: 0.0,
+        /*
         shape: Border(
           bottom: BorderSide(
             color: Color(0xFF3D3D3D),
             width: 1,
           ),
         ),
+
+         */
         backgroundColor: Color(0xFF22232A),
         title: Padding(
           padding: EdgeInsets.only(left: 5.0),
@@ -233,6 +236,7 @@ class _MatchingPageState extends State<MatchingPage> {
             ),
           ),
         ),
+        /*
         actions: [
           IconButton(
             onPressed: () {
@@ -249,6 +253,8 @@ class _MatchingPageState extends State<MatchingPage> {
             ),
           ),
         ],
+
+         */
       ),
       /*
       bottomNavigationBar: BottomAppBar(

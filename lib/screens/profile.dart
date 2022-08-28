@@ -81,12 +81,15 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: const Color(0xFF22232A),
       appBar: AppBar(
         elevation: 0.0,
+        /*
         shape: Border(
           bottom: BorderSide(
             color: Color(0xFF3D3D3D),
             width: 1,
           ),
         ),
+
+         */
         backgroundColor: Color(0xFF22232A),
         title: Padding(
           padding: EdgeInsets.only(left: 5.0),
