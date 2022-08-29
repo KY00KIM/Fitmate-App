@@ -36,7 +36,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    UserData['user_introduce'] = '안녕하세요! 직장 생활 하면서 운동을 좀 쉬었는데 제대로 다시 해보고 싶어요! 같이 할 사람 찾고 싶습니다!';
   }
 
   Future<int> getReviewProfile() async {

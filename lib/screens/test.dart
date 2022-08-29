@@ -213,25 +213,12 @@ class SelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Returning data selectoin")),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            RaisedButton(
-              child: Text("One"),
-              onPressed: () {
-                Navigator.pop(context, "One");
-              },
-            ),
-            RaisedButton(
-              child: Text("Two"),
-              onPressed: () {
-                Navigator.pop(context, "Two");
-              },
-            )
-          ],
-        ),
-      ),
+
+
     );
   }
 }
+
+
+
 
