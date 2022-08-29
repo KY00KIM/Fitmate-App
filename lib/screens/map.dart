@@ -366,7 +366,7 @@ class _MapPageState extends State<MapPage> {
             onMapTwoFingerTap: _onMapTwoFingerTap,
             //onSymbolTap: _onMarkerTap,
             //maxZoom: 17,
-            minZoom: 15,  //최대 지도 범위
+            minZoom: 13,  //최대 지도 범위
           ),
           Positioned(
             right: 25,

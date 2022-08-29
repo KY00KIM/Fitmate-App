@@ -551,8 +551,8 @@ class _HomePageState extends State<HomePage> {
                             elevation: 0,
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.zero,
-                            minimumSize: Size(size.width, 144),
-                            maximumSize: Size(size.width, 144),
+                            minimumSize: Size(size.width, index == 0 ? 124 : 144),
+                            maximumSize: Size(size.width, index == 0 ? 124 : 144),
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(0),
                             ),
@@ -562,7 +562,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${HomePosts[index]['_id']}')));
                         },
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          padding: EdgeInsets.fromLTRB(20, index == 0 ? 0 : 20, 20, 0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -699,7 +699,6 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               Container(
-                                margin : EdgeInsets.only(bottom: 20),
                                 height: 2,
                                 width: size.width - 40,
                                 color: Color(0xFF303037),

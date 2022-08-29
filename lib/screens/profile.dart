@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,6 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    log(UserData.toString());
     return Scaffold(
       backgroundColor: const Color(0xFF22232A),
       appBar: AppBar(
@@ -487,7 +489,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '기본 루틴',
+                              '운동 루틴',
                               style: TextStyle(
                                 color: Color(0xFFffffff),
                                 fontWeight: FontWeight.bold,
@@ -686,7 +688,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 112,
                         decoration: BoxDecoration(
                           color: Color(0xFF22232A),
-                          border: Border.all(width: 1, color: Color(0xFF757575)),
+                          border: Border.all(width: 1, color: Color(0xFF363636)),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Padding(

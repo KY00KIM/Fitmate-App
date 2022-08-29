@@ -362,6 +362,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
               //shadowColor: Colors.transparent,
             ),
             bottomNavigationBar: BottomAppBar(
+              elevation: 0,
               color: Colors.transparent, // <-- this
               //shadowColor: Colors.transparent,
               //color: Color(0xFF22232A),
