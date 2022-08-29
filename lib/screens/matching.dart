@@ -499,7 +499,7 @@ class _MatchingPageState extends State<MatchingPage> {
       bottomNavigationBar: bottomNavigationBar(context, 4),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.fromLTRB(25, 10, 25, 0),
+          padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
           child: FutureBuilder<bool>(
           future: getMatching(),
           builder: (context, snapshot) {

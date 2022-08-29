@@ -20,56 +20,61 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   List<String> reviewName = [];
   List<String> reviewImg = [];
   List<String> reviewContext = [];
 
   String getSchedule() {
-    if(UserData["user_schedule_time"] == 0) return "오전";
-    else if(UserData["user_schedule_time"] == 1) return "오후";
-    else return "저녁";
+    if (UserData["user_schedule_time"] == 0)
+      return "오전";
+    else if (UserData["user_schedule_time"] == 1)
+      return "오후";
+    else
+      return "저녁";
   }
 
   @override
   void initState() {
     super.initState();
-    var sl = 'sefes';
-    print("지금 내 유전 _id : ${UserData['_id']}");
-    print("유저 정보 : ${UserData}");
+    UserData['user_introduce'] = '안녕하세요! 직장 생활 하면서 운동을 좀 쉬었는데 제대로 다시 해보고 싶어요! 같이 할 사람 찾고 싶습니다!';
   }
 
   Future<int> getReviewProfile() async {
-    http.Response response = await http.get(Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
       headers: {
-        "Authorization" : "bearer $IdToken",
-        "userId" : "${UserData['_id']}"
+        "Authorization": "bearer $IdToken",
+        "userId": "${UserData['_id']}"
       },
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+    if (response.statusCode != 200 &&
+        resBody["error"]["code"] == "auth/id-token-expired") {
+      IdToken =
+          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+              .token
+              .toString();
 
-      response = await http.get(Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
+      response = await http.get(
+        Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
         headers: {
-          "Authorization" : "bearer $IdToken",
-          "userId" : "${UserData['_id']}"
+          "Authorization": "bearer $IdToken",
+          "userId": "${UserData['_id']}"
         },
       );
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
-    for(int i = 0; i < resBody['data'].length; i++) {
+    for (int i = 0; i < resBody['data'].length; i++) {
       reviewContext.add(resBody['data'][i]['review_body']);
       reviewImg.add(resBody["data"][i]["review_send_id"]['user_profile_img']);
       reviewName.add(resBody['data'][i]['review_send_id']['user_nickname']);
     }
 
     print("반환 준비 : ${response.statusCode}");
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       print("반환 갑니다잉");
       return resBody["data"].length;
-    }
-    else {
+    } else {
       print("what the fuck");
       throw Exception('Failed to load post');
     }
@@ -117,40 +122,50 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             elevation: 40,
             child: Padding(
-              padding: const EdgeInsets.only(right : 15.0),
+              padding: const EdgeInsets.only(right: 15.0),
               child: Icon(Icons.settings),
             ),
             onSelected: (value) async {
-              if (value == '/edit') Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditPage()));
-              else if (value == '/logout'){
+              if (value == '/edit')
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfileEditPage()));
+              else if (value == '/logout') {
                 print('로그아웃');
                 await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        LoginPage(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),
                 );
-              } else if(value == '/signout') {
-                CollectionReference users = FirebaseFirestore.instance.collection('users');
+              } else if (value == '/signout') {
+                CollectionReference users =
+                    FirebaseFirestore.instance.collection('users');
                 users.doc(UserData['social']['user_id']).delete();
                 User? user = FirebaseAuth.instance.currentUser;
                 user?.delete();
 
-                http.Response response = await http.delete(Uri.parse("${baseUrl}users"),
+                http.Response response = await http.delete(
+                  Uri.parse("${baseUrl}users"),
                   headers: {
-                    "Authorization" : "bearer $IdToken",
+                    "Authorization": "bearer $IdToken",
                   },
                 );
                 var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
-                  IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+                if (response.statusCode != 200 &&
+                    resBody["error"]["code"] == "auth/id-token-expired") {
+                  IdToken = (await FirebaseAuth.instance.currentUser
+                          ?.getIdTokenResult(true))!
+                      .token
+                      .toString();
 
-                  response = await http.delete(Uri.parse("${baseUrl}users"),
+                  response = await http.delete(
+                    Uri.parse("${baseUrl}users"),
                     headers: {
-                      "Authorization" : "bearer $IdToken",
+                      "Authorization": "bearer $IdToken",
                     },
                   );
                   resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -164,7 +179,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        LoginPage(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),
@@ -434,76 +450,139 @@ class _ProfilePageState extends State<ProfilePage> {
        */
       bottomNavigationBar: bottomNavigationBar(context, 5),
       body: SafeArea(
-        child : FutureBuilder<int> (
+        child: FutureBuilder<int>(
           future: getReviewProfile(),
           builder: (context, snapshot) {
             print('snapshot data : ${snapshot.hasData}');
             if (snapshot.hasData) {
               return SingleChildScrollView(
                 child: Container(
-                  padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                   child: Column(
                     children: [
                       Container(
                         width: size.width - 34,
                         padding: EdgeInsets.all(0),
-                        child: Column(
+                        child: Stack(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(100.0),
-                              child: Image.network(
-                                '${UserData['user_profile_img']}',
-                                width: 70.0,
-                                height: 70.0,
-                                fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/profile_null_image.png',
-                                    width: 70.0,
-                                    height: 70.0,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+                                  Container(
+                                    width: size.width - 40,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF292A2E),
+                                      border: Border.all(
+                                          width: 1, color: Color(0xFF5A595C)),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 55,
+                                        ),
+                                        Text(
+                                          '${UserData["user_nickname"]}',
+                                          style: TextStyle(
+                                            color: Color(0xFFffffff),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          '${UserData["user_gender"] == true ? '남' : '여'} · ${UserData["user_address"]}',
+                                          style: TextStyle(
+                                            color: Color(0xFFA4A5A8),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        UserData['user_introduce'] == null
+                                            ? SizedBox(
+                                                height: 10,
+                                              )
+                                            : SizedBox(
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Container(
+                                                width: size.width - 80,
+                                                child: Text(
+                                                    '${UserData['user_introduce']}',
+                                                    style: TextStyle(
+                                                      color: Color(0xFFFFFFFF),
+                                                      fontSize: 12,
+                                                    ),
+                                                    textAlign: TextAlign.center),
+                                              ),
+                                              SizedBox(
+                                                height: 12,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '${UserData["user_nickname"]}(${UserData["user_gender"] == true ? '남' : '여'})',
-                              style: TextStyle(
-                                color: Color(0xFFffffff),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100.0),
+                                child: Image.network(
+                                  '${UserData['user_profile_img']}',
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                    return Image.asset(
+                                      'assets/images/profile_null_image.png',
+                                      width: 70.0,
+                                      height: 70.0,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        width: size.width - 40,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '운동 루틴',
-                              style: TextStyle(
-                                color: Color(0xFFffffff),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Text(
-                                '${getSchedule()}',
-                                style: TextStyle(
-                                  color: Color(0xFF2975CF),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                            Positioned(
+                              right: 18,
+                              top: 60,
+                              child: ClipOval(
+                                child: Material(
+                                  color: Colors.blue, // button color
+                                  child: InkWell(
+                                    splashColor: Colors.red, // inkwell color
+                                    child: SizedBox(
+                                      width: 25,
+                                      height: 25,
+                                      child: Icon(
+                                        Icons.edit,
+                                        size: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfileEditPage()));
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
@@ -512,157 +591,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       SizedBox(
                         height: 20,
-                      ),
-                      Container(
-                        width: size.width - 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: UserData["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(
-                                  width: 1,
-                                  color: UserData["user_weekday"]["mon"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '월',
-                                style: TextStyle(
-                                    color: UserData["user_weekday"]["mon"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: UserData["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(
-                                  width: 1,
-                                  color: UserData["user_weekday"]["tue"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '화',
-                                style: TextStyle(
-                                    color: UserData["user_weekday"]["tue"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: UserData["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(
-                                  width: 1,
-                                  color: UserData["user_weekday"]["wed"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '수',
-                                style: TextStyle(
-                                    color: UserData["user_weekday"]["wed"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: UserData["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(
-                                  width: 1,
-                                  color: UserData["user_weekday"]["thu"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '목',
-                                style: TextStyle(
-                                    color: UserData["user_weekday"]["thu"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: UserData["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(
-                                  width: 1,
-                                  color: UserData["user_weekday"]["fri"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '금',
-                                style: TextStyle(
-                                    color: UserData["user_weekday"]["fri"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: UserData["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(
-                                  width: 1,
-                                  color: UserData["user_weekday"]["sat"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '토',
-                                style: TextStyle(
-                                    color: UserData["user_weekday"]["sat"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: UserData["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF22232A),
-                                borderRadius: BorderRadius.circular(40),
-                                border: Border.all(
-                                  width: 1,
-                                  color: UserData["user_weekday"]["sun"] == true ? Color(0xFF2975CF) : Color(0xFF878E97),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '일',
-                                style: TextStyle(
-                                    color: UserData["user_weekday"]["sun"] == true ? Color(0xFFffffff) : Color(0xFF878E97),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
                       ),
                       Container(
                         width: size.width - 40,
@@ -670,7 +598,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              '기본 정보',
+                              ' 기본 정보',
                               style: TextStyle(
                                 color: Color(0xFFffffff),
                                 fontWeight: FontWeight.bold,
@@ -681,15 +609,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Container(
                         width: size.width - 40,
-                        height: 112,
+                        height: 160,
                         decoration: BoxDecoration(
-                          color: Color(0xFF22232A),
-                          border: Border.all(width: 1, color: Color(0xFF363636)),
-                          borderRadius: BorderRadius.circular(15),
+                          color: Color(0xFF292A2E),
+                          border: Border.all(
+                              width: 1, color: Color(0xFF5A595C)),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(22, 15, 22, 15),
@@ -697,41 +626,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_pin,
-                                          color: Color(0xFF2975CF),
-                                          size: 17,
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          '내 동네',
-                                          style: TextStyle(
-                                            color: Color(0xFFffffff),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '${UserData["user_address"]}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFffffff),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     child: Row(
@@ -765,7 +661,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
                                     child: Row(
@@ -790,6 +687,41 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   Text(
                                     '${snapshot.data.toString()}회',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFFffffff),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_pin,
+                                          color: Color(0xFF2975CF),
+                                          size: 17,
+                                        ),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Text(
+                                          '운동 시간대',
+                                          style: TextStyle(
+                                            color: Color(0xFFffffff),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    '${getSchedule()}',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -834,17 +766,206 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                       */
+                              Container(
+                                width: size.width - 80,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: UserData["user_weekday"]["mon"] == true
+                                            ? Color(0xFF2975CF)
+                                            : Color(0xFF22232A),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: UserData["user_weekday"]["mon"] == true
+                                              ? Color(0xFF2975CF)
+                                              : Color(0xFF878E97),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '월',
+                                        style: TextStyle(
+                                            color:
+                                            UserData["user_weekday"]["mon"] == true
+                                                ? Color(0xFFffffff)
+                                                : Color(0xFF878E97),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: UserData["user_weekday"]["tue"] == true
+                                            ? Color(0xFF2975CF)
+                                            : Color(0xFF22232A),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: UserData["user_weekday"]["tue"] == true
+                                              ? Color(0xFF2975CF)
+                                              : Color(0xFF878E97),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '화',
+                                        style: TextStyle(
+                                            color:
+                                            UserData["user_weekday"]["tue"] == true
+                                                ? Color(0xFFffffff)
+                                                : Color(0xFF878E97),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: UserData["user_weekday"]["wed"] == true
+                                            ? Color(0xFF2975CF)
+                                            : Color(0xFF22232A),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: UserData["user_weekday"]["wed"] == true
+                                              ? Color(0xFF2975CF)
+                                              : Color(0xFF878E97),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '수',
+                                        style: TextStyle(
+                                            color:
+                                            UserData["user_weekday"]["wed"] == true
+                                                ? Color(0xFFffffff)
+                                                : Color(0xFF878E97),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: UserData["user_weekday"]["thu"] == true
+                                            ? Color(0xFF2975CF)
+                                            : Color(0xFF22232A),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: UserData["user_weekday"]["thu"] == true
+                                              ? Color(0xFF2975CF)
+                                              : Color(0xFF878E97),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '목',
+                                        style: TextStyle(
+                                            color:
+                                            UserData["user_weekday"]["thu"] == true
+                                                ? Color(0xFFffffff)
+                                                : Color(0xFF878E97),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: UserData["user_weekday"]["fri"] == true
+                                            ? Color(0xFF2975CF)
+                                            : Color(0xFF22232A),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: UserData["user_weekday"]["fri"] == true
+                                              ? Color(0xFF2975CF)
+                                              : Color(0xFF878E97),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '금',
+                                        style: TextStyle(
+                                            color:
+                                            UserData["user_weekday"]["fri"] == true
+                                                ? Color(0xFFffffff)
+                                                : Color(0xFF878E97),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: UserData["user_weekday"]["sat"] == true
+                                            ? Color(0xFF2975CF)
+                                            : Color(0xFF22232A),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: UserData["user_weekday"]["sat"] == true
+                                              ? Color(0xFF2975CF)
+                                              : Color(0xFF878E97),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '토',
+                                        style: TextStyle(
+                                            color:
+                                            UserData["user_weekday"]["sat"] == true
+                                                ? Color(0xFFffffff)
+                                                : Color(0xFF878E97),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        color: UserData["user_weekday"]["sun"] == true
+                                            ? Color(0xFF2975CF)
+                                            : Color(0xFF22232A),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                          width: 1,
+                                          color: UserData["user_weekday"]["sun"] == true
+                                              ? Color(0xFF2975CF)
+                                              : Color(0xFF878E97),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '일',
+                                        style: TextStyle(
+                                            color:
+                                            UserData["user_weekday"]["sun"] == true
+                                                ? Color(0xFFffffff)
+                                                : Color(0xFF878E97),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Container(
-                        width: size.width - 40,
-                        height: 1,
-                        color: Color(0xFF757575),
                       ),
                       SizedBox(
                         height: 20,
@@ -855,7 +976,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              '메이트 리뷰',
+                              ' 메이트 리뷰',
                               style: TextStyle(
                                 color: Color(0xFFffffff),
                                 fontWeight: FontWeight.bold,
@@ -868,77 +989,92 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         height: 15,
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: size.width - 40,
-                            child: Column(
-                              children: [
-                                Row(
+                      snapshot.data == 0 ? SizedBox() :
+                      Container(
+                        width: size.width - 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF292A2E),
+                          border: Border.all(
+                              width: 1, color: Color(0xFF5A595C)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 8, 15, 8),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                width: size.width - 40,
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: Column(
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(100.0),
-                                      child: Image.network(
-                                        '${reviewImg[index]}',
-                                        width: 35.0,
-                                        height: 35.0,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                          return Image.asset(
-                                            'assets/images/profile_null_image.png',
-                                            fit: BoxFit.cover,
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100.0),
+                                          child: Image.network(
+                                            '${reviewImg[index]}',
                                             width: 35.0,
                                             height: 35.0,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 12,
-                                    ),
-                                    Text(
-                                      '${reviewName[index]}',
-                                      style: TextStyle(
-                                        color: Color(0xFFffffff),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 45),
-                                  child: Container(
-                                    width: size.width - 85,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                          child: RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 100,
-                                            strutStyle: StrutStyle(fontSize: 16),
-                                            text: TextSpan(
-                                              text: '${reviewContext[index]}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context,
+                                                Object exception,
+                                                StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/profile_null_image.png',
+                                                fit: BoxFit.cover,
+                                                width: 35.0,
+                                                height: 35.0,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 12,
+                                        ),
+                                        Text(
+                                          '${reviewName[index]}',
+                                          style: TextStyle(
+                                            color: Color(0xFFffffff),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 45),
+                                      child: Container(
+                                        width: size.width - 85,
+                                        child: Row(
+                                          children: [
+                                            Flexible(
+                                              child: RichText(
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 100,
+                                                strutStyle:
+                                                    StrutStyle(fontSize: 16),
+                                                text: TextSpan(
+                                                  text: '${reviewContext[index]}',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -1456,4 +1592,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
