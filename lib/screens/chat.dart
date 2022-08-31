@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/chatList.dart';
 import 'package:fitmate/screens/makePromise.dart';
-import 'package:fitmate/screens/profileEdit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
