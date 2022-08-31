@@ -240,7 +240,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload: false,),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          HomePage(
+                        reload: false,
+                      ),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -286,7 +289,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ChatListPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -332,7 +336,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MapPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MapPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -378,7 +383,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MatchingPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MatchingPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),

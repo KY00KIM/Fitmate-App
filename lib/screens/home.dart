@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   Future<List> getPost(bool isPosts) async {
     print("homeposts : ${HomePosts.length == 0}");
     print("reload : ${widget.reload}");
-    if(isPosts == true && widget.reload == false) return HomePosts;
-    if(isPosts == true && refresh == true) {
+    if (isPosts == true && widget.reload == false) return HomePosts;
+    if (isPosts == true && refresh == true) {
       refresh = false;
       return HomePosts;
     }
@@ -58,8 +58,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     print("idtoken : $IdToken");
     print("skflsjeifslf");
 
-    http.Response response = await http.get(Uri.parse("${baseUrl}posts"),
-      headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}posts"),
+      headers: {
+        "Authorization": "bearer $IdToken",
+        "Content-Type": "application/json; charset=UTF-8"
+      },
     );
     print("response 완료");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -111,22 +115,18 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
      */
 
-    if(isPosts == false) {
+    if (isPosts == false) {
       refresh = true;
-      setState(() {
-
-      });
+      setState(() {});
     }
 
     print("반환 준비 : ${response.statusCode}");
-    if(response.statusCode == 200) {
-
+    if (response.statusCode == 200) {
       print("반환 갑니다잉");
       log(resBody['data'].toString());
       HomePosts = resBody['data'];
       return HomePosts;
-    }
-    else {
+    } else {
       print("what the fuck");
       throw Exception('Failed to load post');
     }
@@ -377,7 +377,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         child: RefreshIndicator(
           color: Color(0xFF22232A),
           onRefresh: () => getPost(false),
-          child: FutureBuilder<List> (
+          child: FutureBuilder<List>(
             future: getPost(true),
             builder: (context, snapshot) {
               print("snapshot : ${snapshot.data}");
@@ -398,8 +398,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                           shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(0),
                           ),
-                          primary: Color(0xFF22232A)
-                      ),
+                          primary: Color(0xFF22232A)),
                       onPressed: () {
                         print("버튼 클릭 : ${snapshot.data?[index]['_id']}");
                         Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${snapshot.data?[index]['_id']}')));
@@ -418,7 +417,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                     width: 100.0,
                                     height: 100.0,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
                                       return Image.asset(
                                           'assets/images/dummy.jpg',
                                         width: 100.0,
@@ -435,11 +436,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                   height: 100.0,
                                   child: Column(
                                     //mainAxisAlignment: MainAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Container(
                                             width: size.width - 155,
@@ -447,14 +451,17 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                               children: [
                                                 Flexible(
                                                   child: RichText(
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 2,
-                                                    strutStyle: StrutStyle(fontSize: 16),
+                                                    strutStyle: StrutStyle(
+                                                        fontSize: 16),
                                                     text: TextSpan(
                                                       text: '${snapshot.data?[index]['post_title']}',
                                                       style: TextStyle(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -471,15 +478,19 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                               children: [
                                                 Flexible(
                                                   child: RichText(
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
-                                                    strutStyle: StrutStyle(fontSize: 16),
+                                                    strutStyle: StrutStyle(
+                                                        fontSize: 16),
                                                     text: TextSpan(
                                                       text: '${snapshot.data?[index]['promise_date'].toString().substring(5,7)}/${snapshot.data?[index]['promise_date'].toString().substring(8,10)}  |  ${centerName[index]}',
                                                       style: TextStyle(
                                                         fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Color(0xFF757575),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Color(0xFF757575),
                                                       ),
                                                     ),
                                                   ),
@@ -492,13 +503,17 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                       Row(
                                         children: [
                                           ClipRRect(
-                                            borderRadius: BorderRadius.circular(50.0),
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
                                             child: Image.network(
                                               '${userImage[index]}',
                                               width: 25.0,
                                               height: 25.0,
                                               fit: BoxFit.cover,
-                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              errorBuilder:
+                                                  (BuildContext context,
+                                                      Object exception,
+                                                      StackTrace? stackTrace) {
                                                 return Image.asset(
                                                   'assets/images/dummy.jpg',
                                                   width: 25.0,
@@ -517,15 +532,19 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                                               children: [
                                                 Flexible(
                                                   child: RichText(
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 1,
-                                                    strutStyle: StrutStyle(fontSize: 16),
+                                                    strutStyle: StrutStyle(
+                                                        fontSize: 16),
                                                     text: TextSpan(
                                                       text: '${usersName[index]}',
                                                       style: TextStyle(
                                                         fontSize: 14,
-                                                        color: Color(0xFF757575),
-                                                        fontWeight: FontWeight.bold,
+                                                        color:
+                                                            Color(0xFF757575),
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),

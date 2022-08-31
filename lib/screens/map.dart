@@ -136,7 +136,10 @@ class _MapPageState extends State<MapPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload: false,),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          HomePage(
+                        reload: false,
+                      ),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -171,7 +174,8 @@ class _MapPageState extends State<MapPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ChatListPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -256,7 +260,8 @@ class _MapPageState extends State<MapPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MatchingPage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MatchingPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -301,7 +306,8 @@ class _MapPageState extends State<MapPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ProfilePage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
@@ -395,7 +401,7 @@ class _MapPageState extends State<MapPage> {
     /*
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
-      Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),
+          Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),
       duration: Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
@@ -457,7 +463,9 @@ class _MapPageState extends State<MapPage> {
       child: ListView.separated(
         itemCount: MapType.values.length,
         scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, __) => SizedBox(width: 12,),
+        separatorBuilder: (_, __) => SizedBox(
+          width: 12,
+        ),
         itemBuilder: (_, index) {
           final type = MapType.values[index];
           String title;
@@ -581,13 +589,12 @@ class _MapPageState extends State<MapPage> {
               contentPadding: EdgeInsets.zero,
               content: path != null
                   ? Image.file(
-                File(path),
-              )
+                      File(path),
+                    )
                   : Text('path is null!'),
               titlePadding: EdgeInsets.zero,
             );
           });
     });
   }
-
 }
