@@ -40,6 +40,7 @@ class _ChatListPageState extends State<ChatListPage> {
       print("반환 갑니다잉");
       log(resBody['data'].toString());
       log(UserData.toString());
+      print(resBody);
       return resBody["data"];
     }
     else {
@@ -429,7 +430,8 @@ class _ChatListPageState extends State<ChatListPage> {
               return Text("${snapshot.error}");
             }
             // 기본적으로 로딩 Spinner를 보여줍니다.
-            return Center(child: CircularProgressIndicator());
+            //return Center(child: CircularProgressIndicator());
+            return SizedBox();
           },
         ),
         /*

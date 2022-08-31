@@ -55,7 +55,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 2) {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
@@ -82,7 +82,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 3) {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
@@ -109,7 +109,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 4) {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
@@ -136,7 +136,7 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
             IconButton(
               onPressed: () {
                 if(pages != 5) {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(

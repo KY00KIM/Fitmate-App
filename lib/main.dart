@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/screens/home.dart';
 import 'package:fitmate/screens/login.dart';
+import 'package:fitmate/screens/test.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -101,7 +102,7 @@ class MyApp extends StatelessWidget {
             return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
           }
 
-          //return LoginPage();
+          //return FirstRoute();
         },
       ),
     );

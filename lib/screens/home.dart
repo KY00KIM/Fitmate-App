@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   bool refresh = false;
   int count = 0;
 
@@ -33,6 +33,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
   }
+
+  //새로고침 방지
+  @override
+  bool get wantKeepAlive => true;
 
   Future<List> getPost(bool isPosts) async {
     print("homeposts : ${HomePosts.length == 0}");
@@ -715,6 +719,7 @@ class _HomePageState extends State<HomePage> {
               }
               // 기본적으로 로딩 Spinner를 보여줍니다.
               return Center(child: CircularProgressIndicator());
+              //return SizedBox();
             },
           ),
           /*

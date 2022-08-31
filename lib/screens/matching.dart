@@ -1008,7 +1008,8 @@ class _MatchingPageState extends State<MatchingPage> {
               return Text("${snapshot.error}");
             }
             // 기본적으로 로딩 Spinner를 보여줍니다.
-            return Center(child: CircularProgressIndicator());
+            //return Center(child: CircularProgressIndicator());
+            return SizedBox();
           }
 
           ),
