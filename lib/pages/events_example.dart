@@ -237,7 +237,6 @@ class Event {
   final Map content;
 
   const Event(this.content);
-
 }
 
 /// Example events.

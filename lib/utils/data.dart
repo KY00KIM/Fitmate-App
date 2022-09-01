@@ -38,6 +38,12 @@ Map fitnessPartConverse = {
   '유산소' : '62c670a04b8212e4674dbe3a'
 };
 
+class LoginedUser {
+  late String _id;
+  late String User_name;
+  late String user_address;
+}
+
 String UserCenterName = '';
 late Map UserData = {
   "_id": "",
