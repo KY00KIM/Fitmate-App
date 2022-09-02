@@ -1,16 +1,15 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/home.dart';
-import 'package:fitmate/screens/login.dart';
-import 'package:fitmate/screens/test.dart';
+import 'package:fitmate/presentation/home/home.dart';
+import 'package:fitmate/presentation/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'domain/util.dart';
 import 'firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:fitmate/utils/data.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
