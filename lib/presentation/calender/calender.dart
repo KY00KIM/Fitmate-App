@@ -32,14 +32,14 @@ final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
-class MatchingPage extends StatefulWidget {
-  const MatchingPage({Key? key}) : super(key: key);
+class CalenderPage extends StatefulWidget {
+  const CalenderPage({Key? key}) : super(key: key);
 
   @override
-  State<MatchingPage> createState() => _MatchingPageState();
+  State<CalenderPage> createState() => _CalenderPageState();
 }
 
-class _MatchingPageState extends State<MatchingPage> {
+class _CalenderPageState extends State<CalenderPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   late ValueNotifier<List<Event>> _selectedEvents;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -309,17 +309,6 @@ class _MatchingPageState extends State<MatchingPage> {
                       _focusedDay = focusedDay;
                     },
                   ),
-                  SizedBox(height: 5,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 3,
-                        color: Color(0xFF3D3D3D),
-                      ),
-                    ],
-                  ),
                   SizedBox(
                     height: 10,
                   ),
@@ -570,8 +559,7 @@ class _MatchingPageState extends State<MatchingPage> {
               return Text("${snapshot.error}");
             }
             // 기본적으로 로딩 Spinner를 보여줍니다.
-            //return Center(child: CircularProgressIndicator());
-            return SizedBox();
+            return Center(child: CircularProgressIndicator());
           }
           ),
         ),

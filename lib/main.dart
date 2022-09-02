@@ -7,6 +7,7 @@ import 'package:fitmate/presentation/login/login.dart';
 import 'package:fitmate/presentation/post/post.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'domain/util.dart';
 import 'domain/firebase_options.dart';
@@ -58,34 +59,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'FitMate',
-      // ignore: unrelated_type_equality_checks, prefer_const_constructors
-      //home: getToken() == true ? LoginPage() : HomePage(),
-      // initialBinding: BindingsBuilder(
-      //   () {
-      //     Get.put(NotificationController());
-      //   },
-      // ),
-      home: FutureBuilder(
-        future: getToken(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData == false) {
-            return Center(child: CircularProgressIndicator());
-          }
-          //error가 발생하게 될 경우 반환하게 되는 부분
-          else if (snapshot.hasError) {
-            return LoginPage();
-          }
-          // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
-          else {
-            // ignore: avoid_print
-            return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
-          }
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark,
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'FitMate',
+        // ignore: unrelated_type_equality_checks, prefer_const_constructors
+        //home: getToken() == true ? LoginPage() : HomePage(),
+        // initialBinding: BindingsBuilder(
+        //   () {
+        //     Get.put(NotificationController());
+        //   },
+        // ),
+        home: FutureBuilder(
+          future: getToken(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData == false) {
+              return Center(child: CircularProgressIndicator());
+            }
+            //error가 발생하게 될 경우 반환하게 되는 부분
+            else if (snapshot.hasError) {
+              return LoginPage();
+            }
+            // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+            else {
+              // ignore: avoid_print
+              return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
+            }
 
-          //return main_home();
-        },
+            //return main_home();
+          },
+        ),
       ),
     );
   }

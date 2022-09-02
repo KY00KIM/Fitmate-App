@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../presentation/calender/calender.dart';
@@ -19,6 +20,10 @@ class BarWidget {
       backgroundColor: whiteTheme,
       toolbarHeight: 76,
       elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: whiteTheme,
+      ),
+      brightness: Brightness.dark,
       title: Padding(
         padding: EdgeInsets.only(left: 7.0),
         child: Text(
@@ -208,7 +213,7 @@ class BarWidget {
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    MatchingPage(),
+                                    CalenderPage(),
                             transitionDuration: Duration.zero,
                             reverseTransitionDuration: Duration.zero,
                           ),

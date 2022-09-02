@@ -55,14 +55,6 @@ class _MapPageState extends State<MapPage> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       key: scaffoldKey,
-      backgroundColor: Color(0xFF22232A),
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Color(0xFF22232A),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 3),
       body: Stack(
         children: <Widget>[
