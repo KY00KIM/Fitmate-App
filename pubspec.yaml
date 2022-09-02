@@ -61,6 +61,7 @@ dependencies:
     git: https://github.com/LBSTECH/naver_map_plugin.git
   sign_in_with_apple: ^4.1.0
   iconsax: ^0.0.8
+  adobe_xd: ^2.0.1
 
 flutter_icons:
   android: 'launcher_icon'

@@ -9,6 +9,7 @@
 .history
 .svn/
 ios/
+lib/presentation/adobe/
 
 # IntelliJ related
 *.iml

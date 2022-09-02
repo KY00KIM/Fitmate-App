@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
     // ignore: await_only_futures
 
     User? tokenResult = await FirebaseAuth.instance.currentUser;
-    //log(tokenResult.toString());
+    log(tokenResult.toString());
     if (tokenResult == null) return true;
     // ignore: unused_local_variable
     var idToken = await tokenResult.getIdToken();
@@ -69,7 +71,6 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
@@ -82,7 +83,8 @@ class MyApp extends StatelessWidget {
             // ignore: avoid_print
             return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
           }
-          //return FirstRoute();
+
+          //return main_home();
         },
       ),
     );

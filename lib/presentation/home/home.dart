@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fitmate/ui/bar_widget.dart';
+import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fitmate/presentation/writing.dart';
@@ -53,9 +54,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           }),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
-        //child: RefreshIndicator(
-          //color: Color(0xFF22232A),
-          //onRefresh: () => postApi.getPost(false),
+        child: RefreshIndicator(
+          onRefresh: () => postApi.getPost(false),
           child: FutureBuilder<List>(
             future: postApi.getPost(true),
             builder: (context, snapshot) {
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
               //return SizedBox();
             },
           ),
-        //),
+        ),
       ),
     );
   }

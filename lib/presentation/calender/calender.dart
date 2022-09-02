@@ -12,11 +12,11 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:http/http.dart' as http;
 
-import '../domain/util.dart';
-import '../ui/bar_widget.dart';
-import '../ui/colors.dart';
-import '../ui/show_toast.dart';
-import 'otherProfile.dart';
+import '../../domain/util.dart';
+import '../../ui/bar_widget.dart';
+import '../../ui/colors.dart';
+import '../../ui/show_toast.dart';
+import '../otherProfile.dart';
 
 
 class Event {
