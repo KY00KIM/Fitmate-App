@@ -16,7 +16,7 @@ import '../../domain/util.dart';
 import '../../ui/bar_widget.dart';
 import '../../ui/colors.dart';
 import '../../ui/show_toast.dart';
-import '../otherProfile.dart';
+import '../other_profile.dart';
 
 
 class Event {

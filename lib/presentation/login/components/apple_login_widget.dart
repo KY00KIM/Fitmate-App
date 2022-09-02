@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import '../../../data/firebase_service/firebase_auth_methods.dart';
 import '../../../domain/util.dart';
 import '../../../ui/show_toast.dart';
-import '../../home/home.dart';
+import '../../post/post.dart';
 import '../../signup.dart';
 
 class AppleLoginWidget extends StatelessWidget {

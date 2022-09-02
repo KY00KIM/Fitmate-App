@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../presentation/calender/calender.dart';
-import '../presentation/chatList.dart';
-import '../presentation/home/home.dart';
+import '../presentation/chat_list.dart';
 import '../presentation/map.dart';
 import '../presentation/notice.dart';
+import '../presentation/post/post.dart';
 import '../presentation/profile.dart';
 import 'colors.dart';
 

@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import '../domain/util.dart';
 import '../ui/show_toast.dart';
 import 'chat.dart';
-import 'otherProfile.dart';
+import 'other_profile.dart';
 
 class DetailMachingPage extends StatefulWidget {
   String postId;

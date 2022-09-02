@@ -3,8 +3,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/writeCenter.dart';
-import 'package:fitmate/presentation/writeLocation.dart';
+import 'package:fitmate/presentation/post/post.dart';
+import 'package:fitmate/presentation/write_center.dart';
+import 'package:fitmate/presentation/write_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,7 +14,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../domain/util.dart';
 import '../ui/show_toast.dart';
-import 'home/home.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);

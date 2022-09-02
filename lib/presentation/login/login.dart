@@ -1,18 +1,7 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/presentation/login/components/apple_login_widget.dart';
 import 'package:fitmate/presentation/login/components/google_login_widget.dart';
-import 'package:fitmate/presentation/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/home/home.dart';
-
-import '../../data/firebase_service/firebase_auth_methods.dart';
-import '../../domain/util.dart';
-import '../../ui/show_toast.dart';
 
 class LoginPage extends StatefulWidget {
   @override

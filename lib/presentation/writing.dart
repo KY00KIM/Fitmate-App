@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/writeCenter.dart';
+import 'package:fitmate/presentation/post/post.dart';
+import 'package:fitmate/presentation/write_center.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import 'package:http/http.dart' as http;
 
 import '../domain/util.dart';
 import '../ui/show_toast.dart';
-import 'home/home.dart';
 
 class WritingPage extends StatefulWidget {
   const WritingPage({Key? key}) : super(key: key);
