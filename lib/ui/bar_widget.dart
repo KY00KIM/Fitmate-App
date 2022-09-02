@@ -6,6 +6,7 @@ import '../presentation/calender/calender.dart';
 import '../presentation/chatList.dart';
 import '../presentation/home/home.dart';
 import '../presentation/map.dart';
+import '../presentation/notice.dart';
 import '../presentation/profile.dart';
 import 'colors.dart';
 
@@ -52,16 +53,24 @@ class BarWidget {
                 ),
               ],
             ),
-            child: IconButton(
-              icon: SvgPicture.asset(
-                // 5
-                "${iconSource}notice_icon.svg",
-                width: 18,
-                height: 18,
+            child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
               ),
-              onPressed: () {
-
-              },
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  "${iconSource}notice_icon.svg",
+                  width: 18,
+                  height: 18,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NoticePage()),
+                  );
+                },
+              ),
             ),
           ),
         )
