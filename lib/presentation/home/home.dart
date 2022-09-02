@@ -39,17 +39,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Color(0xFF22232A),
-        title: Padding(
-          padding: EdgeInsets.only(left: 7.0),
-          child: Image.asset(
-            'assets/images/fitmate_logo.png',
-            height: 20,
-          ),
-        ),
-      ),
+      appBar: barWidget.appBar(context),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 1),
       floatingActionButton: FloatingActionButton(
           child: Icon(
