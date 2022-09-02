@@ -3,8 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 
-import '../domain/util.dart';
-
+//공통 변수
 
 Map fitnessPart = {
   "62c670514b8212e4674dbe34": '등',

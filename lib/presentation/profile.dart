@@ -3,13 +3,13 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/login.dart';
+import 'package:fitmate/presentation/login/login.dart';
 import 'package:fitmate/presentation/profileEdit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../data/firebase_service/firebase_auth_methods.dart';
 import '../domain/util.dart';
-import '../firebase_service/firebase_auth_methods.dart';
 import '../ui/bottom_navigation_bar.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -819,3 +819,4 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
