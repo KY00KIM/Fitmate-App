@@ -1,4 +1,3 @@
-//import 'dart:html' as http;
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/data.dart';
+import '../domain/util.dart';
+import '../ui/show_toast.dart';
 import 'matching.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -318,56 +318,6 @@ class _ReviewPageState extends State<ReviewPage> {
                       });
                     },
                   ),
-                  /*
-                  ListView.builder(
-                    itemCount: reviewData == null ? 0 : reviewData.length,
-                    itemBuilder: (BuildContext context, int idx) {
-                      return ElevatedButton(
-                        onPressed: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    WriteCenterPage()),
-                          ).then((onValue) {
-                            print(onValue);
-                            onValue == null ? null : setState(() {
-                              centerName = onValue['place_name'];
-                            });
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(size.width, 45),
-                          primary: Color(0xFF22232A),
-                          alignment: Alignment.centerLeft,
-                          side: BorderSide(
-                            width: 1.0,
-                            color: Color(0xFF878E97),
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.0)),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_pin,
-                              color: Color(0xFF878E97),
-                              size: 17,
-                            ),
-                            Text(
-                              ' $centerName',
-                              style: TextStyle(
-                                color: Color(0xFF878E97),
-                                fontSize: 14.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-
-                   */
                   SizedBox(
                     height: 30,
                   ),

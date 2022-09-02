@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/writeCenter.dart';
+import 'package:fitmate/presentation/writeCenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,9 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/data.dart';
-import 'home.dart';
+import '../domain/util.dart';
+import '../ui/show_toast.dart';
+import 'home/home.dart';
 
 class WritingPage extends StatefulWidget {
   const WritingPage({Key? key}) : super(key: key);
@@ -23,7 +24,6 @@ class WritingPage extends StatefulWidget {
 class _WritingPageState extends State<WritingPage> {
   String _selectedTime = '시간 선택';
   String _selectedDate = '날짜 선택';
-  String _selectedpart = '부위';
   late Map center;
   String centerName = '만날 피트니스장을 선택해주세요';
   String title = "";
@@ -85,7 +85,7 @@ class _WritingPageState extends State<WritingPage> {
       _filters.forEach((element) { _selectedPartData.add(fitnessPartConverse[element].toString()); });
 
       Map data = {
-        "user_id": "$UserId",
+        "user_id": "${UserId}",
         "location_id": "${UserData["location_id"]}",
         "post_fitness_part": _selectedPartData,
         "post_title": "$title",
@@ -351,242 +351,6 @@ class _WritingPageState extends State<WritingPage> {
                             ),
                           ),
                         ),
-                        /*
-                        ElevatedButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  backgroundColor: Color(0xFF22232A),
-                                  title: Text(
-                                    '운동 부위',
-                                    style: TextStyle(
-                                      color: Color(0xFFffffff),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  content: SingleChildScrollView(
-                                    child: ListBody(
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '등';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '등',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '가슴';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '가슴',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '어깨';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '어깨',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '하체';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '하체',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '이두';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '이두',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '삼두';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '삼두',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '엉덩이';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '엉덩이',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '복근';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '복근',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '유산소';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '유산소',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedpart = '기타';
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            '기타',
-                                            style: TextStyle(
-                                              color: Color(0xFFffffff),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color(0xFF22232A),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(110, 45),
-                            primary: Color(0xFF22232A),
-                            alignment: Alignment.centerLeft,
-                            side: BorderSide(
-                              width: 1.0,
-                              color: Color(0xFF878E97),
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7.0)),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.fitness_center,
-                                color: Color(0xFF878E97),
-                                size: 17,
-                              ),
-                              Text(
-                                ' $_selectedpart',
-                                style: TextStyle(
-                                  color: Color(0xFF878E97),
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                         */
                       ],
                     ),
                     SizedBox(

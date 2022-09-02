@@ -1,16 +1,17 @@
-//import 'dart:_http';
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:fitmate/screens/signup.dart';
+import 'package:fitmate/presentation/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fitmate/firebase_service/firebase_auth_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/home.dart';
+import 'package:fitmate/presentation/home/home.dart';
 import 'package:http/http.dart' as http;
-import 'package:fitmate/utils/data.dart';
+
+import '../domain/util.dart';
+import '../ui/show_toast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -300,105 +301,6 @@ class _LoginPageState extends State<LoginPage> {
                                     borderRadius: BorderRadius.circular(20.0)),
                               ),
                             ),
-                            /*
-                            SizedBox(
-                              width: 300,
-                              child: TextButton.icon(
-                                onPressed: () async {
-                                  IdToken = await FirebaseAuthMethods(FirebaseAuth.instance).signInWithGoogle(context);
-                                  IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
-
-                                  if(IdToken == 'error') {
-                                    FlutterToastTop("알수 없는 에러가 발생하였습니다");
-                                  }
-                                  else {
-                                    String? deviceToken = await FirebaseMessaging.instance.getToken();
-                                    //토큰을 받는 단계에서 에러가 나지 않았다면
-                                    http.Response response = await http.get(Uri.parse("${baseUrl}users/login"), headers: {
-                                      'Authorization' : 'bearer $IdToken',
-                                      'deviceToken' : '${deviceToken}'
-                                    });
-                                    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-
-                                    if(response.statusCode == 200) {
-                                      //사용자 정보가 완벽히 등록 되어있다면
-                                      UserId = resBody['data']['user_id'];
-
-                                      bool userdata = await UpdateUserData();
-
-                                      if(userdata == true) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          PageRouteBuilder(
-                                            pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload: true,),
-                                            transitionDuration: Duration.zero,
-                                            reverseTransitionDuration: Duration.zero,
-                                          ),
-                                        );
-                                      }
-                                      else {
-                                        print("else 문 에러");
-                                        FlutterToastTop("알수 없는 에러가 발생하였습니다");
-                                      }
-                                    } else if(resBody['message'] == 404) {
-                                      // 사용자 정보가 등록 안된 상황에서는
-                                      Navigator.pushReplacement(
-                                        context,
-                                        PageRouteBuilder(
-                                          pageBuilder: (context, animation, secondaryAnimation) => SignupPage(),
-                                          transitionDuration: Duration.zero,
-                                          reverseTransitionDuration:
-                                              Duration.zero,
-                                        ),
-                                      );
-                                    } else {
-                                      //모르는 문제 시에는
-                                      log(resBody);
-                                      FlutterToastTop("알수 없는 에러가 발생하였습니다");
-                                    }
-                                  }
-                                },
-                                /*
-                                child: Row(
-                                  //spaceEvenly: 요소들을 균등하게 배치하는 속성
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-
-                                    SizedBox(width: 25,),
-                                    Text(
-                                      '구글로 시작하기',
-                                      style: TextStyle(color: Color(0xFF000000), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                */
-
-                                icon: Container(
-                                    width: 25,
-                                    height: 25,
-                                    // decoration: BoxDecoration(color: Colors.blue),
-                                    child: Image.network(
-                                        'http://pngimg.com/uploads/google/google_PNG19635.png',
-                                        fit:BoxFit.cover
-                                    )
-                                ),
-                                label: Text(
-                                  '구글로 시작하기',
-                                  style: TextStyle(color: Color(0xFF000000), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                ),
-
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-
-                              },
-                              child: Text(
-                                '구글 로그인',
-                                style: TextStyle(color: Colors.white, fontSize: 18.0),
-                              ),
-                            ),
-                            */
                           ],
                         ),
                       ),

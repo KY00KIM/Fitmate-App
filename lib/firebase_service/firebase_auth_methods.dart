@@ -5,12 +5,19 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../utils/showSnackBar.dart';
 
 class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
+
+  void showSnackBar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content : Text(text),
+      ),
+    );
+  }
 
   Future<void> signOut() async {
     await Firebase.initializeApp();

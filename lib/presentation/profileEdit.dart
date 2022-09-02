@@ -1,15 +1,15 @@
-//import 'dart:html';
 
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/profile.dart';
+import 'package:fitmate/presentation/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../utils/data.dart';
+import '../domain/util.dart';
+import '../ui/show_toast.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:io';
@@ -128,16 +128,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         }
       }
 
-      /*
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-       */
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
@@ -153,36 +143,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     } else {
       FlutterToastBottom("오류가 발생하였습니다");
     }
-    /*
-    http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization' : '$IdToken',
-        }, // this header is essential to send json data
-        body: body
-    );
-    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    print(resBody);
-
-    if(response.statusCode == 201) {
-      postId = resBody["data"]["_id"].toString();
-
-      // ignore: unused_local_variable
-      var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}posts/image/$postId"));
-      request.headers.addAll({"Authorization" : "bearer $IdToken", "postId" : "$postId"});
-      request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
-      var res = await request.send();
-      print('$postId');
-      log(IdToken);
-      print(res.statusCode);
-      Navigator.pop(context);
-    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
-      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
-    } else {
-      FlutterToastBottom("오류가 발생하였습니다");
-    }
-     */
   }
 
   @override
@@ -244,73 +204,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           child: Container(
             width: size.width - 50,
             margin: EdgeInsets.fromLTRB(25, 20, 25, 0),
-            /*
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 30,
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(100.0),
-                  child: Image.network(
-                    'http://newsimg.hankookilbo.com/2018/03/07/201803070494276763_1.jpg',
-                    width: 85.0,
-                    height: 85.0,
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.0),
-                  child: Text(
-                    '닉네임',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 14.0,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                SizedBox(
-                  width: size.width - 50,
-                  height: 45,
-                  child: TextField(
-                    style: TextStyle(color: Color(0xff878E97)),
-                    decoration: InputDecoration(
-                      hintText: '닉네임',
-                      contentPadding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                      hintStyle: TextStyle(
-                        color: Color(0xff878E97),
-                      ),
-                      labelStyle: TextStyle(color: Color(0xff878E97)),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(7.0)),
-                        borderSide:
-                        BorderSide(width: 1, color: Color(0xff878E97)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(7.0)),
-                        borderSide:
-                        BorderSide(width: 1, color: Color(0xff878E97)),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(7.0)),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-             */
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -782,285 +675,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     ),
                   ],
                 ),
-                /*
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 7.0),
-                          child: Text(
-                            '내 동네',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 16.0),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        ElevatedButton(
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_pin,
-                                color: Color(0xFF878E97),
-                                size: 17.0,
-                              ),
-                              Flexible(
-                                child: RichText(
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  strutStyle: StrutStyle(fontSize: 15),
-                                  text: TextSpan(
-                                    text: ' $location',
-                                    style: TextStyle(
-                                      color: Color(0xFF878E97),
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            alignment: Alignment.centerLeft,
-                            primary: Color(0xFF22232A),
-                            shape: RoundedRectangleBorder(
-                              // 테두리를 라운드하게 만들기
-                              borderRadius: BorderRadius.circular(7.0),
-                            ),
-                            side: BorderSide(
-                              width: 1.0,
-                              color: Color(0xFF878E97),
-                            ),
-                            minimumSize: Size((size.width - 65) / 2, 45),
-                            maximumSize: Size((size.width - 65) / 2, 45),
-                          ),
-                          onPressed: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WriteLocationPage()),
-                            ).then((onValue) {
-                              print(onValue);
-                              onValue == null ? null : setState(() {
-                                location = onValue;
-                              });
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 7.0),
-                          child: Text(
-                            '내 피트니스장',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 16.0),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        ElevatedButton(
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.fitness_center,
-                                color: Color(0xFF878E97),
-                                size: 17.0,
-                              ),
-                              Flexible(
-                                child: RichText(
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  strutStyle: StrutStyle(fontSize: 15),
-                                  text: TextSpan(
-                                    text: ' $centerName',
-                                    style: TextStyle(
-                                      color: Color(0xFF878E97),
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            alignment: Alignment.centerLeft,
-                            primary: Color(0xFF22232A),
-                            shape: RoundedRectangleBorder(
-                              // 테두리를 라운드하게 만들기
-                              borderRadius: BorderRadius.circular(7.0),
-                            ),
-                            side: BorderSide(
-                              width: 1.0,
-                              color: Color(0xFF878E97),
-                            ),
-                            minimumSize: Size((size.width - 65) / 2, 45),
-                            maximumSize: Size((size.width - 65) / 2, 45),
-                          ),
-                          onPressed: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WriteCenterPage()),
-                            ).then((onValue) {
-                              print(onValue);
-                              onValue == null ? null : setState(() {
-                                center = onValue;
-                                centerName = onValue['place_name'];
-                              });
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                 */
-                /*
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.0),
-                  child: Text(
-                    '지역 등록',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 14.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_pin,
-                            color: Color(0xFF878E97),
-                            size: 17.0,
-                          ),
-                          Flexible(
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              strutStyle: StrutStyle(fontSize: 15),
-                              text: TextSpan(
-                                text: ' $location',
-                                style: TextStyle(
-                                  color: Color(0xFF878E97),
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        alignment: Alignment.centerLeft,
-                        primary: Color(0xFF22232A),
-                        shape: RoundedRectangleBorder(
-                          // 테두리를 라운드하게 만들기
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        side: BorderSide(
-                          width: 1.0,
-                          color: Color(0xFF878E97),
-                        ),
-                        minimumSize: Size((size.width - 55) / 2, 45),
-                        maximumSize: Size((size.width - 55) / 2, 45),
-                      ),
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  WriteLocationPage()),
-                        ).then((onValue) {
-                          print(onValue);
-                          onValue == null ? null : setState(() {
-                            location = onValue;
-                          });
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    ElevatedButton(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.fitness_center,
-                            color: Color(0xFF878E97),
-                            size: 17.0,
-                          ),
-                          Flexible(
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              strutStyle: StrutStyle(fontSize: 15),
-                              text: TextSpan(
-                                text: ' $centerName',
-                                style: TextStyle(
-                                  color: Color(0xFF878E97),
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        alignment: Alignment.centerLeft,
-                        primary: Color(0xFF22232A),
-                        shape: RoundedRectangleBorder(
-                          // 테두리를 라운드하게 만들기
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        side: BorderSide(
-                          width: 1.0,
-                          color: Color(0xFF878E97),
-                        ),
-                        minimumSize: Size((size.width - 55) / 2, 45),
-                        maximumSize: Size((size.width - 55) / 2, 45),
-                      ),
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  WriteCenterPage()),
-                        ).then((onValue) {
-                          print(onValue);
-                          onValue == null ? null : setState(() {
-                            center = onValue;
-                            centerName = onValue['place_name'];
-                          });
-                        });
-                      },
-                    ),
-                  ],
-                ),
-
-                 */
               ],
             ),
           ),

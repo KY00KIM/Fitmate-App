@@ -1,13 +1,13 @@
-//import 'dart:html' as http;
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/writeCenter.dart';
+import 'package:fitmate/presentation/writeCenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/data.dart';
+import '../domain/util.dart';
+import '../ui/show_toast.dart';
 
 class MakePromisePage extends StatefulWidget {
   String partnerId;

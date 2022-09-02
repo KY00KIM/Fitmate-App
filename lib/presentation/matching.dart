@@ -5,19 +5,19 @@ import 'dart:developer';
 
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/screens/review.dart';
+import 'package:fitmate/presentation/review.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:fitmate/utils/data.dart';
 
 import 'package:http/http.dart' as http;
 
 
-import '../utils/bottomNavigationBar.dart';
-import 'notice.dart';
+import '../domain/util.dart';
+import '../ui/bottom_navigation_bar.dart';
+import '../ui/show_toast.dart';
 import 'otherProfile.dart';
 
 
@@ -216,15 +216,6 @@ class _MatchingPageState extends State<MatchingPage> {
 
       appBar: AppBar(
         elevation: 0.0,
-        /*
-        shape: Border(
-          bottom: BorderSide(
-            color: Color(0xFF3D3D3D),
-            width: 1,
-          ),
-        ),
-
-         */
         backgroundColor: Color(0xFF22232A),
         title: Padding(
           padding: EdgeInsets.only(left: 5.0),
@@ -237,265 +228,7 @@ class _MatchingPageState extends State<MatchingPage> {
             ),
           ),
         ),
-        /*
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticePage()));
-              //Navigator.push(context, CupertinoPageRoute(builder: (context) => TableEventsExample()));
-            },
-            icon: Padding(
-              padding: EdgeInsets.only(right: 200),
-              child: Icon(
-                Icons.notifications_none,
-                color: Color(0xFFffffff),
-                size: 30.0,
-              ),
-            ),
-          ),
-        ],
-
-         */
       ),
-
-      /*
-      bottomNavigationBar: BottomAppBar(
-        color: Color(0xFF22232A),
-        child: Container(
-          width: size.width,
-          //height: 60.0,
-          height: size.height * 0.085,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: NoSplash.splashFactory,
-                ),
-                onPressed: () {
-                  //Route route = MaterialPageRoute(builder: (context) => HomePage());
-                  //Navigator.pushReplacement(context, route);
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(reload: false,),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  /*
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return child;
-                      },
-                    ),
-                  );
-
-                   */
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.home_filled,
-                      color: Color(0xFF757575),
-                      //size: 30.0,
-                      size: size.width * 0.0763,
-                    ),
-                    Text(
-                      '홈',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: NoSplash.splashFactory,
-                ),
-                onPressed: () {
-                  //Route route = MaterialPageRoute(builder: (context) => ChatListPage());
-                  //Navigator.pushReplacement(context, route);
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  /*
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ChatListPage(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return child;
-                      },
-                    ),
-                  );
-
-                   */
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.chat_bubble_outline,
-                      color: Color(0xFF757575),
-                      //size: 30.0,
-                      size: size.width * 0.0763,
-                    ),
-                    Text(
-                      '내 대화',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: NoSplash.splashFactory,
-                ),
-                onPressed: () {
-                  //Route route = MaterialPageRoute(builder: (context) => MatchingPage());
-                  //Navigator.pushReplacement(context, route);
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MapPage(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  /*
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MatchingPage(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return child;
-                      },
-                    ),
-                  );
-
-                   */
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.map,
-                      color: Color(0xFF757575),
-                      //size: 30.0,
-                      size: size.width * 0.0763,
-                    ),
-                    Text(
-                      '피트니스장',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: NoSplash.splashFactory,
-                ),
-                onPressed: () {
-                  //Route route = MaterialPageRoute(builder: (context) => MatchingPage());
-                  //Navigator.pushReplacement(context, route);
-
-                  /*
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => MatchingPage(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return child;
-                      },
-                    ),
-                  );
-
-                   */
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.calendar_month,
-                      color: Color(0xFFffffff),
-                      //size: 30.0,
-                      size: size.width * 0.0763,
-                    ),
-                    Text(
-                      '매칭',
-                      style: TextStyle(
-                        color: Color(0xFFffffff),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  splashFactory: NoSplash.splashFactory,
-                ),
-                onPressed: () {
-                  //Route route = MaterialPageRoute(builder: (context) => ProfilePage());
-                  //Navigator.pushReplacement(context, route);
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  /*
-                  Navigator.of(context).push(
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return child;
-                      },
-                    ),
-                  );
-
-                   */
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Color(0xFF757575),
-                      size: size.width * 0.0763,
-                    ),
-                    Text(
-                      '프로필',
-                      style: TextStyle(
-                        color: Color(0xFF757575),
-                        //fontSize: 10.0,
-                        fontSize: size.width * 0.0253,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-
-       */
       bottomNavigationBar: bottomNavigationBar(context, 4),
       body: SafeArea(
         child: Container(
@@ -617,23 +350,6 @@ class _MatchingPageState extends State<MatchingPage> {
                           child: ListView.builder(
                             itemCount: value.length,
                             itemBuilder: (context, index) {
-                              /*
-                              return Container(
-                                height: 100,
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 2.0,
-                                  vertical: 6.0,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                child: ListTile(
-                                  onTap: () => print('${value[index]}'),
-                                  title: Text('이게 ddv머지 ${value[index].content['match_join_id']}'),
-                                ),
-                              );
-                               */
                               if (value[index].content['isReviewed'] == false) {
                                 return Column(
                                   children: [
@@ -699,31 +415,6 @@ class _MatchingPageState extends State<MatchingPage> {
                                                         fontSize: 12,
                                                       ),
                                                     ),
-                                                    /*
-                                                  Row(
-                                                    children: [
-                                                      ClipRRect(
-                                                        borderRadius: BorderRadius.circular(50.0),
-                                                        child: Image.network(
-                                                          'https://picsum.photos/250?image=9',
-                                                          width: 20.0,
-                                                          height: 20.0,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 15,
-                                                      ),
-                                                      Text(
-                                                        '토마스 박',
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                          color: Color(0xFFDADADA),
-                                                          fontWeight: FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                   */
                                                   ],
                                                 ),
                                               ),
@@ -802,31 +493,6 @@ class _MatchingPageState extends State<MatchingPage> {
                                                         ),
                                                       ],
                                                     ),
-                                                    /*
-                                                  Row(
-                                                    children: [
-                                                      ClipRRect(
-                                                        borderRadius: BorderRadius.circular(50.0),
-                                                        child: Image.network(
-                                                          'https://picsum.photos/250?image=9',
-                                                          width: 20.0,
-                                                          height: 20.0,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 15,
-                                                      ),
-                                                      Text(
-                                                        '토마스 박',
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                          color: Color(0xFFDADADA),
-                                                          fontWeight: FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                   */
                                                   ],
                                                 ),
                                               ),
@@ -900,31 +566,6 @@ class _MatchingPageState extends State<MatchingPage> {
                                                     fontSize: 12,
                                                   ),
                                                 ),
-                                                /*
-                                              Row(
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius: BorderRadius.circular(50.0),
-                                                    child: Image.network(
-                                                      'https://picsum.photos/250?image=9',
-                                                      width: 20.0,
-                                                      height: 20.0,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 15,
-                                                  ),
-                                                  Text(
-                                                    '토마스 박',
-                                                    style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Color(0xFFDADADA),
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                               */
                                               ],
                                             ),
                                           ),
@@ -940,68 +581,6 @@ class _MatchingPageState extends State<MatchingPage> {
                       },
                     ),
                   ),
-                  /*
-                Container(
-                  width: size.width - 50,
-                  height: 105,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF2975CF),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(25, 15, 25, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '우파루파님과 매칭 운동 Day입니다!',
-                          style: TextStyle(
-                            color: Color(0xFFffffff),
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          '장소 : 우릉 피트니스장      시간 : 3:20pm',
-                          style: TextStyle(
-                            color: Color(0xFFDADADA),
-                            fontSize: 12,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 7,
-                        ),
-                        Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(50.0),
-                              child: Image.network(
-                                'https://picsum.photos/250?image=9',
-                                width: 20.0,
-                                height: 20.0,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              '토마스 박',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xFFDADADA),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                 */
                 ],
               );
             } else if (snapshot.hasError) {
@@ -1011,7 +590,6 @@ class _MatchingPageState extends State<MatchingPage> {
             //return Center(child: CircularProgressIndicator());
             return SizedBox();
           }
-
           ),
         ),
       ),

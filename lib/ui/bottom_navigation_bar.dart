@@ -1,24 +1,25 @@
-import 'package:fitmate/screens/home.dart';
+import 'package:fitmate/presentation/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iconsax/iconsax.dart';
 
-import '../screens/chatList.dart';
-import '../screens/map.dart';
-import '../screens/matching.dart';
-import '../screens/profile.dart';
+import '../presentation/chatList.dart';
+import '../presentation/map.dart';
+import '../presentation/matching.dart';
+import '../presentation/profile.dart';
+import 'colors.dart';
 
 Widget bottomNavigationBar(BuildContext context, int pages) {
   final Size size = MediaQuery.of(context).size;
   final double iconSize = 32.0;
+  final String iconSource = "assets/icon/bottom_navigator/";
   return ClipRRect(
     borderRadius: const BorderRadius.only(
       topRight: Radius.circular(12),
       topLeft: Radius.circular(12),
     ),
     child: BottomAppBar(
-      color: Color(0xFFF2F3F7),
+      color: whiteTheme,
       child: Container(
         width: size.width,
         height: 60.0,
@@ -46,11 +47,11 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
                   }
                 },
                 icon: pages == 1 ? SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/home_icon.svg",
+                  "${iconSource}home_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ) : SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/Inactive_home_icon.svg",
+                  "${iconSource}Inactive_home_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ),
@@ -71,11 +72,11 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
                   }
                 },
                 icon: pages == 2 ? SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/chatting_icon.svg",
+                  "${iconSource}chatting_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ) : SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/Inactive_chatting_icon.svg",
+                  "${iconSource}Inactive_chatting_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ),
@@ -96,11 +97,11 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
                   }
                 },
                 icon: pages == 3 ? SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/map_icon.svg",
+                  "${iconSource}map_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ) : SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/Inactive_map_icon.svg",
+                  "${iconSource}Inactive_map_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ),
@@ -121,11 +122,11 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
                   }
                 },
                 icon: pages == 4 ? SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/calender_icon.svg",
+                  "${iconSource}calender_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ) : SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/Inactive_calender_icon.svg",
+                  "${iconSource}Inactive_calender_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ),
@@ -146,11 +147,11 @@ Widget bottomNavigationBar(BuildContext context, int pages) {
                   }
                 },
                 icon: pages == 5 ? SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/profile_icon.svg",
+                  "${iconSource}profile_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ) : SvgPicture.asset( // 5
-                  "assets/icon/bottom_navigator/Inactive_profile_icon.svg",
+                  "${iconSource}Inactive_profile_icon.svg",
                   width: iconSize,
                   height: iconSize,
                 ),

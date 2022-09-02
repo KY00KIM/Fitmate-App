@@ -1,20 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 
-late String IdToken;
-late String UserId;
+import '../domain/util.dart';
 
-List HomePosts = [];
-List usersName = [];
-List userImage = [];
-List centerName = [];
-
-String baseUrl = "https://fitmate.co.kr/v1/";
 
 Map fitnessPart = {
   "62c670514b8212e4674dbe34": '등',
@@ -25,7 +15,7 @@ Map fitnessPart = {
   '62c670874b8212e4674dbe39' : '복근',
   '62c670664b8212e4674dbe36' : '하체',
   '62c670a04b8212e4674dbe3a' : '유산소'
- };
+};
 
 Map fitnessPartConverse = {
   '등' : "62c670514b8212e4674dbe34",
@@ -90,7 +80,7 @@ Future<bool> UpdateUserData() async {
     "userId" : "${UserId.toString()}"});
   if (response.statusCode == 200) {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    
+
     UserData = resBody["data"];
     print("fitness center id : ${UserData["fitness_center_id"].toString()}");
     http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${UserData["fitness_center_id"].toString()}"), headers: {
@@ -108,31 +98,6 @@ Future<bool> UpdateUserData() async {
     print("유저 정보 가져오지 못함");
     return false;
   }
-}
-
-
-void FlutterToastTop(String message) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.grey,
-      textColor: Colors.white,
-      fontSize: 16.0
-  );
-}
-
-void FlutterToastBottom(String message) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.grey,
-      textColor: Colors.white,
-      fontSize: 16.0
-  );
 }
 
 Future<Position> DeterminePosition() async {
@@ -163,3 +128,9 @@ Future<Position> DeterminePosition() async {
 
   return await Geolocator.getCurrentPosition();
 }
+
+
+late String IdToken;
+late String UserId;
+
+String baseUrl = "https://fitmate.co.kr/v1/";
