@@ -24,7 +24,6 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 
 }
@@ -83,7 +82,6 @@ class MyApp extends StatelessWidget {
             // ignore: avoid_print
             return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
           }
-
           //return FirstRoute();
         },
       ),

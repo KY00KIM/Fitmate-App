@@ -1,8 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
-import 'dart:developer';
-
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/review.dart';
@@ -14,18 +12,16 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:http/http.dart' as http;
 
-
 import '../domain/util.dart';
-import '../ui/bottom_navigation_bar.dart';
+import '../ui/bar_widget.dart';
+import '../ui/colors.dart';
 import '../ui/show_toast.dart';
 import 'otherProfile.dart';
 
 
 class Event {
   final Map content;
-
   const Event(this.content);
-
 }
 
 /// Example events.
@@ -54,6 +50,9 @@ class _MatchingPageState extends State<MatchingPage> {
   DateTime? _rangeEnd;
   List<String> partnerName = [];
   List<String> matchingPlace = [];
+
+  final barWidget = BarWidget();
+
 
   late Map<DateTime, List<Event>> _kEventSource;
   var kEvents;
@@ -208,12 +207,10 @@ class _MatchingPageState extends State<MatchingPage> {
 
   @override
   Widget build(BuildContext context) {
-    log(IdToken);
     final Size size = MediaQuery.of(context).size;
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
     return Scaffold(
-      backgroundColor: Color(0xFF22232A),
-
+      backgroundColor: whiteTheme,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Color(0xFF22232A),
@@ -229,7 +226,7 @@ class _MatchingPageState extends State<MatchingPage> {
           ),
         ),
       ),
-      bottomNavigationBar: bottomNavigationBar(context, 4),
+      bottomNavigationBar: barWidget.bottomNavigationBar(context, 4),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),

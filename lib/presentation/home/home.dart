@@ -1,15 +1,13 @@
 import 'dart:convert';
 
+import 'package:fitmate/ui/bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fitmate/presentation/writing.dart';
-import 'package:http/http.dart' as http;
-import 'dart:io' show Platform;
 
 
 import '../../data/post_api.dart';
 import '../../domain/model/posts.dart';
-import '../../ui/bottom_navigation_bar.dart';
 import 'components/post_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,6 +22,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   bool refresh = false;
   int count = 0;
   final postApi = PostApi();
+  final barWidget = BarWidget();
 
   @override
   void initState() {
@@ -51,7 +50,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           ),
         ),
       ),
-      bottomNavigationBar: bottomNavigationBar(context, 1),
+      bottomNavigationBar: barWidget.bottomNavigationBar(context, 1),
       floatingActionButton: FloatingActionButton(
           child: Icon(
             Icons.add,

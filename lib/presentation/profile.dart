@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 import '../data/firebase_service/firebase_auth_methods.dart';
 import '../domain/util.dart';
-import '../ui/bottom_navigation_bar.dart';
+import '../ui/bar_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -23,6 +23,8 @@ class _ProfilePageState extends State<ProfilePage> {
   List<String> reviewName = [];
   List<String> reviewImg = [];
   List<String> reviewContext = [];
+  final barWidget = BarWidget();
+
 
   String getSchedule() {
     if (UserData["user_schedule_time"] == 0)
@@ -211,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      bottomNavigationBar: bottomNavigationBar(context, 5),
+      bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
       body: SafeArea(
         child: FutureBuilder<int>(
           future: getReviewProfile(),

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/util.dart';
-import '../ui/bottom_navigation_bar.dart';
+import '../ui/bar_widget.dart';
 
 
 class ChatListPage extends StatefulWidget {
@@ -19,6 +19,8 @@ class ChatListPage extends StatefulWidget {
 }
 
 class _ChatListPageState extends State<ChatListPage> {
+
+  final barWidget = BarWidget();
 
   Future<List> getChatList() async {
     http.Response response = await http.get(Uri.parse("${baseUrl}chats/info"),
@@ -69,7 +71,7 @@ class _ChatListPageState extends State<ChatListPage> {
           ),
         ),
       ),
-      bottomNavigationBar: bottomNavigationBar(context, 2),
+      bottomNavigationBar: barWidget.bottomNavigationBar(context, 2),
       body: SafeArea(
         child: FutureBuilder<List> (
           future: getChatList(),

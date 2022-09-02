@@ -9,7 +9,7 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:flutter/foundation.dart';
 
 import '../domain/model/user_data.dart';
-import '../ui/bottom_navigation_bar.dart';
+import '../ui/bar_widget.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -24,6 +24,8 @@ class _MapPageState extends State<MapPage> {
 
   MapType _mapType = MapType.Basic;
   List<Marker> _markers = [];
+  final barWidget = BarWidget();
+
 
   @override
   void initState() {
@@ -61,7 +63,7 @@ class _MapPageState extends State<MapPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      bottomNavigationBar: bottomNavigationBar(context, 3),
+      bottomNavigationBar: barWidget.bottomNavigationBar(context, 3),
       body: Stack(
         children: <Widget>[
           NaverMap(
