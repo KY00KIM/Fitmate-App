@@ -211,21 +211,7 @@ class _MatchingPageState extends State<MatchingPage> {
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
     return Scaffold(
       backgroundColor: whiteTheme,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Color(0xFF22232A),
-        title: Padding(
-          padding: EdgeInsets.only(left: 5.0),
-          child: Text(
-            "운동일정",
-            style: TextStyle(
-              color: Color(0xFFffffff),
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
+      appBar: barWidget.appBar(context),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 4),
       body: SafeArea(
         child: Container(

@@ -56,21 +56,7 @@ class _ChatListPageState extends State<ChatListPage> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFF22232A),
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Color(0xFF22232A),
-        title: Padding(
-          padding: EdgeInsets.only(left: 5.0),
-          child: Text(
-            "채팅",
-            style: TextStyle(
-              color: Color(0xFFffffff),
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
+      appBar: barWidget.appBar(context),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 2),
       body: SafeArea(
         child: FutureBuilder<List> (

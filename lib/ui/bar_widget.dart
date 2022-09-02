@@ -28,6 +28,44 @@ class BarWidget {
           ),
         ),
       ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 16, 20, 16),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Color(0xFFF2F3F7),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFFffffff),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: Offset(-2, -2),
+                ),
+                BoxShadow(
+                  color: Color.fromRGBO(55, 84, 170, 0.1),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                // 5
+                "${iconSource}notice_icon.svg",
+                width: 18,
+                height: 18,
+              ),
+              onPressed: () {
+
+              },
+            ),
+          ),
+        )
+      ],
     );
   }
 
