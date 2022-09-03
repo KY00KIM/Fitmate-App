@@ -10,13 +10,18 @@ import 'domain/util.dart';
 import 'domain/firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:developer';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
 
-
 void main() async {
   //Constants.setEnvironment(Environment.PROD);
+  await dotenv.load(fileName: ".env");
+  KakaoSdk.init(nativeAppKey: '${dotenv.env['KAKAO_APP_KEY']}');
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -25,7 +30,6 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   initializeDateFormatting().then((_) => runApp(const MyApp()));
-
 }
 
 class MyApp extends StatelessWidget {
@@ -42,12 +46,13 @@ class MyApp extends StatelessWidget {
     var idToken = await tokenResult.getIdToken();
 
     IdToken = idToken.toString();
-
+    log("IdToken : $IdToken");
     http.Response response = await http.get(Uri.parse("${baseUrl}users/login"),
         headers: {'Authorization': 'bearer $IdToken'});
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    UserId = resBody['data']['user_id'];
+    print(resBody);
 
+    UserId = resBody['data']['user_id'];
     bool userdata = await UpdateUserData();
 
     return IdToken == null || UserId == null || userdata == false;
@@ -69,7 +74,6 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: getToken(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-
           if (snapshot.hasData == false) {
             return Center(child: CircularProgressIndicator());
           }
@@ -80,7 +84,11 @@ class MyApp extends StatelessWidget {
           // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
           else {
             // ignore: avoid_print
-            return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
+            return snapshot.data == true
+                ? LoginPage()
+                : HomePage(
+                    reload: true,
+                  );
           }
           //return FirstRoute();
         },
