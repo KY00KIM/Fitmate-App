@@ -344,3 +344,8 @@ xcuserdata/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/xcode
+
+.env
+android/app/google-services.json
+android/app/src/main/AndroidManifest.xml
+ios/Runner/Info.plist
