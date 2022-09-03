@@ -1,25 +1,23 @@
-import 'dart:convert';
-
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fitmate/presentation/writing.dart';
-
 
 import '../../data/post_api.dart';
 import '../../domain/model/posts.dart';
 import 'components/post_widget.dart';
 
-class HomePage extends StatefulWidget {
+class PostPage extends StatefulWidget {
   bool reload;
-  HomePage({Key? key, required this.reload}) : super(key: key);
+
+  PostPage({Key? key, required this.reload}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PostPage> createState() => _PostPageState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
+class _PostPageState extends State<PostPage>
+    with AutomaticKeepAliveClientMixin {
   bool refresh = false;
   int count = 0;
   final postApi = PostApi();
@@ -39,20 +37,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color(0xFF22232A),
-      appBar: barWidget.appBar(context),
+      backgroundColor: whiteTheme,
+      appBar: barWidget.bulletinBoard(context),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 1),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.add,
-            size: 40,
-          ),
-          backgroundColor: Color(0xFF303037),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => WritingPage()));
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => postApi.getPost(false),
@@ -60,16 +47,64 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
             future: postApi.getPost(true),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return ScrollConfiguration(
-                  behavior: const ScrollBehavior().copyWith(overscroll: false),
-                  child: ListView.builder(
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (context, index) {
-                      Posts post = snapshot.data?[index];
-                      return PostWidget(posts: post);
-                    },
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '게시판',
+                              style: TextStyle(
+                                color: Color(0xFF6E7995),
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '최신 순',
+                              style: TextStyle(
+                                color: Color(0xFF000000),
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) {
+                            Posts post = snapshot.data?[index];
+                            return PostWidget(posts: post);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
+                /*
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: ScrollConfiguration(
+                    behavior: const ScrollBehavior().copyWith(overscroll: false),
+                    child: ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) {
+                        Posts post = snapshot.data?[index];
+                        return PostWidget(posts: post);
+                      },
+                    ),
+                  ),
+                );
+
+                 */
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }

@@ -131,7 +131,7 @@ class _WritingPageState extends State<WritingPage> {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                HomePage(reload: true),
+                PostPage(reload: true),
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,
           ),

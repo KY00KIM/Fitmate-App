@@ -5,15 +5,112 @@ import 'package:flutter_svg/svg.dart';
 
 import '../presentation/calender/calender.dart';
 import '../presentation/chat_list.dart';
+import '../presentation/home/home.dart';
 import '../presentation/map.dart';
 import '../presentation/notice.dart';
 import '../presentation/post/post.dart';
 import '../presentation/profile.dart';
+import '../presentation/writing.dart';
 import 'colors.dart';
 
 class BarWidget {
   final double iconSize = 32.0;
   final String iconSource = "assets/icon/bar_icons/";
+
+  PreferredSizeWidget bulletinBoard(BuildContext context) {
+    return AppBar(
+      backgroundColor: whiteTheme,
+      toolbarHeight: 60,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: whiteTheme,
+      ),
+      title: Padding(
+        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Color(0xFFF2F3F7),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFffffff),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: Offset(-2, -2),
+              ),
+              BoxShadow(
+                color: Color.fromRGBO(55, 84, 170, 0.1),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                "${iconSource}back_icon.svg",
+                width: 18,
+                height: 18,
+              ),
+              onPressed: () {
+              },
+            ),
+          ),
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 8, 20, 8),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Color(0xFFF2F3F7),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFFffffff),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: Offset(-2, -2),
+                ),
+                BoxShadow(
+                  color: Color.fromRGBO(55, 84, 170, 0.1),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+            child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              ),
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  "${iconSource}plus_icon.svg",
+                  width: 18,
+                  height: 18,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WritingPage()));
+                },
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
   PreferredSizeWidget appBar(BuildContext context) {
     return AppBar(
@@ -23,7 +120,6 @@ class BarWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: whiteTheme,
       ),
-      brightness: Brightness.dark,
       title: Padding(
         padding: EdgeInsets.only(left: 7.0),
         child: Text(
