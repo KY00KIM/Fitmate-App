@@ -215,7 +215,7 @@ class _CalenderPageState extends State<CalenderPage> {
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 4),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           child: FutureBuilder<bool>(
           future: getMatching(),
           builder: (context, snapshot) {
@@ -241,12 +241,13 @@ class _CalenderPageState extends State<CalenderPage> {
                       },
                     ),
                     headerStyle: HeaderStyle(
+                      titleCentered: true,
                       formatButtonVisible: false,
-                      leftChevronVisible: false,
-                      rightChevronVisible: false,
+                      leftChevronVisible: true,
+                      rightChevronVisible: true,
                       titleTextStyle: TextStyle(
-                        color: Color(0xFFffffff),
-                        fontSize: 22,
+                        color: Color(0xFF000000),
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                       headerMargin: EdgeInsets.only(bottom: 10),
@@ -265,19 +266,20 @@ class _CalenderPageState extends State<CalenderPage> {
                     rangeSelectionMode: _rangeSelectionMode,
                     eventLoader: _getEventsForDay,
                     //startingDayOfWeek: StartingDayOfWeek.monday,
+
                     calendarStyle: CalendarStyle(
                       selectedTextStyle: TextStyle(
-                        color: Color(0xFFDADADA),
+                        color: Color(0xFFffffff),
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                       defaultTextStyle: TextStyle(
-                        color: Color(0xFFDADADA),
+                        color: Color(0xFF000000),
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
                       ),
                       weekendTextStyle: TextStyle(
-                        color: Color(0xFFDADADA),
+                        color: Color(0xFF000000),
                         fontWeight: FontWeight.bold,
                         fontSize: 17,
                       ),
@@ -291,10 +293,10 @@ class _CalenderPageState extends State<CalenderPage> {
                       ),
                       todayTextStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFFDADADA),
+                        color: Color(0xFF000000),
                         fontSize: 17,
                       ),
-                      outsideDaysVisible: false,
+                      outsideDaysVisible: true,
                     ),
                     onDaySelected: _onDaySelected,
                     onRangeSelected: _onRangeSelected,

@@ -804,16 +804,11 @@ class _SignupPageState extends State<SignupPage> {
                         maximumSize: Size((size.width - 55) / 2, 45),
                       ),
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => WriteLocationPage()),
-                        ).then((onValue) {
-                          onValue == null
-                              ? null
-                              : setState(() {
-                                  location = onValue;
-                                });
+                        var onValue = await Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => WriteLocationPage()));
+                        print("end");
+                        setState(() {
+                          location = onValue.toString();
                         });
                       },
                     ),
@@ -859,17 +854,12 @@ class _SignupPageState extends State<SignupPage> {
                         maximumSize: Size((size.width - 55) / 2, 45),
                       ),
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => WriteCenterPage()),
-                        ).then((onValue) {
-                          onValue == null
-                              ? null
-                              : setState(() {
-                                  center = onValue;
-                                  centerName = onValue['place_name'];
-                                });
+                        var onValue = await Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => WriteCenterPage()));
+                        print("end");
+                        setState(() {
+                          center = onValue;
+                          centerName = onValue['place_name'];
                         });
                       },
                     ),

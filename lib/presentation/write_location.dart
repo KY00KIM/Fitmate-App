@@ -278,89 +278,86 @@ class _WriteLocationPageState extends State<WriteLocationPage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: const Color(0xff22232A),
-        appBar: AppBar(
-          elevation: 0,
-          leading: Container(
-            margin: EdgeInsets.only(left: 10),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Color(0xFF757575),
-                size: 25,
-              ),
-              onPressed: () => Navigator.pop(context),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xff22232A),
+      appBar: AppBar(
+        elevation: 0,
+        leading: Container(
+          margin: EdgeInsets.only(left: 10),
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xFF757575),
+              size: 25,
             ),
+            onPressed: () => Navigator.pop(context),
           ),
-          backgroundColor: Color(0xFF22232A),
-          title: Transform(
-            transform:  Matrix4.translationValues(-15.0, 0.0, 0.0),
-            child: SizedBox(
-              width: size.width * 0.9,
-              height: 40,
-              child: TextField(
-                onChanged: (value) {
-                  filterSearchResults(value);
-                },
-                controller: _editingController,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                    fillColor: Color(0xFF15161B),
-                    filled: true,
-                    contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 10),
-                    hintText: '시, 군, 구로 검색',
-                    hintStyle: TextStyle(
-                      color: Color(0xFF757575),
-                      fontSize: 17,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1, color: Color(0xFF878E97)),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1, color: Color(0xFF878E97)),
-                      borderRadius: BorderRadius.circular(5),
-                    )
-                ),
+        ),
+        backgroundColor: Color(0xFF22232A),
+        title: Transform(
+          transform:  Matrix4.translationValues(-15.0, 0.0, 0.0),
+          child: SizedBox(
+            width: size.width * 0.9,
+            height: 40,
+            child: TextField(
+              onChanged: (value) {
+                filterSearchResults(value);
+              },
+              controller: _editingController,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  fillColor: Color(0xFF15161B),
+                  filled: true,
+                  contentPadding: EdgeInsets.fromLTRB(15, 0, 0, 10),
+                  hintText: '시, 군, 구로 검색',
+                  hintStyle: TextStyle(
+                    color: Color(0xFF757575),
+                    fontSize: 17,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(width: 1, color: Color(0xFF878E97)),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(width: 1, color: Color(0xFF878E97)),
+                    borderRadius: BorderRadius.circular(5),
+                  )
               ),
             ),
           ),
         ),
-        body: Container(
-          child: ListView.builder(itemBuilder: (context, index) {
-            return ElevatedButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop(items[index]);
-              },
-              //onPressed: () {print(data[index]);},
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(size.width, 50),
-                primary: Color(0xFF22232A),
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(45, 0, 15, 0),
-                  child: Text(
-                    items[index].toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFDADADA),
-                    ),
+      ),
+      body: Container(
+        child: ListView.builder(itemBuilder: (context, index) {
+          return ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context, items[index].toString());
+            },
+            //onPressed: () {print(data[index]);},
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(size.width, 50),
+              primary: Color(0xFF22232A),
+            ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(45, 0, 15, 0),
+                child: Text(
+                  items[index].toString(),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFDADADA),
                   ),
                 ),
               ),
-            );
-          },
-          itemCount: items.length,
-          ),
+            ),
+          );
+        },
+        itemCount: items.length,
         ),
       ),
     );

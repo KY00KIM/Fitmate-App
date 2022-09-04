@@ -3,8 +3,8 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
+import 'package:fitmate/presentation/post/post.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -39,19 +39,26 @@ class MyApp extends StatelessWidget {
     // ignore: await_only_futures
 
     User? tokenResult = await FirebaseAuth.instance.currentUser;
+    print("1");
     log(tokenResult.toString());
     if (tokenResult == null) return true;
+    print("1.5");
     // ignore: unused_local_variable
     var idToken = await tokenResult.getIdToken();
+    print('2 : ${idToken}');
 
     IdToken = idToken.toString();
 
     http.Response response = await http.get(Uri.parse("${baseUrl}users/login"),
         headers: {'Authorization': 'bearer $IdToken'});
+    print("3 : ${response}");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if(resBody['message'] == 404) return true;
+    print("?? : ${resBody}");
     UserId = resBody['data']['user_id'];
 
     bool userdata = await UpdateUserData();
+    print("4");
 
     return IdToken == null || UserId == null || userdata == false;
   }
@@ -84,10 +91,8 @@ class MyApp extends StatelessWidget {
             // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
             else {
               // ignore: avoid_print
-              return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
+              return snapshot.data == true ? LoginPage() : PostPage(reload: true,);
             }
-
-            //return main_home();
           },
         ),
       ),
