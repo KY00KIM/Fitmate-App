@@ -102,7 +102,7 @@ class FirebaseAuthMethods {
 
   Future<String> createCustomToken(Map<String, dynamic> user) async {
     final customTokenResponse =
-        await http.post(Uri.parse('${baseUrl}users/oauth/kakao'), body: user);
+        await http.post(Uri.parse('${baseUrlV1}users/oauth/kakao'), body: user);
     var resBody = jsonDecode(utf8.decode(customTokenResponse.bodyBytes));
     String custom_token = resBody["data"]["custom_token"];
     return custom_token;

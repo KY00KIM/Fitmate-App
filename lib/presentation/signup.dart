@@ -207,7 +207,7 @@ class _SignupPageState extends State<SignupPage> {
               .toString();
 
       http.Response response =
-          await http.post(Uri.parse("${baseUrl}users/oauth"),
+          await http.post(Uri.parse("${baseUrlV1}users/oauth"),
               headers: {
                 'Authorization': 'bearer $IdToken',
                 'Content-Type': 'application/json; charset=UTF-8',

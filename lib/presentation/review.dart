@@ -98,7 +98,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
   Future<String> getData() async {
     http.Response response =
-        await http.get(Uri.parse('${baseUrl}reviews/candidates'), headers: {
+        await http.get(Uri.parse('${baseUrlV1}reviews/candidates'), headers: {
       'Authorization': 'bearer $IdToken',
       'Content-Type': 'application/json; charset=UTF-8'
     });
@@ -112,7 +112,7 @@ class _ReviewPageState extends State<ReviewPage> {
               .toString();
 
       response = await http.get(
-        Uri.parse("${baseUrl}reviews/candidates"),
+        Uri.parse("${baseUrlV1}reviews/candidates"),
         headers: {
           'Authorization': 'bearer $IdToken',
           'Content-Type': 'application/json; charset=UTF-8',
@@ -152,7 +152,7 @@ class _ReviewPageState extends State<ReviewPage> {
     print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("${baseUrl}reviews/"),
+    http.Response response = await http.post(Uri.parse("${baseUrlV1}reviews/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'bearer $IdToken',

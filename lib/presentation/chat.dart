@@ -232,7 +232,7 @@ class _ChatPageState extends State<ChatPage> {
                                           ElevatedButton(
                                             child: Text('네, 나갈레요.'),
                                             onPressed: () async {
-                                              http.Response response = await http.delete(Uri.parse("${baseUrl}chats/${widget.chatId}"),
+                                              http.Response response = await http.delete(Uri.parse("${baseUrlV1}chats/${widget.chatId}"),
                                                 headers: {
                                                   "Authorization" : "bearer $IdToken",
                                                   "chatroomId" : "${widget.chatId}"
@@ -242,7 +242,7 @@ class _ChatPageState extends State<ChatPage> {
                                               if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
                                                 IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-                                                response = await http.delete(Uri.parse("${baseUrl}chats/${widget.chatId}"),
+                                                response = await http.delete(Uri.parse("${baseUrlV1}chats/${widget.chatId}"),
                                                   headers: {
                                                     "Authorization" : "bearer $IdToken",
                                                     "chatroomId" : "${widget.chatId}"

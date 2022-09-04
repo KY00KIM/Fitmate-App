@@ -103,7 +103,7 @@ class _WritingPageState extends State<WritingPage> {
 
       var body = json.encode(data);
 
-      http.Response response = await http.post(Uri.parse("${baseUrl}posts/"),
+      http.Response response = await http.post(Uri.parse("${baseUrlV1}posts/"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'bearer $IdToken',
@@ -117,7 +117,7 @@ class _WritingPageState extends State<WritingPage> {
 
         // ignore: unused_local_variable
         var request = http.MultipartRequest(
-            'POST', Uri.parse("${baseUrl}posts/image/$postId"));
+            'POST', Uri.parse("${baseUrlV1}posts/image/$postId"));
         request.headers
             .addAll({"Authorization": "bearer $IdToken", "postId": "$postId"});
         request.files

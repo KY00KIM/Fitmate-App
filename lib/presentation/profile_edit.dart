@@ -100,7 +100,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.patch(Uri.parse("${baseUrl}users/${UserData['_id']}"),
+    http.Response response = await http.patch(Uri.parse("${baseUrlV1}users/${UserData['_id']}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization' : 'bearer $IdToken',
@@ -116,7 +116,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       UserData['user_weekday'] = isSelectedWeekDay;
 
       if(_image != null) {
-        var request = http.MultipartRequest('POST', Uri.parse("${baseUrl}users/image/"));
+        var request = http.MultipartRequest('POST', Uri.parse("${baseUrlV1}users/image/"));
         request.headers.addAll({"Authorization" : "bearer $IdToken"});
         request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
         var res = await request.send();

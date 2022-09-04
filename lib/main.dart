@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
 import 'package:fitmate/presentation/post/post.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
 
     IdToken = idToken.toString();
     log("IdToken : $IdToken");
-    http.Response response = await http.get(Uri.parse("${baseUrl}users/login"),
+    http.Response response = await http.get(Uri.parse("${baseUrlV1}users/login"),
         headers: {'Authorization': 'bearer $IdToken'});
     print("3 : ${response}");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -93,7 +94,7 @@ class MyApp extends StatelessWidget {
             // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
             else {
               // ignore: avoid_print
-              return snapshot.data == true ? LoginPage() : PostPage(reload: true,);
+              return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
             }
           },
         ),

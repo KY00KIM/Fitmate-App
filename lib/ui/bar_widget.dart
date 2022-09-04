@@ -8,7 +8,6 @@ import '../presentation/chat_list.dart';
 import '../presentation/home/home.dart';
 import '../presentation/map.dart';
 import '../presentation/notice.dart';
-import '../presentation/post/post.dart';
 import '../presentation/profile.dart';
 import '../presentation/writing.dart';
 import 'colors.dart';
@@ -72,6 +71,7 @@ class BarWidget {
 
   PreferredSizeWidget bulletinBoard(BuildContext context) {
     return AppBar(
+      centerTitle: false,
       backgroundColor: whiteTheme,
       toolbarHeight: 60,
       elevation: 0,
@@ -113,6 +113,8 @@ class BarWidget {
                 height: 18,
               ),
               onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomePage(reload: false,)));
               },
             ),
           ),

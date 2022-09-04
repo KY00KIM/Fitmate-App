@@ -68,7 +68,7 @@ late Map UserData = {
 Future<bool> UpdateUserData() async {
   log(IdToken.toString());
   http.Response response = await http
-      .get(Uri.parse("${baseUrl}users/${UserId.toString()}"), headers: {
+      .get(Uri.parse("${baseUrlV1}users/${UserId.toString()}"), headers: {
     // ignore: unnecessary_string_interpolations
     "Authorization": "bearer ${IdToken.toString()}",
     "Content-Type": "application/json; charset=UTF-8",
@@ -81,7 +81,7 @@ Future<bool> UpdateUserData() async {
     print("fitness center id : ${UserData["fitness_center_id"].toString()}");
     http.Response responseFitness = await http.get(
         Uri.parse(
-            "${baseUrl}fitnesscenters/${UserData["fitness_center_id"].toString()}"),
+            "${baseUrlV1}fitnesscenters/${UserData["fitness_center_id"].toString()}"),
         headers: {
           // ignore: unnecessary_string_interpolations
           "Authorization": "bearer ${IdToken.toString()}",
@@ -130,4 +130,5 @@ Future<Position> DeterminePosition() async {
 late String IdToken;
 late String UserId;
 
-String baseUrl = "https://fitmate.co.kr/v1/";
+String baseUrlV1 = "https://fitmate.co.kr/v1/";
+String baseUrlV2 = "https://fitmate.co.kr/v2/";

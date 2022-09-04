@@ -34,7 +34,7 @@ class GoogleLoginWidget extends StatelessWidget {
 
           //토큰을 받는 단계에서 에러가 나지 않았다면
           http.Response response = await http
-              .get(Uri.parse("${baseUrl}users/login"), headers: {
+              .get(Uri.parse("${baseUrlV1}users/login"), headers: {
             'Authorization': 'bearer $IdToken',
             'device': '${deviceToken}'
           });

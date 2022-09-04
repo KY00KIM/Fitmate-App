@@ -71,14 +71,14 @@ class _CalenderPageState extends State<CalenderPage> {
   }
 
   Future<bool> getMatching() async {
-    http.Response response = await http.get(Uri.parse("${baseUrl}appointments"),
+    http.Response response = await http.get(Uri.parse("${baseUrlV1}appointments"),
       headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-      response = await http.post(Uri.parse("${baseUrl}appointments"),
+      response = await http.post(Uri.parse("${baseUrlV1}appointments"),
         headers: {'Authorization' : 'bearer $IdToken', 'Content-Type': 'application/json; charset=UTF-8',},
       );
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -97,14 +97,14 @@ class _CalenderPageState extends State<CalenderPage> {
     var temp;
     for(int i = 0; i < resBody['data'].length; i++) {
       temp = Event(resBody['data'][i]);
-      http.Response response2 = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['center_id']}"),
+      http.Response response2 = await http.get(Uri.parse("${baseUrlV1}fitnesscenters/${resBody['data'][i]['center_id']}"),
         headers: {"Authorization" : "bearer $IdToken", "fitnesscenterId": "${resBody['data'][i]['center_id']}"},
       );
       var resBody2 = jsonDecode(utf8.decode(response2.bodyBytes));
       if(response2.statusCode != 200 && resBody2["error"]["code"] == "auth/id-token-expired") {
         IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-        response2 = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data'][i]['center_id']}"),
+        response2 = await http.get(Uri.parse("${baseUrlV1}fitnesscenters/${resBody['data'][i]['center_id']}"),
           headers: {"Authorization" : "bearer $IdToken", "fitnesscenterId": "${resBody['data'][i]['center_id']}"},
         );
         resBody2 = jsonDecode(utf8.decode(response.bodyBytes));
@@ -112,14 +112,14 @@ class _CalenderPageState extends State<CalenderPage> {
       temp.content['centerName'] = "${resBody2['data']['center_name']}";
 
       String partnerId = resBody['data'][i]['match_start_id'] == UserData['_id'] ? resBody['data'][i]['match_join_id'] : resBody['data'][i]['match_start_id'];
-      http.Response response3 = await http.get(Uri.parse("${baseUrl}users/${partnerId}"),
+      http.Response response3 = await http.get(Uri.parse("${baseUrlV1}users/${partnerId}"),
         headers: {"Authorization" : "bearer $IdToken", "userId": "${partnerId}"},
       );
       var resBody3 = jsonDecode(utf8.decode(response3.bodyBytes));
       if(response3.statusCode != 200 && resBody3["error"]["code"] == "auth/id-token-expired") {
         IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-        response3 = await http.get(Uri.parse("${baseUrl}users/${partnerId}"),
+        response3 = await http.get(Uri.parse("${baseUrlV1}users/${partnerId}"),
           headers: {"Authorization" : "bearer $IdToken", "userId": "${partnerId}"},
         );
         resBody3 = jsonDecode(utf8.decode(response.bodyBytes));

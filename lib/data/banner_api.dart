@@ -7,8 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../domain/model/posts.dart';
 import '../domain/util.dart';
 
-class PostApi {
-  Future<List> getPost(bool isPosts) async {
+class BannerApi {
+  Future<List> getBanner(bool isPosts) async {
     //print("homeposts : ${HomePosts.length == 0}");
     //print("reload : ${widget.reload}");
     //if (isPosts == true && widget.reload == false) return HomePosts;

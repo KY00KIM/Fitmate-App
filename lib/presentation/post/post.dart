@@ -39,7 +39,6 @@ class _PostPageState extends State<PostPage>
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.bulletinBoard(context),
-      bottomNavigationBar: barWidget.bottomNavigationBar(context, 1),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => postApi.getPost(false),

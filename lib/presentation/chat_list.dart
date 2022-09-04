@@ -23,14 +23,14 @@ class _ChatListPageState extends State<ChatListPage> {
   final barWidget = BarWidget();
 
   Future<List> getChatList() async {
-    http.Response response = await http.get(Uri.parse("${baseUrl}chats/info"),
+    http.Response response = await http.get(Uri.parse("${baseUrlV1}chats/info"),
       headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-      response = await http.get(Uri.parse("${baseUrl}chats/info"),
+      response = await http.get(Uri.parse("${baseUrlV1}chats/info"),
         headers: {"Authorization" : "bearer $IdToken", "Content-Type": "application/json; charset=UTF-8"},
       );
       resBody = jsonDecode(utf8.decode(response.bodyBytes));

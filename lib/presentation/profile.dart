@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<int> getReviewProfile() async {
     http.Response response = await http.get(
-      Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
+      Uri.parse("${baseUrlV1}reviews/${UserData['_id']}"),
       headers: {
         "Authorization": "bearer $IdToken",
         "userId": "${UserData['_id']}"
@@ -54,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
               .toString();
 
       response = await http.get(
-        Uri.parse("${baseUrl}reviews/${UserData['_id']}"),
+        Uri.parse("${baseUrlV1}reviews/${UserData['_id']}"),
         headers: {
           "Authorization": "bearer $IdToken",
           "userId": "${UserData['_id']}"

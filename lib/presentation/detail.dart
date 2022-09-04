@@ -32,7 +32,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
   Future<bool> addChat() async {
     //기존 채팅방이 있는지 확인
     http.Response response = await http.get(
-      Uri.parse("${baseUrl}chats/"),
+      Uri.parse("${baseUrlV1}chats/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'bearer $IdToken',
@@ -48,7 +48,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
               .toString();
 
       response = await http.get(
-        Uri.parse("${baseUrl}chats/"),
+        Uri.parse("${baseUrlV1}chats/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'bearer $IdToken',
@@ -72,7 +72,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
     print(data);
     var body = json.encode(data);
     log(IdToken);
-    http.Response response2 = await http.post(Uri.parse("${baseUrl}chats/"),
+    http.Response response2 = await http.post(Uri.parse("${baseUrlV1}chats/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'bearer $IdToken',
@@ -87,7 +87,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
               .token
               .toString();
 
-      response2 = await http.post(Uri.parse("${baseUrl}chats/"),
+      response2 = await http.post(Uri.parse("${baseUrlV1}chats/"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'bearer $IdToken',
@@ -107,7 +107,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
     print("idtoken : $IdToken");
     print("skflsjeifslf");
     http.Response response = await http.get(
-      Uri.parse("${baseUrl}posts/${widget.postId}"),
+      Uri.parse("${baseUrlV1}posts/${widget.postId}"),
       headers: {
         "Authorization": "bearer $IdToken",
         "Content-Type": "application/json; charset=UTF-8",
@@ -125,7 +125,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
               .toString();
 
       http.Response response = await http.get(
-        Uri.parse("${baseUrl}posts/${widget.postId}"),
+        Uri.parse("${baseUrlV1}posts/${widget.postId}"),
         headers: {
           "Authorization": "bearer $IdToken",
           "Content-Type": "application/json; charset=UTF-8",
@@ -137,7 +137,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
 
     http.Response responseFitness = await http.get(
         Uri.parse(
-            "${baseUrl}fitnesscenters/${resBody['data'][0]['promise_location'].toString()}"),
+            "${baseUrlV1}fitnesscenters/${resBody['data'][0]['promise_location'].toString()}"),
         headers: {
           // ignore: unnecessary_string_interpolations
           "Authorization": "bearer ${IdToken.toString()}",
@@ -154,7 +154,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
     makerUserId = resBody['data'][0]['user_id'].toString();
     http.Response responseUser = await http.get(
         Uri.parse(
-            "${baseUrl}users/${resBody['data'][0]['user_id'].toString()}"),
+            "${baseUrlV1}users/${resBody['data'][0]['user_id'].toString()}"),
         headers: {
           // ignore: unnecessary_string_interpolations
           "Authorization": "bearer ${IdToken.toString()}",
@@ -169,7 +169,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
 
     http.Response responseLocation = await http.get(
         Uri.parse(
-            "${baseUrl}locations/${resBody['data'][0]['location_id'].toString()}"),
+            "${baseUrlV1}locations/${resBody['data'][0]['location_id'].toString()}"),
         headers: {
           // ignore: unnecessary_string_interpolations
           "Authorization": "bearer ${IdToken.toString()}",
@@ -194,7 +194,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
 
   void ReportPosets() async {
     http.Response response = await http.post(
-      Uri.parse("${baseUrl}report/${widget.postId}"),
+      Uri.parse("${baseUrlV1}report/${widget.postId}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'bearer $IdToken',

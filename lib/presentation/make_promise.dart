@@ -45,7 +45,7 @@ class _MakePromisePageState extends State<MakePromisePage> {
     print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("${baseUrl}appointments"),
+    http.Response response = await http.post(Uri.parse("${baseUrlV1}appointments"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization' : 'bearer $IdToken',

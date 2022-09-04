@@ -104,7 +104,7 @@ class KakaoLoginWidget extends StatelessWidget {
           print("device token : ${deviceToken}");
           //토큰을 받는 단계에서 에러가 나지 않았다면
           http.Response response =
-              await http.get(Uri.parse("${baseUrl}users/login"), headers: {
+              await http.get(Uri.parse("${baseUrlV1}users/login"), headers: {
             'Authorization': 'bearer $IdToken',
             // ignore: unnecessary_brace_in_string_interps
             'device': '${deviceToken}'

@@ -35,7 +35,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   String reportContent = '';
 
   Future<Map> getOtherProfile() async {
-    http.Response response = await http.get(Uri.parse("${baseUrl}users/${widget.profileId.toString()}"), headers: {
+    http.Response response = await http.get(Uri.parse("${baseUrlV1}users/${widget.profileId.toString()}"), headers: {
       // ignore: unnecessary_string_interpolations
       "Authorization" : "bearer $IdToken",
       "Content-Type" : "application/json; charset=UTF-8",
@@ -45,7 +45,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
-      http.Response response = await http.get(Uri.parse("${baseUrl}users/${widget.profileId.toString()}"), headers: {
+      http.Response response = await http.get(Uri.parse("${baseUrlV1}users/${widget.profileId.toString()}"), headers: {
         // ignore: unnecessary_string_interpolations
         "Authorization" : "bearer $IdToken",
         "Content-Type" : "application/json; charset=UTF-8",
@@ -64,7 +64,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
 
       print('resbody : ${resBody}');
 
-      http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${resBody['data']['fitness_center_id'].toString()}"), headers: {
+      http.Response responseFitness = await http.get(Uri.parse("${baseUrlV1}fitnesscenters/${resBody['data']['fitness_center_id'].toString()}"), headers: {
         // ignore: unnecessary_string_interpolations
         "Authorization" : "bearer ${IdToken.toString()}",
         "fitnesscenterId" : "${resBody['data']['fitness_center_id'].toString()}"});
@@ -75,7 +75,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         otherFitnessCenter = resBody2["data"]["center_name"];
       }
 
-      http.Response response2 = await http.get(Uri.parse("${baseUrl}reviews/${otherId}"),
+      http.Response response2 = await http.get(Uri.parse("${baseUrlV1}reviews/${otherId}"),
         headers: {
           "Authorization" : "bearer $IdToken",
           "userId" : "bearer ${otherId}"
@@ -110,7 +110,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("${baseUrl}report/user"),
+    http.Response response = await http.post(Uri.parse("${baseUrlV1}report/user"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization' : 'bearer $IdToken',
