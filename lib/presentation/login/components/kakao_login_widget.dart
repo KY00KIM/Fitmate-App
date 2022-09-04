@@ -36,6 +36,12 @@ class KakaoLoginWidget extends StatelessWidget {
         try {
           await kakao.UserApi.instance.loginWithKakaoAccount();
           user = await kakao.UserApi.instance.me();
+          log(await kakao.UserApi.instance.toString());
+          print("instance to String : ");
+          log(await kakao.UserApi.instance.toString());
+          print("instance>accessTokenInfo to String : ");
+          log(await kakao.UserApi.instance.accessTokenInfo().toString());
+
           print("카카오계정 로그인 성공");
           return true;
         } catch (error) {
@@ -62,6 +68,7 @@ class KakaoLoginWidget extends StatelessWidget {
 
   Future<String> login(BuildContext context) async {
     isKakaoLogined = await kakaoLogin();
+    log(user.toString());
     if (isKakaoLogined) {
       final customToken =
           await FirebaseAuthMethods(FirebaseAuth.instance).createCustomToken({
