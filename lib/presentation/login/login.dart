@@ -26,14 +26,14 @@ class _LoginPageState extends State<LoginPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: barWidget.signUpAppBar(context),
+        // appBar: barWidget.signUpAppBar(context),
         backgroundColor: const Color(0xfff2f3f7),
         body: SafeArea(
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 110, 20, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 109,
+                    height: 150,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,79 +62,37 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 27,
-                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       KakaoLoginWidget(),
                       SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       GoogleLoginWidget(),
                       SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       AppleLoginWidget(),
                       SizedBox(
                         height: 25,
                       ),
-                      TextButton(onPressed: () {}, child: Text("로그인 없이 둘러보기"))
-                    ],
-                  )
-                  /*
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Image.asset(
-                            'assets/images/fitmate_logo.png',
-                            width: 140,
-                            fit: BoxFit.fill,
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Text(
-                            '계정으로 접속하고\nMate로 합류하세요',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 23.0),
-                          ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 40),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GoogleLoginWidget(),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                AppleLoginWidget(),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                KakaoLoginWidget()
-                              ],
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              fontSize: 14,
                             ),
                           ),
-                          SizedBox(
-                            height: 35.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  */
+                          onPressed: () {},
+                          child: Text(
+                            "로그인 없이 둘러보기",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ))
+                    ],
+                  )
                 ],
               ),
             ),

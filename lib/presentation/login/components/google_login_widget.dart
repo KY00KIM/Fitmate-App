@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_svg/svg.dart';
 
 import '../../../data/firebase_service/firebase_auth_methods.dart';
 import '../../../domain/util.dart';
@@ -18,8 +19,59 @@ class GoogleLoginWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () async {
+    return InkWell(
+      child: Container(
+        child: Row(
+          //spaceEvenly: 요소들을 균등하게 배치하는 속성
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Image.asset(
+                      'assets/icon/google-logo.png',
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Color(0xFFffffff)),
+                ),
+              ],
+            ),
+            Text(
+              'Google로 로그인',
+              style: TextStyle(
+                  color: Color.fromRGBO(0, 0, 0, 0.54),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox()
+          ],
+        ),
+        height: 56,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(32),
+          color: Color(0xFFF2F3F7),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFFffffff),
+              spreadRadius: 2,
+              blurRadius: 8,
+              offset: Offset(-2, -2),
+            ),
+            BoxShadow(
+              color: Color.fromRGBO(55, 84, 170, 0.1),
+              spreadRadius: 2,
+              blurRadius: 2,
+              offset: Offset(2, 2),
+            ),
+          ],
+        ),
+      ),
+      onTap: () async {
         IdToken = await FirebaseAuthMethods(FirebaseAuth.instance)
             .signInWithGoogle(context);
         IdToken =
@@ -80,36 +132,6 @@ class GoogleLoginWidget extends StatelessWidget {
           }
         }
       },
-      child: Row(
-        //spaceEvenly: 요소들을 균등하게 배치하는 속성
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Image.asset(
-            'assets/icon/google-logo.png',
-            width: 20.0,
-            height: 20.0,
-          ),
-          Text(
-            'Google로 로그인',
-            style: TextStyle(
-                color: Color.fromRGBO(0, 0, 0, 0.54),
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold),
-          ),
-          SizedBox()
-        ],
-      ),
-      style: ElevatedButton.styleFrom(
-        side: BorderSide(width: 0.0, color: Color(0xff878E97)),
-        primary: Color(0xFFffffff),
-        //shadowColor: Colors.black, 그림자 추가하는 속성
-
-        minimumSize: Size.fromHeight(40), // 높이만 50으로 설정
-        elevation: 1.0,
-        shape: RoundedRectangleBorder(
-            // shape : 버튼의 모양을 디자인 하는 기능
-            borderRadius: BorderRadius.circular(20.0)),
-      ),
     );
   }
 }
