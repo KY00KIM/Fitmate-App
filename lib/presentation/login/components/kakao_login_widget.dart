@@ -192,7 +192,7 @@ class KakaoLoginWidget extends StatelessWidget {
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      SignupPage(),
+                      SignupPage1(),
                   transitionDuration: Duration.zero,
                   reverseTransitionDuration: Duration.zero,
                 ),

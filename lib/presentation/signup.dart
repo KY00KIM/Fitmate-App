@@ -8,22 +8,28 @@ import 'package:fitmate/presentation/write_center.dart';
 import 'package:fitmate/presentation/write_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import 'package:fitmate/ui/bar_widget.dart';
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
+    as inset;
 import '../domain/util.dart';
 import '../ui/show_toast.dart';
 import 'home/home.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+class SignupPage1 extends StatefulWidget {
+  const SignupPage1({Key? key}) : super(key: key);
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<SignupPage1> createState() => _SignupPageState1();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState1 extends State<SignupPage1> {
+  final barWidget = BarWidget();
+
+  bool gender = true;
   String nickname = '';
   final isSelectedSex = <bool>[false, false];
   Map isSelectedWeekDay = {
@@ -112,7 +118,8 @@ class _SignupPageState extends State<SignupPage> {
     LocationPermission permission = await Geolocator.requestPermission();
     permission = await Geolocator.checkPermission();
 
-    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
       latitude = 0;
       longitude = 0;
     } else {
@@ -134,7 +141,6 @@ class _SignupPageState extends State<SignupPage> {
     // double longitude = 0;
     // double latitude = 0;
     //
-
 
     Map data = {
       "user_nickname": "$nickname",
@@ -248,673 +254,262 @@ class _SignupPageState extends State<SignupPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: const Color(0xff22232A),
+        appBar: barWidget.nextBackAppBar(context),
+        backgroundColor: const Color(0xffF2F3F7),
         body: SafeArea(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(20, 15, 20, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '회원가입',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 25.0,
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.0),
-                  child: Text(
-                    '프로필',
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '회원가입',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 14.0,
+                      color: Color(0xff6e7995),
+                      fontSize: 25.0,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: size.width - 165,
-                      height: 45,
-                      child: TextField(
-                        onChanged: (value) {
-                          nickname = value;
-                        },
-                        style: TextStyle(color: Color(0xff878E97)),
-                        decoration: InputDecoration(
-                          hintText: '닉네임',
-                          contentPadding: EdgeInsets.fromLTRB(15, 5, 0, 0),
-                          hintStyle: TextStyle(
-                            color: Color(0xff878E97),
-                          ),
-                          labelStyle: TextStyle(color: Color(0xff878E97)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(7.0)),
-                            borderSide:
-                                BorderSide(width: 1, color: Color(0xff878E97)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(7.0)),
-                            borderSide:
-                                BorderSide(width: 1, color: Color(0xff878E97)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(7.0)),
-                          ),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  Text(
+                    '기본정보',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 21,
+                  ),
+                  Text("계정",
+                      style: TextStyle(
+                          color: Color(0xff6E7995),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(height: 12.5),
+                  Container(
+                    height: 52,
+                    decoration: inset.BoxDecoration(
+                      color: const Color(0xffd1d9e6),
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                          width: 1.0, color: const Color(0xffffffff)),
+                      boxShadow: const [
+                        inset.BoxShadow(
+                          offset: Offset(-20, -20),
+                          blurRadius: 60,
+                          color: Color.fromARGB(255, 192, 200, 212),
+                          inset: true,
                         ),
+                        inset.BoxShadow(
+                          offset: Offset(3, 3),
+                          blurRadius: 6,
+                          spreadRadius: 1,
+                          color: Color.fromARGB(255, 169, 176, 189),
+                          inset: true,
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("abcd@gmail.com",
+                              style: TextStyle(
+                                color: Color(0xff6E7995),
+                                fontSize: 15,
+                              )),
+                          Text("카카오계정",
+                              style: TextStyle(
+                                color: Color(0xff6E7995),
+                                fontSize: 15,
+                              )),
+                        ],
                       ),
                     ),
-                    Container(
-                      width: 110,
-                      height: 45,
-                      margin: EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Color(0xFF878E97),
+                  ),
+                  SizedBox(
+                    height: 23.5,
+                  ),
+                  Text("닉네임",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff6E7995))),
+                  SizedBox(height: 13.5),
+                  Container(
+                    height: 52,
+                    decoration: inset.BoxDecoration(
+                      color: const Color(0xffEFEFEF),
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                          width: 1.0, color: const Color(0xffffffff)),
+                      boxShadow: const [
+                        inset.BoxShadow(
+                          offset: Offset(-30, -30),
+                          blurRadius: 100,
+                          color: Color.fromARGB(0, 46, 46, 191),
+                          inset: true,
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                        inset.BoxShadow(
+                          offset: Offset(3, 3),
+                          blurRadius: 6,
+                          spreadRadius: 1,
+                          color: Color.fromARGB(255, 169, 176, 189),
+                          inset: true,
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          new Flexible(
+                            child: TextField(
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                fillColor: Colors.transparent,
+                                filled: true,
+                                hintText: '닉네임',
+                                hintStyle: TextStyle(
+                                  color: Color(0xffD1D9E6),
+                                ),
+                                labelStyle: TextStyle(color: Color(0xff878E97)),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                                primary: Color(
+                                    0xff3F51B5), // set the background color
+                                textStyle: TextStyle(
+                                    fontSize: 12, color: Colors.white)),
+                            child: Text(
+                              "중복확인",
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Center(
-                        child: ToggleButtons(
-                          color: Color(0xFF878E97),
-                          selectedColor: Color(0xFFffffff),
-                          //selectedBorderColor: Color(0xFF6200EE),
-                          fillColor: Color(0xFF22232A).withOpacity(0.08),
-                          splashColor: Color(0xFF22232A).withOpacity(0.12),
-                          //hoverColor: Color(0xFF6200EE).withOpacity(0.04),
-                          borderColor: Color(0xFF22232A),
-                          borderRadius: BorderRadius.circular(4.0),
-                          renderBorder: false,
-                          constraints: BoxConstraints(minHeight: 36.0),
-                          isSelected: isSelectedSex,
-                          onPressed: (index) {
-                            // Respond to button selection
-                            setState(() {
-                              if (!isSelectedSex[0] & !isSelectedSex[1]) {
-                                isSelectedSex[index] = !isSelectedSex[index];
-                              } else {
-                                isSelectedSex[index] = !isSelectedSex[index];
-                                isSelectedSex[index == 1 ? 0 : 1] =
-                                    !isSelectedSex[index == 1 ? 1 : 0];
-                              }
-                            });
-                          },
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text(
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "성별",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(
+                        0xff6E7995,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: ListTile(
+                              title: const Text(
                                 '남',
                                 style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: isSelectedSex[0] == true
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                ),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff6E7995)),
+                              ),
+                              leading: Radio<bool>(
+                                value: true,
+                                groupValue: gender,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    gender = value!;
+                                    print("selectedSex is $gender");
+                                  });
+                                },
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text(
-                                '여',
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: isSelectedSex[1] == true
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '운동 스케쥴',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 14.0),
-                        ),
-                        Container(
-                          width: 150,
-                          height: 25,
-                          margin: EdgeInsets.only(left: 15),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Color(0xFF878E97),
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(7.0)),
                           ),
-                          child: Center(
-                            child: ToggleButtons(
-                              color: Color(0xFF878E97),
-                              selectedColor: Color(0xFFffffff),
-                              //selectedBorderColor: Color(0xFF6200EE),
-                              fillColor: Color(0xFF22232A).withOpacity(0.08),
-                              splashColor: Color(0xFF22232A).withOpacity(0.12),
-                              //hoverColor: Color(0xFF6200EE).withOpacity(0.04),
-                              borderColor: Color(0xFF22232A),
-                              borderRadius: BorderRadius.circular(4.0),
-                              renderBorder: false,
-                              constraints: BoxConstraints(minHeight: 36.0),
-                              isSelected: isSelectedTime,
-                              onPressed: (index) {
-                                // Respond to button selection
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            title: const Text(
+                              '여',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff6E7995)),
+                            ),
+                            leading: Radio<bool>(
+                              value: true,
+                              groupValue: gender,
+                              onChanged: (bool? value) {
                                 setState(() {
-                                  if (isSelectedTime[index]) {
-                                  } else if (!isSelectedTime[0] &
-                                      !isSelectedTime[1] &
-                                      !isSelectedTime[2]) {
-                                    isSelectedTime[index] =
-                                        !isSelectedTime[index];
-                                  } else {
-                                    isSelectedTime[index] =
-                                        !isSelectedTime[index];
-                                    if (index == 0) {
-                                      isSelectedTime[1] = false;
-                                      isSelectedTime[2] = false;
-                                    } else if (index == 1) {
-                                      isSelectedTime[0] = false;
-                                      isSelectedTime[2] = false;
-                                    } else if (index == 2) {
-                                      isSelectedTime[1] = false;
-                                      isSelectedTime[0] = false;
-                                    }
-                                  }
+                                  gender = value!;
+                                  print("selectedSex is $gender");
                                 });
                               },
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text(
-                                    '오전',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: isSelectedTime[0] == true
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text(
-                                    '오후',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: isSelectedTime[1] == true
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text(
-                                    '저녁',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: isSelectedTime[2] == true
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(width: 150)
                       ]),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: ElevatedButton(
-                        child: Text(
-                          '월',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isSelectedWeekDay['mon'] == false
-                                ? Color(0xFF878E97)
-                                : Color(0xFFffffff),
+                  SizedBox(height: 33),
+                  Text("한줄 소개",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff6E7995))),
+                  SizedBox(height: 12),
+                  Container(
+                      height: 100,
+                      decoration: inset.BoxDecoration(
+                        color: const Color(0xffEFEFEF),
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                            width: 1.0, color: const Color(0xffffffff)),
+                        boxShadow: const [
+                          inset.BoxShadow(
+                            offset: Offset(-30, -30),
+                            blurRadius: 100,
+                            color: Color.fromARGB(0, 46, 46, 191),
+                            inset: true,
                           ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isSelectedWeekDay['mon'] =
-                                !isSelectedWeekDay['mon'];
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(40, 40),
-                          minimumSize: Size(40, 40),
-                          padding: EdgeInsets.only(right: 0),
-                          shape: const CircleBorder(),
-                          primary: isSelectedWeekDay['mon'] == false
-                              ? Color(0xFF22232A)
-                              : Color(0xFF2975CF),
-                          elevation: 0,
-                          side: BorderSide(
-                            color: Color(0xFF878E97),
-                            width: isSelectedWeekDay['mon'] == false ? 1 : 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: ElevatedButton(
-                        child: Text(
-                          '화',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isSelectedWeekDay["tue"] == false
-                                ? Color(0xFF878E97)
-                                : Color(0xFFffffff),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isSelectedWeekDay["tue"] =
-                                !isSelectedWeekDay["tue"];
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          padding: EdgeInsets.only(right: 0),
-                          fixedSize: const Size(40, 40),
-                          shape: const CircleBorder(),
-                          primary: isSelectedWeekDay["tue"] == false
-                              ? Color(0xFF22232A)
-                              : Color(0xFF2975CF),
-                          elevation: 0,
-                          side: BorderSide(
-                            color: Color(0xFF878E97),
-                            width: isSelectedWeekDay["tue"] == false ? 1 : 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: ElevatedButton(
-                        child: Text(
-                          '수',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isSelectedWeekDay["wed"] == false
-                                ? Color(0xFF878E97)
-                                : Color(0xFFffffff),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isSelectedWeekDay["wed"] =
-                                !isSelectedWeekDay["wed"];
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          padding: EdgeInsets.only(right: 0),
-                          fixedSize: const Size(40, 40),
-                          shape: const CircleBorder(),
-                          primary: isSelectedWeekDay["wed"] == false
-                              ? Color(0xFF22232A)
-                              : Color(0xFF2975CF),
-                          elevation: 0,
-                          side: BorderSide(
-                            color: Color(0xFF878E97),
-                            width: isSelectedWeekDay["wed"] == false ? 1 : 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: ElevatedButton(
-                        child: Text(
-                          '목',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isSelectedWeekDay["thu"] == false
-                                ? Color(0xFF878E97)
-                                : Color(0xFFffffff),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isSelectedWeekDay["thu"] =
-                                !isSelectedWeekDay["thu"];
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          padding: EdgeInsets.only(right: 0),
-                          fixedSize: const Size(40, 40),
-                          shape: const CircleBorder(),
-                          primary: isSelectedWeekDay["thu"] == false
-                              ? Color(0xFF22232A)
-                              : Color(0xFF2975CF),
-                          elevation: 0,
-                          side: BorderSide(
-                            color: Color(0xFF878E97),
-                            width: isSelectedWeekDay["thu"] == false ? 1 : 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: ElevatedButton(
-                        child: Text(
-                          '금',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isSelectedWeekDay["fri"] == false
-                                ? Color(0xFF878E97)
-                                : Color(0xFFffffff),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isSelectedWeekDay["fri"] =
-                                !isSelectedWeekDay["fri"];
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          padding: EdgeInsets.only(right: 0),
-                          fixedSize: const Size(40, 40),
-                          shape: const CircleBorder(),
-                          primary: isSelectedWeekDay["fri"] == false
-                              ? Color(0xFF22232A)
-                              : Color(0xFF2975CF),
-                          elevation: 0,
-                          side: BorderSide(
-                            color: Color(0xFF878E97),
-                            width: isSelectedWeekDay["fri"] == false ? 1 : 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: ElevatedButton(
-                        child: Text(
-                          '토',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isSelectedWeekDay["sat"] == false
-                                ? Color(0xFF878E97)
-                                : Color(0xFFffffff),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isSelectedWeekDay["sat"] =
-                                !isSelectedWeekDay["sat"];
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          padding: EdgeInsets.only(right: 0),
-                          fixedSize: const Size(40, 40),
-                          shape: const CircleBorder(),
-                          primary: isSelectedWeekDay["sat"] == false
-                              ? Color(0xFF22232A)
-                              : Color(0xFF2975CF),
-                          elevation: 0,
-                          side: BorderSide(
-                            color: Color(0xFF878E97),
-                            width: isSelectedWeekDay["sat"] == false ? 1 : 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: ElevatedButton(
-                        child: Text(
-                          '일',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isSelectedWeekDay["sun"] == false
-                                ? Color(0xFF878E97)
-                                : Color(0xFFffffff),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isSelectedWeekDay["sun"] =
-                                !isSelectedWeekDay["sun"];
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(40, 40),
-                          padding: EdgeInsets.only(right: 0),
-                          fixedSize: const Size(40, 40),
-                          shape: const CircleBorder(),
-                          primary: isSelectedWeekDay["sun"] == false
-                              ? Color(0xFF22232A)
-                              : Color(0xFF2975CF),
-                          elevation: 0,
-                          side: BorderSide(
-                            color: Color(0xFF878E97),
-                            width: isSelectedWeekDay["sun"] == false ? 1 : 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.0),
-                  child: Text(
-                    '지역 등록',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 14.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_pin,
-                            color: Color(0xFF878E97),
-                            size: 17.0,
-                          ),
-                          Flexible(
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              strutStyle: StrutStyle(fontSize: 15),
-                              text: TextSpan(
-                                text: ' $location',
-                                style: TextStyle(
-                                  color: Color(0xFF878E97),
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
+                          inset.BoxShadow(
+                            offset: Offset(3, 3),
+                            blurRadius: 6,
+                            spreadRadius: 1,
+                            color: Color.fromARGB(255, 169, 176, 189),
+                            inset: true,
                           ),
                         ],
                       ),
-                      style: ElevatedButton.styleFrom(
-                        alignment: Alignment.centerLeft,
-                        primary: Color(0xFF22232A),
-                        shape: RoundedRectangleBorder(
-                          // 테두리를 라운드하게 만들기
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        side: BorderSide(
-                          width: 1.0,
-                          color: Color(0xFF878E97),
-                        ),
-                        minimumSize: Size((size.width - 55) / 2, 45),
-                        maximumSize: Size((size.width - 55) / 2, 45),
-                      ),
-                      onPressed: () async {
-                        var onValue = await Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => WriteLocationPage()));
-                        print("end");
-                        setState(() {
-                          location = onValue.toString();
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    ElevatedButton(
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.fitness_center,
-                            color: Color(0xFF878E97),
-                            size: 17.0,
-                          ),
-                          Flexible(
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              strutStyle: StrutStyle(fontSize: 15),
-                              text: TextSpan(
-                                text: ' $centerName',
-                                style: TextStyle(
-                                  color: Color(0xFF878E97),
-                                  fontSize: 15,
-                                ),
-                              ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child: TextField(
+                          style: TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            fillColor: Colors.transparent,
+                            filled: true,
+                            hintText: '40자 이내',
+                            hintStyle: TextStyle(
+                              color: Color(0xffD1D9E6),
                             ),
+                            labelStyle: TextStyle(color: Color(0xff878E97)),
                           ),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        alignment: Alignment.centerLeft,
-                        primary: Color(0xFF22232A),
-                        shape: RoundedRectangleBorder(
-                          // 테두리를 라운드하게 만들기
-                          borderRadius: BorderRadius.circular(7.0),
                         ),
-                        side: BorderSide(
-                          width: 1.0,
-                          color: Color(0xFF878E97),
-                        ),
-                        minimumSize: Size((size.width - 55) / 2, 45),
-                        maximumSize: Size((size.width - 55) / 2, 45),
-                      ),
-                      onPressed: () async {
-                        var onValue = await Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => WriteCenterPage()));
-                        print("end");
-                        setState(() {
-                          center = onValue;
-                          centerName = onValue['place_name'];
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: nickname == '' ||
-                            isSelectedSex[0] == false &&
-                                isSelectedSex[1] == false ||
-                            isSelectedTime[0] == false &&
-                                isSelectedTime[1] == false &&
-                                isSelectedTime[2] == false ||
-                            isSelectedWeekDay[0] == false &&
-                                isSelectedWeekDay[1] == false &&
-                                isSelectedWeekDay[2] == false &&
-                                isSelectedWeekDay[3] == false &&
-                                isSelectedWeekDay[4] == false &&
-                                isSelectedWeekDay[5] == false &&
-                                isSelectedWeekDay[6] == false ||
-                            location == '동네 입력'
-                        ? Color(0xFF878E97)
-                        : Color(0xFF3889D1),
-                    minimumSize: Size(size.width - 40, 45),
-                  ),
-                  onPressed: () {
-                    createUserInFirestore();
-                    nickname == '' ||
-                            isSelectedSex[0] == false &&
-                                isSelectedSex[1] == false ||
-                            isSelectedTime[0] == false &&
-                                isSelectedTime[1] == false &&
-                                isSelectedTime[2] == false ||
-                            isSelectedWeekDay[0] == false &&
-                                isSelectedWeekDay[1] == false &&
-                                isSelectedWeekDay[2] == false &&
-                                isSelectedWeekDay[3] == false &&
-                                isSelectedWeekDay[4] == false &&
-                                isSelectedWeekDay[5] == false &&
-                                isSelectedWeekDay[6] == false ||
-                            location == '동네 입력'
-                        ? FlutterToastBottom("센터 등록 외의 모든 항목을 입력하여주세요")
-                        : SignPost();
-                  },
-                  child: Text(
-                    '가입하기',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
+                      )),
+                ],
+              ),
             ),
           ),
         ),
