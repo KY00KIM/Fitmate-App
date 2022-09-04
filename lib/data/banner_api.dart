@@ -1,66 +1,28 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
-import 'package:firebase_auth/firebase_auth.dart';
-
-import '../domain/model/posts.dart';
-import '../domain/util.dart';
+import '../domain/model/banner.dart';
+import 'http_api.dart';
 
 class BannerApi {
-  Future<List> getBanner(bool isPosts) async {
-    //print("homeposts : ${HomePosts.length == 0}");
-    //print("reload : ${widget.reload}");
-    //if (isPosts == true && widget.reload == false) return HomePosts;
-    //if (isPosts == true && refresh == true) {
-    //  refresh = false;
-    //  return HomePosts;
-    //}
+  Future<List> getBanner() async {
+    List<Banner> _banner = <Banner>[];
+    final httpApi = HttpApi();
 
-    List<Posts> _posts = <Posts>[];
-
-    http.Response response = await http.get(
-      Uri.parse("${baseUrlV1}posts"),
-      headers: {
-        "Authorization": "bearer $IdToken",
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-    );
-    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode != 200 &&
-        resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken =
-          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-              .token
-              .toString();
-
-      http.Response response = await http.post(
-        Uri.parse("${baseUrlV1}posts"),
-        headers: {
-          'Authorization': 'bearer $IdToken',
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-      resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    }
-
-    if (isPosts == false) {
-      //refresh = true;
-      //setState(() {});
-    }
+    http.Response response = await httpApi.get(2, 'banner');
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       List hits = jsonResponse['data'];
       for(int i = 0; i < hits.length; i++) {
         try {
-          _posts.add(Posts.fromJson(hits[i]));
+          _banner.add(Banner.fromJson(hits[i]));
         } catch (e) {
         }
       }
-      return _posts;
+      return _banner;
     } else {
-      print("what the fuck");
+      print("배너 에러 떳씁니다!");
       throw Exception('Failed to load post');
     }
   }

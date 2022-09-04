@@ -3,12 +3,13 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/chat.dart';
+import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../domain/util.dart';
-import '../ui/bar_widget.dart';
+import '../../domain/util.dart';
+import '../../ui/bar_widget.dart';
 
 
 class ChatListPage extends StatefulWidget {
@@ -55,7 +56,7 @@ class _ChatListPageState extends State<ChatListPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color(0xFF22232A),
+      backgroundColor: whiteTheme,
       appBar: barWidget.appBar(context),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 2),
       body: SafeArea(
@@ -91,10 +92,6 @@ class _ChatListPageState extends State<ChatListPage> {
                               )
                             )
                           );
-                          //Route route = MaterialPageRoute(builder: (context) => ChatPage());
-                          //Navigator.pushReplacement(context, route);
-                          //Navigator.push(context, CupertinoPageRoute(builder : (context) => ChatPage()));
-
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

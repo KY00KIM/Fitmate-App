@@ -1,3 +1,4 @@
+import 'package:fitmate/presentation/home/components/home_banner_widget.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../data/post_api.dart';
+import '../../domain/repository/home_api_repository.dart';
 import '../post/post.dart';
 import 'components/home_board_widget.dart';
+import 'components/home_town_widget.dart';
 
 class HomePage extends StatefulWidget {
   bool reload;
@@ -20,7 +23,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final postApi = PostApi();
   final barWidget = BarWidget();
-  final homeBoardWidget = HomeBoardWidget();
+  final homeTownWidget = HomeTownWidget();
+  final homeApiRepo =  HomeApiRepository();
 
   @override
   void initState() {
@@ -34,19 +38,17 @@ class _HomePageState extends State<HomePage> {
       appBar: barWidget.appBar(context),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 1),
       body: SafeArea(
-        child: FutureBuilder<List>(
-          future: postApi.getPost(true),
+        child: FutureBuilder<Map>(
+          future: homeApiRepo.getHomeRepo(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              print('snapshot data : ${snapshot.data}');
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   child: Column(
                     children: [
-                      Container(
-                        height: 120,
-                        color: Color(0xFF22232A),
-                      ),
+                      HomeBannerWidget(banner: snapshot.data!['banners'],),
                       SizedBox(
                         height: 26,
                       ),
@@ -113,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       SizedBox(height: 15,),
-                      HomeBoardWidget(),
+                      HomeBoardWidget(posts: snapshot.data!['posts'],),
                       SizedBox(height: 20,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -133,7 +135,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      SizedBox(height: 20,),
+                      HomeTownWidget(),
+                      SizedBox(height: 32,),
                     ],
                   ),
                 ),

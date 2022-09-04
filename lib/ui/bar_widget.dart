@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../presentation/calender/calender.dart';
-import '../presentation/chat_list.dart';
+import '../presentation/chat_list/chat_list.dart';
 import '../presentation/home/home.dart';
 import '../presentation/map.dart';
 import '../presentation/notice.dart';
