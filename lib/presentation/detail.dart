@@ -296,8 +296,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
         print("여기까지");
         if (snapshot.hasData) {
           print("머냐 이거");
-          String? time =
-              snapshot.data?[0]['promise_date'].toString().substring(11, 13);
+          String? time = snapshot.data?[0]['promise_date'].toString().substring(11, 13);
           String slot = int.parse(time!) > 12 ? '오후' : '오전';
           return Scaffold(
             appBar: AppBar(

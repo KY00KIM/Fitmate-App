@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/post_api.dart';
 import '../../domain/model/posts.dart';
+import '../../domain/repository/post_api_repository.dart';
 import 'components/post_widget.dart';
 
 class PostPage extends StatefulWidget {
@@ -16,11 +17,8 @@ class PostPage extends StatefulWidget {
   State<PostPage> createState() => _PostPageState();
 }
 
-class _PostPageState extends State<PostPage>
-    with AutomaticKeepAliveClientMixin {
-  bool refresh = false;
-  int count = 0;
-  final postApi = PostApi();
+class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin {
+  final postApiRepo = PostApiRepository();
   final barWidget = BarWidget();
 
   @override
@@ -35,15 +33,14 @@ class _PostPageState extends State<PostPage>
   // Text('${snapshot.data?[index]['post_title']}');
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.bulletinBoard(context),
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () => postApi.getPost(false),
+          onRefresh: () => postApiRepo.getPostRepo(),
           child: FutureBuilder<List>(
-            future: postApi.getPost(true),
+            future: postApiRepo.getPostRepo(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return SingleChildScrollView(
@@ -88,22 +85,6 @@ class _PostPageState extends State<PostPage>
                     ),
                   ),
                 );
-                /*
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: ScrollConfiguration(
-                    behavior: const ScrollBehavior().copyWith(overscroll: false),
-                    child: ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) {
-                        Posts post = snapshot.data?[index];
-                        return PostWidget(posts: post);
-                      },
-                    ),
-                  ),
-                );
-
-                 */
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }

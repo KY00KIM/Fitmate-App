@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../domain/model/posts.dart';
 import '../../detail.dart';
@@ -12,6 +13,8 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    String? time = posts.promiseDate.toString().substring(11, 13);
+    String slot = int.parse(time) > 12 ? '오후' : '오전';
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       width: size.width,
@@ -106,20 +109,62 @@ class PostWidget extends StatelessWidget {
                     Container(
                       width: size.width - 156,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          SvgPicture.asset(
+                            "assets/icon/dumbbell_icon.svg",
+                            width: 12,
+                            height: 12,
+                          ),
+                          SizedBox(width: 8,),
                           Flexible(
+                            fit: FlexFit.tight,
                             child: RichText(
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              strutStyle: StrutStyle(fontSize: 16),
                               text: TextSpan(
-                                text: '${posts.promiseDate.toString().substring(5,7)}/${posts.promiseDate.toString().substring(8,10)}  |  ${posts.promiseLocation.centerName}',
+                                text: '${posts.promiseLocation.centerName}',
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF757575),
+                                  fontSize: 12,
+                                  color: Color(0xFF6E7995),
                                 ),
                               ),
+                            ),
+                          ),
+                          SizedBox(width: 8,),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icon/clock_icon.svg",
+                                width: 12,
+                                height: 12,
+                              ),
+                              SizedBox(width: 8,),
+                              Text(
+                                '${slot} ${int.parse(time) > 12 ? '${int.parse(time) - 12}' : '${int.parse(time)}'}시 ${posts.promiseDate.toString().substring(14, 16)}분',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF6E7995),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Container(
+                      width: size.width - 156,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${posts.promiseDate.toString().substring(0, 4)} ${posts.promiseDate.toString().substring(5, 7)} ${posts.promiseDate.toString().substring(8, 10)}',
+                            style: TextStyle(
+                              color: Color(0xFF6E7995),
+                              fontSize: 12,
                             ),
                           ),
                         ],

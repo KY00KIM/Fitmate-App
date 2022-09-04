@@ -42,6 +42,9 @@ class MyApp extends StatelessWidget {
   Future<bool> getToken() async {
     // ignore: await_only_futures
 
+    //1. storage에 있는지 확인 -> 있으면 그걸로 바로 home이동
+    //2. 없으면 로그인 Idtoken 받고 그걸로 로그인 진행 후에 -> token들 storage에 저장 경우에 따라 페이지 이동
+
     User? tokenResult = await FirebaseAuth.instance.currentUser;
     print("1");
     log(tokenResult.toString());

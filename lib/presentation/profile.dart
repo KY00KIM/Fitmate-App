@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/profile_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../data/firebase_service/firebase_auth_methods.dart';
 import '../domain/util.dart';
 import '../ui/bar_widget.dart';
+import 'login/login.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -84,8 +87,125 @@ class _ProfilePageState extends State<ProfilePage> {
     log(UserData.toString());
     return Scaffold(
       backgroundColor: const Color(0xFF22232A),
-      appBar: barWidget.appBar(context),
-      bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
+      appBar: AppBar(
+      elevation: 0.0,
+      shape: Border(
+        bottom: BorderSide(
+          color: Color(0xFF3D3D3D),
+          width: 1,
+        ),
+      ),
+      backgroundColor: Color(0xFF22232A),
+      title: Padding(
+        padding: EdgeInsets.only(left: 5.0),
+        child: Text(
+          "내 정보",
+          style: TextStyle(
+            color: Color(0xFFffffff),
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      actions: [
+        PopupMenuButton(
+          iconSize: 30,
+          color: Color(0xFF22232A),
+          shape: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0xFF757575),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          elevation: 40,
+          onSelected: (value) async {
+            if (value == '/edit') Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditPage()));
+            else if (value == '/logout'){
+              print('로그아웃');
+              await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
+            } else if(value == '/signout') {
+              CollectionReference users = FirebaseFirestore.instance.collection('users');
+              users.doc(UserData['social']['user_id']).delete();
+              User? user = FirebaseAuth.instance.currentUser;
+              user?.delete();
+
+              http.Response response = await http.delete(Uri.parse("${baseUrlV1}users"),
+                headers: {
+                  "Authorization" : "bearer $IdToken",
+                },
+              );
+              var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+              if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+                IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+                response = await http.delete(Uri.parse("${baseUrlV1}users"),
+                  headers: {
+                    "Authorization" : "bearer $IdToken",
+                  },
+                );
+                resBody = jsonDecode(utf8.decode(response.bodyBytes));
+              }
+
+              await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
+              // Firebase 로그아웃
+              //await _auth.signOut();
+              //await _googleSignIn.signOut();
+
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
+            }
+          },
+          itemBuilder: (BuildContext bc) {
+            return [
+              PopupMenuItem(
+                child: Text(
+                  '수정하기',
+                  style: TextStyle(
+                    color: Color(0xFFffffff),
+                  ),
+                ),
+                value: '/edit',
+              ),
+              PopupMenuItem(
+                child: Text(
+                  '로그아웃',
+                  style: TextStyle(
+                    color: Color(0xFFffffff),
+                  ),
+                ),
+                value: '/logout',
+              ),
+              PopupMenuItem(
+                child: Text(
+                  '회원탈퇴',
+                  style: TextStyle(
+                    color: Color(0xFFffffff),
+                  ),
+                ),
+                value: '/signout',
+              ),
+            ];
+          },
+        ),
+      ],
+    ),
+
+    bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
       body: SafeArea(
         child: FutureBuilder<int>(
           future: getReviewProfile(),
