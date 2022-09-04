@@ -13,13 +13,18 @@ import 'domain/util.dart';
 import 'domain/firebase_options.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:developer';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
 
-
 void main() async {
   //Constants.setEnvironment(Environment.PROD);
+  await dotenv.load(fileName: ".env");
+  KakaoSdk.init(nativeAppKey: '${dotenv.env['KAKAO_APP_KEY']}');
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -28,7 +33,6 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   initializeDateFormatting().then((_) => runApp(const MyApp()));
-
 }
 
 class MyApp extends StatelessWidget {
@@ -48,7 +52,7 @@ class MyApp extends StatelessWidget {
     print('2 : ${idToken}');
 
     IdToken = idToken.toString();
-
+    log("IdToken : $IdToken");
     http.Response response = await http.get(Uri.parse("${baseUrl}users/login"),
         headers: {'Authorization': 'bearer $IdToken'});
     print("3 : ${response}");
@@ -56,7 +60,6 @@ class MyApp extends StatelessWidget {
     if(resBody['message'] == 404) return true;
     print("?? : ${resBody}");
     UserId = resBody['data']['user_id'];
-
     bool userdata = await UpdateUserData();
     print("4");
 

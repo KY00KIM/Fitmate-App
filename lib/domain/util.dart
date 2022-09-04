@@ -7,24 +7,24 @@ import 'dart:developer';
 
 Map fitnessPart = {
   "62c670514b8212e4674dbe34": '등',
-  '62c670404b8212e4674dbe33' : '어깨',
-  '62c6706e4b8212e4674dbe37' : '이두',
-  '62c6705e4b8212e4674dbe35' : '가슴',
-  '62c6707f4b8212e4674dbe38' : '삼두',
-  '62c670874b8212e4674dbe39' : '복근',
-  '62c670664b8212e4674dbe36' : '하체',
-  '62c670a04b8212e4674dbe3a' : '유산소'
+  '62c670404b8212e4674dbe33': '어깨',
+  '62c6706e4b8212e4674dbe37': '이두',
+  '62c6705e4b8212e4674dbe35': '가슴',
+  '62c6707f4b8212e4674dbe38': '삼두',
+  '62c670874b8212e4674dbe39': '복근',
+  '62c670664b8212e4674dbe36': '하체',
+  '62c670a04b8212e4674dbe3a': '유산소'
 };
 
 Map fitnessPartConverse = {
-  '등' : "62c670514b8212e4674dbe34",
-  '어깨' : '62c670404b8212e4674dbe33',
-  '이두' : '62c6706e4b8212e4674dbe37',
-  '가슴' : '62c6705e4b8212e4674dbe35',
-  '삼두' : '62c6707f4b8212e4674dbe38',
-  '복근' : '62c670874b8212e4674dbe39',
-  '하체' : '62c670664b8212e4674dbe36',
-  '유산소' : '62c670a04b8212e4674dbe3a'
+  '등': "62c670514b8212e4674dbe34",
+  '어깨': '62c670404b8212e4674dbe33',
+  '이두': '62c6706e4b8212e4674dbe37',
+  '가슴': '62c6705e4b8212e4674dbe35',
+  '삼두': '62c6707f4b8212e4674dbe38',
+  '복근': '62c670874b8212e4674dbe39',
+  '하체': '62c670664b8212e4674dbe36',
+  '유산소': '62c670a04b8212e4674dbe3a'
 };
 
 class LoginedUser {
@@ -44,9 +44,7 @@ late Map UserData = {
   "user_schedule_time": 0,
   "user_weekday": [],
   "user_introduce": "",
-  "user_fitness_part": [
-    ""
-  ],
+  "user_fitness_part": [""],
   "user_age": 0,
   "user_gender": true,
   "user_loc_bound": 3,
@@ -58,9 +56,7 @@ late Map UserData = {
     "user_id": "",
     "user_name": "",
     "provider": "",
-    "device_token": [
-      ""
-    ],
+    "device_token": [""],
     "firebase_info": {}
   },
   "is_deleted": false,
@@ -68,26 +64,31 @@ late Map UserData = {
   "updatedAt": ""
 };
 
-
 // ignore: non_constant_identifier_names
 Future<bool> UpdateUserData() async {
   log(IdToken.toString());
-  http.Response response = await http.get(Uri.parse("${baseUrl}users/${UserId.toString()}"), headers: {
+  http.Response response = await http
+      .get(Uri.parse("${baseUrl}users/${UserId.toString()}"), headers: {
     // ignore: unnecessary_string_interpolations
-    "Authorization" : "bearer ${IdToken.toString()}",
-    "Content-Type" : "application/json; charset=UTF-8",
-    "userId" : "${UserId.toString()}"});
+    "Authorization": "bearer ${IdToken.toString()}",
+    "Content-Type": "application/json; charset=UTF-8",
+    "userId": "${UserId.toString()}"
+  });
   if (response.statusCode == 200) {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
 
     UserData = resBody["data"];
     print("fitness center id : ${UserData["fitness_center_id"].toString()}");
-    http.Response responseFitness = await http.get(Uri.parse("${baseUrl}fitnesscenters/${UserData["fitness_center_id"].toString()}"), headers: {
-      // ignore: unnecessary_string_interpolations
-      "Authorization" : "bearer ${IdToken.toString()}",
-      "fitnesscenterId" : "${UserData["fitness_center_id"]}"});
+    http.Response responseFitness = await http.get(
+        Uri.parse(
+            "${baseUrl}fitnesscenters/${UserData["fitness_center_id"].toString()}"),
+        headers: {
+          // ignore: unnecessary_string_interpolations
+          "Authorization": "bearer ${IdToken.toString()}",
+          "fitnesscenterId": "${UserData["fitness_center_id"]}"
+        });
     log(UserData.toString());
-    if(responseFitness.statusCode == 200) {
+    if (responseFitness.statusCode == 200) {
       var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
 
       UserCenterName = resBody2["data"]["center_name"];
@@ -114,20 +115,17 @@ Future<Position> DeterminePosition() async {
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-
       return Future.error('Location permissions are denied');
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
-
     return Future.error(
         'Location permissions are permanently denied, we cannot request permissions.');
   }
 
   return await Geolocator.getCurrentPosition();
 }
-
 
 late String IdToken;
 late String UserId;

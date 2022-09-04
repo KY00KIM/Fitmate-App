@@ -61,7 +61,8 @@ dependencies:
     git: https://github.com/LBSTECH/naver_map_plugin.git
   sign_in_with_apple: ^4.1.0
   iconsax: ^0.0.8
-  adobe_xd: ^2.0.1
+  kakao_flutter_sdk: ^1.2.1
+  flutter_dotenv: ^5.0.2
 
 flutter_icons:
   android: 'launcher_icon'
@@ -97,6 +98,7 @@ flutter:
     - assets/images/
     - assets/icon/
     - assets/icon/bar_icons/
+    - .env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

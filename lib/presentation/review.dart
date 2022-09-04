@@ -13,7 +13,8 @@ import 'calender/calender.dart';
 class ReviewPage extends StatefulWidget {
   String appointmentId;
   String recv_id;
-  ReviewPage({Key? key, required this.appointmentId, required this.recv_id}) : super(key: key);
+  ReviewPage({Key? key, required this.appointmentId, required this.recv_id})
+      : super(key: key);
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -56,7 +57,6 @@ class LabeledCheckbox extends StatelessWidget {
                 child: Checkbox(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4)),
-
                   value: value,
                   onChanged: (bool? newValue) {
                     onChanged(newValue);
@@ -64,9 +64,11 @@ class LabeledCheckbox extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Text(
-                label,
+              label,
               style: TextStyle(
                 color: Color(0xFFffffff),
                 //fontWeight: FontWeight.bold,
@@ -95,15 +97,15 @@ class _ReviewPageState extends State<ReviewPage> {
   ];
 
   Future<String> getData() async {
-    http.Response response = await http.get(
-        Uri.parse('${baseUrl}reviews/candidates'),
-        headers: {
-          'Authorization': 'bearer $IdToken',
-          'Content-Type': 'application/json; charset=UTF-8'
-        });
+    http.Response response =
+        await http.get(Uri.parse('${baseUrl}reviews/candidates'), headers: {
+      'Authorization': 'bearer $IdToken',
+      'Content-Type': 'application/json; charset=UTF-8'
+    });
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+    if (response.statusCode != 200 &&
+        resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken =
           (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
               .token
@@ -137,8 +139,8 @@ class _ReviewPageState extends State<ReviewPage> {
 
   Future<void> PostReview() async {
     List choice = [];
-    for(int i = 0; i < checkBoxList.length; i++) {
-      if(checkBoxList[i] == true) choice.add(checkBoxListId[i]);
+    for (int i = 0; i < checkBoxList.length; i++) {
+      if (checkBoxList[i] == true) choice.add(checkBoxListId[i]);
     }
     Map data = {
       "review_recv_id": "${widget.recv_id}",
@@ -153,14 +155,13 @@ class _ReviewPageState extends State<ReviewPage> {
     http.Response response = await http.post(Uri.parse("${baseUrl}reviews/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization' : 'bearer $IdToken',
+          'Authorization': 'bearer $IdToken',
         }, // this header is essential to send json data
-        body: body
-    );
+        body: body);
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print(resBody);
 
-    if(response.statusCode == 201) {
+    if (response.statusCode == 201) {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
@@ -170,7 +171,10 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
       );
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      IdToken =
+          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+              .token
+              .toString();
       FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
     } else {
       FlutterToastBottom("오류가 발생하였습니다");
@@ -216,16 +220,32 @@ class _ReviewPageState extends State<ReviewPage> {
           actions: [
             TextButton(
               onPressed: () {
-                (checkBoxList[0] == true || checkBoxList[1] == true || checkBoxList[2] == true || checkBoxList[3] == true || checkBoxList[4] == true || checkBoxList[5] == true || checkBoxList[6] == true) && description != '' ?
-                PostReview() :
-                  FlutterToastBottom("매칭 리뷰 선택 및 후기 작성을 해주세요!");
+                (checkBoxList[0] == true ||
+                            checkBoxList[1] == true ||
+                            checkBoxList[2] == true ||
+                            checkBoxList[3] == true ||
+                            checkBoxList[4] == true ||
+                            checkBoxList[5] == true ||
+                            checkBoxList[6] == true) &&
+                        description != ''
+                    ? PostReview()
+                    : FlutterToastBottom("매칭 리뷰 선택 및 후기 작성을 해주세요!");
               },
               child: Text(
                 '완료',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: (checkBoxList[0] == true || checkBoxList[1] == true || checkBoxList[2] == true || checkBoxList[3] == true || checkBoxList[4] == true || checkBoxList[5] == true || checkBoxList[6] == true) && description != '' ? Color(0xFF2975CF) : Color(0xFF878E97),
+                  color: (checkBoxList[0] == true ||
+                              checkBoxList[1] == true ||
+                              checkBoxList[2] == true ||
+                              checkBoxList[3] == true ||
+                              checkBoxList[4] == true ||
+                              checkBoxList[5] == true ||
+                              checkBoxList[6] == true) &&
+                          description != ''
+                      ? Color(0xFF2975CF)
+                      : Color(0xFF878E97),
                 ),
               ),
             ),

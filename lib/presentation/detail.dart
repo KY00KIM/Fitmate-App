@@ -536,17 +536,20 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                                   Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                          builder: (context) => OtherProfilePage(
-                                              profileId: snapshot.data?[0]
-                                                  ['user_id'],
-                                              profileName: '$makerUsersName')));
+                                          builder: (context) =>
+                                              OtherProfilePage(
+                                                  profileId: snapshot.data?[0]
+                                                      ['user_id'],
+                                                  profileName:
+                                                      '$makerUsersName')));
                                 },
                                 style: ElevatedButton.styleFrom(
                                     primary: Color(0xFF22232A), elevation: 0),
                                 child: Column(
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(100.0),
+                                      borderRadius:
+                                          BorderRadius.circular(100.0),
                                       child: Image.network(
                                         '$makerUserImage',
                                         width: 60.0,
@@ -604,7 +607,9 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                         ),
                       ),
                     ),
-                    Container(height: size.height * 0.075,),
+                    Container(
+                      height: size.height * 0.075,
+                    ),
                   ],
                 ),
               ),
