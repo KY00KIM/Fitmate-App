@@ -15,7 +15,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:developer';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
