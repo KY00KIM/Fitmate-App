@@ -1,5 +1,5 @@
-class UserData {
-  UserData({
+class User {
+  User({
     required this.id,
     required this.userName,
     required this.userAddress,
@@ -44,7 +44,7 @@ class UserData {
   late final String createdAt;
   late final String updatedAt;
 
-  UserData.fromJson(Map<String, dynamic> json){
+  User.fromJson(Map<String, dynamic> json){
     id = json['_id'];
     userName = json['user_name'];
     userAddress = json['user_address'];

@@ -69,7 +69,7 @@ class BarWidget {
     );
   }
 
-  PreferredSizeWidget bulletinBoard(BuildContext context) {
+  PreferredSizeWidget bulletinBoardAppBar(BuildContext context) {
     return AppBar(
       centerTitle: false,
       backgroundColor: whiteTheme,
@@ -78,6 +78,7 @@ class BarWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: whiteTheme,
       ),
+      automaticallyImplyLeading: false,
       title: Padding(
         padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
         child: Container(
@@ -113,8 +114,7 @@ class BarWidget {
                 height: 18,
               ),
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomePage(reload: false,)));
+                Navigator.pop(context);
               },
             ),
           ),
@@ -158,6 +158,192 @@ class BarWidget {
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => WritingPage()));
+                },
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  PreferredSizeWidget detailAppBar(BuildContext context) {
+    return AppBar(
+      centerTitle: false,
+      backgroundColor: whiteTheme,
+      toolbarHeight: 60,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: whiteTheme,
+      ),
+      automaticallyImplyLeading: false,
+      title: Padding(
+        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Color(0xFFF2F3F7),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFffffff),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: Offset(-2, -2),
+              ),
+              BoxShadow(
+                color: Color.fromRGBO(55, 84, 170, 0.1),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                "${iconSource}back_icon.svg",
+                width: 16,
+                height: 16,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 8, 20, 8),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Color(0xFFF2F3F7),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFFffffff),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: Offset(-2, -2),
+                ),
+                BoxShadow(
+                  color: Color.fromRGBO(55, 84, 170, 0.1),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+            child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              ),
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  "${iconSource}burger_icon.svg",
+                  width: 16,
+                  height: 16,
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        // <-- SEE HERE
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(40.0),
+                        ),
+                      ),
+                      backgroundColor: Color(0xFFF2F3F7),
+                      builder: (BuildContext context) {
+                        return Wrap(
+                          children: [
+                            Column(
+                              children: [
+                                SizedBox(height: 20,),
+                                Container(
+                                  width: 40,
+                                  height: 4,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                    color: Color(0xFFD1D9E6),
+                                  ),
+                                ),
+                                SizedBox(height: 36,),
+                                GestureDetector(
+                                  onTap: (){
+                                    print("Container clicked");
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                    height: 64,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '게시글 신고',
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      });
+                  /*
+              actions: [
+                PopupMenuButton(
+                  iconSize: 30,
+                  color: Color(0xFF22232A),
+                  shape: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF757575),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                  elevation: 40,
+                  onSelected: (value) async {
+                    if (value == '/report') {
+                      _showDialog();
+                    }
+                  },
+                  itemBuilder: (BuildContext bc) {
+                    return [
+                      PopupMenuItem(
+                        child: Text(
+                          '게시글 신고',
+                          style: TextStyle(
+                            color: Color(0xFFffffff),
+                          ),
+                        ),
+                        value: '/report',
+                      ),
+                    ];
+                  },
+                ),
+              ],
+              elevation: 0.0,
+              backgroundColor: Colors.transparent, // <-- this
+              //shadowColor: Colors.transparent,
+            ),
+             */
                 },
               ),
             ),

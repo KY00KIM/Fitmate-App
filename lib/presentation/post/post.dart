@@ -3,8 +3,7 @@ import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/post_api.dart';
-import '../../domain/model/posts.dart';
+import '../../domain/model/post.dart';
 import '../../domain/repository/post_api_repository.dart';
 import 'components/post_widget.dart';
 
@@ -35,7 +34,7 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: whiteTheme,
-      appBar: barWidget.bulletinBoard(context),
+      appBar: barWidget.bulletinBoardAppBar(context),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => postApiRepo.getPostRepo(),
@@ -43,45 +42,48 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
             future: postApiRepo.getPostRepo(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '게시판',
-                              style: TextStyle(
-                                color: Color(0xFF6E7995),
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                return ScrollConfiguration(
+                  behavior: const ScrollBehavior().copyWith(overscroll: false),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '게시판',
+                                style: TextStyle(
+                                  color: Color(0xFF6E7995),
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '최신 순',
-                              style: TextStyle(
-                                color: Color(0xFF000000),
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                              Text(
+                                '최신 순',
+                                style: TextStyle(
+                                  color: Color(0xFF000000),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) {
-                            Posts post = snapshot.data?[index];
-                            return PostWidget(posts: post);
-                          },
-                        ),
-                      ],
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) {
+                              Post post = snapshot.data?[index];
+                              return PostWidget(posts: post);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

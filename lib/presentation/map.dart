@@ -3,12 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 import 'package:flutter/foundation.dart';
 
-import '../domain/model/user_data.dart';
+import '../domain/util.dart';
 import '../ui/bar_widget.dart';
 
 class MapPage extends StatefulWidget {

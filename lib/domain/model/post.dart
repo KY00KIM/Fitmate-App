@@ -1,5 +1,5 @@
-class Posts {
-  Posts({
+class Post {
+  Post({
     required this.underId,
     required this.userId,
     required this.locationId,
@@ -32,7 +32,7 @@ class Posts {
   late final String updatedAt;
   late final String id;
 
-  Posts.fromJson(Map<String, dynamic> json){
+  Post.fromJson(Map<String, dynamic> json){
     underId = json['_id'];
     userId = UserId.fromJson(json['user_id']);
     locationId = json['location_id'];

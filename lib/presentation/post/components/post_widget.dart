@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../domain/model/posts.dart';
-import '../../detail.dart';
+import '../../../domain/model/post.dart';
+import '../../detail/detail.dart';
 
 class PostWidget extends StatelessWidget {
-  final Posts posts;
+  final Post posts;
 
   const PostWidget({Key? key, required this.posts}) : super(key: key);
 
@@ -50,7 +50,7 @@ class PostWidget extends StatelessWidget {
             primary: Color(0xFFF2F3F7)
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${posts.underId}')));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage(post: posts,)));
         },
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
