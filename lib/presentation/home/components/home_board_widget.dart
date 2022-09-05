@@ -97,23 +97,88 @@ class HomeBoardWidget extends StatelessWidget {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16, 20, 16, 0),
+                  Container(
+                    height: 136,
+                    padding: EdgeInsets.fromLTRB(16, 20, 16, 14),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('왼'),
-                            IconButton(
-                              onPressed: () {
-
-                              },
-                              icon: SvgPicture.asset(
-                                "assets/icon/burger_icon.svg",
-                                width: 16,
-                                height: 16,
+                            Flexible(
+                              fit: FlexFit.tight,
+                              child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                text: TextSpan(
+                                  text:
+                                  '${posts[index].postTitle}',
+                                  style: TextStyle(
+                                    color: Color(0xFF000000),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
+                            ),
+                            SizedBox(width: 13,),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 3),
+                              child: SvgPicture.asset(
+                                "assets/icon/burger_icon.svg",
+                                width: 18,
+                                height: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${posts[index].promiseDate.toString().substring(0, 10)}',
+                                  style: TextStyle(
+                                    color: Color(0xFF6E7995),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  fit: FlexFit.tight,
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    text: TextSpan(
+                                      text:
+                                      '${posts[index].promiseLocation.centerName}',
+                                      style: TextStyle(
+                                        color: Color(0xFF283593),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 13,),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 3, 4, 0),
+                                  child: SvgPicture.asset(
+                                    "assets/icon/right_arrow_icon.svg",
+                                    width: 14,
+                                    height: 14,
+                                    color: Color(0xFF283593),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

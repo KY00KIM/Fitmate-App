@@ -78,7 +78,7 @@ class BarWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: whiteTheme,
       ),
-      automaticallyImplyLeading : false,
+      automaticallyImplyLeading: false,
       title: Padding(
         padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
         child: Container(
@@ -176,7 +176,7 @@ class BarWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: whiteTheme,
       ),
-      automaticallyImplyLeading : false,
+      automaticallyImplyLeading: false,
       title: Padding(
         padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
         child: Container(
@@ -254,8 +254,96 @@ class BarWidget {
                   height: 16,
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WritingPage()));
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        // <-- SEE HERE
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(40.0),
+                        ),
+                      ),
+                      backgroundColor: Color(0xFFF2F3F7),
+                      builder: (BuildContext context) {
+                        return Wrap(
+                          children: [
+                            Column(
+                              children: [
+                                SizedBox(height: 20,),
+                                Container(
+                                  width: 40,
+                                  height: 4,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2.0),
+                                    color: Color(0xFFD1D9E6),
+                                  ),
+                                ),
+                                SizedBox(height: 36,),
+                                GestureDetector(
+                                  onTap: (){
+                                    print("Container clicked");
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                    height: 64,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '게시글 신고',
+                                          style: TextStyle(
+                                            color: Color(0xFF000000),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      });
+                  /*
+              actions: [
+                PopupMenuButton(
+                  iconSize: 30,
+                  color: Color(0xFF22232A),
+                  shape: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF757575),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                  elevation: 40,
+                  onSelected: (value) async {
+                    if (value == '/report') {
+                      _showDialog();
+                    }
+                  },
+                  itemBuilder: (BuildContext bc) {
+                    return [
+                      PopupMenuItem(
+                        child: Text(
+                          '게시글 신고',
+                          style: TextStyle(
+                            color: Color(0xFFffffff),
+                          ),
+                        ),
+                        value: '/report',
+                      ),
+                    ];
+                  },
+                ),
+              ],
+              elevation: 0.0,
+              backgroundColor: Colors.transparent, // <-- this
+              //shadowColor: Colors.transparent,
+            ),
+             */
                 },
               ),
             ),

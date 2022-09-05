@@ -42,7 +42,6 @@ class _HomePageState extends State<HomePage> {
           future: homeApiRepo.getHomeRepo(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              print('snapshot data : ${snapshot.data}');
               return ScrollConfiguration(
                 behavior: const ScrollBehavior().copyWith(overscroll: false),
                 child: SingleChildScrollView(

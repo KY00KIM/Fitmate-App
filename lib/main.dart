@@ -75,6 +75,11 @@ class MyApp extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: GetMaterialApp(
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            brightness: Brightness.dark,
+          ),
+        ),
         debugShowCheckedModeBanner: false,
         title: 'FitMate',
         // ignore: unrelated_type_equality_checks, prefer_const_constructors

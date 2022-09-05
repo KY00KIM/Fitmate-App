@@ -3,8 +3,7 @@ import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/post_api.dart';
-import '../../domain/model/posts.dart';
+import '../../domain/model/post.dart';
 import '../../domain/repository/post_api_repository.dart';
 import 'components/post_widget.dart';
 
@@ -79,7 +78,7 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: snapshot.data?.length,
                             itemBuilder: (context, index) {
-                              Posts post = snapshot.data?[index];
+                              Post post = snapshot.data?[index];
                               return PostWidget(posts: post);
                             },
                           ),

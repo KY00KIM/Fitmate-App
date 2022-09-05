@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../domain/model/posts.dart';
+import '../../../domain/model/post.dart';
 import '../../detail/detail.dart';
 
 class PostWidget extends StatelessWidget {
-  final Posts posts;
+  final Post posts;
 
   const PostWidget({Key? key, required this.posts}) : super(key: key);
 
