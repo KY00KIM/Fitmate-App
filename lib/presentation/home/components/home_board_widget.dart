@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../detail.dart';
+import '../../detail/detail.dart';
 import '../../writing.dart';
 
 class HomeBoardWidget extends StatelessWidget {
@@ -20,7 +20,7 @@ class HomeBoardWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage('${posts[index].underId}')));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage(post: posts[index],)));
             },
             child: Container(
               margin: EdgeInsets.fromLTRB(8, 10, 8, 10),
