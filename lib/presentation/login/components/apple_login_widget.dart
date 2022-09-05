@@ -12,7 +12,7 @@ import '../../../domain/util.dart';
 import '../../../ui/show_toast.dart';
 import '../../home/home.dart';
 import '../../post/post.dart';
-import '../../signup.dart';
+import '../../signup/signup.dart';
 
 class AppleLoginWidget extends StatelessWidget {
   const AppleLoginWidget({Key? key}) : super(key: key);

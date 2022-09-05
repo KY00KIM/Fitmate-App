@@ -13,7 +13,7 @@ import '../../../data/firebase_service/firebase_auth_methods.dart';
 import '../../../domain/util.dart';
 import '../../../ui/show_toast.dart';
 import '../../home/home.dart';
-import '../../signup.dart';
+import '../../signup/signup.dart';
 
 class KakaoLoginWidget extends StatelessWidget {
   KakaoLoginWidget({Key? key}) : super(key: key);

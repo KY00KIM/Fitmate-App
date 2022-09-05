@@ -15,9 +15,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
     as inset;
-import '../domain/util.dart';
-import '../ui/show_toast.dart';
-import 'home/home.dart';
+import '../../domain/util.dart';
+import '../../ui/show_toast.dart';
+import '../home/home.dart';
 
 class SignupPage1 extends StatefulWidget {
   const SignupPage1({Key? key}) : super(key: key);
@@ -66,43 +66,6 @@ class _SignupPageState1 extends State<SignupPage1> {
     ).catchError((error) {});
   }
 
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
-  }
-
   void SignPost() async {
     int schedule = 0;
     bool gender = true; //남자면 true, 여자면 false
@@ -131,16 +94,6 @@ class _SignupPageState1 extends State<SignupPage1> {
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
     String? deviceToken = await FirebaseMessaging.instance.getToken();
-
-    //
-    //
-    // print("this is position!!!");
-    // Position position = await _determinePosition();
-    // inspect(position);
-    //
-    // double longitude = 0;
-    // double latitude = 0;
-    //
 
     Map data = {
       "user_nickname": "$nickname",
@@ -171,14 +124,11 @@ class _SignupPageState1 extends State<SignupPage1> {
           "$deviceToken"
         ]
       }
-
        */
     };
     log(deviceToken!);
     var body = json.encode(data);
     log(data.toString());
-    //log(IdToken);
-    //if (IdToken != null)IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
 
     http.Response response =
         await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),

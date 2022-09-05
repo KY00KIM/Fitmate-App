@@ -1,7 +1,7 @@
 import 'package:fitmate/presentation/login/components/apple_login_widget.dart';
 import 'package:fitmate/presentation/login/components/google_login_widget.dart';
 import 'package:fitmate/presentation/login/components/kakao_login_widget.dart';
-import 'package:fitmate/presentation/signup.dart';
+import 'package:fitmate/presentation/signup/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
