@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         headers: {'Authorization': 'bearer $IdToken'});
     print("3 : ${response}");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if(resBody['message'] == 404) return true;
+    if (resBody['message'] == 404) return true;
     print("?? : ${resBody}");
     UserId = resBody['data']['user_id'];
     bool userdata = await UpdateUserData();
