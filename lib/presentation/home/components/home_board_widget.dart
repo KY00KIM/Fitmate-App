@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../detail/detail.dart';
-import '../../writing.dart';
+import '../../writing/writing.dart';
 
 class HomeBoardWidget extends StatelessWidget {
   List posts;

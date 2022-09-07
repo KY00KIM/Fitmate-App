@@ -2,20 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
-class WriteCenterPage extends StatefulWidget {
-  const WriteCenterPage({Key? key}) : super(key: key);
+import '../../ui/bar_widget.dart';
+
+class SearchCenterPage extends StatefulWidget {
+  const SearchCenterPage({Key? key}) : super(key: key);
 
   @override
-  State<WriteCenterPage> createState() => _WriteCenterPageState();
+  State<SearchCenterPage> createState() => _SearchCenterPageState();
 }
 
-class _WriteCenterPageState extends State<WriteCenterPage> {
+class _SearchCenterPageState extends State<SearchCenterPage> {
   List data = [];
   String result = '';
   TextEditingController _editingController = new TextEditingController();
+  final barWidget = BarWidget();
 
   Future<String> getJSONData() async {
     var url = Uri.parse('https://dapi.kakao.com/v2/local/search/keyword.json?size=15&sort=accuracy&query=${_editingController.text}&page=45');

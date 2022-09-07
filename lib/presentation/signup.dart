@@ -3,8 +3,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/post/post.dart';
-import 'package:fitmate/presentation/write_center.dart';
+import 'package:fitmate/presentation/search_center/search_center.dart';
 import 'package:fitmate/presentation/write_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -855,7 +854,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       onPressed: () async {
                         var onValue = await Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => WriteCenterPage()));
+                            MaterialPageRoute(builder: (context) => SearchCenterPage()));
                         print("end");
                         setState(() {
                           center = onValue;
