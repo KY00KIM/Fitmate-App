@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         headers: {'Authorization': 'bearer $IdToken'});
     print("3 : ${response}");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if(resBody['message'] == 404) return true;
+    if (resBody['message'] == 404) return true;
     print("?? : ${resBody}");
     UserId = resBody['data']['user_id'];
     bool userdata = await UpdateUserData();
@@ -94,7 +94,11 @@ class MyApp extends StatelessWidget {
             // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
             else {
               // ignore: avoid_print
-              return snapshot.data == true ? LoginPage() : PostPage(reload: true,);
+              return snapshot.data == true
+                  ? LoginPage()
+                  : PostPage(
+                      reload: true,
+                    );
             }
           },
         ),
