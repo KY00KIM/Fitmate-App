@@ -3,14 +3,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/post/post.dart';
-import 'package:fitmate/presentation/search_center/search_center.dart';
-import 'package:fitmate/presentation/write_location.dart';
 import 'package:fitmate/presentation/signup/signup2.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';

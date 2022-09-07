@@ -1,27 +1,13 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/post/post.dart';
 import 'package:fitmate/presentation/search_center/search_center.dart';
-import 'package:fitmate/presentation/write_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:http/http.dart' as http;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
     as inset;
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../domain/repository/signup-view-model.dart';
 
-import '../../domain/util.dart';
-import '../../ui/show_toast.dart';
 import '../home/home.dart';
 
 class SignupPage2 extends StatefulWidget {

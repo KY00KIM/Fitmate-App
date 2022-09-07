@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../domain/model/post.dart';
 import '../../../domain/util.dart';
-import '../../chat.dart';
+import '../../chat/chat.dart';
 import 'package:http/http.dart' as http;
 
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../domain/model/post.dart';
-import '../../other_profile.dart';
+import '../../profile/other_profile.dart';
 
 class DetailMakerWidget extends StatelessWidget {
   Post post;

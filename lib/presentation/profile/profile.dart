@@ -3,14 +3,14 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/profile_edit.dart';
+import 'package:fitmate/presentation/profile_edit/profile_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../data/firebase_service/firebase_auth_methods.dart';
-import '../domain/util.dart';
-import '../ui/bar_widget.dart';
-import 'login/login.dart';
+import '../../data/firebase_service/firebase_auth_methods.dart';
+import '../../domain/util.dart';
+import '../../ui/bar_widget.dart';
+import '../login/login.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

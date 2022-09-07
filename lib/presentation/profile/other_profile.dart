@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../domain/util.dart';
-import '../ui/show_toast.dart';
+import '../../domain/util.dart';
+import '../../ui/show_toast.dart';
 
 String OtherUserCenterName = '';
 

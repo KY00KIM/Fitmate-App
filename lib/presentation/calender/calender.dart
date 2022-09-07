@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/review.dart';
+import 'package:fitmate/presentation/review/review.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +16,7 @@ import '../../domain/util.dart';
 import '../../ui/bar_widget.dart';
 import '../../ui/colors.dart';
 import '../../ui/show_toast.dart';
-import '../other_profile.dart';
+import '../profile/other_profile.dart';
 
 
 class Event {

@@ -11,9 +11,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 
-import '../domain/util.dart';
-import 'chat_list/chat_list.dart';
-import 'make_promise.dart';
+import '../../domain/util.dart';
+import '../chat_list/chat_list.dart';
+import '../make_promise/make_promise.dart';
 
 class ChatPage extends StatefulWidget {
   String name;
