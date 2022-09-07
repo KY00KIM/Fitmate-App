@@ -11,12 +11,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
     as inset;
 import 'package:dropdown_button2/dropdown_button2.dart';
+import '../../domain/repository/signup-view-model.dart';
 
 import '../../domain/util.dart';
 import '../../ui/show_toast.dart';
@@ -30,41 +32,22 @@ class SignupPage2 extends StatefulWidget {
 }
 
 class _SignupPageState2 extends State<SignupPage2> {
+  final viewModel = signUpViewModel();
   final barWidget = BarWidget();
-  bool gender = true;
-  final List<String> items = locationList;
-  String _selectedTime = '시간 선택';
 
-  String selectTime(int i) {
-    int temp = i ~/ 10;
-    if (temp == 0)
-      return '0${i}';
-    else
-      return '${i}';
-  }
-
-  String? selectedLocation;
-  Map isSelectedWeekDay = {
-    "mon": false,
-    "tue": false,
-    "wed": false,
-    "thu": false,
-    "fri": false,
-    "sat": false,
-    "sun": false
-  };
-  final List<String> array = ["월", "화", "수", "목", "금", "토", "일"];
-  final Map weekdayToEng = {
-    "월": "mon",
-    "화": "tue",
-    "수": "wed",
-    "목": "thu",
-    "금": "fri",
-    "토": "sat",
-    "일": "sun"
-  };
   String? center;
   String? centerName;
+  bool checkValid() {
+    if (viewModel.selectedLocation == null ||
+        viewModel.selectedSemiLocation == null ||
+        viewModel.selectedStartTime == '시간 선택' ||
+        viewModel.selectedEndTime == '시간 선택') {
+      print("deactivate");
+      return false;
+    }
+    print("activate");
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +57,8 @@ class _SignupPageState2 extends State<SignupPage2> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: barWidget.nextBackAppBar(context),
+        appBar: barWidget.nextBackAppBar(
+            context, HomePage(reload: true), checkValid),
         backgroundColor: const Color(0xffF2F3F7),
         body: SafeArea(
           child: Padding(
@@ -139,28 +123,26 @@ class _SignupPageState2 extends State<SignupPage2> {
                         child: Padding(
                             padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                             child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                hint: Row(
-                                  children: const [
-                                    Text(
-                                      '시/도/구를 선택하세요',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                        color: Color(0xff6E7995),
-                                      ),
-                                    ),
-                                  ],
+                              child: DropdownButton2<String>(
+                                hint: Text(
+                                  "지역을 선택하세요",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    color: Color(0xff6E7995),
+                                  ),
                                 ),
                                 isExpanded: true,
-                                items: items
+                                items: viewModel.locationMap.keys
                                     .map((item) => DropdownMenuItem<String>(
                                         value: item, child: Text(item)))
                                     .toList(),
-                                value: selectedLocation,
+                                value: viewModel.selectedLocation,
                                 onChanged: (value) {
                                   setState(() {
-                                    selectedLocation = value as String;
+                                    viewModel.selectedLocation =
+                                        value as String;
+                                    viewModel.selectedSemiLocation = null;
                                   });
                                 },
                                 icon: SvgPicture.asset(
@@ -180,7 +162,7 @@ class _SignupPageState2 extends State<SignupPage2> {
                       SizedBox(
                         height: 23.5,
                       ),
-                      Text("시/구/군",
+                      Text("시/군/구",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -212,28 +194,38 @@ class _SignupPageState2 extends State<SignupPage2> {
                         child: Padding(
                             padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                             child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                hint: Row(
-                                  children: const [
-                                    Text(
-                                      '동네를 설정해주세요',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                        color: Color(0xff6E7995),
-                                      ),
-                                    ),
-                                  ],
+                              child: DropdownButton2<String>(
+                                hint: Text(
+                                  "동네를 선택해주세요",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    color: Color(0xff6E7995),
+                                  ),
                                 ),
                                 isExpanded: true,
-                                items: items
-                                    .map((item) => DropdownMenuItem<String>(
-                                        value: item, child: Text(item)))
-                                    .toList(),
-                                value: selectedLocation,
+                                items: viewModel.selectedLocation == "" &&
+                                        viewModel.locationMap[
+                                                viewModel.selectedLocation] ==
+                                            null
+                                    ? [
+                                        DropdownMenuItem(
+                                            value: null,
+                                            child: Text("결과가 없습니다."))
+                                      ]
+                                    : viewModel
+                                        .locationMap[viewModel.selectedLocation]
+                                        ?.map(
+                                            (item) => DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(item),
+                                                ))
+                                        .toList(),
+                                value: viewModel.selectedSemiLocation,
                                 onChanged: (value) {
                                   setState(() {
-                                    selectedLocation = value as String;
+                                    viewModel.selectedSemiLocation =
+                                        value as String;
                                   });
                                 },
                                 icon: SvgPicture.asset(
@@ -350,7 +342,7 @@ class _SignupPageState2 extends State<SignupPage2> {
                       SizedBox(height: 12),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: array
+                          children: viewModel.weekdayKor
                               .map(
                                 (weekday) => ElevatedButton(
                                   child: Text(
@@ -358,8 +350,9 @@ class _SignupPageState2 extends State<SignupPage2> {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
-                                      color: isSelectedWeekDay[
-                                                  weekdayToEng[weekday]] ==
+                                      color: viewModel.isSelectedWeekDay[
+                                                  viewModel
+                                                      .weekdayToEng[weekday]] ==
                                               false
                                           ? Color(0xFF6E7995)
                                           : Color(0xFFffffff),
@@ -367,10 +360,11 @@ class _SignupPageState2 extends State<SignupPage2> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      isSelectedWeekDay[weekdayToEng[weekday]] =
-                                          !isSelectedWeekDay[
-                                              weekdayToEng[weekday]];
-                                      print(isSelectedWeekDay);
+                                      viewModel.isSelectedWeekDay[
+                                              viewModel.weekdayToEng[weekday]] =
+                                          !viewModel.isSelectedWeekDay[
+                                              viewModel.weekdayToEng[weekday]];
+                                      print(viewModel.isSelectedWeekDay);
                                     });
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -378,16 +372,18 @@ class _SignupPageState2 extends State<SignupPage2> {
                                     minimumSize: Size(40, 40),
                                     padding: EdgeInsets.only(right: 0),
                                     shape: const CircleBorder(),
-                                    primary: isSelectedWeekDay[
-                                                weekdayToEng[weekday]] ==
+                                    primary: viewModel.isSelectedWeekDay[
+                                                viewModel
+                                                    .weekdayToEng[weekday]] ==
                                             false
                                         ? Color(0xFFF2F3F7)
                                         : Color(0xFF3F51B5),
                                     elevation: 0,
                                     side: BorderSide(
                                       color: Color(0xFFD1D9E6),
-                                      width: isSelectedWeekDay[
-                                                  weekdayToEng[weekday]] ==
+                                      width: viewModel.isSelectedWeekDay[
+                                                  viewModel
+                                                      .weekdayToEng[weekday]] ==
                                               false
                                           ? 1
                                           : 0,
@@ -439,10 +435,10 @@ class _SignupPageState2 extends State<SignupPage2> {
                               future.then((timeOfDay) {
                                 setState(() {
                                   if (timeOfDay != null) {
-                                    _selectedTime =
-                                        '${selectTime(timeOfDay.hour)}:${selectTime(timeOfDay.minute)}';
+                                    viewModel.selectedStartTime =
+                                        '${viewModel.selectTime(timeOfDay.hour)}:${viewModel.selectTime(timeOfDay.minute)}';
                                   }
-                                  print('$_selectedTime');
+                                  print('$viewModel.selectedStartTime');
                                 });
                               });
                             },
@@ -452,7 +448,7 @@ class _SignupPageState2 extends State<SignupPage2> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '  $_selectedTime',
+                                    '  ${viewModel.selectedStartTime}',
                                     style: TextStyle(
                                       color: Color(0xFF878E97),
                                       fontSize: 14.0,
@@ -512,10 +508,10 @@ class _SignupPageState2 extends State<SignupPage2> {
                               future.then((timeOfDay) {
                                 setState(() {
                                   if (timeOfDay != null) {
-                                    _selectedTime =
-                                        '${selectTime(timeOfDay.hour)}:${selectTime(timeOfDay.minute)}';
+                                    viewModel.selectedEndTime =
+                                        '${viewModel.selectTime(timeOfDay.hour)}:${viewModel.selectTime(timeOfDay.minute)}';
                                   }
-                                  print('$_selectedTime');
+                                  print('${viewModel.selectedEndTime}');
                                 });
                               });
                             },
@@ -525,7 +521,7 @@ class _SignupPageState2 extends State<SignupPage2> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '  $_selectedTime',
+                                    '  ${viewModel.selectedEndTime}',
                                     style: TextStyle(
                                       color: Color(0xFF878E97),
                                       fontSize: 14.0,

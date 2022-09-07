@@ -11,11 +11,13 @@ import '../presentation/notice.dart';
 import '../presentation/post/post.dart';
 import '../presentation/profile.dart';
 import '../presentation/writing.dart';
+import '../ui/show_toast.dart';
 import 'colors.dart';
 
 class BarWidget {
   final double iconSize = 32.0;
   final String iconSource = "assets/icon/bar_icons/";
+  bool isButtonActive = false;
 
   PreferredSizeWidget signUpAppBar(BuildContext context) {
     return AppBar(
@@ -472,7 +474,8 @@ class BarWidget {
     );
   }
 
-  PreferredSizeWidget nextBackAppBar(BuildContext context) {
+  PreferredSizeWidget nextBackAppBar(BuildContext context, Widget nextPage,
+      bool Function() changeButtonActive) {
     return AppBar(
       centerTitle: false,
       backgroundColor: whiteTheme,
@@ -515,7 +518,9 @@ class BarWidget {
                     fit: BoxFit.scaleDown,
                   ),
                 ),
-                onTap: () {}),
+                onTap: () {
+                  Navigator.pop(context);
+                }),
             Container(
               width: 44,
               height: 44,
@@ -543,12 +548,32 @@ class BarWidget {
                   highlightColor: Colors.transparent,
                 ),
                 child: IconButton(
-                  icon: SvgPicture.asset(
-                    "${iconSource}arrowNext.svg",
-                    width: 18,
-                    height: 18,
-                  ),
-                  onPressed: () {},
+                  icon: changeButtonActive()
+                      ? SvgPicture.asset(
+                          "${iconSource}arrowNextActive.svg",
+                          width: 18,
+                          height: 18,
+                        )
+                      : SvgPicture.asset(
+                          "${iconSource}arrowNextDeactive.svg",
+                          width: 18,
+                          height: 18,
+                        ),
+                  onPressed: changeButtonActive()
+                      ? () {
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        nextPage,
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ));
+                        }
+                      : () {
+                          FlutterToastTop("모든 항목을 입력해주세요");
+                        },
                 ),
               ),
             ),

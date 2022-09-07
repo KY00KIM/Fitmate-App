@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/post/post.dart';
 import 'package:fitmate/presentation/write_center.dart';
 import 'package:fitmate/presentation/write_location.dart';
+import 'package:fitmate/presentation/signup/signup2.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
@@ -28,6 +30,10 @@ class SignupPage1 extends StatefulWidget {
 
 class _SignupPageState1 extends State<SignupPage1> {
   final barWidget = BarWidget();
+
+  bool checkValid() {
+    return true;
+  }
 
   bool gender = true;
   String nickname = '';
@@ -204,7 +210,7 @@ class _SignupPageState1 extends State<SignupPage1> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: barWidget.nextBackAppBar(context),
+        appBar: barWidget.nextBackAppBar(context, SignupPage2(), checkValid),
         backgroundColor: const Color(0xffF2F3F7),
         body: SafeArea(
           child: Padding(
