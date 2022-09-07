@@ -9,10 +9,9 @@ import '../presentation/home/home.dart';
 import '../presentation/map.dart';
 import '../presentation/notice.dart';
 import '../presentation/profile.dart';
-import '../presentation/writing.dart';
+import '../presentation/writing/writing.dart';
 import '../ui/show_toast.dart';
 import 'colors.dart';
-
 
 class BarWidget {
   final double iconSize = 32.0;
@@ -72,55 +71,103 @@ class BarWidget {
     );
   }
 
-  // PreferredSizeWidget appBar(BuildContext context) {
-  //   return AppBar(
-  //     backgroundColor: whiteTheme,
-  //     toolbarHeight: 60,
-  //     elevation: 0,
-  //     systemOverlayStyle: SystemUiOverlayStyle(
-  //       statusBarColor: whiteTheme,
-  //     ),
-  //     title: Padding(
-  //       padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-  //       child: Container(
-  //         width: 44,
-  //         height: 44,
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(8),
-  //           color: Color(0xFFF2F3F7),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Color(0xFFffffff),
-  //               spreadRadius: 2,
-  //               blurRadius: 8,
-  //               offset: Offset(-2, -2),
-  //             ),
-  //             BoxShadow(
-  //               color: Color.fromRGBO(55, 84, 170, 0.1),
-  //               spreadRadius: 2,
-  //               blurRadius: 2,
-  //               offset: Offset(2, 2),
-  //             ),
-  //           ],
-  //         ),
-  //         child: Theme(
-  //           data: ThemeData(
-  //             splashColor: Colors.transparent,
-  //             highlightColor: Colors.transparent,
-  //           ),
-  //           child: IconButton(
-  //             icon: SvgPicture.asset(
-  //               "${iconSource}x_icon.svg",
-  //               width: 18,
-  //               height: 18,
-  //             ),
-  //             onPressed: () {},
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  PreferredSizeWidget bulletinBoardAppBar(BuildContext context) {
+    return AppBar(
+      centerTitle: false,
+      backgroundColor: whiteTheme,
+      toolbarHeight: 60,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: whiteTheme,
+      ),
+      automaticallyImplyLeading: false,
+      title: Padding(
+        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Color(0xFFF2F3F7),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFffffff),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: Offset(-2, -2),
+              ),
+              BoxShadow(
+                color: Color.fromRGBO(55, 84, 170, 0.1),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                "${iconSource}back_icon.svg",
+                width: 18,
+                height: 18,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 8, 20, 8),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Color(0xFFF2F3F7),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFFffffff),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: Offset(-2, -2),
+                ),
+                BoxShadow(
+                  color: Color.fromRGBO(55, 84, 170, 0.1),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+            child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              ),
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  "${iconSource}plus_icon.svg",
+                  width: 18,
+                  height: 18,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WritingPage()));
+                },
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
   PreferredSizeWidget writingAppBar(BuildContext context) {
     return AppBar(
@@ -320,7 +367,9 @@ class BarWidget {
                           children: [
                             Column(
                               children: [
-                                SizedBox(height: 20,),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 Container(
                                   width: 40,
                                   height: 4,
@@ -329,16 +378,20 @@ class BarWidget {
                                     color: Color(0xFFD1D9E6),
                                   ),
                                 ),
-                                SizedBox(height: 36,),
+                                SizedBox(
+                                  height: 36,
+                                ),
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     print("Container clicked");
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                    padding:
+                                        EdgeInsets.fromLTRB(20, 22, 20, 20),
                                     height: 64,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           '게시글 신고',

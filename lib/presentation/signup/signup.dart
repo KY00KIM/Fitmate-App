@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/post/post.dart';
-import 'package:fitmate/presentation/write_center.dart';
+import 'package:fitmate/presentation/search_center/search_center.dart';
 import 'package:fitmate/presentation/write_location.dart';
 import 'package:fitmate/presentation/signup/signup2.dart';
 
@@ -169,7 +169,7 @@ class _SignupPageState1 extends State<SignupPage1> {
               .toString();
 
       http.Response response =
-          await http.post(Uri.parse("${baseUrl}users/oauth"),
+          await http.post(Uri.parse("${baseUrlV1}users/oauth"),
               headers: {
                 'Authorization': 'bearer $IdToken',
                 'Content-Type': 'application/json; charset=UTF-8',

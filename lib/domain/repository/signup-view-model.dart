@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/post_api.dart';
-import '../../domain/model/posts.dart';
 import 'dart:core';
 
 class signUpViewModel {
