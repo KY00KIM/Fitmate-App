@@ -1,33 +1,29 @@
 import 'package:fitmate/presentation/search_center/search_center.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:fitmate/ui/bar_widget.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
     as inset;
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../domain/repository/signup-view-model.dart';
+import 'component/signup-view-model.dart';
+import 'component/appBar.dart';
 
 import '../home/home.dart';
 
 class SignupPage2 extends StatefulWidget {
-  const SignupPage2({Key? key}) : super(key: key);
+  late signUpViewModel viewModel;
+  SignupPage2({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   State<SignupPage2> createState() => _SignupPageState2();
 }
 
 class _SignupPageState2 extends State<SignupPage2> {
-  final viewModel = signUpViewModel();
   final barWidget = BarWidget();
 
-  String? center;
-  String? centerName;
   bool checkValid() {
-    if (viewModel.selectedLocation == null ||
-        viewModel.selectedSemiLocation == null ||
-        viewModel.selectedStartTime == '시간 선택' ||
-        viewModel.selectedEndTime == '시간 선택') {
+    if (widget.viewModel.selectedLocation == null ||
+        widget.viewModel.selectedSemiLocation == null ||
+        widget.viewModel.selectedTime == -1) {
       print("deactivate");
       return false;
     }
@@ -43,8 +39,8 @@ class _SignupPageState2 extends State<SignupPage2> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: barWidget.nextBackAppBar(
-            context, HomePage(reload: true), checkValid),
+        appBar: barWidget.nextBackAppBar(context, HomePage(reload: true),
+            checkValid, widget.viewModel, widget.viewModel.sendSignUp),
         backgroundColor: const Color(0xffF2F3F7),
         body: SafeArea(
           child: Padding(
@@ -119,16 +115,17 @@ class _SignupPageState2 extends State<SignupPage2> {
                                   ),
                                 ),
                                 isExpanded: true,
-                                items: viewModel.locationMap.keys
+                                items: widget.viewModel.locationMap.keys
                                     .map((item) => DropdownMenuItem<String>(
                                         value: item, child: Text(item)))
                                     .toList(),
-                                value: viewModel.selectedLocation,
+                                value: widget.viewModel.selectedLocation,
                                 onChanged: (value) {
                                   setState(() {
-                                    viewModel.selectedLocation =
+                                    widget.viewModel.selectedLocation =
                                         value as String;
-                                    viewModel.selectedSemiLocation = null;
+                                    widget.viewModel.selectedSemiLocation =
+                                        null;
                                   });
                                 },
                                 icon: SvgPicture.asset(
@@ -190,27 +187,30 @@ class _SignupPageState2 extends State<SignupPage2> {
                                   ),
                                 ),
                                 isExpanded: true,
-                                items: viewModel.selectedLocation == "" &&
-                                        viewModel.locationMap[
-                                                viewModel.selectedLocation] ==
+                                items: widget.viewModel.selectedLocation ==
+                                            "" &&
+                                        widget.viewModel.locationMap[widget
+                                                .viewModel.selectedLocation] ==
                                             null
                                     ? [
                                         DropdownMenuItem(
                                             value: null,
                                             child: Text("결과가 없습니다."))
                                       ]
-                                    : viewModel
-                                        .locationMap[viewModel.selectedLocation]
+                                    : widget
+                                        .viewModel
+                                        .locationMap[
+                                            widget.viewModel.selectedLocation]
                                         ?.map(
                                             (item) => DropdownMenuItem<String>(
                                                   value: item,
                                                   child: Text(item),
                                                 ))
                                         .toList(),
-                                value: viewModel.selectedSemiLocation,
+                                value: widget.viewModel.selectedSemiLocation,
                                 onChanged: (value) {
                                   setState(() {
-                                    viewModel.selectedSemiLocation =
+                                    widget.viewModel.selectedSemiLocation =
                                         value as String;
                                   });
                                 },
@@ -271,8 +271,10 @@ class _SignupPageState2 extends State<SignupPage2> {
                                           SearchCenterPage()));
                               print("end");
                               setState(() {
-                                center = onValue;
-                                centerName = onValue['place_name'];
+                                widget.viewModel.center = onValue;
+
+                                widget.viewModel.centerName =
+                                    onValue['place_name'];
                               });
                             },
                             child: Container(
@@ -286,9 +288,12 @@ class _SignupPageState2 extends State<SignupPage2> {
                                       maxLines: 1,
                                       strutStyle: StrutStyle(fontSize: 15),
                                       text: TextSpan(
-                                        text: '피트니스 센터를 검색',
+                                        text: widget.viewModel.centerName,
                                         style: TextStyle(
-                                          color: Color(0xFF878E97),
+                                          color: widget.viewModel.centerName ==
+                                                  "피트니스 센터를 검색"
+                                              ? Color(0xFF878E97)
+                                              : Colors.black,
                                           fontSize: 15,
                                         ),
                                       ),
@@ -329,7 +334,7 @@ class _SignupPageState2 extends State<SignupPage2> {
                       SizedBox(height: 12),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: viewModel.weekdayKor
+                          children: widget.viewModel.weekdayKor
                               .map(
                                 (weekday) => ElevatedButton(
                                   child: Text(
@@ -337,8 +342,8 @@ class _SignupPageState2 extends State<SignupPage2> {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
-                                      color: viewModel.isSelectedWeekDay[
-                                                  viewModel
+                                      color: widget.viewModel.isSelectedWeekDay[
+                                                  widget.viewModel
                                                       .weekdayToEng[weekday]] ==
                                               false
                                           ? Color(0xFF6E7995)
@@ -347,11 +352,13 @@ class _SignupPageState2 extends State<SignupPage2> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      viewModel.isSelectedWeekDay[
-                                              viewModel.weekdayToEng[weekday]] =
-                                          !viewModel.isSelectedWeekDay[
-                                              viewModel.weekdayToEng[weekday]];
-                                      print(viewModel.isSelectedWeekDay);
+                                      widget.viewModel.isSelectedWeekDay[widget
+                                              .viewModel
+                                              .weekdayToEng[weekday]] =
+                                          !widget.viewModel.isSelectedWeekDay[
+                                              widget.viewModel
+                                                  .weekdayToEng[weekday]];
+                                      print(widget.viewModel.isSelectedWeekDay);
                                     });
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -359,8 +366,8 @@ class _SignupPageState2 extends State<SignupPage2> {
                                     minimumSize: Size(40, 40),
                                     padding: EdgeInsets.only(right: 0),
                                     shape: const CircleBorder(),
-                                    primary: viewModel.isSelectedWeekDay[
-                                                viewModel
+                                    primary: widget.viewModel.isSelectedWeekDay[
+                                                widget.viewModel
                                                     .weekdayToEng[weekday]] ==
                                             false
                                         ? Color(0xFFF2F3F7)
@@ -368,8 +375,8 @@ class _SignupPageState2 extends State<SignupPage2> {
                                     elevation: 0,
                                     side: BorderSide(
                                       color: Color(0xFFD1D9E6),
-                                      width: viewModel.isSelectedWeekDay[
-                                                  viewModel
+                                      width: widget.viewModel.isSelectedWeekDay[
+                                                  widget.viewModel
                                                       .weekdayToEng[weekday]] ==
                                               false
                                           ? 1
@@ -382,149 +389,130 @@ class _SignupPageState2 extends State<SignupPage2> {
                       SizedBox(
                         height: 26,
                       ),
-                      Text("운동 시작시간",
+                      Text("운동 시간대",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Color(0xff6E7995))),
                       SizedBox(height: 12),
-                      Container(
-                        height: 50,
-                        decoration: inset.BoxDecoration(
-                          color: const Color(0xffEFEFEF),
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                              width: 1.0, color: const Color(0xffffffff)),
-                          boxShadow: const [
-                            inset.BoxShadow(
-                              offset: Offset(-30, -30),
-                              blurRadius: 100,
-                              color: Color.fromARGB(0, 46, 46, 191),
-                              inset: true,
-                            ),
-                            inset.BoxShadow(
-                              offset: Offset(3, 3),
-                              blurRadius: 6,
-                              spreadRadius: 1,
-                              color: Color.fromARGB(255, 169, 176, 189),
-                              inset: true,
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                          child: InkWell(
-                            onTap: () {
-                              Future<TimeOfDay?> future = showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.now(),
-                              );
-                              future.then((timeOfDay) {
-                                setState(() {
-                                  if (timeOfDay != null) {
-                                    viewModel.selectedStartTime =
-                                        '${viewModel.selectTime(timeOfDay.hour)}:${viewModel.selectTime(timeOfDay.minute)}';
-                                  }
-                                  print('$viewModel.selectedStartTime');
-                                });
-                              });
-                            },
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '  ${viewModel.selectedStartTime}',
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: widget.viewModel.timeToInt.keys
+                              .map(
+                                (item) => ElevatedButton(
+                                  child: Text(
+                                    item,
                                     style: TextStyle(
-                                      color: Color(0xFF878E97),
-                                      fontSize: 14.0,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: widget.viewModel.selectedTime !=
+                                              widget.viewModel.timeToInt[item]
+                                          ? Color(0xFF6E7995)
+                                          : Color(0xFFffffff),
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.schedule,
-                                    color: Color(0xFF878E97),
-                                    size: 18,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 22,
-                      ),
-                      Text("운동 종료시간",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff6E7995))),
-                      SizedBox(height: 12),
-                      Container(
-                        height: 50,
-                        decoration: inset.BoxDecoration(
-                          color: const Color(0xffEFEFEF),
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                              width: 1.0, color: const Color(0xffffffff)),
-                          boxShadow: const [
-                            inset.BoxShadow(
-                              offset: Offset(-30, -30),
-                              blurRadius: 100,
-                              color: Color.fromARGB(0, 46, 46, 191),
-                              inset: true,
-                            ),
-                            inset.BoxShadow(
-                              offset: Offset(3, 3),
-                              blurRadius: 6,
-                              spreadRadius: 1,
-                              color: Color.fromARGB(255, 169, 176, 189),
-                              inset: true,
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                          child: InkWell(
-                            onTap: () {
-                              Future<TimeOfDay?> future = showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.now(),
-                              );
-                              future.then((timeOfDay) {
-                                setState(() {
-                                  if (timeOfDay != null) {
-                                    viewModel.selectedEndTime =
-                                        '${viewModel.selectTime(timeOfDay.hour)}:${viewModel.selectTime(timeOfDay.minute)}';
-                                  }
-                                  print('${viewModel.selectedEndTime}');
-                                });
-                              });
-                            },
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '  ${viewModel.selectedEndTime}',
-                                    style: TextStyle(
-                                      color: Color(0xFF878E97),
-                                      fontSize: 14.0,
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.viewModel.selectedTime =
+                                          widget.viewModel.timeToInt[item]!;
+
+                                      print(widget.viewModel.selectedTime);
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: const Size(40, 40),
+                                    minimumSize: Size(40, 40),
+                                    padding: EdgeInsets.only(right: 0),
+                                    shape: const CircleBorder(),
+                                    primary: widget.viewModel.selectedTime !=
+                                            widget.viewModel.timeToInt[item]
+                                        ? Color(0xFFF2F3F7)
+                                        : Color(0xFF3F51B5),
+                                    elevation: 0,
+                                    side: BorderSide(
+                                      color: Color(0xFFD1D9E6),
+                                      width: widget.viewModel.selectedTime !=
+                                              widget.viewModel.timeToInt[item]
+                                          ? 1
+                                          : 0,
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.schedule,
-                                    color: Color(0xFF878E97),
-                                    size: 18,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                                ),
+                              )
+                              .toList()),
+                      // SizedBox(
+                      //   height: 22,
+                      // ),
+                      // Text("운동 종료시간",
+                      //     style: TextStyle(
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: Color(0xff6E7995))),
+                      // SizedBox(height: 12),
+                      // Container(
+                      //   height: 50,
+                      //   decoration: inset.BoxDecoration(
+                      //     color: const Color(0xffEFEFEF),
+                      //     borderRadius: BorderRadius.circular(8.0),
+                      //     border: Border.all(
+                      //         width: 1.0, color: const Color(0xffffffff)),
+                      //     boxShadow: const [
+                      //       inset.BoxShadow(
+                      //         offset: Offset(-30, -30),
+                      //         blurRadius: 100,
+                      //         color: Color.fromARGB(0, 46, 46, 191),
+                      //         inset: true,
+                      //       ),
+                      //       inset.BoxShadow(
+                      //         offset: Offset(3, 3),
+                      //         blurRadius: 6,
+                      //         spreadRadius: 1,
+                      //         color: Color.fromARGB(255, 169, 176, 189),
+                      //         inset: true,
+                      //       ),
+                      //     ],
+                      //   ),
+                      //   child: Padding(
+                      //     padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      //     child: InkWell(
+                      //       onTap: () {
+                      //         Future<TimeOfDay?> future = showTimePicker(
+                      //           context: context,
+                      //           initialTime: TimeOfDay.now(),
+                      //         );
+                      //         future.then((timeOfDay) {
+                      //           setState(() {
+                      //             if (timeOfDay != null) {
+                      //               widget.viewModel.selectedEndTime =
+                      //                   '${widget.viewModel.selectTime(timeOfDay.hour)}:${widget.viewModel.selectTime(timeOfDay.minute)}';
+                      //             }
+                      //             print('${widget.viewModel.selectedEndTime}');
+                      //           });
+                      //         });
+                      //       },
+                      //       child: Container(
+                      //         child: Row(
+                      //           mainAxisAlignment:
+                      //               MainAxisAlignment.spaceBetween,
+                      //           children: [
+                      //             Text(
+                      //               '  ${widget.viewModel.selectedEndTime}',
+                      //               style: TextStyle(
+                      //                 color: Color(0xFF878E97),
+                      //                 fontSize: 14.0,
+                      //               ),
+                      //             ),
+                      //             Icon(
+                      //               Icons.schedule,
+                      //               color: Color(0xFF878E97),
+                      //               size: 18,
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

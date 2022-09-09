@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
@@ -124,5 +125,23 @@ class FirebaseAuthMethods {
       print("Error in signInWithCustomToken : $error");
       return "error";
     }
+  }
+
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  void createUserInFirestore() {
+    users
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .limit(1)
+        .get()
+        .then(
+      (QuerySnapshot querySnapshot) {
+        if (querySnapshot.docs.isEmpty) {
+          users.add({
+            'name': UserData['user_name'],
+            'uid': FirebaseAuth.instance.currentUser?.uid
+          });
+        }
+      },
+    ).catchError((error) {});
   }
 }

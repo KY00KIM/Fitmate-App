@@ -1,16 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/signup/signup2.dart';
-
+import 'component/signup-view-model.dart';
+import 'component/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:fitmate/ui/bar_widget.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
     as inset;
 import '../../domain/util.dart';
@@ -26,176 +22,13 @@ class SignupPage1 extends StatefulWidget {
 
 class _SignupPageState1 extends State<SignupPage1> {
   final barWidget = BarWidget();
+  final viewModel = signUpViewModel();
 
   bool checkValid() {
-    return true;
-  }
-
-  bool gender = true;
-  String nickname = '';
-  final isSelectedSex = <bool>[false, false];
-  Map isSelectedWeekDay = {
-    "mon": false,
-    "tue": false,
-    "wed": false,
-    "thu": false,
-    "fri": false,
-    "sat": false,
-    "sun": false
-  };
-  final isSelectedTime = <bool>[false, false, false];
-  String location = '동네 입력';
-  String centerName = '센터 등록';
-  late Map center;
-  double latitude = 0;
-  double longitude = 0;
-
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  void createUserInFirestore() {
-    users
-        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-        .limit(1)
-        .get()
-        .then(
-      (QuerySnapshot querySnapshot) {
-        if (querySnapshot.docs.isEmpty) {
-          users.add({
-            'name': UserData['user_name'],
-            'uid': FirebaseAuth.instance.currentUser?.uid
-          });
-        }
-      },
-    ).catchError((error) {});
-  }
-
-  void SignPost() async {
-    int schedule = 0;
-    bool gender = true; //남자면 true, 여자면 false
-
-    if (isSelectedTime[1]) {
-      schedule = 1;
-    } else if (isSelectedTime[2]) {
-      schedule = 2;
+    if (viewModel.isNicknameValid == true) {
+      return true;
     }
-
-    if (isSelectedSex[1]) gender = false;
-
-    LocationPermission permission = await Geolocator.requestPermission();
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      latitude = 0;
-      longitude = 0;
-    } else {
-      Position position = await DeterminePosition();
-      latitude = position.latitude;
-      longitude = position.longitude;
-    }
-
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-
-    String? deviceToken = await FirebaseMessaging.instance.getToken();
-
-    Map data = {
-      "user_nickname": "$nickname",
-      "user_address": "$location",
-      "user_schedule_time": schedule,
-      "user_weekday": {
-        "mon": isSelectedWeekDay['mon'],
-        "tue": isSelectedWeekDay['tue'],
-        "wed": isSelectedWeekDay['wed'],
-        "thu": isSelectedWeekDay['thu'],
-        "fri": isSelectedWeekDay['fri'],
-        "sat": isSelectedWeekDay['sat'],
-        "sun": isSelectedWeekDay['sun']
-      },
-      "user_gender": gender,
-      "user_longitude": 0,
-      "user_latitude": 0,
-      "fitness_center": {
-        "center_name": "$centerName",
-        "center_address": "${center['address_name']}",
-        "fitness_longitude": center['y'],
-        "fitness_latitude": center['x']
-      },
-      "device_token": "$deviceToken"
-      /*
-      "social" : {
-        "device_token" : [
-          "$deviceToken"
-        ]
-      }
-       */
-    };
-    log(deviceToken!);
-    var body = json.encode(data);
-    log(data.toString());
-
-    http.Response response =
-        await http.post(Uri.parse("https://fitmate.co.kr/v1/users/oauth"),
-            headers: {
-              "Authorization": "bearer $IdToken",
-              "Content-Type": "application/json; charset=UTF-8"
-            },
-            body: body);
-    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    print(response.statusCode);
-    if (response.statusCode == 201) {
-      UserId = resBody['data']['_id'];
-      bool userdata = await UpdateUserData();
-      print(userdata);
-      if (userdata == true) {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                HomePage(reload: true),
-            transitionDuration: Duration.zero,
-            reverseTransitionDuration: Duration.zero,
-          ),
-        );
-      } else {
-        FlutterToastTop("알수 없는 에러가 발생하였습니다");
-      }
-    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken =
-          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-              .token
-              .toString();
-
-      http.Response response =
-          await http.post(Uri.parse("${baseUrlV1}users/oauth"),
-              headers: {
-                'Authorization': 'bearer $IdToken',
-                'Content-Type': 'application/json; charset=UTF-8',
-              },
-              body: body);
-      var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 201) {
-        UserId = resBody['data']['_id'];
-        bool userdata = await UpdateUserData();
-
-        if (userdata == true) {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  HomePage(reload: true),
-              transitionDuration: Duration.zero,
-              reverseTransitionDuration: Duration.zero,
-            ),
-          );
-        } else {
-          FlutterToastTop("알수 없는 에러가 발생하였습니다");
-        }
-      } else {
-        FlutterToastTop("알수 없는 에러가 발생하였습니다");
-      }
-    } else {
-      FlutterToastTop("알수 없는 에러가 발생하였습니다");
-    }
+    return false;
   }
 
   @override
@@ -206,7 +39,14 @@ class _SignupPageState1 extends State<SignupPage1> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: barWidget.nextBackAppBar(context, SignupPage2(), checkValid),
+        appBar: barWidget.nextBackAppBar(
+            context,
+            SignupPage2(
+              viewModel: viewModel,
+            ),
+            checkValid,
+            null,
+            null),
         backgroundColor: const Color(0xffF2F3F7),
         body: SafeArea(
           child: Padding(
@@ -324,6 +164,9 @@ class _SignupPageState1 extends State<SignupPage1> {
                         children: [
                           new Flexible(
                             child: TextField(
+                              onChanged: (value) {
+                                viewModel.nickname = value;
+                              },
                               style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -338,7 +181,12 @@ class _SignupPageState1 extends State<SignupPage1> {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              bool res = await viewModel
+                                  .checkValidNickname(viewModel.nickname!);
+                              FlutterToastTop(
+                                  res ? "사용 가능한 닉네임입니다" : "이미 사용중인 닉네임입니다");
+                            },
                             style: ElevatedButton.styleFrom(
                                 primary: Color(
                                     0xff3F51B5), // set the background color
@@ -380,11 +228,11 @@ class _SignupPageState1 extends State<SignupPage1> {
                               ),
                               leading: Radio<bool>(
                                 value: true,
-                                groupValue: gender,
+                                groupValue: viewModel.gender,
                                 onChanged: (bool? value) {
+                                  print("selectedSex is ${viewModel.gender}");
                                   setState(() {
-                                    gender = value!;
-                                    print("selectedSex is $gender");
+                                    viewModel.gender = value!;
                                   });
                                 },
                               ),
@@ -401,12 +249,12 @@ class _SignupPageState1 extends State<SignupPage1> {
                                   color: Color(0xff6E7995)),
                             ),
                             leading: Radio<bool>(
-                              value: true,
-                              groupValue: gender,
+                              value: false,
+                              groupValue: viewModel.gender,
                               onChanged: (bool? value) {
+                                print("selectedSex is ${viewModel.gender}");
                                 setState(() {
-                                  gender = value!;
-                                  print("selectedSex is $gender");
+                                  viewModel.gender = value!;
                                 });
                               },
                             ),
@@ -415,7 +263,7 @@ class _SignupPageState1 extends State<SignupPage1> {
                         SizedBox(width: 150)
                       ]),
                   SizedBox(height: 33),
-                  Text("한줄 소개",
+                  Text("한줄 소개 (선택)",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -447,12 +295,15 @@ class _SignupPageState1 extends State<SignupPage1> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                         child: TextField(
+                          onChanged: (value) {
+                            viewModel.introduce = value;
+                          },
                           style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             fillColor: Colors.transparent,
                             filled: true,
-                            hintText: '40자 이내',
+                            hintText: '40자 이내 : 운동 2년차 헬린이에요. 많이 배우고 싶어요~',
                             hintStyle: TextStyle(
                               color: Color(0xffD1D9E6),
                             ),

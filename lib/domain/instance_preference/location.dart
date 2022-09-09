@@ -17,15 +17,28 @@ class locationController {
   bool isAviailable = false;
 
 /**
+ * @기능
+ *  1. Location 객체 생성
+ * 
+ */
+  init() async {
+    location = Location();
+    isAviailable = await requestPermission();
+    if (isAviailable == false) return;
+    location.changeSettings(
+        interval: 60000, distanceFilter: 1, accuracy: LocationAccuracy.high);
+  }
+
+/**
  * @기능 
  *    1. listener 시작
  * @요구사항
  *    위치정보 권한 
  *    백그라운드 권한
  */
-  init() async {
+  initListner() async {
     location = new Location();
-    isAviailable = await _requestPermission();
+    isAviailable = await requestPermission();
     if (isAviailable == false) return;
 
     try {
@@ -44,7 +57,7 @@ class locationController {
 /**
  * @권한 요구
  */
-  Future<bool> _requestPermission() async {
+  Future<bool> requestPermission() async {
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       print("Currently disabled, requesting location permission");
@@ -95,8 +108,14 @@ class locationController {
 
   Future<Map> getAndSendLocation(LocationData? locationData) async {
     try {
+      if (_serviceEnabled == false ||
+          _permissionGranted == PermissionStatus.denied) {
+        print("is rejected : $_serviceEnabled    $_permissionGranted");
+        return {"user_longitude": 0, "user_latitude": 0};
+      }
       print("get & send");
-      locationData ??= await location.getLocation();
+      print("$location");
+      locationData = locationData ?? await location.getLocation();
       Map _location = {
         "user_longitude": locationData.longitude,
         "user_latitude": locationData.latitude
