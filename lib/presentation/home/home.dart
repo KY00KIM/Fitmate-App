@@ -1,3 +1,4 @@
+import 'package:fitmate/domain/instance_preference/location.dart';
 import 'package:fitmate/presentation/home/components/home_banner_widget.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
@@ -24,11 +25,13 @@ class _HomePageState extends State<HomePage> {
   final postApi = PostApi();
   final barWidget = BarWidget();
   final homeTownWidget = HomeTownWidget();
-  final homeApiRepo =  HomeApiRepository();
+  final homeApiRepo = HomeApiRepository();
+  locationController locator = locationController();
 
   @override
   void initState() {
     super.initState();
+    locator.init();
   }
 
   @override
@@ -49,7 +52,9 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: Column(
                       children: [
-                        HomeBannerWidget(banner: snapshot.data!['banners'],),
+                        HomeBannerWidget(
+                          banner: snapshot.data!['banners'],
+                        ),
                         SizedBox(
                           height: 26,
                         ),
@@ -63,7 +68,9 @@ class _HomePageState extends State<HomePage> {
                                   width: 24,
                                   height: 24,
                                 ),
-                                SizedBox(width: 12,),
+                                SizedBox(
+                                  width: 12,
+                                ),
                                 Text(
                                   '게시판',
                                   style: TextStyle(
@@ -107,17 +114,27 @@ class _HomePageState extends State<HomePage> {
                                     height: 18,
                                   ),
                                   onPressed: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => PostPage(reload: true,)));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PostPage(
+                                                  reload: true,
+                                                )));
                                   },
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 15,),
-                        HomeBoardWidget(posts: snapshot.data!['posts'],),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        HomeBoardWidget(
+                          posts: snapshot.data!['posts'],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -126,7 +143,9 @@ class _HomePageState extends State<HomePage> {
                               width: 24,
                               height: 24,
                             ),
-                            SizedBox(width: 12,),
+                            SizedBox(
+                              width: 12,
+                            ),
                             Text(
                               '우리동네',
                               style: TextStyle(
@@ -137,9 +156,13 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         HomeTownWidget(),
-                        SizedBox(height: 32,),
+                        SizedBox(
+                          height: 32,
+                        ),
                       ],
                     ),
                   ),
