@@ -97,8 +97,8 @@ class FitnessCenter {
   });
   late final String centerName;
   late final String centerAddress;
-  late final int fitnessLongitude;
-  late final int fitnessLatitude;
+  late final double fitnessLongitude;
+  late final double fitnessLatitude;
 
   FitnessCenter.fromJson(Map<String, dynamic> json) {
     centerName = json['center_name'];

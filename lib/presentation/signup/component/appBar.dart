@@ -5,11 +5,34 @@ import '../../../ui/colors.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import '../component/signup-view-model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import '../../../data/firebase_service/firebase_auth_methods.dart';
+import '../../../domain/util.dart';
 
 class BarWidget {
   final double iconSize = 32.0;
   final String iconSource = "assets/icon/bar_icons/";
   bool isButtonActive = false;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  void createUserInFirestore() {
+    users
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .limit(1)
+        .get()
+        .then(
+      (QuerySnapshot querySnapshot) {
+        if (querySnapshot.docs.isEmpty) {
+          users.add({
+            'name': UserData['user_name'],
+            'uid': FirebaseAuth.instance.currentUser?.uid
+          });
+        }
+      },
+    ).catchError((error) {});
+  }
 
   PreferredSizeWidget nextBackAppBar(
       BuildContext context,
@@ -106,6 +129,7 @@ class BarWidget {
                       ? () async {
                           if (conditionalFunction != null &&
                               viewModel != null) {
+                            createUserInFirestore();
                             if (await viewModel.sendSignUp()) {
                               Navigator.push(
                                   context,

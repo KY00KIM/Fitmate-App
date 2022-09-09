@@ -10,9 +10,11 @@ class SignUpApi {
     try {
       http.Response response =
           await httpApi.post(1, 'users/oauth', user.toJson());
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+      print("res is : $jsonResponse");
 
       if (response.statusCode == 201) {
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         Map user = jsonResponse['data'];
         return jsonResponse;
       }

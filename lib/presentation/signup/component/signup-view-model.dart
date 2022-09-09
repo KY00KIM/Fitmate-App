@@ -18,31 +18,31 @@ class signUpViewModel {
 
   Future sendSignUp() async {
     locator = locationController();
-    await locator.init();
-    Map location = await locator.getAndSendLocation(null) as Map;
     String? deviceToken = await FirebaseMessaging.instance.getToken();
-
-    userdata.userNickname = nickname ?? "";
-    userdata.userAddress = "$selectedLocation $selectedSemiLocation";
-    userdata.userScheduleTime = selectedTime;
-    userdata.userGender = gender;
-    userdata.userWeekday = UserWeekday.fromJson(isSelectedWeekDay);
-    userdata.userLongitude = location["user_longitude"] ?? 0;
-    userdata.userLatitude = location["user_latitude"] ?? 0;
-
-    userdata.deviceToken = deviceToken ?? "";
-    userdata.fitnessCenter = FitnessCenter(
-        centerName: centerName ?? "선택안함",
-        centerAddress: center['address_name'] ?? "",
-        fitnessLongitude: center['y'] ?? 0,
-        fitnessLatitude: center['x'] ?? 0);
-    print("opopop");
-    print(userdata);
-    print("HIHIHIHIHI");
-    print(userdata.toString());
-    print("popopopo");
+    await locator.init();
+    Map location = await locator.getAndSendLocation(null);
+    Map<String, dynamic> json = {
+      "user_nickname": nickname == null ? "" : nickname,
+      'user_address': "$selectedLocation $selectedSemiLocation",
+      'user_schedule_time': selectedTime,
+      "user_gender": gender,
+      "user_weekday": isSelectedWeekDay,
+      "user_longitude": location["user_longitude"] ?? 0,
+      "user_latitude": location["user_latitude"] ?? 0,
+      "device_token": deviceToken ?? "",
+      "fitness_center": {
+        "center_name": centerName == "피트니스 센터를 검색" ? "선택안함" : centerName,
+        "center_address":
+            centerName == "피트니스 센터를 검색" ? "" : center['address_name'],
+        "fitness_longitude":
+            centerName == "피트니스 센터를 검색" ? 0 : double.parse(center['y']),
+        "fitness_latitude":
+            centerName == "피트니스 센터를 검색" ? 0 : double.parse(center['x'])
+      }
+    };
+    userdata = SignupUser.fromJson(json);
     var result = await signupApi.postSignUpUser(userdata);
-    print(result);
+    print("oauth response : $result");
     return result["success"];
   }
 

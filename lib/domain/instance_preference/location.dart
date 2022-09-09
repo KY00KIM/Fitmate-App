@@ -120,12 +120,14 @@ class locationController {
         "user_longitude": locationData.longitude,
         "user_latitude": locationData.latitude
       };
-      print("loc : $_location");
       if (isSignedIn()) await api.postLocation(_location);
       return _location;
     } catch (error) {
       print(error);
+      return {"user_longitude": 0, "user_latitude": 0};
+
       return Future.error(Exception(error.toString()));
     }
+    return {"user_longitude": 0, "user_latitude": 0};
   }
 }

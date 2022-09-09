@@ -6,7 +6,6 @@ import 'http_api.dart';
 
 class UserTraceApi {
   Future<void> postLocation(Map _location) async {
-    List<Post> _posts = <Post>[];
     final httpApi = HttpApi();
     String data = jsonEncode(_location);
     http.Response response = await httpApi.post(1, 'trace', _location);
@@ -14,6 +13,9 @@ class UserTraceApi {
 
     if (response.statusCode == 200) {
       print("trace sent at : ${jsonResponse['data']['createdAt']}");
-    } else {}
+    } else {
+      print("trace failed");
+      print(jsonResponse);
+    }
   }
 }
