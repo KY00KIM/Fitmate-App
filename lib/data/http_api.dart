@@ -129,4 +129,9 @@ class HttpApi {
 
     return response;
   }
+
+  Future getWithoutAuth(String url) async {
+    http.Response response = await http.get(Uri.parse("${baseUrl}${url}"));
+    return response;
+  }
 }
