@@ -169,6 +169,104 @@ class BarWidget {
     );
   }
 
+  PreferredSizeWidget noticeAppBar(BuildContext context) {
+    return AppBar(
+      centerTitle: false,
+      backgroundColor: whiteTheme,
+      toolbarHeight: 60,
+      elevation: 0,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: whiteTheme,
+      ),
+      automaticallyImplyLeading: false,
+      title: Padding(
+        padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Color(0xFFF2F3F7),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFFffffff),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: Offset(-2, -2),
+              ),
+              BoxShadow(
+                color: Color.fromRGBO(55, 84, 170, 0.1),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+          child: Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                "${iconSource}x_icon.svg",
+                width: 16,
+                height: 16,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 8, 20, 8),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Color(0xFFF2F3F7),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFFffffff),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: Offset(-2, -2),
+                ),
+                BoxShadow(
+                  color: Color.fromRGBO(55, 84, 170, 0.1),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+            child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              ),
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  "${iconSource}trash_icon.svg",
+                  width: 16,
+                  height: 16,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => WritingPage()));
+                },
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   PreferredSizeWidget writingAppBar(BuildContext context, bool Function() changeButtonActive) {
     return AppBar(
       centerTitle: false,
