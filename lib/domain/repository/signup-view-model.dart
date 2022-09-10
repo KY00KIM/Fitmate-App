@@ -1,9 +1,3 @@
-import 'package:fitmate/ui/bar_widget.dart';
-import 'package:fitmate/ui/colors.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import '../../data/post_api.dart';
 import 'dart:core';
 
 class signUpViewModel {

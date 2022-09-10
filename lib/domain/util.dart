@@ -34,6 +34,7 @@ class LoginedUser {
 }
 
 String UserCenterName = '';
+
 late Map UserData = {
   "_id": "",
   "user_name": "",
