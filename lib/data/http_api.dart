@@ -43,14 +43,14 @@ class HttpApi {
   }
 
   Future post(int version, String url, Map body) async {
-    http.Response response = await http.post(
-      Uri.parse("${baseUrl}v${version.toString()}/${url}"),
-      headers: {
-        "Authorization": "bearer $IdToken",
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-      body: body
-    );
+    String json = jsonEncode(body);
+    http.Response response =
+        await http.post(Uri.parse("${baseUrl}v${version.toString()}/${url}"),
+            headers: {
+              "Authorization": "bearer $IdToken",
+              "Content-Type": "application/json; charset=UTF-8"
+            },
+            body: json);
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode != 200 &&
         resBody["error"]["code"] == "auth/id-token-expired") {
@@ -59,14 +59,13 @@ class HttpApi {
               .token
               .toString();
 
-      response = await http.post(
-          Uri.parse("${baseUrl}v${version.toString()}/${url}"),
-          headers: {
-            "Authorization": "bearer $IdToken",
-            "Content-Type": "application/json; charset=UTF-8"
-          },
-          body: body
-      );
+      response =
+          await http.post(Uri.parse("${baseUrl}v${version.toString()}/${url}"),
+              headers: {
+                "Authorization": "bearer $IdToken",
+                "Content-Type": "application/json; charset=UTF-8"
+              },
+              body: body);
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
@@ -103,14 +102,13 @@ class HttpApi {
   }
 
   Future patch(int version, String url, Map body) async {
-    http.Response response = await http.patch(
-        Uri.parse("${baseUrl}v${version.toString()}/${url}"),
-        headers: {
-          "Authorization": "bearer $IdToken",
-          "Content-Type": "application/json; charset=UTF-8"
-        },
-        body: body
-    );
+    http.Response response =
+        await http.patch(Uri.parse("${baseUrl}v${version.toString()}/${url}"),
+            headers: {
+              "Authorization": "bearer $IdToken",
+              "Content-Type": "application/json; charset=UTF-8"
+            },
+            body: body);
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode != 200 &&
         resBody["error"]["code"] == "auth/id-token-expired") {
@@ -119,17 +117,21 @@ class HttpApi {
               .token
               .toString();
 
-      response = await http.patch(
-          Uri.parse("${baseUrl}v${version.toString()}/${url}"),
-          headers: {
-            "Authorization": "bearer $IdToken",
-            "Content-Type": "application/json; charset=UTF-8"
-          },
-          body: body
-      );
+      response =
+          await http.patch(Uri.parse("${baseUrl}v${version.toString()}/${url}"),
+              headers: {
+                "Authorization": "bearer $IdToken",
+                "Content-Type": "application/json; charset=UTF-8"
+              },
+              body: body);
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
+    return response;
+  }
+
+  Future getWithoutAuth(String url) async {
+    http.Response response = await http.get(Uri.parse("${baseUrl}${url}"));
     return response;
   }
 }

@@ -1,20 +1,78 @@
+
+import 'package:fitmate/ui/bar_widget.dart';
+import 'package:fitmate/ui/colors.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:location/location.dart';
+import '../../../domain/model/SignupUser.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import '../../../domain/instance_preference/location.dart';
+
+import '../../../data/signup_api.dart';
 import 'dart:core';
 
 class signUpViewModel {
+  final signupApi = SignUpApi();
+  late locationController locator;
+
+  late SignupUser userdata;
+
+  Future sendSignUp() async {
+    locator = locationController();
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
+    await locator.init();
+    Map location = await locator.getAndSendLocation(null);
+    Map<String, dynamic> json = {
+      "user_nickname": nickname == null ? "" : nickname,
+      'user_address': "$selectedLocation $selectedSemiLocation",
+      'user_schedule_time': selectedTime,
+      "user_gender": gender,
+      "user_weekday": isSelectedWeekDay,
+      "user_longitude": location["user_longitude"] ?? 0,
+      "user_latitude": location["user_latitude"] ?? 0,
+      "device_token": deviceToken ?? "",
+      "fitness_center": {
+        "center_name": centerName == "피트니스 센터를 검색" ? "선택안함" : centerName,
+        "center_address":
+            centerName == "피트니스 센터를 검색" ? "" : center['address_name'],
+        "fitness_longitude":
+            centerName == "피트니스 센터를 검색" ? 0 : double.parse(center['y']),
+        "fitness_latitude":
+            centerName == "피트니스 센터를 검색" ? 0 : double.parse(center['x'])
+      }
+    };
+    userdata = SignupUser.fromJson(json);
+    var result = await signupApi.postSignUpUser(userdata);
+    print("oauth response : $result");
+    return result["success"];
+  }
+
+  Future<bool> checkValidNickname(String input) async {
+    bool result = await signupApi.checkNickname(input);
+    print("result is $result");
+    isNicknameValid = result;
+    // nickname = input;
+    return result;
+  }
+
   /**
-   * @회원가입 1페이지 데이터
+   * @회원가입 1페이지 파라미터
    */
   bool isNicknameValid = false;
   String? nickname;
   bool gender = true;
+  String? introduce;
 
   /**
-   * @회원가입 2페이지 데이터
+   * @회원가입 2페이지 파라미터
    */
+  int selectedTime = -1;
   String selectedStartTime = '시간 선택';
   String selectedEndTime = '시간 선택';
   String? selectedLocation;
   String? selectedSemiLocation;
+  String centerName = '피트니스 센터를 검색';
+  late Map center;
 
 /**
  * @운동 시간 관련 함수
@@ -27,11 +85,13 @@ class signUpViewModel {
       return '${i}';
   }
 
+  final Map<String, int> timeToInt = {"오전": 0, "오후": 1, "저녁": 2};
+
   /**
    * @요일 관련 데이터
    */
 
-  Map isSelectedWeekDay = {
+  Map<String, dynamic> isSelectedWeekDay = {
     "mon": false,
     "tue": false,
     "wed": false,

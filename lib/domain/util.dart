@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 
+import 'model/user.dart';
+
 //공통 변수
 
 Map fitnessPart = {
@@ -35,6 +37,9 @@ class LoginedUser {
 
 String UserCenterName = '';
 
+
+
+late User test;
 late Map UserData = {
   "_id": "",
   "user_name": "",
@@ -126,6 +131,10 @@ Future<Position> DeterminePosition() async {
   }
 
   return await Geolocator.getCurrentPosition();
+}
+
+bool isSignedIn() {
+  return IdToken == null ? false : true;
 }
 
 late String IdToken;
