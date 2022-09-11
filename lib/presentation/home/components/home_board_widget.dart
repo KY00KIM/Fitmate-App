@@ -124,13 +124,75 @@ class HomeBoardWidget extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 13,),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 3),
-                              child: SvgPicture.asset(
-                                "assets/icon/burger_icon.svg",
-                                width: 18,
-                                height: 18,
+                            GestureDetector(
+                              child: Container(
+                                padding: const EdgeInsets.only(top: 3),
+                                child: SvgPicture.asset(
+                                  "assets/icon/burger_icon.svg",
+                                  width: 18,
+                                  height: 18,
+                                ),
                               ),
+                              onTap: () {
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                      // <-- SEE HERE
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(40.0),
+                                      ),
+                                    ),
+                                    backgroundColor: Color(0xFFF2F3F7),
+                                    builder: (BuildContext context) {
+                                      return Wrap(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Container(
+                                                width: 40,
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(2.0),
+                                                  color: Color(0xFFD1D9E6),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 36,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  print("Container clicked");
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                  EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                                  height: 64,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '게시글 신고',
+                                                        style: TextStyle(
+                                                          color: Color(0xFF000000),
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
                             ),
                           ],
                         ),
@@ -149,36 +211,43 @@ class HomeBoardWidget extends StatelessWidget {
                               ],
                             ),
                             SizedBox(height: 10,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  fit: FlexFit.tight,
-                                  child: RichText(
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    text: TextSpan(
-                                      text:
-                                      '${posts[index].promiseLocation.centerName}',
-                                      style: TextStyle(
-                                        color: Color(0xFF283593),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
+                            GestureDetector(
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      fit: FlexFit.tight,
+                                      child: RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        text: TextSpan(
+                                          text:
+                                          '${posts[index].promiseLocation.centerName}',
+                                          style: TextStyle(
+                                            color: Color(0xFF283593),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    SizedBox(width: 13,),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 3, 4, 0),
+                                      child: SvgPicture.asset(
+                                        "assets/icon/right_arrow_icon.svg",
+                                        width: 14,
+                                        height: 14,
+                                        color: Color(0xFF283593),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: 13,),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 3, 4, 0),
-                                  child: SvgPicture.asset(
-                                    "assets/icon/right_arrow_icon.svg",
-                                    width: 14,
-                                    height: 14,
-                                    color: Color(0xFF283593),
-                                  ),
-                                ),
-                              ],
+                              ),
+                              onTap: () {
+                                print("센터 클릭");
+                              },
                             ),
                           ],
                         ),

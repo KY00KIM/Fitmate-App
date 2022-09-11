@@ -6,6 +6,7 @@ import 'package:fitmate/presentation/chat/chat.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 import '../../domain/util.dart';
@@ -66,77 +67,106 @@ class _ChatListPageState extends State<ChatListPage> {
             if (snapshot.hasData) {
               return ScrollConfiguration(
                 behavior: const ScrollBehavior().copyWith(overscroll: false),
-                child: ListView.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (context, index) {
-                    if(snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] || snapshot.data![index]['chat_join_id']['_id'] == UserData['_id']) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.zero,
-                            minimumSize: Size(size.width, 75),
-                            maximumSize: Size(size.width, 75),
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(0),
-                            ),
-                            primary: Color(0xFF22232A)
-                        ),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
-                              name : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname'],
-                              imageUrl : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img'],
-                              uid : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['social']['user_id'] : snapshot.data![index]['chat_start_id']['social']['user_id'],
-                              userId : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['_id'] : snapshot.data![index]['chat_start_id']['_id'],
-                              chatId: snapshot.data![index]['_id'],
-                              )
-                            )
-                          );
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(100.0),
-                                    child: Image.network(
-                                      '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img']}',
-                                      width: 45.0,
-                                      height: 45.0,
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/profile_null_image.png',
-                                          width: 45.0,
-                                          height: 45.0,
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname']}',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                            SvgPicture.asset(
+                              "assets/icon/chat_icon.svg",
+                              width: 24,
+                              height: 24,
+                            ),
+                            SizedBox(width: 12,),
+                            Text(
+                              '채팅',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
-                      );
-                    }
-                    else return SizedBox();
-                  },
+                        SizedBox(height: 20,),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) {
+                            if(snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] || snapshot.data![index]['chat_join_id']['_id'] == UserData['_id']) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.zero,
+                                    minimumSize: Size(size.width, 84),
+                                    maximumSize: Size(size.width, 84),
+                                    shape: new RoundedRectangleBorder(
+                                      borderRadius: new BorderRadius.circular(0),
+                                    ),
+                                    primary: Color(0xFF22232A)
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
+                                      name : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname'],
+                                      imageUrl : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img'],
+                                      uid : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['social']['user_id'] : snapshot.data![index]['chat_start_id']['social']['user_id'],
+                                      userId : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['_id'] : snapshot.data![index]['chat_start_id']['_id'],
+                                      chatId: snapshot.data![index]['_id'],
+                                      )
+                                    )
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(100.0),
+                                            child: Image.network(
+                                              '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img']}',
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                                return Image.asset(
+                                                  'assets/images/profile_null_image.png',
+                                                  width: 45.0,
+                                                  height: 45.0,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Text(
+                                            '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname']}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            else return SizedBox();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             } else if (snapshot.hasError) {

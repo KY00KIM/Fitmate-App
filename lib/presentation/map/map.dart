@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 import 'package:flutter/foundation.dart';
@@ -17,7 +18,7 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
   Completer<NaverMapController> _controller = Completer();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -25,6 +26,8 @@ class _MapPageState extends State<MapPage> {
   List<Marker> _markers = [];
   final barWidget = BarWidget();
 
+  late AnimationController controller;
+  double _height = 0;
 
   @override
   void initState() {
@@ -43,6 +46,9 @@ class _MapPageState extends State<MapPage> {
         height: 45,
         infoWindow: '인포 윈도우',
         onMarkerTab: null));
+    controller = BottomSheet.createAnimationController(this);
+    controller.duration = Duration(seconds: 3);
+    //controller.lowerBound;
   }
 
   // Text('${snapshot.data?[index]['post_title']}');
@@ -68,7 +74,7 @@ class _MapPageState extends State<MapPage> {
             mapType: _mapType,
             markers: _markers,
             //initLocationTrackingMode: _trackingMode,
-            locationButtonEnable: false,
+            locationButtonEnable: true,
             indoorEnable: true,
             onCameraChange: _onCameraChange,
             onCameraIdle: _onCameraIdle,
@@ -81,17 +87,139 @@ class _MapPageState extends State<MapPage> {
             minZoom: 13,  //최대 지도 범위
           ),
           Positioned(
-            right: 25,
-            bottom: 75,
+            right: 20,
+            top: 100,
+            child: Container(
+              padding: EdgeInsets.all(8),
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Color(0xFF3F51B5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(63, 81, 181, 0.5),
+                    blurRadius: 8,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: SvgPicture.asset(
+                'assets/icon/map_location_icon.svg',
+                fit: BoxFit.cover,
+              ),
+            )
+            /*
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF3F51B5),
+                maximumSize: Size(40, 40),
+                minimumSize: Size(40, 40),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+              ),
               onPressed: () {
 
               },
-              child: Text('내위치'),
+              child: SvgPicture.asset(
+                'assets/icon/map_location_icon.svg',
+                width: 34,
+                height: 34,
+              ),
+
+             */
             ),
+          Positioned(
+              bottom : 80,
+              left: 20,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _height=300;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  width: size.width - 40,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFF3F51B5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(63, 81, 181, 0.5),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      '이 지역 피트니스 클럽',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Color(0xFFffffff)
+                      ),
+                    ),
+                  ),
+                ),
+              )
+              /*
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(size.width - 40, 52),
+                  maximumSize: Size(size.width - 40, 52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  elevation: 4,
+                  primary: Color(0xFF3F51B5),
+                  shadowColor: Color.fromRGBO(63, 81, 181, 0.5),
+                ),
+                onPressed: () async {
+
+                },
+                child: Text(
+                  '이 지역 피트니스 클럽',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+
+               */
+            /*
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF3F51B5),
+                maximumSize: Size(40, 40),
+                minimumSize: Size(40, 40),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+              ),
+              onPressed: () {
+
+              },
+              child: SvgPicture.asset(
+                'assets/icon/map_location_icon.svg',
+                width: 34,
+                height: 34,
+              ),
+
+             */
           ),
           //_trackingModeSelector(),
         ],
+      ),
+      bottomSheet: BottomSheet(
+        animationController: controller,
+        enableDrag: true,
+        builder: (BuildContext context) {
+          return Container(
+            height: 0,
+          );
+        },
+        onClosing: () {  },
       ),
     );
   }
