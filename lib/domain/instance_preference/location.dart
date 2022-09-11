@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:html';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import '../../data/usertrace_api.dart';
@@ -26,8 +25,7 @@ class locationController {
     location = Location();
     isAviailable = await requestPermission();
     if (isAviailable == false) return;
-    location.changeSettings(
-        interval: 60000, distanceFilter: 1, accuracy: LocationAccuracy.high);
+    location.changeSettings(accuracy: LocationAccuracy.high);
   }
 
 /**
@@ -48,8 +46,7 @@ class locationController {
     } catch (error) {
       print("Can't set background mode");
     }
-    location.changeSettings(
-        interval: 60000, distanceFilter: 1, accuracy: LocationAccuracy.high);
+    location.changeSettings(accuracy: LocationAccuracy.high);
 
     _listenLocation();
     print("LocationListener paused : ${_locationSubscription?.isPaused}");
@@ -91,7 +88,7 @@ class locationController {
       print(onError);
       _locationSubscription?.cancel();
     }).listen((LocationData currentlocation) async {
-      if ((currentlocation.time! - lasttime) >= 60000) {
+      if ((currentlocation.time! - lasttime) >= 30000) {
         print("true!");
         await getAndSendLocation(currentlocation);
         lasttime = currentlocation.time!;
@@ -112,7 +109,7 @@ class locationController {
       if (_serviceEnabled == false ||
           _permissionGranted == PermissionStatus.denied) {
         print("is rejected : $_serviceEnabled    $_permissionGranted");
-        return {"user_longitude": 0, "user_latitude": 0};
+        return {"user_longitude": 0.0, "user_latitude": 0.0};
       }
       print("get & send");
       print("$location");
@@ -124,8 +121,8 @@ class locationController {
       if (isSignedIn()) await api.postLocation(_location);
       return _location;
     } catch (error) {
-      print(error);
-      return {"user_longitude": 0, "user_latitude": 0};
+      print("error at get&send : ${error}");
+      return {"user_longitude": 0.0, "user_latitude": 0.0};
 
       return Future.error(Exception(error.toString()));
     }
