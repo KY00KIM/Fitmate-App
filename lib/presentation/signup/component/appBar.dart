@@ -131,7 +131,9 @@ class BarWidget {
                               viewModel != null) {
                             createUserInFirestore();
                             if (await viewModel.sendSignUp()) {
-                              Navigator.push(
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/', (_) => false);
+                              Navigator.pushReplacement(
                                   context,
                                   PageRouteBuilder(
                                     pageBuilder: (context, animation,
@@ -142,7 +144,6 @@ class BarWidget {
                                   ));
                             } else {
                               FlutterToastTop("회원가입 중 문제가 발생했습니다");
-                              Navigator.pop(context);
                             }
                           } else {
                             Navigator.push(

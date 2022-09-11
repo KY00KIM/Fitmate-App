@@ -3,8 +3,13 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/domain/instance_preference/location.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
+import 'package:fitmate/presentation/post/post.dart';
+import 'package:fitmate/presentation/signup/component/signup-view-model.dart';
+import 'package:fitmate/presentation/signup/signup.dart';
+import 'package:fitmate/presentation/signup/signup2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -56,7 +61,8 @@ class MyApp extends StatelessWidget {
 
     IdToken = idToken.toString();
     log("IdToken : $IdToken");
-    http.Response response = await http.get(Uri.parse("${baseUrlV1}users/login"),
+    http.Response response = await http.get(
+        Uri.parse("${baseUrlV1}users/login"),
         headers: {'Authorization': 'bearer $IdToken'});
     print("3 : ${response}");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -89,6 +95,7 @@ class MyApp extends StatelessWidget {
         //     Get.put(NotificationController());
         //   },
         // ),
+        // home: SignupPage1(),
         home: FutureBuilder(
           future: getToken(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -102,7 +109,12 @@ class MyApp extends StatelessWidget {
             // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
             else {
               // ignore: avoid_print
-              return snapshot.data == true ? LoginPage() : HomePage(reload: true,);
+
+              return snapshot.data == true
+                  ? LoginPage()
+                  : HomePage(
+                      reload: true,
+                    );
             }
           },
         ),

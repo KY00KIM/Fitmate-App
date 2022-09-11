@@ -1,4 +1,3 @@
-
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +11,8 @@ import '../../../data/signup_api.dart';
 import 'dart:core';
 
 class signUpViewModel {
-  final signupApi = SignUpApi();
+  late SignUpApi signupApi = SignUpApi();
+
   late locationController locator;
 
   late SignupUser userdata;
@@ -21,27 +21,29 @@ class signUpViewModel {
     locator = locationController();
     String? deviceToken = await FirebaseMessaging.instance.getToken();
     await locator.init();
-    Map location = await locator.getAndSendLocation(null);
+    print("locator initiated");
+    // Map location = await locator.getAndSendLocation(null);
     Map<String, dynamic> json = {
       "user_nickname": nickname == null ? "" : nickname,
       'user_address': "$selectedLocation $selectedSemiLocation",
       'user_schedule_time': selectedTime,
       "user_gender": gender,
       "user_weekday": isSelectedWeekDay,
-      "user_longitude": location["user_longitude"] ?? 0,
-      "user_latitude": location["user_latitude"] ?? 0,
+      "user_longitude": 0.0,
+      "user_latitude": 0.0,
       "device_token": deviceToken ?? "",
       "fitness_center": {
         "center_name": centerName == "피트니스 센터를 검색" ? "선택안함" : centerName,
         "center_address":
             centerName == "피트니스 센터를 검색" ? "" : center['address_name'],
         "fitness_longitude":
-            centerName == "피트니스 센터를 검색" ? 0 : double.parse(center['y']),
+            centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['y']),
         "fitness_latitude":
-            centerName == "피트니스 센터를 검색" ? 0 : double.parse(center['x'])
+            centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['x'])
       }
     };
     userdata = SignupUser.fromJson(json);
+    print("userdata json ready");
     var result = await signupApi.postSignUpUser(userdata);
     print("oauth response : $result");
     return result["success"];

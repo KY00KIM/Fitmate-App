@@ -152,17 +152,17 @@ class KakaoLoginWidget extends StatelessWidget {
 
             print('deviceToken : ${deviceToken}');
 
-          // ignore: avoid_print
-          print("device token : ${deviceToken}");
-          //토큰을 받는 단계에서 에러가 나지 않았다면
-          http.Response response =
-              await http.get(Uri.parse("${baseUrlV1}users/login"), headers: {
-            'Authorization': 'bearer $IdToken',
-            // ignore: unnecessary_brace_in_string_interps
-            'device': '${deviceToken}'
-          });
-          var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-          print(resBody);
+            // ignore: avoid_print
+            print("device token : ${deviceToken}");
+            //토큰을 받는 단계에서 에러가 나지 않았다면
+            http.Response response =
+                await http.get(Uri.parse("${baseUrlV1}users/login"), headers: {
+              'Authorization': 'bearer $IdToken',
+              // ignore: unnecessary_brace_in_string_interps
+              'device': '${deviceToken}'
+            });
+            var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+            print(resBody);
 
             if (response.statusCode == 200) {
               //사용자 정보가 완벽히 등록 되어있다면
@@ -188,7 +188,7 @@ class KakaoLoginWidget extends StatelessWidget {
               }
             } else if (resBody['message'] == 404) {
               // 사용자 정보가 등록 안된 상황에서는
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>

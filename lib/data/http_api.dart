@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/util.dart';
@@ -43,16 +44,16 @@ class HttpApi {
   }
 
   Future post(int version, String url, Map body) async {
-    String json = jsonEncode(body);
+    var bodyParse = json.encode(body);
     http.Response response =
         await http.post(Uri.parse("${baseUrl}v${version.toString()}/${url}"),
             headers: {
               "Authorization": "bearer $IdToken",
               "Content-Type": "application/json; charset=UTF-8"
             },
-            body: json);
+            body: bodyParse);
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode != 200 &&
+    if (response.statusCode != 201 &&
         resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken =
           (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
@@ -65,7 +66,7 @@ class HttpApi {
                 "Authorization": "bearer $IdToken",
                 "Content-Type": "application/json; charset=UTF-8"
               },
-              body: body);
+              body: bodyParse);
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
 

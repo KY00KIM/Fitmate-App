@@ -116,7 +116,7 @@ class GoogleLoginWidget extends StatelessWidget {
             }
           } else if (resBody['message'] == 404) {
             // 사용자 정보가 등록 안된 상황에서는
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>

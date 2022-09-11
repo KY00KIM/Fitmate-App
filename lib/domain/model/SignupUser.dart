@@ -15,8 +15,8 @@ class SignupUser {
   late final int userScheduleTime;
   late final UserWeekday userWeekday;
   late final bool userGender;
-  late final int userLongitude;
-  late final int userLatitude;
+  late final double userLongitude;
+  late final double userLatitude;
   late final FitnessCenter fitnessCenter;
   late final String deviceToken;
 
