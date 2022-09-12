@@ -24,7 +24,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final postApi = PostApi();
   final barWidget = BarWidget();
-  final homeTownWidget = HomeTownWidget();
   final homeApiRepo = HomeApiRepository();
   locationController locator = locationController();
 
@@ -160,7 +159,9 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(
                           height: 20,
                         ),
-                        HomeTownWidget(),
+                        HomeTownWidget(
+                          fitness_center: snapshot.data!['fitness_center'],
+                        ),
                         SizedBox(
                           height: 32,
                         ),

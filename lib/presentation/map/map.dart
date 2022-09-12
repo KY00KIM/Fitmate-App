@@ -49,6 +49,11 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
     controller = BottomSheet.createAnimationController(this);
     controller.duration = Duration(seconds: 3);
     //controller.lowerBound;
+    if(mapOpend != true) {
+      setState(() {
+        mapOpend = true;
+      });
+    }
   }
 
   // Text('${snapshot.data?[index]['post_title']}');

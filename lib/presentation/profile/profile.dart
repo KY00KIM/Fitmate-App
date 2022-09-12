@@ -38,6 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    log(IdToken);
   }
 
   Future<int> getReviewProfile() async {

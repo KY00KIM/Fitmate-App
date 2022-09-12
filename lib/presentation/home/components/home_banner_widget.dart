@@ -23,13 +23,6 @@ class _HomeBannerWidget extends State<HomeBannerWidget>{
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    widget.banner.add(widget.banner[0]);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Container(

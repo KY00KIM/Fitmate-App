@@ -1,3 +1,4 @@
+import 'package:fitmate/domain/model/fitnesscenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,10 +6,12 @@ import 'package:flutter_svg/svg.dart';
 import '../../../domain/util.dart';
 
 class HomeTownWidget extends StatelessWidget {
-  const HomeTownWidget({Key? key}) : super(key: key);
+  FitnessCenter fitness_center;
+  HomeTownWidget({Key? key, required this.fitness_center}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("타운 가즈아");
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -58,7 +61,7 @@ class HomeTownWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      '${UserCenterName}',
+                      '${fitness_center.centerName}',
                       style: TextStyle(
                         fontSize: 16,
                         color: Color(0xFF000000),
@@ -77,7 +80,7 @@ class HomeTownWidget extends StatelessWidget {
                         maxLines: 1,
                         text: TextSpan(
                           text:
-                          '${UserData['user_address']}',
+                          '${fitness_center.centerAddress}',
                           style: TextStyle(
                             color: Color(0xFF000000),
                             fontSize: 14,
@@ -125,6 +128,45 @@ class HomeTownWidget extends StatelessWidget {
                         color: Color(0xFF000000),
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        print("zz");
+                      },
+                      child: Container(
+                        width: 76,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xFFE8EAF6),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '리뷰 12',
+                                style: TextStyle(
+                                  color: Color(0xFF283593),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              SvgPicture.asset(
+                                "assets/icon/right_arrow_icon.svg",
+                                width: 12,
+                                height: 12,
+                                color: Color(0xFF283593),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],

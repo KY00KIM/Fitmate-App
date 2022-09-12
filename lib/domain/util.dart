@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -36,8 +37,7 @@ class LoginedUser {
 }
 
 String UserCenterName = '';
-
-
+bool mapOpend = false;
 
 late User test;
 late Map UserData = {
