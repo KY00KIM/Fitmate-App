@@ -64,10 +64,10 @@ class MyApp extends StatelessWidget {
     http.Response response = await http.get(
         Uri.parse("${baseUrlV1}users/login"),
         headers: {'Authorization': 'bearer $IdToken'});
-    print("3 : ${response}");
+    print("3 : ${response.body}");
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (resBody['message'] == 404) return true;
     print("?? : ${resBody}");
+    if (resBody['message'] == 404) return true;
     UserId = resBody['data']['user_id'];
     bool userdata = await UpdateUserData();
     print("4");

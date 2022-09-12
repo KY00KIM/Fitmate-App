@@ -204,8 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ],
     ),
-
-    bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
+      bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
       body: SafeArea(
         child: FutureBuilder<int>(
           future: getReviewProfile(),

@@ -394,12 +394,11 @@ class _CalenderPageState extends State<CalenderPage> {
                                 ),
                                 selectedDecoration: BoxDecoration(
                                   color: Color(0xff3F51B5),
-                                  //shape: BoxShape.circle,
-                                  borderRadius: BorderRadius.circular(8),
+                                  shape: BoxShape.circle,
                                 ),
                                 todayDecoration: BoxDecoration(
-                                  color: Color(0xFF6FA2DE),
                                   borderRadius: BorderRadius.circular(8),
+                                  color: Color(0xFF6FA2DE),
                                 ),
                                 todayTextStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
