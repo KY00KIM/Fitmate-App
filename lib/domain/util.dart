@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 
+import 'instance_preference/location.dart';
 import 'model/user.dart';
 
 //공통 변수
@@ -37,8 +38,7 @@ class LoginedUser {
 
 String UserCenterName = '';
 
-
-
+late locationController locator = locationController();
 late User test;
 late Map UserData = {
   "_id": "",
