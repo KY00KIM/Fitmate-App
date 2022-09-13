@@ -267,7 +267,8 @@ class BarWidget {
     );
   }
 
-  PreferredSizeWidget writingAppBar(BuildContext context, bool Function() changeButtonActive) {
+  PreferredSizeWidget writingAppBar(
+      BuildContext context, bool Function() changeButtonActive) {
     return AppBar(
       centerTitle: false,
       backgroundColor: whiteTheme,
@@ -348,17 +349,19 @@ class BarWidget {
                 highlightColor: Colors.transparent,
               ),
               child: IconButton(
-                icon: changeButtonActive() ? SvgPicture.asset(
-                  "${iconSource}write_check_icon.svg",
-                  width: 18,
-                  height: 18,
-                ) : SvgPicture.asset(
-                  "${iconSource}non_color_check_icon.svg",
-                  width: 18,
-                  height: 18,
-                ),
+                icon: changeButtonActive()
+                    ? SvgPicture.asset(
+                        "${iconSource}write_check_icon.svg",
+                        width: 18,
+                        height: 18,
+                      )
+                    : SvgPicture.asset(
+                        "${iconSource}non_color_check_icon.svg",
+                        width: 18,
+                        height: 18,
+                      ),
                 onPressed: () {
-                  if(changeButtonActive()) {
+                  if (changeButtonActive()) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => WritingPage()));
                   }
@@ -566,6 +569,7 @@ class BarWidget {
   PreferredSizeWidget appBar(BuildContext context) {
     return AppBar(
       backgroundColor: whiteTheme,
+      centerTitle: false,
       toolbarHeight: 76,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(
