@@ -48,7 +48,6 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
 
     http.Response responseReview = await http.get(
         Uri.parse(
-            //"https://fitmate.co.kr/v2/reviews/fitnesscenter/${widget.fitnessId}"),
             "https://fitmate.co.kr/v2/reviews/fitnesscenter/62dcb55d2a9c7be7cf2985b7"),
         headers: {
           "Authorization": "bearer ${IdToken.toString()}",
