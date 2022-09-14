@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:developer';
 
@@ -44,7 +43,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   // Implementing the image picker
   Future<void> _openImagePicker() async {
-    final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);
@@ -54,14 +54,16 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   }
 
   void PatchPosets() async {
-
     int schedule;
-    if (isSelectedTime[0] == true) schedule = 0;
-    else if(isSelectedTime[1] == true) schedule = 1;
-    else schedule = 2;
+    if (isSelectedTime[0] == true)
+      schedule = 0;
+    else if (isSelectedTime[1] == true)
+      schedule = 1;
+    else
+      schedule = 2;
 
     String imgUrl = _image == null ? UserData['user_profile_img'] : '';
-    if(_image != null) {
+    if (_image != null) {
       List<int> imageBytes = _image!.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
     }
@@ -88,9 +90,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         "user_id": "${UserData['social']['user_id']}",
         "user_name": "${UserData['social']['user_name']}",
         "provider": "${UserData['social']['provider']}",
-        "device_token": [
-          "${UserData['social']['device_token']}"
-        ],
+        "device_token": ["${UserData['social']['device_token']}"],
         "firebase_info": {}
       },
       "is_deleted": false,
@@ -100,28 +100,30 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.patch(Uri.parse("${baseUrlV1}users/${UserData['_id']}"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization' : 'bearer $IdToken',
-          'userId' : 'bearer ${UserData['_id']}',
-        }, // this header is essential to send json data
-        body: body
-    );
+    http.Response response =
+        await http.patch(Uri.parse("${baseUrlV1}users/${UserData['_id']}"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'bearer $IdToken',
+              'userId': 'bearer ${UserData['_id']}',
+            }, // this header is essential to send json data
+            body: body);
 
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       UserData['user_nickname'] = nickname;
       UserData['user_schedule_time'] = schedule;
       UserData['user_weekday'] = isSelectedWeekDay;
 
-      if(_image != null) {
-        var request = http.MultipartRequest('POST', Uri.parse("${baseUrlV1}users/image/"));
-        request.headers.addAll({"Authorization" : "bearer $IdToken"});
-        request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+      if (_image != null) {
+        var request = http.MultipartRequest(
+            'POST', Uri.parse("${baseUrlV1}users/image/"));
+        request.headers.addAll({"Authorization": "bearer $IdToken"});
+        request.files
+            .add(await http.MultipartFile.fromPath('image', _image!.path));
         var res = await request.send();
         print(res.statusCode);
-        if(res.statusCode == 200) {
+        if (res.statusCode == 200) {
           var resbodyimg = json.decode(await res.stream.bytesToString());
           print(resbodyimg);
           UserData['user_profile_img'] = resbodyimg["data"].toString();
@@ -131,14 +133,17 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              ProfilePage(),
           transitionDuration: Duration.zero,
           reverseTransitionDuration: Duration.zero,
         ),
       );
-
     } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+      IdToken =
+          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+              .token
+              .toString();
       FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
     } else {
       FlutterToastBottom("오류가 발생하였습니다");
@@ -172,7 +177,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           ),
           backgroundColor: Color(0xFF22232A),
           title: Transform(
-            transform:  Matrix4.translationValues(-20.0, 0.0, 0.0),
+            transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
             child: Text(
               "프로필 수정",
               style: TextStyle(
@@ -185,8 +190,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           actions: [
             TextButton(
               onPressed: () {
-                nickname == "" || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ?
-                FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
+                nickname == "" ||
+                        (isSelectedTime[0] == false &&
+                            isSelectedTime[1] == false &&
+                            isSelectedTime[2] == false)
+                    ? FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
                     : PatchPosets();
               },
               child: Text(
@@ -194,7 +202,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: nickname == "" || (isSelectedTime[0] == false && isSelectedTime[1] == false && isSelectedTime[2] == false) ? Color(0xFF878E97) : Color(0xFF2975CF),
+                  color: nickname == "" ||
+                          (isSelectedTime[0] == false &&
+                              isSelectedTime[1] == false &&
+                              isSelectedTime[2] == false)
+                      ? Color(0xFF878E97)
+                      : Color(0xFF2975CF),
                 ),
               ),
             ),
@@ -217,23 +230,25 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   child: Stack(
                     alignment: AlignmentDirectional.bottomEnd,
                     children: [
-                      _image == null ? ClipRRect(
-                        borderRadius: BorderRadius.circular(100.0),
-                        child: Image.network(
-                          '${UserData['user_profile_img']}',
-                          width: 85.0,
-                          height: 85.0,
-                          fit: BoxFit.cover,
-                        ),
-                      ) : ClipRRect(
-                        borderRadius: BorderRadius.circular(100.0),
-                        child: Image.file(
-                          _image!,
-                          width: 85.0,
-                          height: 85.0,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      _image == null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(100.0),
+                              child: Image.network(
+                                '${UserData['user_profile_img']}',
+                                width: 85.0,
+                                height: 85.0,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(100.0),
+                              child: Image.file(
+                                _image!,
+                                width: 85.0,
+                                height: 85.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                       Container(
                         width: 30,
                         height: 30,
@@ -246,8 +261,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             border: Border.all(
                               color: Color(0xFF878E97),
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(20))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
                       ),
                     ],
                   ),
@@ -298,19 +313,19 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           labelStyle: TextStyle(color: Color(0xff878E97)),
                           focusedBorder: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(7.0)),
+                                BorderRadius.all(Radius.circular(7.0)),
                             borderSide:
-                            BorderSide(width: 1, color: Color(0xff878E97)),
+                                BorderSide(width: 1, color: Color(0xff878E97)),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(7.0)),
+                                BorderRadius.all(Radius.circular(7.0)),
                             borderSide:
-                            BorderSide(width: 1, color: Color(0xff878E97)),
+                                BorderSide(width: 1, color: Color(0xff878E97)),
                           ),
                           border: OutlineInputBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(7.0)),
+                                BorderRadius.all(Radius.circular(7.0)),
                           ),
                         ),
                       ),
@@ -342,7 +357,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               color: Color(0xFF878E97),
                             ),
                             borderRadius:
-                            BorderRadius.all(Radius.circular(7.0)),
+                                BorderRadius.all(Radius.circular(7.0)),
                           ),
                           child: Center(
                             child: ToggleButtons(
@@ -362,13 +377,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 setState(() {
                                   if (isSelectedTime[index]) {
                                   } else if (!isSelectedTime[0] &
-                                  !isSelectedTime[1] &
-                                  !isSelectedTime[2]) {
+                                      !isSelectedTime[1] &
+                                      !isSelectedTime[2]) {
                                     isSelectedTime[index] =
-                                    !isSelectedTime[index];
+                                        !isSelectedTime[index];
                                   } else {
                                     isSelectedTime[index] =
-                                    !isSelectedTime[index];
+                                        !isSelectedTime[index];
                                     if (index == 0) {
                                       isSelectedTime[1] = false;
                                       isSelectedTime[2] = false;
@@ -386,7 +401,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               children: [
                                 Padding(
                                   padding:
-                                  EdgeInsets.symmetric(horizontal: 10.0),
+                                      EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Text(
                                     '오전',
                                     style: TextStyle(
@@ -399,7 +414,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 ),
                                 Padding(
                                   padding:
-                                  EdgeInsets.symmetric(horizontal: 10.0),
+                                      EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Text(
                                     '오후',
                                     style: TextStyle(
@@ -412,7 +427,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 ),
                                 Padding(
                                   padding:
-                                  EdgeInsets.symmetric(horizontal: 10.0),
+                                      EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Text(
                                     '저녁',
                                     style: TextStyle(
@@ -450,7 +465,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["mon"] = !isSelectedWeekDay["mon"];
+                            isSelectedWeekDay["mon"] =
+                                !isSelectedWeekDay["mon"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -484,7 +500,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["tue"] = !isSelectedWeekDay["tue"];
+                            isSelectedWeekDay["tue"] =
+                                !isSelectedWeekDay["tue"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -518,7 +535,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["wed"] = !isSelectedWeekDay["wed"];
+                            isSelectedWeekDay["wed"] =
+                                !isSelectedWeekDay["wed"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -552,7 +570,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["thu"] = !isSelectedWeekDay["thu"];
+                            isSelectedWeekDay["thu"] =
+                                !isSelectedWeekDay["thu"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -586,7 +605,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["fri"] = !isSelectedWeekDay["fri"];
+                            isSelectedWeekDay["fri"] =
+                                !isSelectedWeekDay["fri"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -620,7 +640,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["sat"] = !isSelectedWeekDay["sat"];
+                            isSelectedWeekDay["sat"] =
+                                !isSelectedWeekDay["sat"];
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -654,7 +675,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isSelectedWeekDay["sun"] = !isSelectedWeekDay["sun"];
+                            isSelectedWeekDay["sun"] =
+                                !isSelectedWeekDay["sun"];
                           });
                         },
                         style: ElevatedButton.styleFrom(

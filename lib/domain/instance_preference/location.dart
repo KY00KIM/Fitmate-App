@@ -89,11 +89,8 @@ class locationController {
       _locationSubscription?.cancel();
     }).listen((LocationData currentlocation) async {
       if ((currentlocation.time! - lasttime) >= 30000) {
-        print("true!");
         await getAndSendLocation(currentlocation);
         lasttime = currentlocation.time!;
-      } else {
-        print("false!");
       }
     });
   }
@@ -127,5 +124,9 @@ class locationController {
       return Future.error(Exception(error.toString()));
     }
     return {"user_longitude": 0, "user_latitude": 0};
+  }
+
+  pauseListener() {
+    _locationSubscription?.cancel();
   }
 }

@@ -131,6 +131,7 @@ class BarWidget {
                               viewModel != null) {
                             createUserInFirestore();
                             if (await viewModel.sendSignUp()) {
+                              await UpdateUserData();
                               Navigator.pushNamedAndRemoveUntil(
                                   context, '/', (_) => false);
                               Navigator.pushReplacement(
