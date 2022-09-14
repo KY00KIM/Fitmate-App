@@ -7,6 +7,7 @@ import '../../data/post_api.dart';
 import '../model/fitnesscenter.dart';
 import '../model/post.dart';
 import '../model/banner.dart';
+import '../util.dart';
 import 'fitness_center_api_repository.dart';
 
 class HomeApiRepository {
@@ -29,6 +30,10 @@ class HomeApiRepository {
 
     //FitnessCenter _fitness = await fitnessCenterRepo.getFitnessRepo(1, _position.longitude, _position.latitude, _position.longitude, _position.latitude);
     FitnessCenter _fitness = await fitnessCenterRepo.getFitnessRepo(1, 100, 100, 100, 100);
+
+    posts = _posts;
+    banners = _banners;
+    myFitnessCenter = _fitness;
 
     return {
       "posts" : _posts,

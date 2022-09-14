@@ -3,16 +3,17 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 
 import '../../domain/util.dart';
-import '../chat_list/chat_list.dart';
 import '../make_promise/make_promise.dart';
 
 class ChatPage extends StatefulWidget {
@@ -135,8 +136,248 @@ class _ChatPageState extends State<ChatPage> {
                 print('snapshot data : ${snapshot.data}');
                 var data;
                 return Scaffold(
-                  backgroundColor: Color(0xFF22232A),
+                  backgroundColor: whiteTheme,
                   appBar: AppBar(
+                    toolbarHeight: 60,
+                    backgroundColor: whiteTheme,
+                    elevation: 0,
+                    automaticallyImplyLeading: false,
+                    leadingWidth: 64,
+                    leading: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFFF2F3F7),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFffffff),
+                              spreadRadius: 2,
+                              blurRadius: 8,
+                              offset: Offset(-2, -2),
+                            ),
+                            BoxShadow(
+                              color: Color.fromRGBO(55, 84, 170, 0.1),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: Theme(
+                          data: ThemeData(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                          child: IconButton(
+                            icon: SvgPicture.asset(
+                              "assets/icon/bar_icons/back_icon.svg",
+                              width: 16,
+                              height: 16,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    title: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: Image.network(
+                              '${widget.imageUrl}',
+                              width: 32,
+                              height: 32,
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                return Image.asset(
+                                  'assets/images/profile_null_image.png',
+                                  width: 32.0,
+                                  height: 32.0,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            '${widget.name}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 8, 20, 8),
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Color(0xFFF2F3F7),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xFFffffff),
+                                spreadRadius: 2,
+                                blurRadius: 8,
+                                offset: Offset(-2, -2),
+                              ),
+                              BoxShadow(
+                                color: Color.fromRGBO(55, 84, 170, 0.1),
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: Theme(
+                            data: ThemeData(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                            ),
+                            child: IconButton(
+                              icon: SvgPicture.asset(
+                                "assets/icon/burger_icon.svg",
+                                width: 16,
+                                height: 16,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                      // <-- SEE HERE
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(40.0),
+                                      ),
+                                    ),
+                                    backgroundColor: Color(0xFFF2F3F7),
+                                    builder: (BuildContext context) {
+                                      return Wrap(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Container(
+                                                width: 40,
+                                                height: 4,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(2.0),
+                                                  color: Color(0xFFD1D9E6),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 36,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  print("Container clicked");
+                                                  Navigator.push(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                      pageBuilder: (context, animation, secondaryAnimation) => MakePromisePage(partnerId: widget.userId),
+                                                      transitionDuration: Duration.zero,
+                                                      reverseTransitionDuration: Duration.zero,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                  EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                                  height: 64,
+                                                  color: whiteTheme,
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '매칭 잡기',
+                                                        style: TextStyle(
+                                                          color: Color(0xFF000000),
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  http.Response response = await http.delete(Uri.parse("${baseUrlV1}chats/${widget.chatId}"),
+                                                    headers: {
+                                                      "Authorization" : "bearer $IdToken",
+                                                      "chatroomId" : "${widget.chatId}"
+                                                    },
+                                                  );
+                                                  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                                  if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
+                                                    IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+
+                                                    response = await http.delete(Uri.parse("${baseUrlV1}chats/${widget.chatId}"),
+                                                      headers: {
+                                                        "Authorization" : "bearer $IdToken",
+                                                        "chatroomId" : "${widget.chatId}"
+                                                      },
+                                                    );
+                                                    resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                                  }
+
+                                                  for(int i = 0; i < chatList.length; i++) {
+                                                    if(chatList[i]['_id'] == widget.chatId) {
+                                                      chatList.removeAt(i);
+                                                      break;
+                                                    }
+                                                  }
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context, true);
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                  EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                                  color: whiteTheme,
+                                                  height: 64,
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '채팅방 나가기',
+                                                        style: TextStyle(
+                                                          color: Color(0xFFCF2933),
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                    /*
                     leading: IconButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -145,14 +386,12 @@ class _ChatPageState extends State<ChatPage> {
                         Icons.arrow_back,
                       ),
                     ),
-                    elevation: 0.0,
                     shape: Border(
                       bottom: BorderSide(
                         color: Color(0xFF3D3D3D),
                         width: 1,
                       ),
                     ),
-                    backgroundColor: Color(0xFF22232A),
                     title: Transform(
                       transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
                       child: Text(
@@ -290,6 +529,8 @@ class _ChatPageState extends State<ChatPage> {
                         },
                       ),
                     ],
+
+                     */
                   ),
                   body: SafeArea(
                     child: Column(
@@ -301,7 +542,18 @@ class _ChatPageState extends State<ChatPage> {
                                   (DocumentSnapshot document) {
                                 data = document.data()!;
                                 print('document : ${document.toString()}');
-                                print(data['msg']);
+                                print(data);
+                                String time = data['createdOn'] == null
+                                    ? DateTime.now().toString().substring(11, 16)
+                                    : data['createdOn']
+                                    .toDate()
+                                    .toString().substring(11, 16);
+                                String amPm = '오전';
+                                if(int.parse(time.substring(0,2)) > 12) {
+                                  amPm = '오후';
+                                  time = '${int.parse(time.substring(0,2))-12}:${time.substring(3,5)}';
+                                }
+                                else time = '${int.parse(time.substring(0,2))}:${time.substring(3,5)}';
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: ChatBubble(
@@ -321,8 +573,8 @@ class _ChatPageState extends State<ChatPage> {
                                     alignment: getAlignment(data['uid'].toString()),
                                     margin: EdgeInsets.only(top: 20),
                                     backGroundColor: isSender(data['uid'].toString())
-                                        ? Color(0xFF2975CF)
-                                        : Color(0xff303037),
+                                        ? Color(0xFF6E7995)
+                                        : Color(0xFFFFFFFF),
                                     child: IntrinsicWidth(
                                       child: Container(
                                         constraints: BoxConstraints(
@@ -335,6 +587,7 @@ class _ChatPageState extends State<ChatPage> {
                                           children: [
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
                                               children: [
                                                 Flexible(
                                                   child: RichText(
@@ -345,12 +598,27 @@ class _ChatPageState extends State<ChatPage> {
                                                       text: data['msg'],
                                                       style: TextStyle(
                                                         fontSize: 14,
-                                                        color: Color(0xFFDADADA),
+                                                        color: isSender(data['uid'].toString()) ? Color(0xFFffffff) : Color(0xFF000000),
                                                         fontWeight: FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
+                                                SizedBox(width: 16,),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      '${amPm} ${time}',
+                                                      style: TextStyle(
+                                                          fontSize: 10,
+                                                          color: isSender(
+                                                              data['uid'].toString())
+                                                              ? Color(0xFFD1D9E6)
+                                                              : Colors.black),
+                                                    )
+                                                  ],
+                                                )
                                               ],
                                             ),
                                           ],
@@ -363,14 +631,26 @@ class _ChatPageState extends State<ChatPage> {
                             ).toList(),
                           ),
                         ),
+                        SizedBox(height: 24,),
                         Container(
-                          margin: EdgeInsets.only(top: 10),
+                          padding: EdgeInsets.fromLTRB(20, 0, 14, 0),
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF2F3F7),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(55, 84, 170, 0.1),
+                                spreadRadius: 4,
+                                blurRadius: 12,
+                              ),
+                            ],
+                          ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(18.0, 5, 0, 10),
+                                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
                                   child: TextField(
                                     style: TextStyle(
                                       color: Color(0xFF757575),
@@ -379,24 +659,24 @@ class _ChatPageState extends State<ChatPage> {
                                     decoration: InputDecoration(
                                       //contentPadding: EdgeInsets.symmetric(vertical: 2.0),
                                       contentPadding: EdgeInsets.fromLTRB(15, 0, 10, 0),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                      ),
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
                                       filled: true,
-                                      fillColor: Color(0xFF303037),
+                                      hintText: '메시지 작성..',
+                                      hintStyle: TextStyle(
+                                        color: Color(0xFFD1D9E6),
+                                      ),
+                                      fillColor: whiteTheme,
                                     ),
                                     controller: _textController,
                                   ),
                                 ),
                               ),
                               CupertinoButton(
-                                  child: Icon(Icons.send_sharp),
+                                  child: Icon(
+                                    Icons.send_sharp,
+                                    size: 18,
+                                  ),
                                   onPressed: () {
                                     sendMessage(_textController.value.text.toString());
                                   }

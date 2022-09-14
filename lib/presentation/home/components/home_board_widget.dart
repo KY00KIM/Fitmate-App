@@ -85,16 +85,22 @@ class HomeBoardWidget extends StatelessWidget {
                   Container(
                     height: 200,
                     width: 292,
-                    child: Image.network(
-                      '${posts[index].postImg}',
-                      fit: BoxFit.cover,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Image.asset(
-                          'assets/images/dummy.jpg',
-                          fit: BoxFit.cover,
-                        );
-                      },
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8)
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        '${posts[index].postImg}',
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Image.asset(
+                            'assets/images/dummy.jpg',
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Container(

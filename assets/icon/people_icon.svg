@@ -1,0 +1,10 @@
+<svg id="구성_요소_60_5" data-name="구성 요소 60 – 5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#00c6fb"/>
+      <stop offset="1" stop-color="#005bea"/>
+    </linearGradient>
+  </defs>
+  <path id="Icon_awesome-users" data-name="Icon awesome-users" d="M3,8.25a2,2,0,1,0-2-2A2,2,0,0,0,3,8.25Zm14,0a2,2,0,1,0-2-2A2,2,0,0,0,17,8.25Zm1,1H16a1.994,1.994,0,0,0-1.409.581,4.571,4.571,0,0,1,2.347,3.419H19a1,1,0,0,0,1-1v-1A2,2,0,0,0,18,9.25Zm-8,0a3.5,3.5,0,1,0-3.5-3.5A3.5,3.5,0,0,0,10,9.25Zm2.4,1h-.259a4.832,4.832,0,0,1-4.281,0H7.6A3.6,3.6,0,0,0,4,13.85v.9a1.5,1.5,0,0,0,1.5,1.5h9a1.5,1.5,0,0,0,1.5-1.5v-.9A3.6,3.6,0,0,0,12.4,10.25ZM5.409,9.831A1.994,1.994,0,0,0,4,9.25H2a2,2,0,0,0-2,2v1a1,1,0,0,0,1,1H3.059A4.583,4.583,0,0,1,5.409,9.831Z" transform="translate(2 2.75)" fill="url(#linear-gradient)"/>
+  <rect id="사각형_275211" data-name="사각형 275211" width="24" height="24" fill="none"/>
+</svg>

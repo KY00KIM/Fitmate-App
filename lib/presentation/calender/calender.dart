@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/review/review.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,7 +16,7 @@ import '../../domain/util.dart';
 import '../../ui/bar_widget.dart';
 import '../../ui/colors.dart';
 import '../../ui/show_toast.dart';
-import '../profile/other_profile.dart';
+import '../review/review.dart';
 
 class Event {
   final Map content;
@@ -274,7 +273,6 @@ class _CalenderPageState extends State<CalenderPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
     return Scaffold(
       backgroundColor: whiteTheme,
@@ -301,6 +299,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                   DateTime now = DateTime.now();
                                   DateFormat formatter = DateFormat('yyyy-MM-dd');
                                   String strToday = formatter.format(now);
+                                  print("maching date : $matchingDate");
                                   if(matchingDate.contains(date)) {
                                     return Container(
                                       decoration: BoxDecoration(
@@ -313,7 +312,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                       //Change color
                                       width: 8.0,
                                       height: 8.0,
-                                      //margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                                      margin: const EdgeInsets.fromLTRB(2, 9, 2, 0),
                                     );
                                   } else {
                                     matchingDate.add(date);
@@ -328,6 +327,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                       //Change color
                                       width: 8.0,
                                       height: 8.0,
+                                      margin: const EdgeInsets.fromLTRB(2, 9, 2, 0),
                                       //margin: const EdgeInsets.symmetric(horizontal: 1.5),
                                     );
                                   }
@@ -352,8 +352,10 @@ class _CalenderPageState extends State<CalenderPage> {
                               firstDay: kFirstDay,
                               lastDay: kLastDay,
 
-                              selectedDayPredicate: (day) =>
-                                  isSameDay(_selectedDay, day),
+                              selectedDayPredicate: (day) {
+                                matchingDate.clear();
+                                return isSameDay(_selectedDay, day);
+                              },
                               rangeStartDay: _rangeStart,
                               rangeEndDay: _rangeEnd,
                               calendarFormat: _calendarFormat,
@@ -397,8 +399,9 @@ class _CalenderPageState extends State<CalenderPage> {
                                   shape: BoxShape.circle,
                                 ),
                                 todayDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Color(0xFF6FA2DE),
+                                  //borderRadius: BorderRadius.circular(8),
+                                  shape: BoxShape.circle,
+                                  color: whiteTheme,
                                 ),
                                 todayTextStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -417,15 +420,17 @@ class _CalenderPageState extends State<CalenderPage> {
                                 }
                               },
                               onPageChanged: (focusedDay) {
-                                _focusedDay = focusedDay;
+                                setState(() {
+                                  _focusedDay = focusedDay;
+                                });
                               },
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 10,
                             ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
@@ -447,6 +452,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                     ),
                                   ],
                                 ),
+                                /*
                                 Container(
                                   width: 32,
                                   height: 32,
@@ -483,6 +489,8 @@ class _CalenderPageState extends State<CalenderPage> {
                                     ),
                                   ),
                                 ),
+
+                                 */
                               ],
                             ),
                           ],
@@ -625,30 +633,6 @@ class _CalenderPageState extends State<CalenderPage> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                print("Container clicked");
-                                                              },
-                                                              child: Container(
-                                                                padding:
-                                                                EdgeInsets.fromLTRB(20, 22, 20, 20),
-                                                                height: 64,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                  MainAxisAlignment.start,
-                                                                  children: [
-                                                                    Text(
-                                                                      '커뮤니티 게시글 보기',
-                                                                      style: TextStyle(
-                                                                        color: Color(0xFF000000),
-                                                                        fontSize: 16,
-                                                                        fontWeight: FontWeight.bold,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
                                                           ],
                                                         ),
                                                       ],
@@ -747,7 +731,8 @@ class _CalenderPageState extends State<CalenderPage> {
                                                             recv_id:
                                                             "${value[index].content['match_start_id'] == UserData['_id'] ? value[index].content['match_join_id'] : value[index].content['match_start_id']}",
                                                             appointmentId:
-                                                            "${value[index].content['_id']}")));
+                                                            "${value[index].content['_id']}",
+                                                            userImg: '${value[index].content['parnerImg']}', nickName: '${value[index].content['partnerName']}',)));
                                               },
                                               child: Container(
                                                 child: Row(

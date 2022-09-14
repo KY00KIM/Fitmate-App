@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="72" height="75.993" viewBox="0 0 72 75.993">
+  <defs>
+    <filter id="합치기_1" x="0" y="0" width="72" height="75.993" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffb199"/>
+      <stop offset="1" stop-color="#ff0844"/>
+    </linearGradient>
+  </defs>
+  <g id="구성_요소_14_4" data-name="구성 요소 14 – 4" transform="translate(18 14)">
+    <g id="그룹_51" data-name="그룹 51">
+      <g id="그룹_6" data-name="그룹 6">
+        <g transform="matrix(1, 0, 0, 1, -18, -14)" filter="url(#합치기_1)">
+          <path id="합치기_1-2" data-name="합치기 1" d="M17.129,39.484l-1.814-3.217A18.165,18.165,0,0,1,0,18.235,18.118,18.118,0,0,1,18,0,18.119,18.119,0,0,1,36,18.235,18.166,18.166,0,0,1,20.686,36.267l-1.814,3.217a1,1,0,0,1-1.742,0Z" transform="translate(18 14)" fill="#fff"/>
+        </g>
+      </g>
+      <circle id="타원_6" data-name="타원 6" cx="15.5" cy="15.5" r="15.5" transform="translate(2.497 2.449)" fill="url(#linear-gradient)"/>
+      <path id="fitness" d="M138.394,133.749l-4.645,4.645,3.154,3.154a.831.831,0,1,1-1.176,1.176l-7.483-7.484a.831.831,0,1,1,1.176-1.176l3.154,3.154,4.645-4.645-3.154-3.154a.831.831,0,1,1,1.176-1.176l7.483,7.484a.831.831,0,1,1-1.176,1.176Zm2.322-4.33a.831.831,0,1,1,1.176-1.176l.831.832a.831.831,0,1,1-1.176,1.176Zm-12.473,12.473a.831.831,0,1,1,1.176-1.176l.831.832a.831.831,0,1,1-1.176,1.176Zm9.147-12.473a.831.831,0,1,1,1.176-1.176l4.157,4.158a.831.831,0,1,1-1.176,1.176Zm-9.147,9.147a.831.831,0,1,1,1.176-1.176l4.157,4.158a.831.831,0,1,1-1.176,1.176Z" transform="translate(-117.521 -117.275)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

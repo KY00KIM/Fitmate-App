@@ -8,16 +8,19 @@ import '../domain/util.dart';
 class FitnessCenterApi {
   Future get(int page, int limit, double first_longitude, double first_latitude, double second_longitude, double second_latitude) async {
     http.Response response = await http.get(
-      Uri.parse("https://fitmate.co.kr/v2/fitnesscenters"),
+      Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=${page.toString()}&limit=${limit.toString()}&first_longitude=${first_longitude.toString()}&first_latitude=${first_latitude.toString()}&second_longitude=${second_longitude.toString()}&second_latitude=${second_latitude.toString()}"),
       headers: {
         "Authorization": "bearer $IdToken",
         "Content-Type": "application/json; charset=UTF-8",
+        /*
         "page": page.toString(),
         "limit": limit.toString(),
         "first_longitude": first_longitude.toString(),
         "first_latitude": first_latitude.toString(),
         "second_longitude": second_longitude.toString(),
         "second_latitude": second_latitude.toString(),
+
+         */
       },
     );
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));

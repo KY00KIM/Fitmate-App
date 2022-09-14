@@ -670,11 +670,6 @@ class BarWidget {
                         if(pages == 3) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => HomePage(reload: false)),
-                          );
-                          /*
-                          Navigator.push(
-                            context,
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
@@ -683,8 +678,6 @@ class BarWidget {
                               reverseTransitionDuration: Duration.zero,
                             ),
                           );
-
-                           */
                         } else {
                           Navigator.pushReplacement(
                             context,
