@@ -7,6 +7,7 @@ import 'dart:developer';
 import 'model/banner.dart';
 import 'model/fitnesscenter.dart';
 import 'model/post.dart';
+import 'instance_preference/location.dart';
 import 'model/user.dart';
 
 //공통 변수
@@ -32,6 +33,15 @@ Map fitnessPartConverse = {
   '하체': '62c670664b8212e4674dbe36',
   '유산소': '62c670a04b8212e4674dbe3a'
 };
+Map weekdayEngToKor = {
+  "mon": "월",
+  "tue": "화",
+  "wed": "수",
+  "thu": "목",
+  "fri": "금",
+  "sat": "토",
+  "sun": "일"
+};
 
 class LoginedUser {
   late String _id;
@@ -39,6 +49,7 @@ class LoginedUser {
   late String user_address;
 }
 
+String version = "2.0.0";
 String UserCenterName = '';
 bool mapOpend = false;
 List chatList = [];
@@ -48,6 +59,7 @@ List<Post> posts = <Post>[];
 List<Banner> banners = <Banner>[];
 var myFitnessCenter = null;
 
+late locationController locator = locationController();
 late User test;
 late Map UserData = {
   "_id": "",
@@ -78,6 +90,8 @@ late Map UserData = {
   "createdAt": "",
   "updatedAt": ""
 };
+Map userWeekdayMap = UserData["user_weekday"];
+List<String> userWeekdayList = [];
 
 // ignore: non_constant_identifier_names
 Future<bool> UpdateUserData() async {
@@ -102,7 +116,15 @@ Future<bool> UpdateUserData() async {
           "Authorization": "bearer ${IdToken.toString()}",
           "fitnesscenterId": "${UserData["fitness_center_id"]}"
         });
+
+    userWeekdayMap = UserData["user_weekday"];
+    userWeekdayMap.forEach((key, value) => {
+          if (value) {userWeekdayList.add(key)}
+        });
+    log("userWeekdayList : ${userWeekdayList}");
+
     log(UserData.toString());
+
     if (responseFitness.statusCode == 200) {
       var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
 

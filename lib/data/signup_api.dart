@@ -6,10 +6,12 @@ import 'http_api.dart';
 
 class SignUpApi {
   Future<Map> postSignUpUser(SignupUser user) async {
-    final httpApi = HttpApi();
+    HttpApi httpApi = HttpApi();
     try {
+      print("user at API : ${user.toJson()}");
       http.Response response =
           await httpApi.post(1, 'users/oauth', user.toJson());
+      print("$response");
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
       print("res is : $jsonResponse");
@@ -19,6 +21,7 @@ class SignUpApi {
         return jsonResponse;
       }
     } catch (error) {
+      print("oauth error : ${error.toString()}");
       Future.error(Exception("${error.toString()}"));
     }
     return {"success": false};
@@ -29,7 +32,6 @@ class SignUpApi {
     http.Response response =
         await httpApi.getWithoutAuth('users/valid/$nickname');
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-
     if (response.statusCode == 200) {
       // print("result : ${jsonResponse['data']['result']}");
       // print(jsonResponse['data']['result'].runtimeType);

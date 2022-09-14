@@ -7,6 +7,7 @@ import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../domain/util.dart';
 
 import '../../data/post_api.dart';
 import '../../domain/repository/home_api_repository.dart';
@@ -28,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   final postApi = PostApi();
   final barWidget = BarWidget();
   final homeApiRepo = HomeApiRepository();
-  locationController locator = locationController();
 
   @override
   void initState() {
