@@ -84,117 +84,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  /*
-  
-            iconSize: 30,
-            color: Color(0xFF22232A),
-            shape: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xFF757575),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            ),
-            elevation: 40,
-            onSelected: (value) async {
-              if (value == '/edit')
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileEditPage()));
-              else if (value == '/logout') {
-                print('로그아웃');
-                locator.pauseListener();
-
-                await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        LoginPage(),
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  ),
-                );
-              } else if (value == '/signout') {
-                CollectionReference users =
-                    FirebaseFirestore.instance.collection('users');
-                users.doc(UserData['social']['user_id']).delete();
-                User? user = FirebaseAuth.instance.currentUser;
-                user?.delete();
-                locator.pauseListener();
-                http.Response response = await http.delete(
-                  Uri.parse("${baseUrlV1}users"),
-                  headers: {
-                    "Authorization": "bearer $IdToken",
-                  },
-                );
-                var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                if (response.statusCode != 200 &&
-                    resBody["error"]["code"] == "auth/id-token-expired") {
-                  IdToken = (await FirebaseAuth.instance.currentUser
-                          ?.getIdTokenResult(true))!
-                      .token
-                      .toString();
-
-                  response = await http.delete(
-                    Uri.parse("${baseUrlV1}users"),
-                    headers: {
-                      "Authorization": "bearer $IdToken",
-                    },
-                  );
-                  resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                }
-
-                await FirebaseAuthMethods(FirebaseAuth.instance).signOut();
-                // Firebase 로그아웃
-                //await _auth.signOut();
-                //await _googleSignIn.signOut();
-
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        LoginPage(),
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  ),
-                );
-              }
-            },
-            itemBuilder: (BuildContext bc) {
-              return [
-                PopupMenuItem(
-                  child: Text(
-                    '수정하기',
-                    style: TextStyle(
-                      color: Color(0xFFffffff),
-                    ),
-                  ),
-                  value: '/edit',
-                ),
-                PopupMenuItem(
-                  child: Text(
-                    '로그아웃',
-                    style: TextStyle(
-                      color: Color(0xFFffffff),
-                    ),
-                  ),
-                  value: '/logout',
-                ),
-                PopupMenuItem(
-                  child: Text(
-                    '회원탈퇴',
-                    style: TextStyle(
-                      color: Color(0xFFffffff),
-                    ),
-                  ),
-                  value: '/signout',
-                ),
-              ];
-            },
-          ),
-  
-   */
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -269,7 +158,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 18,
                                   height: 18,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileEditPage()));
+                                },
                               ),
                             ),
                           ),
@@ -300,26 +195,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                   offset: Offset(2, 2),
                                 ),
                               ],
-                            ),
-                            child: Theme(
-                              data: ThemeData(
-                                splashColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                              ),
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                  'assets/icon/noProfileIcon.svg',
-                                  width: 18,
-                                  height: 18,
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(
+                                  '${UserData['user_profile_img']}',
                                 ),
-                                onPressed: () {},
                               ),
                             ),
                           ),
                           SizedBox(
                             width: 20,
                           ),
-                          Text('나쁜 녀석들',
+                          Text('${UserData["user_nickname"]}',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold))
                         ],
@@ -370,13 +257,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                       height: 16,
                                     ),
                                     SingleChildScrollView(
-                                      child: Text(
-                                        "운동 뉴비입니다. 같이 운동할 친구 사귀고 싶어요! 반갑습니다.aaaaaaaaaaaaaaaaaaaaaaaaa",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xff6E7995)),
-                                        maxLines: 5,
-                                      ),
+                                      child: UserData['user_introduce'] == "" ||
+                                              UserData['user_introduce'] == null
+                                          ? SizedBox(
+                                              height: 10,
+                                            )
+                                          : Text(
+                                              "${UserData['user_introduce']}",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xff6E7995)),
+                                              maxLines: 5,
+                                            ),
                                     )
                                   ],
                                 ),
@@ -473,7 +365,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 Color(0xFF005BEA)
                                               ])),
                                       child: Text(
-                                        "서울특별시 송파구 석촌1동",
+                                        "${UserData["user_address"]}",
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFFFFFFFF)),
@@ -530,7 +422,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 Color(0xFF005BEA)
                                               ])),
                                       child: Text(
-                                        "아크로짐 구의점",
+                                        "${UserCenterName}",
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFFFFFFFF)),
@@ -587,7 +479,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 Color(0xFF005BEA)
                                               ])),
                                       child: Text(
-                                        "3 회",
+                                        "${snapshot.data.toString()} 회",
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFFFFFFFF)),
@@ -677,47 +569,35 @@ class _ProfilePageState extends State<ProfilePage> {
                                           color: Color(0xFF6E7995)),
                                     ),
                                     Spacer(),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Color(0xFF00C6FB),
-                                                Color(0xFF005BEA)
-                                              ])),
-                                      child: Text(
-                                        "화",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFFFFFFFF)),
-                                      ),
+                                    Row(
+                                      children: userWeekdayList
+                                          .map((item) => Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    2, 0, 2, 0),
+                                                padding: EdgeInsets.fromLTRB(
+                                                    4, 2, 4, 2),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    gradient: LinearGradient(
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                        colors: [
+                                                          Color(0xFF00C6FB),
+                                                          Color(0xFF005BEA)
+                                                        ])),
+                                                child: Text(
+                                                  "${weekdayEngToKor[item]}",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Color(0xFFFFFFFF)),
+                                                ),
+                                              ))
+                                          .toList(),
                                     ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Color(0xFF00C6FB),
-                                                Color(0xFF005BEA)
-                                              ])),
-                                      child: Text(
-                                        "목",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFFFFFFFF)),
-                                      ),
-                                    )
                                   ],
                                 ),
                               ],
@@ -841,25 +721,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 8,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color.fromRGBO(
-                                              0, 0, 0, 0.16), // shadow color
-                                        ),
-                                        const BoxShadow(
-                                          offset: Offset(2, 2),
-                                          blurRadius: 6,
-                                          color: Color(0xFFEFEFEF),
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Container(
+                                  Stack(children: [
+                                    Container(
+                                      height: 8,
                                       width: 120,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color.fromRGBO(
+                                                0, 0, 0, 0.16), // shadow color
+                                          ),
+                                          const BoxShadow(
+                                            offset: Offset(2, 2),
+                                            blurRadius: 6,
+                                            color: Color(0xFFEFEFEF),
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 50,
+                                      height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                             begin: Alignment.centerLeft,
@@ -871,7 +754,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                  ),
+                                  ]),
                                   SizedBox(
                                     width: 20,
                                   ),
@@ -884,7 +767,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    "별로에요",
+                                    "매너있고 친절해요",
                                     style: TextStyle(
                                         color: Color(0xff6E7995),
                                         fontSize: 14,
@@ -897,25 +780,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 8,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color.fromRGBO(
-                                              0, 0, 0, 0.16), // shadow color
-                                        ),
-                                        const BoxShadow(
-                                          offset: Offset(2, 2),
-                                          blurRadius: 6,
-                                          color: Color(0xFFEFEFEF),
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Container(
+                                  Stack(children: [
+                                    Container(
+                                      height: 8,
                                       width: 120,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color.fromRGBO(
+                                                0, 0, 0, 0.16), // shadow color
+                                          ),
+                                          const BoxShadow(
+                                            offset: Offset(2, 2),
+                                            blurRadius: 6,
+                                            color: Color(0xFFEFEFEF),
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 50,
+                                      height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                             begin: Alignment.centerLeft,
@@ -927,7 +813,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                  ),
+                                  ]),
                                   SizedBox(
                                     width: 20,
                                   ),
@@ -940,7 +826,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    "별로에요",
+                                    "열정적이에요",
                                     style: TextStyle(
                                         color: Color(0xff6E7995),
                                         fontSize: 14,
@@ -953,25 +839,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 8,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color.fromRGBO(
-                                              0, 0, 0, 0.16), // shadow color
-                                        ),
-                                        const BoxShadow(
-                                          offset: Offset(2, 2),
-                                          blurRadius: 6,
-                                          color: Color(0xFFEFEFEF),
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Container(
+                                  Stack(children: [
+                                    Container(
+                                      height: 8,
                                       width: 120,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color.fromRGBO(
+                                                0, 0, 0, 0.16), // shadow color
+                                          ),
+                                          const BoxShadow(
+                                            offset: Offset(2, 2),
+                                            blurRadius: 6,
+                                            color: Color(0xFFEFEFEF),
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 90,
+                                      height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                             begin: Alignment.centerLeft,
@@ -983,7 +872,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                  ),
+                                  ]),
                                   SizedBox(
                                     width: 20,
                                   ),
@@ -996,7 +885,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    "별로에요",
+                                    "운동을 잘 알려줘요",
                                     style: TextStyle(
                                         color: Color(0xff6E7995),
                                         fontSize: 14,
@@ -1009,25 +898,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 8,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color.fromRGBO(
-                                              0, 0, 0, 0.16), // shadow color
-                                        ),
-                                        const BoxShadow(
-                                          offset: Offset(2, 2),
-                                          blurRadius: 6,
-                                          color: Color(0xFFEFEFEF),
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Container(
+                                  Stack(children: [
+                                    Container(
+                                      height: 8,
                                       width: 120,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color.fromRGBO(
+                                                0, 0, 0, 0.16), // shadow color
+                                          ),
+                                          const BoxShadow(
+                                            offset: Offset(2, 2),
+                                            blurRadius: 6,
+                                            color: Color(0xFFEFEFEF),
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 80,
+                                      height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                             begin: Alignment.centerLeft,
@@ -1039,7 +931,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                  ),
+                                  ]),
                                   SizedBox(
                                     width: 20,
                                   ),
@@ -1052,7 +944,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    "별로에요",
+                                    "응답이 빨라요",
                                     style: TextStyle(
                                         color: Color(0xff6E7995),
                                         fontSize: 14,
@@ -1065,25 +957,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 8,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color.fromRGBO(
-                                              0, 0, 0, 0.16), // shadow color
-                                        ),
-                                        const BoxShadow(
-                                          offset: Offset(2, 2),
-                                          blurRadius: 6,
-                                          color: Color(0xFFEFEFEF),
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Container(
+                                  Stack(children: [
+                                    Container(
+                                      height: 8,
                                       width: 120,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color.fromRGBO(
+                                                0, 0, 0, 0.16), // shadow color
+                                          ),
+                                          const BoxShadow(
+                                            offset: Offset(2, 2),
+                                            blurRadius: 6,
+                                            color: Color(0xFFEFEFEF),
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                             begin: Alignment.centerLeft,
@@ -1095,7 +990,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                  ),
+                                  ]),
                                   SizedBox(
                                     width: 20,
                                   ),
@@ -1108,14 +1003,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    "별로에요",
+                                    "약속을 잘 지켜요",
                                     style: TextStyle(
                                         color: Color(0xff6E7995),
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   )
                                 ],
-                              )
+                              ),
                             ],
                           )),
                       SizedBox(
@@ -1171,22 +1066,17 @@ class _ProfilePageState extends State<ProfilePage> {
                               Text("버전",
                                   style: TextStyle(
                                       fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xff6E7995))),
+                                      color: Color(0xff6E7995),
+                                      fontWeight: FontWeight.bold)),
                               Spacer(),
-                              new SizedBox(
-                                  height: 18.0,
-                                  width: 18.0,
-                                  child: new IconButton(
-                                    padding: new EdgeInsets.all(0.0),
-                                    color: Color(0xFFF2F3F7),
-                                    icon: SvgPicture.asset(
-                                      "assets/icon/right_arrow_icon.svg",
-                                      width: 16,
-                                      height: 16,
-                                    ),
-                                    onPressed: () {},
-                                  ))
+                              Text(
+                                "${version}",
+                                style: TextStyle(
+                                    fontSize: 14, color: Color(0xff6E7995)),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
                             ],
                           )),
                       SizedBox(
@@ -1281,7 +1171,150 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: 16,
                                       height: 16,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      showDialog(
+                                          context: context,
+                                          barrierDismissible:
+                                              true, // 바깥 영역 터치시 닫을지 여부
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              content: Text("로그아웃 하시겠습니까?",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              insetPadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      50, 80, 20, 80),
+                                              actions: [
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      0, 0, 0, 10),
+                                                  width: 40,
+                                                  height: 32,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: Color(0xFFF2F3F7),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color:
+                                                            Color(0xFFffffff),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 8,
+                                                        offset: Offset(-2, -2),
+                                                      ),
+                                                      BoxShadow(
+                                                        color: Color.fromRGBO(
+                                                            55, 84, 170, 0.1),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 2,
+                                                        offset: Offset(2, 2),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Theme(
+                                                    data: ThemeData(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                    ),
+                                                    child: TextButton(
+                                                      child: Text(
+                                                        "확인",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      onPressed: () async {
+                                                        print('로그아웃');
+                                                        locator.pauseListener();
+
+                                                        await FirebaseAuthMethods(
+                                                                FirebaseAuth
+                                                                    .instance)
+                                                            .signOut();
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          PageRouteBuilder(
+                                                            pageBuilder: (context,
+                                                                    animation,
+                                                                    secondaryAnimation) =>
+                                                                LoginPage(),
+                                                            transitionDuration:
+                                                                Duration.zero,
+                                                            reverseTransitionDuration:
+                                                                Duration.zero,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      0, 0, 20, 10),
+                                                  width: 60,
+                                                  height: 32,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: Color(0xFFF2F3F7),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color:
+                                                            Color(0xFFffffff),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 8,
+                                                        offset: Offset(-2, -2),
+                                                      ),
+                                                      BoxShadow(
+                                                        color: Color.fromRGBO(
+                                                            55, 84, 170, 0.1),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 2,
+                                                        offset: Offset(2, 2),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Theme(
+                                                    data: ThemeData(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                    ),
+                                                    child: TextButton(
+                                                      child: Text(
+                                                        '아니오',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
                                   ))
                             ],
                           )),
@@ -1293,637 +1326,183 @@ class _ProfilePageState extends State<ProfilePage> {
                               fontSize: 14,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("회원탈퇴 하시겠습니까?",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    insetPadding: const EdgeInsets.fromLTRB(
+                                        50, 80, 20, 80),
+                                    actions: [
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                        width: 40,
+                                        height: 32,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Color(0xFFF2F3F7),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(0xFFffffff),
+                                              spreadRadius: 2,
+                                              blurRadius: 8,
+                                              offset: Offset(-2, -2),
+                                            ),
+                                            BoxShadow(
+                                              color: Color.fromRGBO(
+                                                  55, 84, 170, 0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(2, 2),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Theme(
+                                          data: ThemeData(
+                                            splashColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                          ),
+                                          child: TextButton(
+                                            child: Text(
+                                              "확인",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            onPressed: () async {
+                                              CollectionReference users =
+                                                  FirebaseFirestore.instance
+                                                      .collection('users');
+                                              users
+                                                  .doc(UserData['social']
+                                                      ['user_id'])
+                                                  .delete();
+                                              User? user = FirebaseAuth
+                                                  .instance.currentUser;
+                                              user?.delete();
+                                              locator.pauseListener();
+                                              http.Response response =
+                                                  await http.delete(
+                                                Uri.parse("${baseUrlV1}users"),
+                                                headers: {
+                                                  "Authorization":
+                                                      "bearer $IdToken",
+                                                },
+                                              );
+                                              var resBody = jsonDecode(utf8
+                                                  .decode(response.bodyBytes));
+                                              if (response.statusCode != 200 &&
+                                                  resBody["error"]["code"] ==
+                                                      "auth/id-token-expired") {
+                                                IdToken = (await FirebaseAuth
+                                                        .instance.currentUser
+                                                        ?.getIdTokenResult(
+                                                            true))!
+                                                    .token
+                                                    .toString();
+
+                                                response = await http.delete(
+                                                  Uri.parse(
+                                                      "${baseUrlV1}users"),
+                                                  headers: {
+                                                    "Authorization":
+                                                        "bearer $IdToken",
+                                                  },
+                                                );
+                                                resBody = jsonDecode(
+                                                    utf8.decode(
+                                                        response.bodyBytes));
+                                              }
+
+                                              await FirebaseAuthMethods(
+                                                      FirebaseAuth.instance)
+                                                  .signOut();
+                                              // Firebase 로그아웃
+                                              //await _auth.signOut();
+                                              //await _googleSignIn.signOut();
+
+                                              Navigator.pushReplacement(
+                                                context,
+                                                PageRouteBuilder(
+                                                  pageBuilder: (context,
+                                                          animation,
+                                                          secondaryAnimation) =>
+                                                      LoginPage(),
+                                                  transitionDuration:
+                                                      Duration.zero,
+                                                  reverseTransitionDuration:
+                                                      Duration.zero,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 0, 20, 10),
+                                        width: 60,
+                                        height: 32,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Color(0xFFF2F3F7),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(0xFFffffff),
+                                              spreadRadius: 2,
+                                              blurRadius: 8,
+                                              offset: Offset(-2, -2),
+                                            ),
+                                            BoxShadow(
+                                              color: Color.fromRGBO(
+                                                  55, 84, 170, 0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 2,
+                                              offset: Offset(2, 2),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Theme(
+                                          data: ThemeData(
+                                            splashColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                          ),
+                                          child: TextButton(
+                                            child: Text(
+                                              '아니오',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
                           child: Text(
                             "회원탈퇴",
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 color: Color(0xFF3F51B5)),
                           )),
-                      Container(
-                        width: size.width - 34,
-                        padding: EdgeInsets.all(0),
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 50,
-                                  ),
-                                  Container(
-                                    width: size.width - 40,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFF2F3F7),
-                                      border: Border.all(
-                                          width: 1, color: Colors.black),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 55,
-                                        ),
-                                        Text(
-                                          '${UserData["user_nickname"]}',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          '${UserData["user_gender"] == true ? '남' : '여'} · ${UserData["user_address"]}',
-                                          style: TextStyle(
-                                            color: Color(0xFFA4A5A8),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        UserData['user_introduce'] == null
-                                            ? SizedBox(
-                                                height: 10,
-                                              )
-                                            : SizedBox(
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 8,
-                                                    ),
-                                                    Container(
-                                                      width: size.width - 80,
-                                                      child: Text(
-                                                          '${UserData['user_introduce']}',
-                                                          style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 12,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.center),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 12,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100.0),
-                                child: Image.network(
-                                  '${UserData['user_profile_img']}',
-                                  width: 100.0,
-                                  height: 100.0,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context,
-                                      Object exception,
-                                      StackTrace? stackTrace) {
-                                    return Image.asset(
-                                      'assets/images/profile_null_image.png',
-                                      width: 70.0,
-                                      height: 70.0,
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 18,
-                              top: 60,
-                              child: ClipOval(
-                                child: Material(
-                                  color: Colors.blue, // button color
-                                  child: InkWell(
-                                    splashColor: Colors.red, // inkwell color
-                                    child: SizedBox(
-                                      width: 25,
-                                      height: 25,
-                                      child: Icon(
-                                        Icons.edit,
-                                        size: 16,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfileEditPage()));
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: size.width - 40,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              ' 기본 정보',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        width: size.width - 40,
-                        height: 160,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF292A2E),
-                          border:
-                              Border.all(width: 1, color: Color(0xFF5A595C)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(22, 15, 22, 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.fitness_center,
-                                          color: Color(0xFF2975CF),
-                                          size: 17,
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          '내 피트니스장',
-                                          style: TextStyle(
-                                            color: Color(0xFFffffff),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '${UserCenterName}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFffffff),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.groups,
-                                          color: Color(0xFF2975CF),
-                                          size: 17,
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          '매칭 수',
-                                          style: TextStyle(
-                                            color: Color(0xFFffffff),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '${snapshot.data.toString()}회',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFffffff),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_pin,
-                                          color: Color(0xFF2975CF),
-                                          size: 17,
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          '운동 시간대',
-                                          style: TextStyle(
-                                            color: Color(0xFFffffff),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Text(
-                                    '${getSchedule()}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFffffff),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                width: size.width - 80,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: UserData["user_weekday"]
-                                                    ["mon"] ==
-                                                true
-                                            ? Color(0xFF2975CF)
-                                            : Color(0xFF22232A),
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: UserData["user_weekday"]
-                                                      ["mon"] ==
-                                                  true
-                                              ? Color(0xFF2975CF)
-                                              : Color(0xFF878E97),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '월',
-                                        style: TextStyle(
-                                            color: UserData["user_weekday"]
-                                                        ["mon"] ==
-                                                    true
-                                                ? Color(0xFFffffff)
-                                                : Color(0xFF878E97),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: UserData["user_weekday"]
-                                                    ["tue"] ==
-                                                true
-                                            ? Color(0xFF2975CF)
-                                            : Color(0xFF22232A),
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: UserData["user_weekday"]
-                                                      ["tue"] ==
-                                                  true
-                                              ? Color(0xFF2975CF)
-                                              : Color(0xFF878E97),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '화',
-                                        style: TextStyle(
-                                            color: UserData["user_weekday"]
-                                                        ["tue"] ==
-                                                    true
-                                                ? Color(0xFFffffff)
-                                                : Color(0xFF878E97),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: UserData["user_weekday"]
-                                                    ["wed"] ==
-                                                true
-                                            ? Color(0xFF2975CF)
-                                            : Color(0xFF22232A),
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: UserData["user_weekday"]
-                                                      ["wed"] ==
-                                                  true
-                                              ? Color(0xFF2975CF)
-                                              : Color(0xFF878E97),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '수',
-                                        style: TextStyle(
-                                            color: UserData["user_weekday"]
-                                                        ["wed"] ==
-                                                    true
-                                                ? Color(0xFFffffff)
-                                                : Color(0xFF878E97),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: UserData["user_weekday"]
-                                                    ["thu"] ==
-                                                true
-                                            ? Color(0xFF2975CF)
-                                            : Color(0xFF22232A),
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: UserData["user_weekday"]
-                                                      ["thu"] ==
-                                                  true
-                                              ? Color(0xFF2975CF)
-                                              : Color(0xFF878E97),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '목',
-                                        style: TextStyle(
-                                            color: UserData["user_weekday"]
-                                                        ["thu"] ==
-                                                    true
-                                                ? Color(0xFFffffff)
-                                                : Color(0xFF878E97),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: UserData["user_weekday"]
-                                                    ["fri"] ==
-                                                true
-                                            ? Color(0xFF2975CF)
-                                            : Color(0xFF22232A),
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: UserData["user_weekday"]
-                                                      ["fri"] ==
-                                                  true
-                                              ? Color(0xFF2975CF)
-                                              : Color(0xFF878E97),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '금',
-                                        style: TextStyle(
-                                            color: UserData["user_weekday"]
-                                                        ["fri"] ==
-                                                    true
-                                                ? Color(0xFFffffff)
-                                                : Color(0xFF878E97),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: UserData["user_weekday"]
-                                                    ["sat"] ==
-                                                true
-                                            ? Color(0xFF2975CF)
-                                            : Color(0xFF22232A),
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: UserData["user_weekday"]
-                                                      ["sat"] ==
-                                                  true
-                                              ? Color(0xFF2975CF)
-                                              : Color(0xFF878E97),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '토',
-                                        style: TextStyle(
-                                            color: UserData["user_weekday"]
-                                                        ["sat"] ==
-                                                    true
-                                                ? Color(0xFFffffff)
-                                                : Color(0xFF878E97),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        color: UserData["user_weekday"]
-                                                    ["sun"] ==
-                                                true
-                                            ? Color(0xFF2975CF)
-                                            : Color(0xFF22232A),
-                                        borderRadius: BorderRadius.circular(40),
-                                        border: Border.all(
-                                          width: 1,
-                                          color: UserData["user_weekday"]
-                                                      ["sun"] ==
-                                                  true
-                                              ? Color(0xFF2975CF)
-                                              : Color(0xFF878E97),
-                                        ),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '일',
-                                        style: TextStyle(
-                                            color: UserData["user_weekday"]
-                                                        ["sun"] ==
-                                                    true
-                                                ? Color(0xFFffffff)
-                                                : Color(0xFF878E97),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: size.width - 40,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              ' 메이트 리뷰',
-                              style: TextStyle(
-                                color: Color(0xFFffffff),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      snapshot.data == 0
-                          ? SizedBox()
-                          : Container(
-                              width: size.width - 40,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF292A2E),
-                                border: Border.all(
-                                    width: 1, color: Color(0xFF5A595C)),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 8, 15, 8),
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: snapshot.data,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      width: size.width - 40,
-                                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        100.0),
-                                                child: Image.network(
-                                                  '${reviewImg[index]}',
-                                                  width: 35.0,
-                                                  height: 35.0,
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder: (BuildContext
-                                                          context,
-                                                      Object exception,
-                                                      StackTrace? stackTrace) {
-                                                    return Image.asset(
-                                                      'assets/images/profile_null_image.png',
-                                                      fit: BoxFit.cover,
-                                                      width: 35.0,
-                                                      height: 35.0,
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 12,
-                                              ),
-                                              Text(
-                                                '${reviewName[index]}',
-                                                style: TextStyle(
-                                                  color: Color(0xFFffffff),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 45),
-                                            child: Container(
-                                              width: size.width - 85,
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                    child: RichText(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 100,
-                                                      strutStyle: StrutStyle(
-                                                          fontSize: 16),
-                                                      text: TextSpan(
-                                                        text:
-                                                            '${reviewContext[index]}',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
                     ],
                   ),
                 ),
