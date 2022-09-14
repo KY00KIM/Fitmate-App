@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
         //     Get.put(NotificationController());
         //   },
         // ),
-        // home: SignupPage1(),
+        // home : SignUpPage1(),
         home: FutureBuilder(
           future: getToken(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
