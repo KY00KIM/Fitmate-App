@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitmate/presentation/profile_edit/profile_edit.dart';
+import 'package:fitmate/presentation/profile/profile_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:flutter_svg/svg.dart';
