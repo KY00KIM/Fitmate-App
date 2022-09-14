@@ -25,6 +25,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
 
+import 'naver_map.dart';
+
 void main() async {
   //Constants.setEnvironment(Environment.PROD);
   await dotenv.load(fileName: ".env");
@@ -116,6 +118,8 @@ class MyApp extends StatelessWidget {
                       reload: true,
                     );
             }
+
+            //return BaseMapPage();
           },
         ),
       ),

@@ -5,7 +5,7 @@ import '../domain/model/post.dart';
 import 'http_api.dart';
 
 class PostApi {
-  Future<List> getPost() async {
+  Future<List<Post>> getPost() async {
     List<Post> _posts = <Post>[];
     final httpApi = HttpApi();
 

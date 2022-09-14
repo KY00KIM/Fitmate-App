@@ -17,7 +17,7 @@ class SignupUser {
   late final bool userGender;
   late final double userLongitude;
   late final double userLatitude;
-  late final FitnessCenter fitnessCenter;
+  late final SignupUserFitnessCenter fitnessCenter;
   late final String deviceToken;
 
   SignupUser.fromJson(Map<String, dynamic> json) {
@@ -28,7 +28,7 @@ class SignupUser {
     userGender = json['user_gender'];
     userLongitude = json['user_longitude'];
     userLatitude = json['user_latitude'];
-    fitnessCenter = FitnessCenter.fromJson(json['fitness_center']);
+    fitnessCenter = SignupUserFitnessCenter.fromJson(json['fitness_center']);
     deviceToken = json['device_token'];
   }
 
@@ -88,8 +88,8 @@ class UserWeekday {
   }
 }
 
-class FitnessCenter {
-  FitnessCenter({
+class SignupUserFitnessCenter {
+  SignupUserFitnessCenter({
     required this.centerName,
     required this.centerAddress,
     required this.fitnessLongitude,
@@ -100,7 +100,7 @@ class FitnessCenter {
   late final double fitnessLongitude;
   late final double fitnessLatitude;
 
-  FitnessCenter.fromJson(Map<String, dynamic> json) {
+  SignupUserFitnessCenter.fromJson(Map<String, dynamic> json) {
     centerName = json['center_name'];
     centerAddress = json['center_address'];
     fitnessLongitude = json['fitness_longitude'];

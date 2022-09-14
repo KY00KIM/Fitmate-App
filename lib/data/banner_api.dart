@@ -5,7 +5,7 @@ import '../domain/model/banner.dart';
 import 'http_api.dart';
 
 class BannerApi {
-  Future<List> getBanner() async {
+  Future<List<Banner>> getBanner() async {
     List<Banner> _banner = <Banner>[];
     final httpApi = HttpApi();
 

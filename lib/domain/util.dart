@@ -1,8 +1,12 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'model/banner.dart';
+import 'model/fitnesscenter.dart';
+import 'model/post.dart';
 import 'model/user.dart';
 
 //공통 변수
@@ -36,8 +40,13 @@ class LoginedUser {
 }
 
 String UserCenterName = '';
+bool mapOpend = false;
+List chatList = [];
 
-
+// 홈 화면 전역 객체들
+List<Post> posts = <Post>[];
+List<Banner> banners = <Banner>[];
+var myFitnessCenter = null;
 
 late User test;
 late Map UserData = {

@@ -10,6 +10,8 @@ import '../../../domain/util.dart';
 import '../../chat/chat.dart';
 import 'package:http/http.dart' as http;
 
+import '../../fitness_center/fitness_center.dart';
+
 
 class DetailContentWidget extends StatelessWidget {
   Post post;
@@ -211,7 +213,10 @@ class DetailContentWidget extends StatelessWidget {
                         height: 16,
                       ),
                       onPressed: () {
-                        print("피트니스장 클릭");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FitnessCenterPage(fitnessId: '${post.promiseLocation.id}',)));
                       },
                     ),
                   ),
