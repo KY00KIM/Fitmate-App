@@ -1,68 +1,57 @@
-import 'package:fitmate/ui/bar_widget.dart';
-import 'package:fitmate/ui/colors.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:location/location.dart';
-import '../../../domain/model/SignupUser.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import '../../../domain/instance_preference/location.dart';
-
+import 'package:fitmate/data/profile_edit_api.dart';
+import 'package:fitmate/domain/util.dart';
 import '../../../data/signup_api.dart';
-import 'dart:core';
 
-class signUpViewModel {
+class profileEditViewModel {
+  late ProfileEditApi editUserApi = ProfileEditApi();
   late SignUpApi signupApi = SignUpApi();
 
-  late locationController locator;
-
-  late SignupUser userdata;
-
-  Future sendSignUp() async {
-    locator = locationController();
-    String? deviceToken = await FirebaseMessaging.instance.getToken();
-    await locator.init();
-    print("locator initiated");
-    // Map location = await locator.getAndSendLocation(null);
+  Future sendEditProfile() async {
     Map<String, dynamic> json = {
-      "user_nickname": nickname == null ? "" : nickname,
-      'user_address': "$selectedLocation $selectedSemiLocation",
+      "user_nickname":
+          isNicknameValid == false ? UserData["nickname"] : nickname,
+      'user_address': selectedLocation == null || selectedSemiLocation == null
+          ? UserData["user_address"]
+          : "$selectedLocation $selectedSemiLocation",
       'user_schedule_time': selectedTime,
       "user_gender": gender,
       "user_weekday": isSelectedWeekDay,
       "user_longitude": 0.0,
       "user_latitude": 0.0,
-      "device_token": deviceToken ?? "",
       "fitness_center": {
-        "center_name": centerName == "피트니스 센터를 검색" ? "선택안함" : centerName,
-        "center_address":
-            centerName == "피트니스 센터를 검색" ? "" : center['address_name'],
-        "fitness_longitude":
-            centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['y']),
-        "fitness_latitude":
-            centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['x'])
+        "center_name": centerName == user_center['center_name']
+            ? user_center['center_name']
+            : centerName,
+        "center_address": centerName == user_center['center_name']
+            ? user_center['center_address']
+            : center['address_name'],
+        "fitness_longitude": centerName == user_center['center_name']
+            ? user_center['fitness_longitude']
+            : double.parse(center['y']),
+        "fitness_latitude": centerName == user_center['center_name']
+            ? user_center['fitness_latitude']
+            : double.parse(center['x'])
       }
     };
-    userdata = SignupUser.fromJson(json);
     print("userdata json ready");
-    var result = await signupApi.postSignUpUser(userdata);
-    print("oauth response : $result");
+    print("user at API : ${json}");
+
+    var result = await editUserApi.patchUser(UserData['_id'], json);
+    print("response from api : $result");
     return result["success"];
   }
 
-  Future<bool> checkValidNickname(String input) async {
-    bool result = await signupApi.checkNickname(input);
-    print("result is $result");
-    isNicknameValid = result;
-    // nickname = input;
-    return result;
+  void initModel() {
+    nickname = UserData["user_nickname"];
+    gender = UserData["user_gender"];
+    isSelectedWeekDay = UserData["user_weekday"];
+    centerName = UserCenterName;
+    selectedTime = UserData["user_schedule_time"];
+    isNicknameValid = false;
+    introduce = UserData["user_introduce"];
   }
 
-  Map<String, String> socialProvider = {
-    "google.com": "구글 계정",
-    "custom": "카카오 계정",
-    "apple.com": "애플 계정",
-  };
-  /**
+/**
    * @회원가입 1페이지 파라미터
    */
   bool isNicknameValid = false;
@@ -74,12 +63,18 @@ class signUpViewModel {
    * @회원가입 2페이지 파라미터
    */
   int selectedTime = -1;
-  String selectedStartTime = '시간 선택';
-  String selectedEndTime = '시간 선택';
   String? selectedLocation;
   String? selectedSemiLocation;
   String centerName = '피트니스 센터를 검색';
-  late Map center;
+  late Map center = {};
+
+  Future<bool> checkValidNickname(String input) async {
+    bool result = await signupApi.checkNickname(input);
+    print("result is $result");
+    isNicknameValid = result;
+    // nickname = input;
+    return result;
+  }
 
 /**
  * @운동 시간 관련 함수

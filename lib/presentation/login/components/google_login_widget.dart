@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -82,7 +83,7 @@ class GoogleLoginWidget extends StatelessWidget {
           FlutterToastTop("알수 없는 에러가 발생하였습니다");
         } else {
           String? deviceToken = await FirebaseMessaging.instance.getToken();
-
+          log(IdToken);
           //토큰을 받는 단계에서 에러가 나지 않았다면
           http.Response response = await http
               .get(Uri.parse("${baseUrlV1}users/login"), headers: {
@@ -120,7 +121,9 @@ class GoogleLoginWidget extends StatelessWidget {
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    SignupPage1(),
+                    SignupPage1(
+                  user_object: resBody['error'],
+                ),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               ),
