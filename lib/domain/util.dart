@@ -92,6 +92,7 @@ late Map UserData = {
 };
 Map userWeekdayMap = UserData["user_weekday"];
 List<String> userWeekdayList = [];
+Map user_center = {};
 
 // ignore: non_constant_identifier_names
 Future<bool> UpdateUserData() async {
@@ -129,6 +130,10 @@ Future<bool> UpdateUserData() async {
       var resBody2 = jsonDecode(utf8.decode(responseFitness.bodyBytes));
 
       UserCenterName = resBody2["data"]["center_name"];
+      user_center["center_name"] = resBody2["data"]["center_name"]!;
+      user_center["center_address"] = resBody2["data"]["center_address"]!;
+      user_center["fitness_longitude"] = resBody2["data"]["fitness_longitude"]!;
+      user_center["fitness_latitude"] = resBody2["data"]["fitness_latitude"]!;
     }
     return true;
   } else {

@@ -14,7 +14,8 @@ import '../../ui/show_toast.dart';
 import '../home/home.dart';
 
 class SignupPage1 extends StatefulWidget {
-  const SignupPage1({Key? key}) : super(key: key);
+  SignupPage1({Key? key, required this.user_object}) : super(key: key);
+  Map user_object;
 
   @override
   State<SignupPage1> createState() => _SignupPageState1();
@@ -116,12 +117,13 @@ class _SignupPageState1 extends State<SignupPage1> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("abcd@gmail.com",
+                              Text("소셜 로그인",
                                   style: TextStyle(
                                     color: Color(0xff6E7995),
                                     fontSize: 15,
                                   )),
-                              Text("카카오계정",
+                              Text(
+                                  "${viewModel.socialProvider[(widget.user_object['firebase']['sign_in_provider'])]}",
                                   style: TextStyle(
                                     color: Color(0xff6E7995),
                                     fontSize: 15,

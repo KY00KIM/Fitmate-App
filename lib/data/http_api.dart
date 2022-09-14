@@ -102,13 +102,15 @@ class HttpApi {
   }
 
   Future patch(int version, String url, Map body) async {
+    var bodyParse = json.encode(body);
+
     http.Response response =
         await http.patch(Uri.parse("${baseUrl}v${version.toString()}/${url}"),
             headers: {
               "Authorization": "bearer $IdToken",
               "Content-Type": "application/json; charset=UTF-8"
             },
-            body: body);
+            body: bodyParse);
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode != 200 &&
         resBody["error"]["code"] == "auth/id-token-expired") {
@@ -123,7 +125,7 @@ class HttpApi {
                 "Authorization": "bearer $IdToken",
                 "Content-Type": "application/json; charset=UTF-8"
               },
-              body: body);
+              body: bodyParse);
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
 

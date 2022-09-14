@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -88,7 +89,8 @@ class AppleLoginWidget extends StatelessWidget {
           print('THIS IS ios APNS TOKEN :  ${iosToken}');
 
           print('deviceToken : ${deviceToken}');
-
+          log("THIS IDTOKEN!!!!!");
+          log(IdToken);
           // ignore: avoid_print
           print("device token : ${deviceToken}");
           //토큰을 받는 단계에서 에러가 나지 않았다면
@@ -129,7 +131,9 @@ class AppleLoginWidget extends StatelessWidget {
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    SignupPage1(),
+                    SignupPage1(
+                  user_object: resBody['error'],
+                ),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               ),

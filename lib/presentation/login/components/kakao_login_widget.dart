@@ -70,8 +70,9 @@ class KakaoLoginWidget extends StatelessWidget {
   Future<String> login(BuildContext context) async {
     isKakaoLogined = await kakaoLogin();
     log(user.toString());
+    print("IM HERE");
     if (isKakaoLogined) {
-      final customToken =
+      var customToken =
           await FirebaseAuthMethods(FirebaseAuth.instance).createCustomToken({
         'uid': user!.id.toString(),
         'displayName': user!.kakaoAccount!.profile!.nickname,
@@ -188,11 +189,14 @@ class KakaoLoginWidget extends StatelessWidget {
               }
             } else if (resBody['message'] == 404) {
               // 사용자 정보가 등록 안된 상황에서는
+
               Navigator.push(
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      SignupPage1(),
+                      SignupPage1(
+                    user_object: resBody['error'],
+                  ),
                   transitionDuration: Duration.zero,
                   reverseTransitionDuration: Duration.zero,
                 ),
