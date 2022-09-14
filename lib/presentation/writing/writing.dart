@@ -518,7 +518,7 @@ class _WritingPageState extends State<WritingPage> {
                                 ? null
                                 : setState(() {
                                     center = onValue;
-                                    centerName = center['place_name'];
+                                    centerName = center['center_name'];
                                   });
                           });
                         },

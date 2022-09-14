@@ -102,12 +102,10 @@ class _ProfilePageState extends State<ProfilePage> {
             if (snapshot.hasData) {
               return SingleChildScrollView(
                 child: Container(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                  width: size.width,
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 20,
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -117,6 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 24,
                             fit: BoxFit.fill,
                           ),
+                          SizedBox(width: 12,),
                           Text(
                             "내 정보",
                             style: TextStyle(
@@ -124,9 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
-                            width: 100,
-                          ),
+                          Spacer(),
                           Container(
                             width: 32,
                             height: 32,
@@ -496,7 +493,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       Container(
                           width: double.infinity,
-                          height: 95,
+                          //height: 95,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Color(0xFFF2F3F7),
@@ -667,7 +664,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       Container(
                           padding: EdgeInsets.fromLTRB(20, 24, 20, 20),
                           width: double.infinity,
-                          height: 280,
+                          //height: 280,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Color(0xFFF2F3F7),

@@ -48,7 +48,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
 
     http.Response responseReview = await http.get(
         Uri.parse(
-            "https://fitmate.co.kr/v2/reviews/fitnesscenter/62dcb55d2a9c7be7cf2985b7"),
+            "https://fitmate.co.kr/v2/reviews/fitnesscenter/${widget.fitnessId}"),
         headers: {
           "Authorization": "bearer ${IdToken.toString()}",
           "Content-Type": "application/json; charset=UTF-8",
@@ -336,6 +336,356 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                     ],
                   ),
                   SizedBox(height: 30,),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(20, 24, 20, 20),
+                      width: double.infinity,
+                      //height: 280,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Color(0xFFF2F3F7),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFFffffff),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: Offset(-2, -2),
+                          ),
+                          BoxShadow(
+                            color: Color.fromRGBO(55, 84, 170, 0.1),
+                            spreadRadius: 2,
+                            blurRadius: 2,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "총 평점",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Color(0xff6E7995),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 12,
+                                ),
+                                Text(
+                                  "(리뷰 ${reviews.length})",
+                                  style: TextStyle(
+                                      color: Color(0xff6E7995),
+                                      fontSize: 16),
+                                ),
+                                Spacer(),
+                                Text(
+                                  "${point}.0",
+                                  style: TextStyle(
+                                      color: Color(0xffF27F22),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ]),
+                          SizedBox(
+                            height: 21,
+                          ),
+                          Row(
+                            children: [
+                              Stack(children: [
+                                Container(
+                                  height: 8,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromRGBO(
+                                            0, 0, 0, 0.16), // shadow color
+                                      ),
+                                      const BoxShadow(
+                                        offset: Offset(2, 2),
+                                        blurRadius: 6,
+                                        color: Color(0xFFEFEFEF),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                Container(
+                                  width: 50,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xFF00C6FB),
+                                          Color(0xFF005BEA)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ]),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "12",
+                                style: TextStyle(
+                                  color: Color(0xff6E7995),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "매너있고 친절해요",
+                                style: TextStyle(
+                                    color: Color(0xff6E7995),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 21,
+                          ),
+                          Row(
+                            children: [
+                              Stack(children: [
+                                Container(
+                                  height: 8,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromRGBO(
+                                            0, 0, 0, 0.16), // shadow color
+                                      ),
+                                      const BoxShadow(
+                                        offset: Offset(2, 2),
+                                        blurRadius: 6,
+                                        color: Color(0xFFEFEFEF),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                Container(
+                                  width: 50,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xFF00C6FB),
+                                          Color(0xFF005BEA)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ]),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "12",
+                                style: TextStyle(
+                                  color: Color(0xff6E7995),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "열정적이에요",
+                                style: TextStyle(
+                                    color: Color(0xff6E7995),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 21,
+                          ),
+                          Row(
+                            children: [
+                              Stack(children: [
+                                Container(
+                                  height: 8,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromRGBO(
+                                            0, 0, 0, 0.16), // shadow color
+                                      ),
+                                      const BoxShadow(
+                                        offset: Offset(2, 2),
+                                        blurRadius: 6,
+                                        color: Color(0xFFEFEFEF),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                Container(
+                                  width: 90,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xFF00C6FB),
+                                          Color(0xFF005BEA)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ]),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "12",
+                                style: TextStyle(
+                                  color: Color(0xff6E7995),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "운동을 잘 알려줘요",
+                                style: TextStyle(
+                                    color: Color(0xff6E7995),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 21,
+                          ),
+                          Row(
+                            children: [
+                              Stack(children: [
+                                Container(
+                                  height: 8,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromRGBO(
+                                            0, 0, 0, 0.16), // shadow color
+                                      ),
+                                      const BoxShadow(
+                                        offset: Offset(2, 2),
+                                        blurRadius: 6,
+                                        color: Color(0xFFEFEFEF),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                Container(
+                                  width: 80,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xFF00C6FB),
+                                          Color(0xFF005BEA)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ]),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "12",
+                                style: TextStyle(
+                                  color: Color(0xff6E7995),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "응답이 빨라요",
+                                style: TextStyle(
+                                    color: Color(0xff6E7995),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 21,
+                          ),
+                          Row(
+                            children: [
+                              Stack(children: [
+                                Container(
+                                  height: 8,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromRGBO(
+                                            0, 0, 0, 0.16), // shadow color
+                                      ),
+                                      const BoxShadow(
+                                        offset: Offset(2, 2),
+                                        blurRadius: 6,
+                                        color: Color(0xFFEFEFEF),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                Container(
+                                  width: 100,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xFF00C6FB),
+                                          Color(0xFF005BEA)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ]),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "12",
+                                style: TextStyle(
+                                  color: Color(0xff6E7995),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "약속을 잘 지켜요",
+                                style: TextStyle(
+                                    color: Color(0xff6E7995),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ],
+                      )),
                 ],
               ),
             ),

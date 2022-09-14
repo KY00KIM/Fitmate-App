@@ -7,7 +7,6 @@ class Banner {
     required this.isDeleted,
     required this.clickNum,
     required this.updatedAt,
-    required this.id,
   });
   late final String underId;
   late final String bannerImageUrl;
@@ -16,7 +15,6 @@ class Banner {
   late final bool isDeleted;
   late final int clickNum;
   late final String updatedAt;
-  late final String id;
 
   Banner.fromJson(Map<String, dynamic> json){
     underId = json['_id'];
@@ -26,7 +24,6 @@ class Banner {
     isDeleted = json['is_deleted'];
     clickNum = json['click_num'];
     updatedAt = json['updatedAt'];
-    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +35,6 @@ class Banner {
     _data['is_deleted'] = isDeleted;
     _data['click_num'] = clickNum;
     _data['updatedAt'] = updatedAt;
-    _data['id'] = id;
     return _data;
   }
 }
