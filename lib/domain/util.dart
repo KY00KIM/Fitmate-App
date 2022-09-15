@@ -133,6 +133,7 @@ Future<bool> UpdateUserData() async {
       user_center["center_address"] = resBody2["data"]["center_address"]!;
       user_center["fitness_longitude"] = resBody2["data"]["fitness_longitude"]!;
       user_center["fitness_latitude"] = resBody2["data"]["fitness_latitude"]!;
+      user_center["id"] = resBody2["data"]["_id"]!;
     }
     return true;
   } else {

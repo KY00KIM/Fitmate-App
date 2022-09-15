@@ -65,103 +65,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     }
   }
 
-  // void PatchPosets() async {
-  //   int schedule;
-  //   if (isSelectedTime[0] == true)
-  //     schedule = 0;
-  //   else if (isSelectedTime[1] == true)
-  //     schedule = 1;
-  //   else
-  //     schedule = 2;
-
-  //   String imgUrl = _image == null ? UserData['user_profile_img'] : '';
-  //   if (_image != null) {
-  //     List<int> imageBytes = _image!.readAsBytesSync();
-  //     String base64Image = base64Encode(imageBytes);
-  //   }
-
-  //   Map data = {
-  //     "_id": "${UserData['_id']}",
-  //     "user_name": "${UserData['user_name']}",
-  //     "user_address": "${UserData['user_address']}",
-  //     "user_nickname": "$nickname",
-  //     "user_email": "${UserData['user_email']}",
-  //     "user_profile_img": imgUrl,
-  //     "user_schedule_time": schedule,
-  //     "user_weekday": isSelectedWeekDay,
-  //     "user_introduce": "",
-  //     "user_fitness_part": UserData['user_fitness_part'],
-  //     "user_age": 0,
-  //     "user_gender": UserData['user_gender'],
-  //     "user_loc_bound": 3,
-  //     "fitness_center_id": "${UserData['fitness_center_id']}",
-  //     "user_longitude": UserData['user_longitude'],
-  //     "user_latitude": UserData['user_latitude'],
-  //     "location_id": "${UserData['location_id']}",
-  //     "social": {
-  //       "user_id": "${UserData['social']['user_id']}",
-  //       "user_name": "${UserData['social']['user_name']}",
-  //       "provider": "${UserData['social']['provider']}",
-  //       "device_token": ["${UserData['social']['device_token']}"],
-  //       "firebase_info": {}
-  //     },
-  //     "is_deleted": false,
-  //     "createdAt": "",
-  //     "updatedAt": ""
-  //   };
-  //   print(data);
-  //   var body = json.encode(data);
-
-  //   http.Response response =
-  //       await http.patch(Uri.parse("${baseUrlV1}users/${UserData['_id']}"),
-  //           headers: <String, String>{
-  //             'Content-Type': 'application/json; charset=UTF-8',
-  //             'Authorization': 'bearer $IdToken',
-  //             'userId': 'bearer ${UserData['_id']}',
-  //           }, // this header is essential to send json data
-  //           body: body);
-
-  //   var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-  //   if (response.statusCode == 200) {
-  //     UserData['user_nickname'] = nickname;
-  //     UserData['user_schedule_time'] = schedule;
-  //     UserData['user_weekday'] = isSelectedWeekDay;
-
-  //     if (_image != null) {
-  //       var request = http.MultipartRequest(
-  //           'POST', Uri.parse("${baseUrlV1}users/image/"));
-  //       request.headers.addAll({"Authorization": "bearer $IdToken"});
-  //       request.files
-  //           .add(await http.MultipartFile.fromPath('image', _image!.path));
-  //       var res = await request.send();
-  //       print(res.statusCode);
-  //       if (res.statusCode == 200) {
-  //         var resbodyimg = json.decode(await res.stream.bytesToString());
-  //         print(resbodyimg);
-  //         UserData['user_profile_img'] = resbodyimg["data"].toString();
-  //       }
-  //     }
-
-  //     Navigator.pushReplacement(
-  //       context,
-  //       PageRouteBuilder(
-  //         pageBuilder: (context, animation, secondaryAnimation) =>
-  //             ProfilePage(),
-  //         transitionDuration: Duration.zero,
-  //         reverseTransitionDuration: Duration.zero,
-  //       ),
-  //     );
-  //   } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-  //     IdToken =
-  //         (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-  //             .token
-  //             .toString();
-  //     FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
-  //   } else {
-  //     FlutterToastBottom("오류가 발생하였습니다");
-  //   }
-  // }
-
   bool checkValid() {
     return true;
   }
@@ -611,16 +514,20 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                           child: InkWell(
                             onTap: () async {
-                              var onValue = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SearchCenterPage()));
-                              print("end");
-                              setState(() {
-                                viewModel.center = onValue;
-
-                                viewModel.centerName = onValue['place_name'];
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchCenterPage()),
+                              ).then((onValue) {
+                                print(onValue);
+                                onValue == null
+                                    ? null
+                                    : setState(() {
+                                        viewModel.center = onValue;
+                                        viewModel.centerName =
+                                            viewModel.center['center_name'];
+                                        print("center : ${viewModel.center}");
+                                      });
                               });
                             },
                             child: Container(
