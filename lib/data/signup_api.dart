@@ -10,7 +10,7 @@ class SignUpApi {
     try {
       print("user at API : ${user.toJson()}");
       http.Response response =
-          await httpApi.post(1, 'users/oauth', user.toJson());
+          await httpApi.post(2, 'users/oauth', user.toJson());
       print("$response");
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
@@ -22,6 +22,7 @@ class SignUpApi {
       }
     } catch (error) {
       print("oauth error : ${error.toString()}");
+      print(error);
       Future.error(Exception("${error.toString()}"));
     }
     return {"success": false};

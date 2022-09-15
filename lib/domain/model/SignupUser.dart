@@ -7,7 +7,7 @@ class SignupUser {
     required this.userGender,
     required this.userLongitude,
     required this.userLatitude,
-    required this.fitnessCenter,
+    required this.fitnessCenterId,
     required this.deviceToken,
   });
   late final String userNickname;
@@ -17,7 +17,7 @@ class SignupUser {
   late final bool userGender;
   late final double userLongitude;
   late final double userLatitude;
-  late final SignupUserFitnessCenter fitnessCenter;
+  late final String fitnessCenterId;
   late final String deviceToken;
 
   SignupUser.fromJson(Map<String, dynamic> json) {
@@ -28,7 +28,7 @@ class SignupUser {
     userGender = json['user_gender'];
     userLongitude = json['user_longitude'];
     userLatitude = json['user_latitude'];
-    fitnessCenter = SignupUserFitnessCenter.fromJson(json['fitness_center']);
+    fitnessCenterId = json['fitness_center_id'];
     deviceToken = json['device_token'];
   }
 
@@ -41,7 +41,7 @@ class SignupUser {
     _data['user_gender'] = userGender;
     _data['user_longitude'] = userLongitude;
     _data['user_latitude'] = userLatitude;
-    _data['fitness_center'] = fitnessCenter.toJson();
+    _data['fitness_center_id'] = fitnessCenterId;
     _data['device_token'] = deviceToken;
     return _data;
   }
@@ -84,35 +84,6 @@ class UserWeekday {
     _data['fri'] = fri;
     _data['sat'] = sat;
     _data['sun'] = sun;
-    return _data;
-  }
-}
-
-class SignupUserFitnessCenter {
-  SignupUserFitnessCenter({
-    required this.centerName,
-    required this.centerAddress,
-    required this.fitnessLongitude,
-    required this.fitnessLatitude,
-  });
-  late final String centerName;
-  late final String centerAddress;
-  late final double fitnessLongitude;
-  late final double fitnessLatitude;
-
-  SignupUserFitnessCenter.fromJson(Map<String, dynamic> json) {
-    centerName = json['center_name'];
-    centerAddress = json['center_address'];
-    fitnessLongitude = json['fitness_longitude'];
-    fitnessLatitude = json['fitness_latitude'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['center_name'] = centerName;
-    _data['center_address'] = centerAddress;
-    _data['fitness_longitude'] = fitnessLongitude;
-    _data['fitness_latitude'] = fitnessLatitude;
     return _data;
   }
 }

@@ -32,15 +32,18 @@ class signUpViewModel {
       "user_longitude": 0.0,
       "user_latitude": 0.0,
       "device_token": deviceToken ?? "",
-      "fitness_center": {
-        "center_name": centerName == "피트니스 센터를 검색" ? "선택안함" : centerName,
-        "center_address":
-            centerName == "피트니스 센터를 검색" ? "" : center['address_name'],
-        "fitness_longitude":
-            centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['y']),
-        "fitness_latitude":
-            centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['x'])
-      }
+      "fitness_center_id": centerName == "피트니스 센터를 검색"
+          ? "631d65a35c8fcf2a7116f0d7"
+          : center["id"]
+      // "fitness_center": {
+      //   "center_name": centerName == "피트니스 센터를 검색" ? "선택안함" : centerName,
+      //   "center_address":
+      //       centerName == "피트니스 센터를 검색" ? "" : center['address_name'],
+      //   "fitness_longitude":
+      //       centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['y']),
+      //   "fitness_latitude":
+      //       centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['x'])
+      // }
     };
     userdata = SignupUser.fromJson(json);
     print("userdata json ready");

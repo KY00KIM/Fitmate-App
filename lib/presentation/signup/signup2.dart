@@ -264,17 +264,21 @@ class _SignupPageState2 extends State<SignupPage2> {
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                           child: InkWell(
                             onTap: () async {
-                              var onValue = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SearchCenterPage()));
-                              print("end");
-                              setState(() {
-                                widget.viewModel.center = onValue;
-
-                                widget.viewModel.centerName =
-                                    onValue['place_name'];
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchCenterPage()),
+                              ).then((onValue) {
+                                print(onValue);
+                                onValue == null
+                                    ? null
+                                    : setState(() {
+                                        widget.viewModel.center = onValue;
+                                        widget.viewModel.centerName = widget
+                                            .viewModel.center['center_name'];
+                                        print(
+                                            "center : ${widget.viewModel.center}");
+                                      });
                               });
                             },
                             child: Container(
