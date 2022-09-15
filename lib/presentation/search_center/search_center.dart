@@ -342,8 +342,8 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
                                             width: 16,
                                             height: 16,
                                           ),
-                                          onPressed: () {
-                                            Navigator
+                                          onPressed: () async {
+                                            bool outturn = await Navigator
                                                 .push(
                                               context,
                                               PageRouteBuilder(
@@ -357,7 +357,7 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
                                                 Duration.zero,
                                               ),
                                             );
-
+                                            if(outturn) returnPop(context, data[index]);
                                           },
                                         ),
                                       ),

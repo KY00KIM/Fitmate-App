@@ -57,7 +57,6 @@ class _ChatListPageState extends State<ChatListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.appBar(context),
@@ -154,8 +153,8 @@ class _ChatListPageState extends State<ChatListPage> {
                                               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
                                                 return Image.asset(
                                                   'assets/images/profile_null_image.png',
-                                                  width: 45.0,
-                                                  height: 45.0,
+                                                  width: 40.0,
+                                                  height: 40.0,
                                                   fit: BoxFit.cover,
                                                 );
                                               },

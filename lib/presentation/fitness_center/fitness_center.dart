@@ -10,7 +10,10 @@ import 'package:http/http.dart' as http;
 
 import '../../domain/util.dart';
 import '../../ui/colors.dart';
+import '../fitness_map/fitness_map.dart';
+import '../review/fitness_center_review.dart';
 import '../review/review_list.dart';
+import '../search_center/search_center.dart';
 
 class FitnessCenterPage extends StatefulWidget {
   String fitnessId;
@@ -25,6 +28,14 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
   var centerData;
   List reviews = [];
   int point = 0;
+  Map reviewPoint = {
+    "6319e2c3821cfa1d84516cd9" : 0,
+    "6319e2d4821cfa1d84516cdb" : 0,
+    "6319e3db821cfa1d84516cdd" : 0,
+    "6319e3fc821cfa1d84516cdf" : 0,
+    "6319e6e529188e0099d9ec14" : 0,
+  };
+  int reviewTotal = 0;
 
   @override
   void initState() {
@@ -60,6 +71,11 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
     if(reviews.length != 0) {
       for(int i = 0; i< reviews.length; i++) {
         point += reviews[i]['center_rating'] as int;
+
+        for(int j = 0; j< reviews[i]['center_review_by_select'].length; j++) {
+          reviewTotal += 1;
+          reviewPoint[reviews[i]['center_review_by_select'][j]] += 1;
+        }
       }
       point = point ~/ reviews.length;
     }
@@ -237,7 +253,11 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                               height: 16,
                             ),
                             onPressed: () {
-                              print("아앙");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FitnessMapPage(x: centerData['fitness_latitude'], y: centerData['fitness_longitude'], fitnessAddress: '${centerData['center_address']}', fitnessName: '${centerData['center_name']}',)),
+                              );
                             },
                           ),
                         ),
@@ -260,7 +280,11 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                       primary: Color(0xFF3F51B5),
                     ),
                     onPressed: () async {
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FitnessCenterReviewPage(fitnessCenterName: '${centerData['center_name']}', fitnessCenterRating: point, fitnessCenterAddress: '${centerData['center_address']}', fitnessCenterId: '${widget.fitnessId}',)),
+                      );
                     },
                     child: Text(
                       '피트니스 클럽 평가',
@@ -392,6 +416,68 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                           SizedBox(
                             height: 21,
                           ),
+                          Container(
+                            width: size.width-80,
+                            child: Row(
+                              children: [
+                                Stack(children: [
+                                  Container(
+                                    height: 8,
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(
+                                              0, 0, 0, 0.16), // shadow color
+                                        ),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 6,
+                                          color: Color(0xFFEFEFEF),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: reviewTotal == 0 ? 0 : (120 / reviewTotal) * reviewPoint['6319e2c3821cfa1d84516cd9'],
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Color(0xFF00C6FB),
+                                            Color(0xFF005BEA)
+                                          ]),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ]),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "${reviewPoint['6319e2c3821cfa1d84516cd9'].toString()}",
+                                  style: TextStyle(
+                                    color: Color(0xff6E7995),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  "시설이 깨끗해요",
+                                  style: TextStyle(
+                                      color: Color(0xff6E7995),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 21,
+                          ),
                           Row(
                             children: [
                               Stack(children: [
@@ -414,7 +500,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                   ),
                                 ),
                                 Container(
-                                  width: 50,
+                                  width: reviewTotal == 0 ? 0 : (120 / reviewTotal) * reviewPoint['6319e2d4821cfa1d84516cdb'],
                                   height: 8,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
@@ -432,7 +518,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                 width: 20,
                               ),
                               Text(
-                                "12",
+                                "${reviewPoint['6319e2d4821cfa1d84516cdb'].toString()}",
                                 style: TextStyle(
                                   color: Color(0xff6E7995),
                                   fontSize: 14,
@@ -440,7 +526,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                               ),
                               Spacer(),
                               Text(
-                                "매너있고 친절해요",
+                                "기구가 다양해요",
                                 style: TextStyle(
                                     color: Color(0xff6E7995),
                                     fontSize: 14,
@@ -473,7 +559,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                   ),
                                 ),
                                 Container(
-                                  width: 50,
+                                  width: reviewTotal == 0 ? 0 : (120 / reviewTotal) * reviewPoint['6319e3db821cfa1d84516cdd'],
                                   height: 8,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
@@ -491,7 +577,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                 width: 20,
                               ),
                               Text(
-                                "12",
+                                "${reviewPoint['6319e3db821cfa1d84516cdd'].toString()}",
                                 style: TextStyle(
                                   color: Color(0xff6E7995),
                                   fontSize: 14,
@@ -499,7 +585,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                               ),
                               Spacer(),
                               Text(
-                                "열정적이에요",
+                                "직원분들이 친절해요",
                                 style: TextStyle(
                                     color: Color(0xff6E7995),
                                     fontSize: 14,
@@ -532,7 +618,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                   ),
                                 ),
                                 Container(
-                                  width: 90,
+                                  width: reviewTotal == 0 ? 0 : (120 / reviewTotal) * reviewPoint['6319e3fc821cfa1d84516cdf'],
                                   height: 8,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
@@ -550,7 +636,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                 width: 20,
                               ),
                               Text(
-                                "12",
+                                "${reviewPoint['6319e3fc821cfa1d84516cdf'].toString()}",
                                 style: TextStyle(
                                   color: Color(0xff6E7995),
                                   fontSize: 14,
@@ -558,7 +644,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                               ),
                               Spacer(),
                               Text(
-                                "운동을 잘 알려줘요",
+                                "접근성이 좋아요",
                                 style: TextStyle(
                                     color: Color(0xff6E7995),
                                     fontSize: 14,
@@ -591,7 +677,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                   ),
                                 ),
                                 Container(
-                                  width: 80,
+                                  width: reviewTotal == 0 ? 0 : (120 / reviewTotal) * reviewPoint['6319e6e529188e0099d9ec14'],
                                   height: 8,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
@@ -609,7 +695,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                                 width: 20,
                               ),
                               Text(
-                                "12",
+                                "${reviewPoint['6319e6e529188e0099d9ec14'].toString()}",
                                 style: TextStyle(
                                   color: Color(0xff6E7995),
                                   fontSize: 14,
@@ -617,66 +703,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                               ),
                               Spacer(),
                               Text(
-                                "응답이 빨라요",
-                                style: TextStyle(
-                                    color: Color(0xff6E7995),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 21,
-                          ),
-                          Row(
-                            children: [
-                              Stack(children: [
-                                Container(
-                                  height: 8,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color.fromRGBO(
-                                            0, 0, 0, 0.16), // shadow color
-                                      ),
-                                      const BoxShadow(
-                                        offset: Offset(2, 2),
-                                        blurRadius: 6,
-                                        color: Color(0xFFEFEFEF),
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          Color(0xFF00C6FB),
-                                          Color(0xFF005BEA)
-                                        ]),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ]),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                "12",
-                                style: TextStyle(
-                                  color: Color(0xff6E7995),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                "약속을 잘 지켜요",
+                                "가격이 저렴해요",
                                 style: TextStyle(
                                     color: Color(0xff6E7995),
                                     fontSize: 14,

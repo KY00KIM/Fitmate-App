@@ -16,6 +16,7 @@ import '../../domain/util.dart';
 import '../../ui/bar_widget.dart';
 import '../../ui/colors.dart';
 import '../../ui/show_toast.dart';
+import '../profile/other_profile.dart';
 import '../review/review.dart';
 
 class Event {
@@ -274,6 +275,7 @@ class _CalenderPageState extends State<CalenderPage> {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.appBar(context),
@@ -611,18 +613,28 @@ class _CalenderPageState extends State<CalenderPage> {
                                                             ),
                                                             GestureDetector(
                                                               onTap: () {
-                                                                print("Container clicked");
+                                                                Navigator.push(
+                                                                  context,
+                                                                  CupertinoPageRoute(
+                                                                    builder: (context) => OtherProfilePage(
+                                                                      profileId: '${value[index].content['match_start_id'] == UserData['_id'] ? value[index].content['match_join_id'] : value[index].content['match_start_id']}',
+                                                                      profileName: '${value[index].content['partnerName']}',
+                                                                    ),
+                                                                  ),
+                                                                );
                                                               },
                                                               child: Container(
                                                                 padding:
                                                                 EdgeInsets.fromLTRB(20, 22, 20, 20),
                                                                 height: 64,
+                                                                width : size.width,
+                                                                color: whiteTheme,
                                                                 child: Row(
                                                                   mainAxisAlignment:
                                                                   MainAxisAlignment.start,
                                                                   children: [
                                                                     Text(
-                                                                      '채팅방 이동',
+                                                                      '프로필로 이동',
                                                                       style: TextStyle(
                                                                         color: Color(0xFF000000),
                                                                         fontSize: 16,

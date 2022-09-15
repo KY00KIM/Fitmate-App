@@ -36,8 +36,7 @@ class _WritingPageState extends State<WritingPage> {
   String title = "";
   String description = "";
   String postId = "";
-
-  late DateTime temp = DateTime.now();
+  late DateTime temp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0);
 
   final barWidget = BarWidget();
 
@@ -87,11 +86,9 @@ class _WritingPageState extends State<WritingPage> {
   }
 
   void PostPosets() async {
-    if (false == false) {
       List<int> imageBytes = _image!.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       List _selectedPartData = [];
-      log(IdToken);
 
       _filters.forEach((element) {
         _selectedPartData.add(fitnessPartConverse[element].toString());
@@ -102,13 +99,8 @@ class _WritingPageState extends State<WritingPage> {
         "location_id": "${UserData["location_id"]}",
         "post_fitness_part": _selectedPartData,
         "post_title": "$title",
-        "promise_location": {
-          "center_name": "$centerName",
-          "center_address": "${center['address_name']}",
-          "center_longitude": center['y'],
-          "center_latitude": center['x']
-        },
-        "promise_date": "${_selectedDate}T${_selectedTime}:00",
+        "promise_location_id": "${center['_id']}",
+        "promise_date": "${temp}",
         "post_img": "",
         "post_main_text": "$description"
       };
@@ -116,7 +108,7 @@ class _WritingPageState extends State<WritingPage> {
 
       var body = json.encode(data);
 
-      http.Response response = await http.post(Uri.parse("${baseUrlV1}posts/"),
+      http.Response response = await http.post(Uri.parse("${baseUrlV2}posts/"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'bearer $IdToken',
@@ -130,37 +122,23 @@ class _WritingPageState extends State<WritingPage> {
 
         // ignore: unused_local_variable
         var request = http.MultipartRequest(
-            'POST', Uri.parse("${baseUrlV1}posts/image/$postId"));
+            'POST', Uri.parse("${baseUrlV2}posts/image/$postId"));
         request.headers
-            .addAll({"Authorization": "bearer $IdToken", "postId": "$postId"});
+            .addAll({"Authorization": "bearer $IdToken"});
         request.files
             .add(await http.MultipartFile.fromPath('image', _image!.path));
         var res = await request.send();
-        print('$postId');
-        log(IdToken);
-        //print(res.statusCode);
-        flag = false;
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                PostPage(reload: true),
-            transitionDuration: Duration.zero,
-            reverseTransitionDuration: Duration.zero,
-          ),
-        );
+        FlutterToastBottom("게시글이 등록되었습니다!");
+        Navigator.pop(context);
       } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-        flag = false;
         IdToken =
             (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
                 .token
                 .toString();
         FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
       } else {
-        flag = false;
         FlutterToastBottom("오류가 발생하였습니다");
       }
-    }
   }
 
   Iterable<Widget> get companyPosition sync* {
@@ -263,7 +241,7 @@ class _WritingPageState extends State<WritingPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           backgroundColor: whiteTheme,
-          appBar: barWidget.writingAppBar(context, checkValid),
+          //appBar: barWidget.writingAppBar(context, checkValid),
           /*
           appBar: AppBar(
             leading: IconButton(
@@ -322,6 +300,108 @@ class _WritingPageState extends State<WritingPage> {
             ],
           ),
            */
+          appBar: AppBar(
+            centerTitle: false,
+            backgroundColor: whiteTheme,
+            toolbarHeight: 60,
+            elevation: 0,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: whiteTheme,
+            ),
+            automaticallyImplyLeading: false,
+            title: Padding(
+              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xFFF2F3F7),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFffffff),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                      offset: Offset(-2, -2),
+                    ),
+                    BoxShadow(
+                      color: Color.fromRGBO(55, 84, 170, 0.1),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
+                child: Theme(
+                  data: ThemeData(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                  ),
+                  child: IconButton(
+                    icon: SvgPicture.asset(
+                      "assets/icon/bar_icons/back_icon.svg",
+                      width: 18,
+                      height: 18,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 8, 20, 8),
+                child: Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFFF2F3F7),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xFFffffff),
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset: Offset(-2, -2),
+                      ),
+                      BoxShadow(
+                        color: Color.fromRGBO(55, 84, 170, 0.1),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Theme(
+                    data: ThemeData(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                    ),
+                    child: IconButton(
+                      icon: checkValid()
+                          ? SvgPicture.asset(
+                        "assets/icon/bar_icons/write_check_icon.svg",
+                        width: 18,
+                        height: 18,
+                      )
+                          : SvgPicture.asset(
+                        "assets/icon/bar_icons/non_color_check_icon.svg",
+                        width: 18,
+                        height: 18,
+                      ),
+                      onPressed: () {
+                        if (checkValid()) {
+                          PostPosets();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
           body: SafeArea(
             child: ScrollConfiguration(
               behavior: const ScrollBehavior().copyWith(overscroll: false),
@@ -519,6 +599,7 @@ class _WritingPageState extends State<WritingPage> {
                                 : setState(() {
                                     center = onValue;
                                     centerName = center['center_name'];
+                                    print("center : ${center}");
                                   });
                           });
                         },
@@ -680,7 +761,7 @@ class _WritingPageState extends State<WritingPage> {
                                                     locale: DatePicker.localeFromString('ko'),
                                                     onChange: (DateTime newDate, _) {
                                                       setState(() {
-                                                        temp = newDate;
+                                                        temp = DateTime(newDate.year, newDate.month, newDate.day, temp.hour, temp.minute);
                                                       });
                                                       print(temp);
                                                     },
@@ -923,7 +1004,7 @@ class _WritingPageState extends State<WritingPage> {
                                                     locale: DatePicker.localeFromString('ko'),
                                                     onChange: (DateTime newDate, _) {
                                                       setState(() {
-                                                        temp = newDate;
+                                                        temp = DateTime(temp.year, temp.month, temp.day, newDate.hour, newDate.minute);
                                                       });
                                                       print('temp : $temp');
                                                     },
