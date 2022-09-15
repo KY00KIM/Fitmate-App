@@ -41,12 +41,7 @@ class _MakePromisePageState extends State<MakePromisePage> {
   void PostPromise() async {
 
     Map data = {
-      "fitness_center": {
-        "center_name": "$centerName",
-        "center_address": "${center['address_name']}",
-        "center_longitude": center['y'],
-        "center_latitude": center['x']
-      },
+      "fitness_center_id": "${center['_id']}",
       "appointment_date": "${temp}",
       "match_start_id": "${UserData['_id']}",
       "match_join_id": "${widget.partnerId}"
@@ -54,7 +49,7 @@ class _MakePromisePageState extends State<MakePromisePage> {
     print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("${baseUrlV1}appointments"),
+    http.Response response = await http.post(Uri.parse("${baseUrlV2}appointments"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization' : 'bearer $IdToken',
@@ -881,7 +876,7 @@ class _MakePromisePageState extends State<MakePromisePage> {
                             ? null
                             : setState(() {
                           center = onValue;
-                          centerName = center['place_name'];
+                          centerName = center['center_name'];
                         });
                       });
                     },

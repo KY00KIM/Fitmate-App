@@ -192,7 +192,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
                                       strutStyle:
                                       StrutStyle(fontSize: 16),
                                       text: TextSpan(
-                                        text: '${widget.reviewData[index]['center_review']}',
+                                        text: '${widget.reviewData[index]['center_review'] == null ? '' : widget.reviewData[index]['center_review']}',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.black,

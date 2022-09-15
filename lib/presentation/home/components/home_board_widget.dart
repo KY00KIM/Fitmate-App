@@ -1,9 +1,16 @@
+import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../domain/util.dart';
+import '../../../ui/colors.dart';
+import '../../../ui/show_toast.dart';
 import '../../detail/detail.dart';
-import '../../writing/writing.dart';
+import '../../fitness_center/fitness_center.dart';
+import 'package:http/http.dart' as http;
 
 class HomeBoardWidget extends StatelessWidget {
   List posts;
@@ -12,6 +19,7 @@ class HomeBoardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
       height: 420,
       child: ListView.builder(
@@ -170,13 +178,38 @@ class HomeBoardWidget extends StatelessWidget {
                                                 height: 36,
                                               ),
                                               GestureDetector(
-                                                onTap: () {
-                                                  print("Container clicked");
+                                                onTap: () async {
+                                                  http.Response response =
+                                                  await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${posts[index].underId}"),
+                                                      headers: {
+                                                        "Authorization": "bearer $IdToken",
+                                                      },
+                                                      body: {});
+                                                  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                                  if (response.statusCode != 201 &&
+                                                      resBody["error"]["code"] == "auth/id-token-expired") {
+                                                    IdToken =
+                                                        (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+                                                            .token
+                                                            .toString();
+
+                                                    response = await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${posts[index].underId}"),
+                                                        headers: {
+                                                          "Authorization": "bearer $IdToken",
+                                                        },
+                                                        body: {});
+                                                    resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                                  }
+                                                  if(resBody['success'] == true) FlutterToastBottom('신고가 접수되었습니다.');
+                                                  else FlutterToastBottom('에러가 발생하였습니다.');
+                                                  Navigator.pop(context);
                                                 },
                                                 child: Container(
                                                   padding:
                                                   EdgeInsets.fromLTRB(20, 22, 20, 20),
                                                   height: 64,
+                                                  width : size.width,
+                                                  color: whiteTheme,
                                                   child: Row(
                                                     mainAxisAlignment:
                                                     MainAxisAlignment.start,
@@ -184,7 +217,7 @@ class HomeBoardWidget extends StatelessWidget {
                                                       Text(
                                                         '게시글 신고',
                                                         style: TextStyle(
-                                                          color: Color(0xFF000000),
+                                                          color: Color(0xFFCF2933),
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.bold,
                                                         ),
@@ -252,7 +285,10 @@ class HomeBoardWidget extends StatelessWidget {
                                 ),
                               ),
                               onTap: () {
-                                print("센터 클릭");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => FitnessCenterPage(fitnessId: '${posts[index].promiseLocation.underId}',)));
                               },
                             ),
                           ],

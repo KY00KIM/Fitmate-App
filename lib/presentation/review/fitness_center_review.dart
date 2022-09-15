@@ -56,16 +56,16 @@ class IconAlert extends StatelessWidget {
 }
 
 
-class ReviewPage extends StatefulWidget {
-  String appointmentId;
-  String recv_id;
-  String nickName;
-  String userImg;
-  ReviewPage({Key? key, required this.appointmentId, required this.recv_id, required this.nickName, required this.userImg})
+class FitnessCenterReviewPage extends StatefulWidget {
+  String fitnessCenterId;
+  int fitnessCenterRating;
+  String fitnessCenterName;
+  String fitnessCenterAddress;
+  FitnessCenterReviewPage({Key? key, required this.fitnessCenterId, required this.fitnessCenterRating, required this.fitnessCenterName, required this.fitnessCenterAddress})
       : super(key: key);
 
   @override
-  State<ReviewPage> createState() => _ReviewPageState();
+  State<FitnessCenterReviewPage> createState() => _FitnessCenterReviewPageState();
 }
 
 class LabeledCheckbox extends StatelessWidget {
@@ -130,23 +130,21 @@ class LabeledCheckbox extends StatelessWidget {
   }
 }
 
-class _ReviewPageState extends State<ReviewPage> {
+class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
   late List reviewData;
   String description = "";
-  List<bool> checkBoxList = [false, false, false, false, false, false, false];
+  List<bool> checkBoxList = [false, false, false, false, false];
   List<String> checkBoxListId = [
-    '62c66ef64b8212e4674dbe20',
-    '62c66f0b4b8212e4674dbe21',
-    '62c66ead4b8212e4674dbe1f',
-    '62c66f224b8212e4674dbe22',
-    '62dbb2e126e97374cf97aec7',
-    '62dbb2fb26e97374cf97aec8',
-    '62dbb30f26e97374cf97aec9'
+    '6319e2c3821cfa1d84516cd9',
+    '6319e2d4821cfa1d84516cdb',
+    '6319e3db821cfa1d84516cdd',
+    '6319e3fc821cfa1d84516cdf',
+    '6319e6e529188e0099d9ec14',
   ];
 
   Future<String> getData() async {
     http.Response response =
-        await http.get(Uri.parse('${baseUrlV1}reviews/candidates'), headers: {
+    await http.get(Uri.parse('${baseUrlV1}reviews/candidates'), headers: {
       'Authorization': 'bearer $IdToken',
       'Content-Type': 'application/json; charset=UTF-8'
     });
@@ -181,7 +179,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
   late final _ratingController;
   late double _rating;
-  String ratingText = "그저 그랬어요";
+  String ratingText = '그저 그랬어요';
 
   double _userRating = 3.0;
   int _ratingBarMode = 1;
@@ -198,22 +196,20 @@ class _ReviewPageState extends State<ReviewPage> {
     _rating = _initialRating;
   }
 
-  Future<void> PostReview() async {
+  Future<void> PostFitnessReview() async {
     List choice = [];
     for (int i = 0; i < checkBoxList.length; i++) {
       if (checkBoxList[i] == true) choice.add(checkBoxListId[i]);
     }
     Map data = {
-      "review_recv_id": "${widget.recv_id}",
-      "review_body": "${description}",
-      "user_rating": _rating.toInt(),
-      "review_candidates": choice,
-      "appointmentId": "${widget.appointmentId}"
+      "center_rating": _rating.toInt(),
+      "center_review": "${description}",
+      "center_review_by_select": choice
     };
     print(data);
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("${baseUrlV1}reviews/"),
+    http.Response response = await http.post(Uri.parse("${baseUrlV2}reviews/fitnesscenter/${widget.fitnessCenterId}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'bearer $IdToken',
@@ -222,16 +218,15 @@ class _ReviewPageState extends State<ReviewPage> {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print(resBody);
 
+
     if (response.statusCode == 201) {
       Navigator.pop(context);
       FlutterToastBottom("리뷰를 작성해 주셔서 감사합니다");
-    } else if (resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken =
-          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-              .token
-              .toString();
-      FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
-    } else {
+    } else if(resBody['success'] == false && resBody['message'] == "이미 해당 피트니스 센터 리뷰를 등록했습니다.") {
+      print("else if");
+      FlutterToastBottom("이미 해당 피트니스 센터 리뷰를 등록했습니다");
+    }else {
+      print("else");
       FlutterToastBottom("오류가 발생하였습니다");
     }
   }
@@ -246,7 +241,7 @@ class _ReviewPageState extends State<ReviewPage> {
           allowHalfRating: true,
           unratedColor: Color(0xFFCED3EA),
           itemCount: 5,
-          itemSize: 44.0,
+          itemSize: 32.0,
           itemBuilder: (context, _) => Padding(
             padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
             child: SvgPicture.asset(
@@ -450,9 +445,7 @@ class _ReviewPageState extends State<ReviewPage> {
                           checkBoxList[1] == true ||
                           checkBoxList[2] == true ||
                           checkBoxList[3] == true ||
-                          checkBoxList[4] == true ||
-                          checkBoxList[5] == true ||
-                          checkBoxList[6] == true) &&
+                          checkBoxList[4] == true) &&
                           description != ''
                           ? SvgPicture.asset(
                         "assets/icon/bar_icons/color_check_icon.svg",
@@ -469,11 +462,10 @@ class _ReviewPageState extends State<ReviewPage> {
                             checkBoxList[1] == true ||
                             checkBoxList[2] == true ||
                             checkBoxList[3] == true ||
-                            checkBoxList[4] == true ||
-                            checkBoxList[5] == true ||
-                            checkBoxList[6] == true) &&
+                            checkBoxList[4] == true) &&
                             description != '') {
-                          PostReview();
+                          PostFitnessReview();
+                          //PostReview();
                         }
                       },
                     ),
@@ -552,63 +544,91 @@ class _ReviewPageState extends State<ReviewPage> {
               behavior: const ScrollBehavior().copyWith(overscroll: false),
               child: SingleChildScrollView(
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  margin: EdgeInsets.fromLTRB(20, 15, 20, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ClipRRect(
-                        borderRadius:
-                        BorderRadius.circular(
-                            100.0),
-                        child: Image.network(
-                          '${widget.userImg}',
-                          width: 52.0,
-                          height: 52.0,
-                          fit: BoxFit.cover,
-                          errorBuilder:
-                              (BuildContext context,
-                              Object exception,
-                              StackTrace?
-                              stackTrace) {
-                            return Image.asset(
-                              'assets/images/profile_null_image.png',
-                              width: 20.0,
-                              height: 20.0,
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            '${widget.fitnessCenterName}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 12,),
+                          Text(
+                            '${widget.fitnessCenterAddress}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(height: 13,),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                widget.fitnessCenterRating >= 1 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                width: 16,
+                                height: 16,
+                              ),
+                              SizedBox(width: 4,),
+                              SvgPicture.asset(
+                                widget.fitnessCenterRating >= 2 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                width: 16,
+                                height: 16,
+                              ),
+                              SizedBox(width: 4,),
+                              SvgPicture.asset(
+                                widget.fitnessCenterRating >= 3 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                width: 16,
+                                height: 16,
+                              ),
+                              SizedBox(width: 4,),
+                              SvgPicture.asset(
+                                widget.fitnessCenterRating >= 4 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                width: 16,
+                                height: 16,
+                              ),
+                              SizedBox(width: 4,),
+                              SvgPicture.asset(
+                                widget.fitnessCenterRating >= 5 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                width: 16,
+                                height: 16,
+                              ),
+                              SizedBox(width: 8,),
+                              Text(
+                                '${widget.fitnessCenterRating}.0',
+                                style: TextStyle(
+                                  color: Color(0xFF000000),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.start,
                       ),
-                      SizedBox(height: 20,),
-                      Text(
-                        '${widget.nickName}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 14.0),
+                      SizedBox(height: 17.5,),
+                      Container(
+                        height: 1,
+                        color: Color(0xFFD1D9E6),
                       ),
                       SizedBox(
-                        height: 26,
+                        height: 35.5,
                       ),
                       Text(
-                        '회원을 평가해주세요.',
+                        '피트니스 클럽을 평가해주세요.',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                             fontSize: 20.0),
                       ),
                       SizedBox(
-                        height: 26,
-                      ),
-                      Text(
-                        '총 평을 해주세요.',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF6E7995),
-                            fontSize: 16.0),
-                      ),
-                      SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       _ratingBar(_ratingBarMode),
                       SizedBox(height: 20.0),
@@ -621,10 +641,15 @@ class _ReviewPageState extends State<ReviewPage> {
                         '$ratingText',
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16, color: Colors.black),
                       ),
-                      SizedBox(height: 36,),
+                      SizedBox(height: 40,),
                       Text(
-                        '함께 운동하며 느낀점을 모두 선택하세요.',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16, color: Color(0xFF6E7995)),
+                        '피트니스 클럽을 이용하며 느낀점을\n모두 선택하세요.',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Color(0xFF6E7995),
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 24,),
                       Container(
@@ -632,7 +657,7 @@ class _ReviewPageState extends State<ReviewPage> {
                         child: Column(
                           children: [
                             LabeledCheckbox(
-                              label: '매너가 좋아요.',
+                              label: '시설이 깨끗해요.',
                               padding: const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[0],
                               onChanged: (bool newValue) {
@@ -642,7 +667,7 @@ class _ReviewPageState extends State<ReviewPage> {
                               },
                             ),
                             LabeledCheckbox(
-                              label: '시간 약속을 잘 지켜요',
+                              label: '기구가 다양해요',
                               padding: const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[1],
                               onChanged: (bool newValue) {
@@ -652,7 +677,7 @@ class _ReviewPageState extends State<ReviewPage> {
                               },
                             ),
                             LabeledCheckbox(
-                              label: '친절하고 매너가 좋아요.',
+                              label: '직원분들이 친절해요.',
                               padding: const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[2],
                               onChanged: (bool newValue) {
@@ -662,7 +687,7 @@ class _ReviewPageState extends State<ReviewPage> {
                               },
                             ),
                             LabeledCheckbox(
-                              label: '열정적이에요.',
+                              label: '접근성이 좋아요.',
                               padding: const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[3],
                               onChanged: (bool newValue) {
@@ -672,32 +697,12 @@ class _ReviewPageState extends State<ReviewPage> {
                               },
                             ),
                             LabeledCheckbox(
-                              label: '채팅 응답이 빨라요.',
+                              label: '가격이 저렴해요.',
                               padding: const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[4],
                               onChanged: (bool newValue) {
                                 setState(() {
                                   checkBoxList[4] = newValue;
-                                });
-                              },
-                            ),
-                            LabeledCheckbox(
-                              label: '자세를 잘 봐줘요.',
-                              padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                              value: checkBoxList[5],
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  checkBoxList[5] = newValue;
-                                });
-                              },
-                            ),
-                            LabeledCheckbox(
-                              label: '모르는 운동법을 잘 알려줘요.',
-                              padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                              value: checkBoxList[6],
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  checkBoxList[6] = newValue;
                                 });
                               },
                             ),

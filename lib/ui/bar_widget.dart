@@ -220,6 +220,7 @@ class BarWidget {
           ),
         ),
       ),
+      /*
       actions: [
         Padding(
           padding: EdgeInsets.fromLTRB(0, 8, 20, 8),
@@ -264,6 +265,8 @@ class BarWidget {
           ),
         )
       ],
+
+       */
     );
   }
 
@@ -505,7 +508,7 @@ class BarWidget {
                                         Text(
                                           '게시글 신고',
                                           style: TextStyle(
-                                            color: Color(0xFF000000),
+                                            color: Color(0xFFCF2933),
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
