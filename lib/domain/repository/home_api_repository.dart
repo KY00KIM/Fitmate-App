@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:geolocator/geolocator.dart';
-
 import '../../data/banner_api.dart';
 import '../../data/post_api.dart';
 import '../model/fitnesscenter.dart';
@@ -29,17 +27,13 @@ class HomeApiRepository {
      */
 
     //FitnessCenter _fitness = await fitnessCenterRepo.getFitnessRepo(1, _position.longitude, _position.latitude, _position.longitude, _position.latitude);
-    FitnessCenter _fitness = await fitnessCenterRepo.getFitnessRepo(1, 100, 100, 100, 100);
+    FitnessCenter _fitness =
+        await fitnessCenterRepo.getFitnessRepo(1, 100, 100, 100, 100);
 
     posts = _posts;
     banners = _banners;
     myFitnessCenter = _fitness;
 
-    return {
-      "posts" : _posts,
-      "banners" : _banners,
-      "fitness_center" : _fitness
-    };
-
+    return {"posts": _posts, "banners": _banners, "fitness_center": _fitness};
   }
 }

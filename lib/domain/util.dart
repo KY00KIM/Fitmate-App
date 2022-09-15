@@ -1,4 +1,3 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'dart:convert';
@@ -140,33 +139,6 @@ Future<bool> UpdateUserData() async {
     print("유저 정보 가져오지 못함");
     return false;
   }
-}
-
-Future<Position> DeterminePosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-
-  // Test if location services are enabled.
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    await Geolocator.openLocationSettings();
-    return Future.error('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      return Future.error('Location permissions are denied');
-    }
-  }
-
-  if (permission == LocationPermission.deniedForever) {
-    return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
-  }
-
-  return await Geolocator.getCurrentPosition();
 }
 
 bool isSignedIn() {
