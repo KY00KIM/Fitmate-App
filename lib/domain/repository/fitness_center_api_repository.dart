@@ -58,24 +58,22 @@ class FitnessCenterApiRepository {
     }
   }
 
-  Future<FitnessCenter> getFitnessRepo(
-      int pages,
-      double first_longitude,
-      double first_latitude,
-      double second_longitude,
-      double second_latitude) async {
-    http.Response response = await fitnessCenterApi.get(pages, baselimit,
-        first_longitude, first_latitude, second_longitude, second_latitude);
+  Future<FitnessCenter> getFitnessRepo(int pages, double first_longitude, double first_latitude, double second_longitude, double second_latitude) async {
+    print("getFitnessRepo 시작");
+    http.Response response = await fitnessCenterApi.get(pages, baselimit, first_longitude, first_latitude, second_longitude, second_latitude);
     FitnessCenter _fitness;
-    Map<String, dynamic> hoho = jsonDecode(response.body);
-
+    print("status code : ${response.statusCode}");
     if (response.statusCode == 200) {
+      print("200");
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      print("getFitnessRepo response : $jsonResponse");
       List hits = jsonResponse['data']['docs'];
+      print("hits : $hits");
 
       _fitness = FitnessCenter.fromJson(hits[0]);
       return _fitness;
     } else {
+      print("200 아님");
       throw Exception('Failed to load post');
     }
   }

@@ -20,7 +20,9 @@ class HomeApiRepository {
     List<Post> _posts = <Post>[];
     List<Banner> _banners = <Banner>[];
     _posts = await postApi.getPost();
+    print("posts : $_posts");
     _banners = await bannerApi.getBanner();
+    print("banner : $_banners");
 
     Map _position = await locator.getAndSendLocation(null);
 
@@ -29,12 +31,8 @@ class HomeApiRepository {
     //     await fitnessCenterRepo.getFitnessRepo(1, 100, 100, 100, 100);
 
     print(_position);
-    FitnessCenter _fitness = await fitnessCenterRepo.getFitnessRepo(
-        1,
-        _position["user_longitude"],
-        _position["user_latitude"],
-        _position["user_longitude"],
-        _position["user_latitude"]);
+
+    FitnessCenter _fitness = await fitnessCenterRepo.getFitnessRepo(1, 126.76573544490464, 34.65468910081279, 128.67164341811144,  37.80553607680439);
     //FitnessCenter _fitness = await fitnessCenterRepo.getFitnessRepo(1, 100, 100, 100, 100);
     print(_fitness);
     print("hihihi");

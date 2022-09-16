@@ -40,12 +40,15 @@ class _HomeTownWidgetState extends State<HomeTownWidget> {
   @override
   Widget build(BuildContext context) {
     print("타운 가즈아");
+    /*
     if(widget.fitness_center.reviews.length != 0) {
       for(int i = 0; i< widget.fitness_center.reviews.length; i++) {
         point += widget.fitness_center.reviews[i].centerRating;
       }
       point = point ~/ widget.fitness_center.reviews.length;
     }
+
+     */
     return FutureBuilder(
         future: setMarkers(),
         builder: (context, snapshot) {
@@ -213,7 +216,8 @@ class _HomeTownWidgetState extends State<HomeTownWidget> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          '리뷰 ${widget.fitness_center.reviews.length}',
+                                          //'리뷰 ${widget.fitness_center.reviews.length}',
+                                          '리뷰 0',
                                           style: TextStyle(
                                             color: Color(0xFF283593),
                                             fontWeight: FontWeight.bold,

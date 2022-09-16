@@ -701,9 +701,10 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
     print("north : ${dontNow.northeast}");
     print("north latitude : ${dontNow.northeast.latitude}");
     print("south : ${dontNow.southwest}");
+    print("first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}");
 
     http.Response response = await http.get(
-      Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=50&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.southwest.longitude}&second_latitude=${dontNow.southwest.latitude}"),
+      Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=200&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}"),
       headers: {
         "Authorization": "bearer $IdToken",
         "Content-Type": "application/json; charset=UTF-8"

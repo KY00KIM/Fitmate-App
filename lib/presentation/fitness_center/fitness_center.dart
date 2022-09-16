@@ -348,7 +348,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) => ReviewListPage(reviewData: reviews, title: '피트니스 클럽',),
+                                  pageBuilder: (context, animation, secondaryAnimation) => ReviewListPage(reviewData: reviews, title: '피트니스 클럽', nickName: [], profileImg: [],),
                                   transitionDuration: Duration.zero,
                                   reverseTransitionDuration: Duration.zero,
                                 ),
