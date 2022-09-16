@@ -12,8 +12,10 @@ import '../../ui/colors.dart';
 class ReviewListPage extends StatefulWidget {
   List reviewData;
   String title;
+  List nickName;
+  List profileImg;
 
-  ReviewListPage({Key? key, required this.reviewData, required this.title}) : super(key: key);
+  ReviewListPage({Key? key, required this.reviewData, required this.title, required this.nickName, required this.profileImg,}) : super(key: key);
 
   @override
   State<ReviewListPage> createState() => _ReviewListPageState();
@@ -27,7 +29,11 @@ class _ReviewListPageState extends State<ReviewListPage> {
     super.initState();
     if(widget.reviewData.length != 0) {
       for(int i = 0; i< widget.reviewData.length; i++) {
-        point += widget.reviewData[i]['center_rating'] as int;
+        if(widget.title == "메이트") {
+          point += widget.reviewData[i]['user_rating'] as int;
+        } else {
+          point += widget.reviewData[i]['center_rating'] as int;
+        }
       }
       point = point ~/ widget.reviewData.length;
     }
@@ -37,7 +43,6 @@ class _ReviewListPageState extends State<ReviewListPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     log("reviews : ${widget.reviewData}");
-
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: AppBar(
@@ -138,7 +143,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
                           borderRadius:
                           BorderRadius.circular(100.0),
                           child: Image.network(
-                            '${widget.reviewData[index]['review_send_id']['user_profile_img']}',
+                            widget.title == "메이트" ? '${widget.profileImg[index]}' :'${widget.reviewData[index]['review_send_id']['user_profile_img']}',
                             width: 40.0,
                             height: 40.0,
                             fit: BoxFit.cover,
@@ -163,7 +168,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '${widget.reviewData[index]['review_send_id']['user_nickname']}',
+                                    widget.title == "메이트" ? '${widget.nickName[index]}' :'${widget.reviewData[index]['review_send_id']['user_nickname']}',
                                     style: TextStyle(
                                       color: Color(0xFF000000),
                                       fontWeight: FontWeight.bold,
@@ -192,7 +197,7 @@ class _ReviewListPageState extends State<ReviewListPage> {
                                       strutStyle:
                                       StrutStyle(fontSize: 16),
                                       text: TextSpan(
-                                        text: '${widget.reviewData[index]['center_review'] == null ? '' : widget.reviewData[index]['center_review']}',
+                                        text: widget.title == "메이트" ? '${widget.reviewData[index]['review_body'] == null ? '' : widget.reviewData[index]['review_body']}' : '${widget.reviewData[index]['center_review'] == null ? '' : widget.reviewData[index]['center_review']}',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.black,

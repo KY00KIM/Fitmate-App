@@ -15,6 +15,7 @@ import '../../data/firebase_service/firebase_auth_methods.dart';
 import '../../domain/util.dart';
 import '../../ui/bar_widget.dart';
 import '../login/login.dart';
+import '../review/review_list.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
   List<String> reviewName = [];
   List<String> reviewImg = [];
   List<String> reviewContext = [];
+  List reviewData = [];
   final barWidget = BarWidget();
 
   String getSchedule() {
@@ -74,6 +76,8 @@ class _ProfilePageState extends State<ProfilePage> {
       reviewImg.add(resBody["data"][i]["review_send_id"]['user_profile_img']);
       reviewName.add(resBody['data'][i]['review_send_id']['user_nickname']);
     }
+    reviewData = resBody['data'];
+    print("review data : $reviewData");
 
     print("반환 준비 : ${response.statusCode}");
     if (response.statusCode == 200) {
@@ -652,7 +656,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 18,
                                   height: 18,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ReviewListPage(reviewData: reviewData, title: '메이트', profileImg : reviewImg, nickName : reviewName)),
+                                  );
+                                },
                               ),
                             ),
                           ),
