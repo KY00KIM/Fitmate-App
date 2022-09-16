@@ -9,29 +9,31 @@ class profileEditViewModel {
   Future sendEditProfile() async {
     Map<String, dynamic> json = {
       "user_nickname":
-          isNicknameValid == false ? UserData["nickname"] : nickname,
+          isNicknameValid == false ? UserData["user_nickname"] : nickname,
       'user_address': selectedLocation == null || selectedSemiLocation == null
           ? UserData["user_address"]
           : "$selectedLocation $selectedSemiLocation",
       'user_schedule_time': selectedTime,
       "user_gender": gender,
       "user_weekday": isSelectedWeekDay,
-      "user_longitude": 0.0,
-      "user_latitude": 0.0,
-      "fitness_center": {
-        "center_name": centerName == user_center['center_name']
-            ? user_center['center_name']
-            : centerName,
-        "center_address": centerName == user_center['center_name']
-            ? user_center['center_address']
-            : center['address_name'],
-        "fitness_longitude": centerName == user_center['center_name']
-            ? user_center['fitness_longitude']
-            : double.parse(center['y']),
-        "fitness_latitude": centerName == user_center['center_name']
-            ? user_center['fitness_latitude']
-            : double.parse(center['x'])
-      }
+      "user_introduce": introduce,
+      // "fitness_center": {
+      //   "center_name": centerName == user_center['center_name']
+      //       ? user_center['center_name']
+      //       : centerName,
+      //   "center_address": centerName == user_center['center_name']
+      //       ? user_center['center_address']
+      //       : center['address_name'],
+      //   "fitness_longitude": centerName == user_center['center_name']
+      //       ? user_center['fitness_longitude']
+      //       : double.parse(center['y']),
+      //   "fitness_latitude": centerName == user_center['center_name']
+      //       ? user_center['fitness_latitude']
+      //       : double.parse(center['x'])
+      // }
+      "fitness_center_id": centerName == user_center['center_name']
+          ? user_center['id']
+          : center["id"]
     };
     print("userdata json ready");
     print("user at API : ${json}");

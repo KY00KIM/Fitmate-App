@@ -88,7 +88,7 @@ class locationController {
       print(onError);
       _locationSubscription?.cancel();
     }).listen((LocationData currentlocation) async {
-      if ((currentlocation.time! - lasttime) >= 30000) {
+      if ((currentlocation.time! - lasttime) >= 100000) {
         await getAndSendLocation(currentlocation);
         lasttime = currentlocation.time!;
       }
@@ -103,27 +103,29 @@ class locationController {
 
   Future<Map> getAndSendLocation(LocationData? locationData) async {
     try {
+      return {
+        "user_longitude": 37.52068835230978,
+        "user_latitude": 126.93706222153243
+      };
+
       if (_serviceEnabled == false ||
           _permissionGranted == PermissionStatus.denied) {
         print("is rejected : $_serviceEnabled    $_permissionGranted");
         return {"user_longitude": 0.0, "user_latitude": 0.0};
       }
-      print("get & send");
-      print("$location");
       locationData = locationData ?? await location.getLocation();
       Map _location = {
         "user_longitude": locationData.longitude,
         "user_latitude": locationData.latitude
       };
-      if (isSignedIn()) await api.postLocation(_location);
+      if (isSignedIn()) {
+        await api.postLocation(_location);
+      }
       return _location;
     } catch (error) {
       print("error at get&send : ${error}");
-      return {"user_longitude": 0.0, "user_latitude": 0.0};
-
-      return Future.error(Exception(error.toString()));
     }
-    return {"user_longitude": 0, "user_latitude": 0};
+    return {"user_longitude": 0.0, "user_latitude": 0.0};
   }
 
   pauseListener() {

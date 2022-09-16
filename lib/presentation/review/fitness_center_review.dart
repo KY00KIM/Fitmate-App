@@ -48,24 +48,29 @@ class IconAlert extends StatelessWidget {
   }
 
   Widget _iconButton(BuildContext context, IconData icon) => IconButton(
-    icon: Icon(icon),
-    onPressed: () => Navigator.pop(context, icon),
-    splashColor: Colors.amberAccent,
-    color: Colors.amber,
-  );
+        icon: Icon(icon),
+        onPressed: () => Navigator.pop(context, icon),
+        splashColor: Colors.amberAccent,
+        color: Colors.amber,
+      );
 }
-
 
 class FitnessCenterReviewPage extends StatefulWidget {
   String fitnessCenterId;
   int fitnessCenterRating;
   String fitnessCenterName;
   String fitnessCenterAddress;
-  FitnessCenterReviewPage({Key? key, required this.fitnessCenterId, required this.fitnessCenterRating, required this.fitnessCenterName, required this.fitnessCenterAddress})
+  FitnessCenterReviewPage(
+      {Key? key,
+      required this.fitnessCenterId,
+      required this.fitnessCenterRating,
+      required this.fitnessCenterName,
+      required this.fitnessCenterAddress})
       : super(key: key);
 
   @override
-  State<FitnessCenterReviewPage> createState() => _FitnessCenterReviewPageState();
+  State<FitnessCenterReviewPage> createState() =>
+      _FitnessCenterReviewPageState();
 }
 
 class LabeledCheckbox extends StatelessWidget {
@@ -144,7 +149,7 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
 
   Future<String> getData() async {
     http.Response response =
-    await http.get(Uri.parse('${baseUrlV1}reviews/candidates'), headers: {
+        await http.get(Uri.parse('${baseUrlV1}reviews/candidates'), headers: {
       'Authorization': 'bearer $IdToken',
       'Content-Type': 'application/json; charset=UTF-8'
     });
@@ -207,9 +212,12 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
       "center_review_by_select": choice
     };
     print(data);
+    print(widget.fitnessCenterId);
     var body = json.encode(data);
 
-    http.Response response = await http.post(Uri.parse("${baseUrlV2}reviews/fitnesscenter/${widget.fitnessCenterId}"),
+    http.Response response = await http.post(
+        Uri.parse(
+            "${baseUrlV2}reviews/fitnesscenter/${widget.fitnessCenterId}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'bearer $IdToken',
@@ -218,14 +226,14 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print(resBody);
 
-
     if (response.statusCode == 201) {
       Navigator.pop(context);
       FlutterToastBottom("리뷰를 작성해 주셔서 감사합니다");
-    } else if(resBody['success'] == false && resBody['message'] == "이미 해당 피트니스 센터 리뷰를 등록했습니다.") {
+    } else if (resBody['success'] == false &&
+        resBody['message'] == "이미 해당 피트니스 센터 리뷰를 등록했습니다.") {
       print("else if");
       FlutterToastBottom("이미 해당 피트니스 센터 리뷰를 등록했습니다");
-    }else {
+    } else {
       print("else");
       FlutterToastBottom("오류가 발생하였습니다");
     }
@@ -251,10 +259,13 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
           ),
           onRatingUpdate: (rating) {
             String text = '안좋았어요';
-            if(rating > 4) text = "너무 좋았어요";
-            else if(rating > 3) text = "좋았어요";
-            else if(rating > 2) text = '그저 그랬어요';
-            else if(rating > 1) text = '별로에요';
+            if (rating > 4)
+              text = "너무 좋았어요";
+            else if (rating > 3)
+              text = "좋았어요";
+            else if (rating > 2)
+              text = '그저 그랬어요';
+            else if (rating > 1) text = '별로에요';
             setState(() {
               _rating = rating;
               ratingText = text;
@@ -441,28 +452,28 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                       ),
 
                        */
-                      icon : (checkBoxList[0] == true ||
-                          checkBoxList[1] == true ||
-                          checkBoxList[2] == true ||
-                          checkBoxList[3] == true ||
-                          checkBoxList[4] == true) &&
-                          description != ''
+                      icon: (checkBoxList[0] == true ||
+                                  checkBoxList[1] == true ||
+                                  checkBoxList[2] == true ||
+                                  checkBoxList[3] == true ||
+                                  checkBoxList[4] == true) &&
+                              description != ''
                           ? SvgPicture.asset(
-                        "assets/icon/bar_icons/color_check_icon.svg",
-                        width: 16,
-                        height: 16,
-                      )
+                              "assets/icon/bar_icons/color_check_icon.svg",
+                              width: 16,
+                              height: 16,
+                            )
                           : SvgPicture.asset(
-                        "assets/icon/bar_icons/non_color_check_icon.svg",
-                        width: 16,
-                        height: 16,
-                      ),
+                              "assets/icon/bar_icons/non_color_check_icon.svg",
+                              width: 16,
+                              height: 16,
+                            ),
                       onPressed: () async {
                         if ((checkBoxList[0] == true ||
-                            checkBoxList[1] == true ||
-                            checkBoxList[2] == true ||
-                            checkBoxList[3] == true ||
-                            checkBoxList[4] == true) &&
+                                checkBoxList[1] == true ||
+                                checkBoxList[2] == true ||
+                                checkBoxList[3] == true ||
+                                checkBoxList[4] == true) &&
                             description != '') {
                           PostFitnessReview();
                           //PostReview();
@@ -558,7 +569,9 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 12,),
+                          SizedBox(
+                            height: 12,
+                          ),
                           Text(
                             '${widget.fitnessCenterAddress}',
                             style: TextStyle(
@@ -566,39 +579,61 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(height: 13,),
+                          SizedBox(
+                            height: 13,
+                          ),
                           Row(
                             children: [
                               SvgPicture.asset(
-                                widget.fitnessCenterRating >= 1 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                widget.fitnessCenterRating >= 1
+                                    ? "assets/icon/color_star_icon.svg"
+                                    : "assets/icon/star_icon.svg",
                                 width: 16,
                                 height: 16,
                               ),
-                              SizedBox(width: 4,),
+                              SizedBox(
+                                width: 4,
+                              ),
                               SvgPicture.asset(
-                                widget.fitnessCenterRating >= 2 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                widget.fitnessCenterRating >= 2
+                                    ? "assets/icon/color_star_icon.svg"
+                                    : "assets/icon/star_icon.svg",
                                 width: 16,
                                 height: 16,
                               ),
-                              SizedBox(width: 4,),
+                              SizedBox(
+                                width: 4,
+                              ),
                               SvgPicture.asset(
-                                widget.fitnessCenterRating >= 3 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                widget.fitnessCenterRating >= 3
+                                    ? "assets/icon/color_star_icon.svg"
+                                    : "assets/icon/star_icon.svg",
                                 width: 16,
                                 height: 16,
                               ),
-                              SizedBox(width: 4,),
+                              SizedBox(
+                                width: 4,
+                              ),
                               SvgPicture.asset(
-                                widget.fitnessCenterRating >= 4 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                widget.fitnessCenterRating >= 4
+                                    ? "assets/icon/color_star_icon.svg"
+                                    : "assets/icon/star_icon.svg",
                                 width: 16,
                                 height: 16,
                               ),
-                              SizedBox(width: 4,),
+                              SizedBox(
+                                width: 4,
+                              ),
                               SvgPicture.asset(
-                                widget.fitnessCenterRating >= 5 ? "assets/icon/color_star_icon.svg" : "assets/icon/star_icon.svg",
+                                widget.fitnessCenterRating >= 5
+                                    ? "assets/icon/color_star_icon.svg"
+                                    : "assets/icon/star_icon.svg",
                                 width: 16,
                                 height: 16,
                               ),
-                              SizedBox(width: 8,),
+                              SizedBox(
+                                width: 8,
+                              ),
                               Text(
                                 '${widget.fitnessCenterRating}.0',
                                 style: TextStyle(
@@ -612,7 +647,9 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                         ],
                         crossAxisAlignment: CrossAxisAlignment.start,
                       ),
-                      SizedBox(height: 17.5,),
+                      SizedBox(
+                        height: 17.5,
+                      ),
                       Container(
                         height: 1,
                         color: Color(0xFFD1D9E6),
@@ -634,14 +671,24 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                       SizedBox(height: 20.0),
                       Text(
                         '$_rating',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 28, color: Color(0xFF6E7995)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 28,
+                            color: Color(0xFF6E7995)),
                       ),
-                      SizedBox(height: 12,),
+                      SizedBox(
+                        height: 12,
+                      ),
                       Text(
                         '$ratingText',
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16, color: Colors.black),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black),
                       ),
-                      SizedBox(height: 40,),
+                      SizedBox(
+                        height: 40,
+                      ),
                       Text(
                         '피트니스 클럽을 이용하며 느낀점을\n모두 선택하세요.',
                         style: TextStyle(
@@ -651,14 +698,17 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 24,),
+                      SizedBox(
+                        height: 24,
+                      ),
                       Container(
                         margin: EdgeInsets.only(left: 10),
                         child: Column(
                           children: [
                             LabeledCheckbox(
                               label: '시설이 깨끗해요.',
-                              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[0],
                               onChanged: (bool newValue) {
                                 setState(() {
@@ -668,7 +718,8 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                             ),
                             LabeledCheckbox(
                               label: '기구가 다양해요',
-                              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[1],
                               onChanged: (bool newValue) {
                                 setState(() {
@@ -678,7 +729,8 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                             ),
                             LabeledCheckbox(
                               label: '직원분들이 친절해요.',
-                              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[2],
                               onChanged: (bool newValue) {
                                 setState(() {
@@ -688,7 +740,8 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                             ),
                             LabeledCheckbox(
                               label: '접근성이 좋아요.',
-                              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[3],
                               onChanged: (bool newValue) {
                                 setState(() {
@@ -698,7 +751,8 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                             ),
                             LabeledCheckbox(
                               label: '가격이 저렴해요.',
-                              padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0.0),
                               value: checkBoxList[4],
                               onChanged: (bool newValue) {
                                 setState(() {
@@ -709,7 +763,6 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                           ],
                         ),
                       ),
-
                       SizedBox(
                         height: 30,
                       ),
@@ -728,7 +781,8 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
+                              color: const Color.fromRGBO(
+                                  0, 0, 0, 0.16), // shadow color
                             ),
                             const BoxShadow(
                               offset: Offset(2, 2),
@@ -763,7 +817,9 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 28,)
+                      SizedBox(
+                        height: 28,
+                      )
                     ],
                   ),
                 ),

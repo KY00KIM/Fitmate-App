@@ -1,4 +1,3 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'dart:convert';
@@ -94,9 +93,27 @@ Map userWeekdayMap = UserData["user_weekday"];
 List<String> userWeekdayList = [];
 Map user_center = {};
 
+bool findStringInList(List list, String string) {
+  for (int i = 0; i < list.length; i++) {
+    if (list[i] == string) return true;
+  }
+  return false;
+}
+
 // ignore: non_constant_identifier_names
 Future<bool> UpdateUserData() async {
   log(IdToken.toString());
+  http.Response responseInit =
+      await http.get(Uri.parse("${baseUrlV1}users/login"), headers: {
+    // ignore: unnecessary_string_interpolations
+    "Authorization": "bearer ${IdToken.toString()}",
+    "Content-Type": "application/json; charset=UTF-8",
+  });
+  if (responseInit.statusCode == 200) {
+    var resBody = jsonDecode(utf8.decode(responseInit.bodyBytes));
+    UserId = resBody['data']['user_id'];
+  }
+
   http.Response response = await http
       .get(Uri.parse("${baseUrlV1}users/${UserId.toString()}"), headers: {
     // ignore: unnecessary_string_interpolations
@@ -120,7 +137,8 @@ Future<bool> UpdateUserData() async {
 
     userWeekdayMap = UserData["user_weekday"];
     userWeekdayMap.forEach((key, value) => {
-          if (value) {userWeekdayList.add(key)}
+          if (value && !findStringInList(userWeekdayList, key.toString()))
+            {userWeekdayList.add(key)}
         });
     log("userWeekdayList : ${userWeekdayList}");
 
@@ -134,39 +152,13 @@ Future<bool> UpdateUserData() async {
       user_center["center_address"] = resBody2["data"]["center_address"]!;
       user_center["fitness_longitude"] = resBody2["data"]["fitness_longitude"]!;
       user_center["fitness_latitude"] = resBody2["data"]["fitness_latitude"]!;
+      user_center["id"] = resBody2["data"]["_id"]!;
     }
     return true;
   } else {
     print("유저 정보 가져오지 못함");
     return false;
   }
-}
-
-Future<Position> DeterminePosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-
-  // Test if location services are enabled.
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    await Geolocator.openLocationSettings();
-    return Future.error('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      return Future.error('Location permissions are denied');
-    }
-  }
-
-  if (permission == LocationPermission.deniedForever) {
-    return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
-  }
-
-  return await Geolocator.getCurrentPosition();
 }
 
 bool isSignedIn() {

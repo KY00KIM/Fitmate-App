@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fitmate/presentation/policy_agreement/policy_agreement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -117,11 +118,13 @@ class GoogleLoginWidget extends StatelessWidget {
             }
           } else if (resBody['message'] == 404) {
             // 사용자 정보가 등록 안된 상황에서는
+            log("DATA");
+            log(resBody['error'].toString());
             Navigator.push(
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    SignupPage1(
+                    PolicyAgreementPage(
                   user_object: resBody['error'],
                 ),
                 transitionDuration: Duration.zero,

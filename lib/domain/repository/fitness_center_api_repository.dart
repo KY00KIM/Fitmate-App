@@ -10,10 +10,16 @@ class FitnessCenterApiRepository {
   final fitnessCenterApi = FitnessCenterApi();
   int baselimit = 10;
 
-  Future<List> getFitnessCentersRepo(int pages, double first_longitude, double first_latitude, double second_longitude, double second_latitude) async {
+  Future<List> getFitnessCentersRepo(
+      int pages,
+      double first_longitude,
+      double first_latitude,
+      double second_longitude,
+      double second_latitude) async {
     //여기서 새로고침 케이스 조절
     List<FitnessCenter> _fitnessCenter = <FitnessCenter>[];
-    http.Response response = await fitnessCenterApi.get(pages, baselimit, first_longitude, first_latitude, second_longitude, second_latitude);
+    http.Response response = await fitnessCenterApi.get(pages, baselimit,
+        first_longitude, first_latitude, second_longitude, second_latitude);
 
     int totalDocs = 0;
     int limit = 0;
@@ -40,11 +46,10 @@ class FitnessCenterApiRepository {
       nextPage = jsonResponse['data']['nextPage'];
       userCount = jsonResponse['data']['userCount'];
 
-      for(int i = 0; i < hits.length; i++) {
+      for (int i = 0; i < hits.length; i++) {
         try {
           _fitnessCenter.add(FitnessCenter.fromJson(hits[i]));
-        } catch (e) {
-        }
+        } catch (e) {}
       }
       return _fitnessCenter;
     } else {
@@ -72,5 +77,4 @@ class FitnessCenterApiRepository {
       throw Exception('Failed to load post');
     }
   }
-
 }

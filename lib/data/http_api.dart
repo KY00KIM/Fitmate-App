@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -52,6 +53,9 @@ class HttpApi {
             },
             body: bodyParse);
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      return response;
+    }
     if (response.statusCode != 201 &&
         resBody["error"]["code"] == "auth/id-token-expired") {
       IdToken =
@@ -68,7 +72,6 @@ class HttpApi {
               body: bodyParse);
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
     }
-
     return response;
   }
 
