@@ -6,7 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/domain/instance_preference/location.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
+import 'package:fitmate/presentation/policy_agreement/policy_agreement.dart';
 import 'package:fitmate/presentation/post/post.dart';
+import 'package:fitmate/presentation/profile/other_profile.dart';
 import 'package:fitmate/presentation/signup/component/signup-view-model.dart';
 import 'package:fitmate/presentation/signup/signup.dart';
 import 'package:fitmate/presentation/signup/signup2.dart';
@@ -27,6 +29,20 @@ import 'dart:convert';
 
 import 'naver_map.dart';
 
+final Map<dynamic, dynamic> user_object = {
+  "name": "김민규",
+  "picture":
+      "https://lh3.googleusercontent.com/a/AItbvmkRzzO6WM2fjbWqOXxyI5TdQLtR7KvLezo_GrTl=s96-c",
+  "iss": "https://securetoken.google.com/fitmate-cf118",
+  "aud": "fitmate-cf118",
+  "auth_time": 1663318460,
+  "user_id": "aqR9VnuS7yXJH6TEfVtAPN0w4Yj2",
+  "sub": "aqR9VnuS7yXJH6TEfVtAPN0w4Yj2",
+  "iat": 1663318461,
+  "exp": 1663322061,
+  "firebase": 123,
+  "uid": "aqR9VnuS7yXJH6TEfVtAPN0w4Yj2"
+};
 void main() async {
   //Constants.setEnvironment(Environment.PROD);
   await dotenv.load(fileName: ".env");
@@ -97,7 +113,7 @@ class MyApp extends StatelessWidget {
         //     Get.put(NotificationController());
         //   },
         // ),
-        // home : SignUpPage1(),
+        // home: PolicyAgreementPage(user_object: user_object),
         home: FutureBuilder(
           future: getToken(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -118,7 +134,6 @@ class MyApp extends StatelessWidget {
                       reload: true,
                     );
             }
-
             //return BaseMapPage();
           },
         ),

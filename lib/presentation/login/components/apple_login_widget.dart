@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fitmate/presentation/policy_agreement/policy_agreement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -131,7 +132,7 @@ class AppleLoginWidget extends StatelessWidget {
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    SignupPage1(
+                    PolicyAgreementPage(
                   user_object: resBody['error'],
                 ),
                 transitionDuration: Duration.zero,

@@ -102,7 +102,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '회원가입',
+                        '내 정보 수정',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Color(0xff6e7995),

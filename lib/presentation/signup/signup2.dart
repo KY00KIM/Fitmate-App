@@ -103,44 +103,44 @@ class _SignupPageState2 extends State<SignupPage2> {
                           ],
                         ),
                         child: Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
-                                hint: Text(
-                                  "지역을 선택하세요",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xff6E7995),
-                                  ),
-                                ),
-                                isExpanded: true,
-                                items: widget.viewModel.locationMap.keys
-                                    .map((item) => DropdownMenuItem<String>(
-                                        value: item, child: Text(item)))
-                                    .toList(),
-                                value: widget.viewModel.selectedLocation,
-                                onChanged: (value) {
-                                  setState(() {
-                                    widget.viewModel.selectedLocation =
-                                        value as String;
-                                    widget.viewModel.selectedSemiLocation =
-                                        null;
-                                  });
-                                },
-                                icon: SvgPicture.asset(
-                                    'assets/icon/dropArrow.svg'),
-                                iconSize: 20,
-                                iconEnabledColor: Colors.black,
-                                iconDisabledColor: Colors.grey,
-                                dropdownMaxHeight: 400,
-                                dropdownWidth: 300,
-                                dropdownPadding: EdgeInsets.only(left: 10),
-                                dropdownDecoration: BoxDecoration(
-                                  color: Color(0xffF2F3F7),
+                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              hint: Text(
+                                "지역을 선택하세요",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                  color: Color(0xff6E7995),
                                 ),
                               ),
-                            )),
+                              isExpanded: true,
+                              items: widget.viewModel.locationMap.keys
+                                  .map((item) => DropdownMenuItem<String>(
+                                      value: item, child: Text(item)))
+                                  .toList(),
+                              value: widget.viewModel.selectedLocation,
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.viewModel.selectedLocation =
+                                      value as String;
+                                  widget.viewModel.selectedSemiLocation = null;
+                                });
+                              },
+                              icon:
+                                  SvgPicture.asset('assets/icon/dropArrow.svg'),
+                              iconSize: 20,
+                              iconEnabledColor: Colors.black,
+                              iconDisabledColor: Colors.grey,
+                              dropdownMaxHeight: 400,
+                              dropdownWidth: 300,
+                              dropdownPadding: EdgeInsets.only(left: 10),
+                              dropdownDecoration: BoxDecoration(
+                                color: Color(0xffF2F3F7),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 23.5,

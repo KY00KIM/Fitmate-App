@@ -103,6 +103,17 @@ bool findStringInList(List list, String string) {
 // ignore: non_constant_identifier_names
 Future<bool> UpdateUserData() async {
   log(IdToken.toString());
+  http.Response responseInit =
+      await http.get(Uri.parse("${baseUrlV1}users/login"), headers: {
+    // ignore: unnecessary_string_interpolations
+    "Authorization": "bearer ${IdToken.toString()}",
+    "Content-Type": "application/json; charset=UTF-8",
+  });
+  if (responseInit.statusCode == 200) {
+    var resBody = jsonDecode(utf8.decode(responseInit.bodyBytes));
+    UserId = resBody['data']['user_id'];
+  }
+
   http.Response response = await http
       .get(Uri.parse("${baseUrlV1}users/${UserId.toString()}"), headers: {
     // ignore: unnecessary_string_interpolations
