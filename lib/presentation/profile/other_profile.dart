@@ -40,12 +40,27 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   List<String> reviewImg = [];
   List<String> reviewContext = [];
   int reviewCount = 0;
+  int reviewTotal = 0;
+  int point = 0;
+  List reviewData = [];
+
+  Map reviewPoint = {
+    "62c66ead4b8212e4674dbe1f": 0,
+    "62c66ef64b8212e4674dbe20": 0,
+    "62c66f0b4b8212e4674dbe21": 0,
+    "62c66f224b8212e4674dbe22": 0,
+    "62dbb2e126e97374cf97aec7": 0,
+    "62dbb2fb26e97374cf97aec8": 0,
+    "62dbb30f26e97374cf97aec9": 0
+  };
 
   //int reviewNumber = 0;
   String reportContent = '';
   String chatId = '';
 
   Future<Map> getOtherProfile() async {
+    point = 0;
+
     print("loading user");
     http.Response response = await http.get(
         Uri.parse("${baseUrlV1}users/${widget.profileId.toString()}"),
@@ -112,17 +127,31 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         },
       );
       var reviewRes = jsonDecode(utf8.decode(response2.bodyBytes));
+      reviewData = reviewRes['data'];
+
       print("loaded reivew");
 
       reviewContext.clear();
       reviewImg.clear();
       reviewName.clear();
       reviewCount = reviewRes['data'].length;
+
       for (int i = 0; i < reviewRes['data'].length; i++) {
+        point += reviewData[i]['user_rating'] as int;
+
         reviewContext.add(reviewRes['data'][i]['review_body']);
         reviewImg
             .add(reviewRes["data"][i]["review_send_id"]['user_profile_img']);
         reviewName.add(reviewRes['data'][i]['review_send_id']['user_nickname']);
+        for (int j = 0; j < reviewData[i]['review_candidate'].length; j++) {
+          reviewTotal += 1;
+
+          reviewPoint[reviewData[i]['review_candidate'][j]] += 1;
+        }
+      }
+
+      if (reviewData.length != 0) {
+        point = point ~/ reviewData.length;
       }
 
       return userRes['data'];
@@ -894,14 +923,14 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                               width: 12,
                                             ),
                                             Text(
-                                              "리뷰 46",
+                                              "리뷰 ${reviewData.length}",
                                               style: TextStyle(
                                                   color: Color(0xff6E7995),
                                                   fontSize: 16),
                                             ),
                                             Spacer(),
                                             Text(
-                                              "3.5",
+                                              "${point}.0",
                                               style: TextStyle(
                                                   color: Color(0xffF27F22),
                                                   fontSize: 24,
@@ -937,7 +966,13 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 50,
+                                              width: reviewTotal == 0
+                                                  ? 0
+                                                  : (120 / reviewTotal) *
+                                                      (reviewPoint[
+                                                              '62c66ead4b8212e4674dbe1f'] +
+                                                          reviewPoint[
+                                                              '62c66ef64b8212e4674dbe20']),
                                               height: 8,
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -956,7 +991,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                             width: 20,
                                           ),
                                           Text(
-                                            "12",
+                                            "${(reviewPoint['62c66ead4b8212e4674dbe1f'] + reviewPoint['62c66ef64b8212e4674dbe20']).toString()}",
                                             style: TextStyle(
                                               color: Color(0xff6E7995),
                                               fontSize: 14,
@@ -1001,7 +1036,11 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 50,
+                                              width: reviewTotal == 0
+                                                  ? 0
+                                                  : (120 / reviewTotal) *
+                                                      (reviewPoint[
+                                                          '62c66f224b8212e4674dbe22']),
                                               height: 8,
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -1020,7 +1059,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                             width: 20,
                                           ),
                                           Text(
-                                            "12",
+                                            "${reviewPoint['62c66f224b8212e4674dbe22'].toString()}",
                                             style: TextStyle(
                                               color: Color(0xff6E7995),
                                               fontSize: 14,
@@ -1065,7 +1104,13 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 90,
+                                              width: reviewTotal == 0
+                                                  ? 0
+                                                  : (120 / reviewTotal) *
+                                                      (reviewPoint[
+                                                              '62dbb30f26e97374cf97aec9'] +
+                                                          reviewPoint[
+                                                              "62dbb2fb26e97374cf97aec8"]),
                                               height: 8,
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -1084,7 +1129,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                             width: 20,
                                           ),
                                           Text(
-                                            "12",
+                                            "${(reviewPoint['62dbb30f26e97374cf97aec9'] + reviewPoint["62dbb2fb26e97374cf97aec8"]).toString()}",
                                             style: TextStyle(
                                               color: Color(0xff6E7995),
                                               fontSize: 14,
@@ -1129,7 +1174,11 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 80,
+                                              width: reviewTotal == 0
+                                                  ? 0
+                                                  : (120 / reviewTotal) *
+                                                      (reviewPoint[
+                                                          '62dbb2e126e97374cf97aec7']),
                                               height: 8,
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -1148,7 +1197,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                             width: 20,
                                           ),
                                           Text(
-                                            "12",
+                                            "${reviewPoint['62dbb2e126e97374cf97aec7'].toString()}",
                                             style: TextStyle(
                                               color: Color(0xff6E7995),
                                               fontSize: 14,
@@ -1193,7 +1242,11 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                               ),
                                             ),
                                             Container(
-                                              width: 100,
+                                              width: reviewTotal == 0
+                                                  ? 0
+                                                  : (120 / reviewTotal) *
+                                                      (reviewPoint[
+                                                          '62c66f0b4b8212e4674dbe21']),
                                               height: 8,
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -1212,7 +1265,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                             width: 20,
                                           ),
                                           Text(
-                                            "12",
+                                            "${reviewPoint['62c66f0b4b8212e4674dbe21'].toString()}",
                                             style: TextStyle(
                                               color: Color(0xff6E7995),
                                               fontSize: 14,
