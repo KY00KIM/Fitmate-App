@@ -170,6 +170,7 @@ class BarWidget {
 
     return AppBar(
       centerTitle: false,
+      automaticallyImplyLeading: false,
       backgroundColor: whiteTheme,
       toolbarHeight: 60,
       elevation: 0,

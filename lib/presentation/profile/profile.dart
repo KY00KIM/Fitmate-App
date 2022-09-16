@@ -272,41 +272,45 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
-                          child: Expanded(
-                            child: Column(
-                              children: [
-                                Row(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Column(
                                   children: [
-                                    SizedBox(
-                                      width: 4,
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          "한줄소개",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      "한줄소개",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    SingleChildScrollView(
+                                      child: UserData['user_introduce'] == "" ||
+                                              UserData['user_introduce'] == null
+                                          ? SizedBox(
+                                              height: 10,
+                                            )
+                                          : Text(
+                                              "${UserData['user_introduce']}",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xff6E7995)),
+                                              maxLines: 5,
+                                            ),
                                     )
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                SingleChildScrollView(
-                                  child: UserData['user_introduce'] == "" ||
-                                          UserData['user_introduce'] == null
-                                      ? SizedBox(
-                                          height: 10,
-                                        )
-                                      : Text(
-                                          "${UserData['user_introduce']}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xff6E7995)),
-                                          maxLines: 5,
-                                        ),
-                                )
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

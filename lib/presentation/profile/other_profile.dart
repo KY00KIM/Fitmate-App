@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 import '../../domain/util.dart';
 import '../../ui/show_toast.dart';
+import '../review/review_list.dart';
 
 String OtherUserCenterName = '';
 
@@ -129,30 +130,40 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
       var reviewRes = jsonDecode(utf8.decode(response2.bodyBytes));
       reviewData = reviewRes['data'];
 
-      print("loaded reivew");
+      log("loaded reivew : ${reviewData}");
 
       reviewContext.clear();
       reviewImg.clear();
       reviewName.clear();
+      print("review res length : ${reviewRes['data'].length}");
       reviewCount = reviewRes['data'].length;
 
       for (int i = 0; i < reviewRes['data'].length; i++) {
         point += reviewData[i]['user_rating'] as int;
 
+        print("review res body : ${reviewRes['data'][i]['review_body']}");
         reviewContext.add(reviewRes['data'][i]['review_body']);
+
+        print("review res image : ${reviewRes["data"][i]["review_send_id"]['user_profile_img']}");
         reviewImg
             .add(reviewRes["data"][i]["review_send_id"]['user_profile_img']);
+
+        print("review res name : ${reviewRes['data'][i]['review_send_id']['user_nickname']}");
         reviewName.add(reviewRes['data'][i]['review_send_id']['user_nickname']);
-        for (int j = 0; j < reviewData[i]['review_candidate'].length; j++) {
+
+        print("review data candidate : ${reviewData[i]['review_candidate']}");
+        for (int j = 0; j < reviewData[i]['review_candidates'].length; j++) {
           reviewTotal += 1;
 
-          reviewPoint[reviewData[i]['review_candidate'][j]] += 1;
+          reviewPoint[reviewData[i]['review_candidates'][j]['_id']] += 1;
         }
       }
 
       if (reviewData.length != 0) {
         point = point ~/ reviewData.length;
       }
+
+      print("반환 : ${userRes['data']}");
 
       return userRes['data'];
     } else {
@@ -387,7 +398,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                       ),
                                       SingleChildScrollView(
                                         child: Text(
-                                          '${snapshot.data!['user_introduce']}',
+                                          '${snapshot.data!['user_introduce'] == null ? '' : snapshot.data!['user_introduce']}',
                                           style: TextStyle(
                                               fontSize: 14,
                                               color: Color(0xff6E7995)),
@@ -873,7 +884,17 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                           width: 18,
                                           height: 18,
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => ReviewListPage(
+                                                    reviewData: reviewData,
+                                                    title: '메이트',
+                                                    profileImg: reviewImg,
+                                                    nickName: reviewName)),
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
