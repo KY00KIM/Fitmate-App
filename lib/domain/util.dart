@@ -93,6 +93,13 @@ Map userWeekdayMap = UserData["user_weekday"];
 List<String> userWeekdayList = [];
 Map user_center = {};
 
+bool findStringInList(List list, String string) {
+  for (int i = 0; i < list.length; i++) {
+    if (list[i] == string) return true;
+  }
+  return false;
+}
+
 // ignore: non_constant_identifier_names
 Future<bool> UpdateUserData() async {
   log(IdToken.toString());
@@ -119,7 +126,8 @@ Future<bool> UpdateUserData() async {
 
     userWeekdayMap = UserData["user_weekday"];
     userWeekdayMap.forEach((key, value) => {
-          if (value) {userWeekdayList.add(key)}
+          if (value && !findStringInList(userWeekdayList, key.toString()))
+            {userWeekdayList.add(key)}
         });
     log("userWeekdayList : ${userWeekdayList}");
 

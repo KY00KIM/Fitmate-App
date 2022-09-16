@@ -75,12 +75,10 @@ class _ProfilePageState extends State<ProfilePage> {
       reviewName.add(resBody['data'][i]['review_send_id']['user_nickname']);
     }
 
-    print("반환 준비 : ${response.statusCode}");
     if (response.statusCode == 200) {
-      print("반환 갑니다잉");
       return resBody["data"].length;
     } else {
-      print("what the fuck");
+      print("error loading review : ${resBody}");
       throw Exception('Failed to load post');
     }
   }
@@ -115,7 +113,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 24,
                             fit: BoxFit.fill,
                           ),
-                          SizedBox(width: 12,),
+                          SizedBox(
+                            width: 12,
+                          ),
                           Text(
                             "내 정보",
                             style: TextStyle(
@@ -213,307 +213,29 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 20,
                       ),
                       Container(
-                          width: double.infinity,
-                          height: 108,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFF2F3F7),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFFffffff),
-                                spreadRadius: 2,
-                                blurRadius: 8,
-                                offset: Offset(-2, -2),
-                              ),
-                              BoxShadow(
-                                color: Color.fromRGBO(55, 84, 170, 0.1),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
-                              child: Expanded(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Text(
-                                          "한줄소개",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 16,
-                                    ),
-                                    SingleChildScrollView(
-                                      child: UserData['user_introduce'] == "" ||
-                                              UserData['user_introduce'] == null
-                                          ? SizedBox(
-                                              height: 10,
-                                            )
-                                          : Text(
-                                              "${UserData['user_introduce']}",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xff6E7995)),
-                                              maxLines: 5,
-                                            ),
-                                    )
-                                  ],
-                                ),
-                              ))),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                          width: double.infinity,
-                          height: 175,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFF2F3F7),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFFffffff),
-                                spreadRadius: 2,
-                                blurRadius: 8,
-                                offset: Offset(-2, -2),
-                              ),
-                              BoxShadow(
-                                color: Color.fromRGBO(55, 84, 170, 0.1),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      "기본정보",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color.fromRGBO(
-                                                0, 0, 0, 0.16), // shadow color
-                                          ),
-                                          const BoxShadow(
-                                            offset: Offset(2, 2),
-                                            blurRadius: 6,
-                                            color: Color(0xFFfFfFfF),
-                                          ),
-                                        ],
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icon/profileLocationIcon.svg',
-                                        width: 12,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      "우리동네",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF6E7995)),
-                                    ),
-                                    Spacer(),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(9, 2, 10, 1),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Color(0xFF00C6FB),
-                                                Color(0xFF005BEA)
-                                              ])),
-                                      child: Text(
-                                        "${UserData["user_address"]}",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFFFFFFFF)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 17),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color.fromRGBO(
-                                                0, 0, 0, 0.16), // shadow color
-                                          ),
-                                          const BoxShadow(
-                                            offset: Offset(2, 2),
-                                            blurRadius: 6,
-                                            color: Color(0xFFfFfFfF),
-                                          ),
-                                        ],
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icon/dumbellProfileIcon.svg',
-                                        width: 12,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      "내 피트니스장",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF6E7995)),
-                                    ),
-                                    Spacer(),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(9, 2, 10, 1),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Color(0xFF00C6FB),
-                                                Color(0xFF005BEA)
-                                              ])),
-                                      child: Text(
-                                        "${UserCenterName}",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFFFFFFFF)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 17),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color.fromRGBO(
-                                                0, 0, 0, 0.16), // shadow color
-                                          ),
-                                          const BoxShadow(
-                                            offset: Offset(2, 2),
-                                            blurRadius: 6,
-                                            color: Color(0xFFfFfFfF),
-                                          ),
-                                        ],
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icon/matchingProfileIcon.svg',
-                                        width: 12,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      "매칭 수",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF6E7995)),
-                                    ),
-                                    Spacer(),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(9, 2, 10, 1),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [
-                                                Color(0xFF00C6FB),
-                                                Color(0xFF005BEA)
-                                              ])),
-                                      child: Text(
-                                        "${snapshot.data.toString()} 회",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Color(0xFFFFFFFF)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
+                        width: double.infinity,
+                        height: 108,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFFF2F3F7),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFffffff),
+                              spreadRadius: 2,
+                              blurRadius: 8,
+                              offset: Offset(-2, -2),
                             ),
-                          )),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                          width: double.infinity,
-                          //height: 95,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFF2F3F7),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFFffffff),
-                                spreadRadius: 2,
-                                blurRadius: 8,
-                                offset: Offset(-2, -2),
-                              ),
-                              BoxShadow(
-                                color: Color.fromRGBO(55, 84, 170, 0.1),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
+                            BoxShadow(
+                              color: Color.fromRGBO(55, 84, 170, 0.1),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
+                          child: Expanded(
                             child: Column(
                               children: [
                                 Row(
@@ -522,7 +244,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: 4,
                                     ),
                                     Text(
-                                      "기본 루틴",
+                                      "한줄소개",
                                       style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold),
@@ -532,75 +254,349 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(
                                   height: 16,
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color.fromRGBO(
-                                                0, 0, 0, 0.16), // shadow color
-                                          ),
-                                          const BoxShadow(
-                                            offset: Offset(2, 2),
-                                            blurRadius: 6,
-                                            color: Color(0xFFfFfFfF),
-                                          ),
-                                        ],
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icon/weekdayProfileIcon.svg',
-                                        width: 12,
-                                        fit: BoxFit.scaleDown,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Text(
-                                      "운동 요일",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF6E7995)),
-                                    ),
-                                    Spacer(),
-                                    Row(
-                                      children: userWeekdayList
-                                          .map((item) => Container(
-                                                margin: EdgeInsets.fromLTRB(
-                                                    2, 0, 2, 0),
-                                                padding: EdgeInsets.fromLTRB(
-                                                    4, 2, 4, 2),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    gradient: LinearGradient(
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomCenter,
-                                                        colors: [
-                                                          Color(0xFF00C6FB),
-                                                          Color(0xFF005BEA)
-                                                        ])),
-                                                child: Text(
-                                                  "${weekdayEngToKor[item]}",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Color(0xFFFFFFFF)),
-                                                ),
-                                              ))
-                                          .toList(),
-                                    ),
-                                  ],
-                                ),
+                                SingleChildScrollView(
+                                  child: UserData['user_introduce'] == "" ||
+                                          UserData['user_introduce'] == null
+                                      ? SizedBox(
+                                          height: 10,
+                                        )
+                                      : Text(
+                                          "${UserData['user_introduce']}",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xff6E7995)),
+                                          maxLines: 5,
+                                        ),
+                                )
                               ],
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 175,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFFF2F3F7),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFffffff),
+                              spreadRadius: 2,
+                              blurRadius: 8,
+                              offset: Offset(-2, -2),
+                            ),
+                            BoxShadow(
+                              color: Color.fromRGBO(55, 84, 170, 0.1),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    "기본정보",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(
+                                              0, 0, 0, 0.16), // shadow color
+                                        ),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 6,
+                                          color: Color(0xFFfFfFfF),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      'assets/icon/profileLocationIcon.svg',
+                                      width: 12,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    "우리동네",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Color(0xFF6E7995)),
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(9, 2, 10, 1),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Color(0xFF00C6FB),
+                                              Color(0xFF005BEA)
+                                            ])),
+                                    child: Text(
+                                      "${UserData["user_address"]}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFFFFFFFF)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(
+                                              0, 0, 0, 0.16), // shadow color
+                                        ),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 6,
+                                          color: Color(0xFFfFfFfF),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      'assets/icon/dumbellProfileIcon.svg',
+                                      width: 12,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    "피트니스 센터",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Color(0xFF6E7995)),
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(9, 2, 10, 1),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Color(0xFF00C6FB),
+                                              Color(0xFF005BEA)
+                                            ])),
+                                    child: Text(
+                                      "${UserCenterName}",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFFFFFFFF)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(
+                                              0, 0, 0, 0.16), // shadow color
+                                        ),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 6,
+                                          color: Color(0xFFfFfFfF),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      'assets/icon/matchingProfileIcon.svg',
+                                      width: 12,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    "매칭 수",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Color(0xFF6E7995)),
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(9, 2, 10, 1),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Color(0xFF00C6FB),
+                                              Color(0xFF005BEA)
+                                            ])),
+                                    child: Text(
+                                      "${snapshot.data.toString()} 회",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFFFFFFFF)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        //height: 95,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFFF2F3F7),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFffffff),
+                              spreadRadius: 2,
+                              blurRadius: 8,
+                              offset: Offset(-2, -2),
+                            ),
+                            BoxShadow(
+                              color: Color.fromRGBO(55, 84, 170, 0.1),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    "기본 루틴",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(
+                                              0, 0, 0, 0.16), // shadow color
+                                        ),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 6,
+                                          color: Color(0xFFfFfFfF),
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      'assets/icon/weekdayProfileIcon.svg',
+                                      width: 12,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    "운동 요일",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Color(0xFF6E7995)),
+                                  ),
+                                  Spacer(),
+                                  Row(
+                                    children: userWeekdayList
+                                        .map((item) => Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  2, 0, 2, 0),
+                                              padding: EdgeInsets.fromLTRB(
+                                                  4, 2, 4, 2),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                      colors: [
+                                                        Color(0xFF00C6FB),
+                                                        Color(0xFF005BEA)
+                                                      ])),
+                                              child: Text(
+                                                "${weekdayEngToKor[item]}",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFFFFFFFF)),
+                                              ),
+                                            ))
+                                        .toList(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: 32,
                       ),
