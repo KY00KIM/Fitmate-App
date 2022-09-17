@@ -59,7 +59,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<int> getReviewProfile() async {
     point = 0;
-    print("1");
     http.Response response = await http.get(
       Uri.parse("${baseUrlV1}reviews/${UserData['_id']}"),
       headers: {
@@ -94,10 +93,10 @@ class _ProfilePageState extends State<ProfilePage> {
       reviewContext.add(resBody['data'][i]['review_body']);
       reviewImg.add(resBody["data"][i]["review_send_id"]['user_profile_img']);
       reviewName.add(resBody['data'][i]['review_send_id']['user_nickname']);
-      for (int j = 0; j < reviewData[i]['review_candidate'].length; j++) {
+      for (int j = 0; j < reviewData[i]['review_candidates'].length; j++) {
         reviewTotal += 1;
 
-        reviewPoint[reviewData[i]['review_candidate'][j]] += 1;
+        reviewPoint[reviewData[i]['review_candidates'][j]["_id"]] += 1;
       }
     }
     print("3");
@@ -272,41 +271,45 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
-                          child: Expanded(
-                            child: Column(
-                              children: [
-                                Row(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Column(
                                   children: [
-                                    SizedBox(
-                                      width: 4,
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          "한줄소개",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      "한줄소개",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    SingleChildScrollView(
+                                      child: UserData['user_introduce'] == "" ||
+                                              UserData['user_introduce'] == null
+                                          ? SizedBox(
+                                              height: 10,
+                                            )
+                                          : Text(
+                                              "${UserData['user_introduce']}",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xff6E7995)),
+                                              maxLines: 5,
+                                            ),
                                     )
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                SingleChildScrollView(
-                                  child: UserData['user_introduce'] == "" ||
-                                          UserData['user_introduce'] == null
-                                      ? SizedBox(
-                                          height: 10,
-                                        )
-                                      : Text(
-                                          "${UserData['user_introduce']}",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xff6E7995)),
-                                          maxLines: 5,
-                                        ),
-                                )
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

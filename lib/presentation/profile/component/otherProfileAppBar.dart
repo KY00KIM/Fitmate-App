@@ -173,6 +173,7 @@ class BarWidget {
       backgroundColor: whiteTheme,
       toolbarHeight: 60,
       elevation: 0,
+      automaticallyImplyLeading: false,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: whiteTheme,
       ),

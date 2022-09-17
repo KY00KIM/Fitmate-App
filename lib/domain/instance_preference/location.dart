@@ -103,11 +103,6 @@ class locationController {
 
   Future<Map> getAndSendLocation(LocationData? locationData) async {
     try {
-      return {
-        "user_longitude": 37.52068835230978,
-        "user_latitude": 126.93706222153243
-      };
-
       if (_serviceEnabled == false ||
           _permissionGranted == PermissionStatus.denied) {
         print("is rejected : $_serviceEnabled    $_permissionGranted");
