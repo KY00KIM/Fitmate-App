@@ -59,7 +59,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<int> getReviewProfile() async {
     point = 0;
-    print("1");
     http.Response response = await http.get(
       Uri.parse("${baseUrlV1}reviews/${UserData['_id']}"),
       headers: {
@@ -94,10 +93,10 @@ class _ProfilePageState extends State<ProfilePage> {
       reviewContext.add(resBody['data'][i]['review_body']);
       reviewImg.add(resBody["data"][i]["review_send_id"]['user_profile_img']);
       reviewName.add(resBody['data'][i]['review_send_id']['user_nickname']);
-      for (int j = 0; j < reviewData[i]['review_candidate'].length; j++) {
+      for (int j = 0; j < reviewData[i]['review_candidates'].length; j++) {
         reviewTotal += 1;
 
-        reviewPoint[reviewData[i]['review_candidate'][j]] += 1;
+        reviewPoint[reviewData[i]['review_candidates'][j]["_id"]] += 1;
       }
     }
     print("3");
