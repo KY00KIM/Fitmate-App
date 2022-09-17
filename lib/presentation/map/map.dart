@@ -91,68 +91,63 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
               Positioned(
                   top : 50,
                   left: 20,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context, true);
-                    },
-                    child: Container(
-                      width: size.width - 40,
-                      height: 52,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(48),
-                        color: Color(0xFFffffff),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color.fromRGBO(0, 0, 0, 0.16),
-                            blurRadius: 12,
-                            offset: Offset(0, 4),
+                  child: Container(
+                    width: size.width - 40,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(48),
+                      color: Color(0xFFffffff),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.16),
+                          blurRadius: 12,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '$region_1depth_name',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Color(0xFF000000)
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            "assets/icon/right_arrow_icon.svg",
+                            width: 16,
+                            height: 16,
+                            color: Color(0xFFCED3EA),
+                          ),
+                          Text(
+                            '$region_2depth_name',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Color(0xFF000000)
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            "assets/icon/right_arrow_icon.svg",
+                            width: 16,
+                            height: 16,
+                            color: Color(0xFFCED3EA),
+                          ),
+                          Text(
+                            '$region_3depth_name',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Color(0xFF000000)
+                            ),
                           ),
                         ],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '$region_1depth_name',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Color(0xFF000000)
-                              ),
-                            ),
-                            SvgPicture.asset(
-                              "assets/icon/right_arrow_icon.svg",
-                              width: 16,
-                              height: 16,
-                              color: Color(0xFFCED3EA),
-                            ),
-                            Text(
-                              '$region_2depth_name',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Color(0xFF000000)
-                              ),
-                            ),
-                            SvgPicture.asset(
-                              "assets/icon/right_arrow_icon.svg",
-                              width: 16,
-                              height: 16,
-                              color: Color(0xFFCED3EA),
-                            ),
-                            Text(
-                              '$region_3depth_name',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Color(0xFF000000)
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                   )

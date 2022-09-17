@@ -59,7 +59,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<int> getReviewProfile() async {
     point = 0;
-    print("1");
     http.Response response = await http.get(
       Uri.parse("${baseUrlV1}reviews/${UserData['_id']}"),
       headers: {
@@ -94,10 +93,10 @@ class _ProfilePageState extends State<ProfilePage> {
       reviewContext.add(resBody['data'][i]['review_body']);
       reviewImg.add(resBody["data"][i]["review_send_id"]['user_profile_img']);
       reviewName.add(resBody['data'][i]['review_send_id']['user_nickname']);
-      for (int j = 0; j < reviewData[i]['review_candidate'].length; j++) {
+      for (int j = 0; j < reviewData[i]['review_candidates'].length; j++) {
         reviewTotal += 1;
 
-        reviewPoint[reviewData[i]['review_candidate'][j]] += 1;
+        reviewPoint[reviewData[i]['review_candidates'][j]["_id"]] += 1;
       }
     }
     print("3");
@@ -295,17 +294,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     SingleChildScrollView(
                                       child: UserData['user_introduce'] == "" ||
-                                              UserData['user_introduce'] == null
+                                          UserData['user_introduce'] == null
                                           ? SizedBox(
-                                              height: 10,
-                                            )
+                                        height: 10,
+                                      )
                                           : Text(
-                                              "${UserData['user_introduce']}",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Color(0xff6E7995)),
-                                              maxLines: 5,
-                                            ),
+                                        "${UserData['user_introduce']}",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xff6E7995)),
+                                        maxLines: 5,
+                                      ),
                                     )
                                   ],
                                 ),
@@ -607,29 +606,29 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Row(
                                     children: userWeekdayList
                                         .map((item) => Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  2, 0, 2, 0),
-                                              padding: EdgeInsets.fromLTRB(
-                                                  4, 2, 4, 2),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  gradient: LinearGradient(
-                                                      begin:
-                                                          Alignment.topCenter,
-                                                      end: Alignment
-                                                          .bottomCenter,
-                                                      colors: [
-                                                        Color(0xFF00C6FB),
-                                                        Color(0xFF005BEA)
-                                                      ])),
-                                              child: Text(
-                                                "${weekdayEngToKor[item]}",
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xFFFFFFFF)),
-                                              ),
-                                            ))
+                                      margin: EdgeInsets.fromLTRB(
+                                          2, 0, 2, 0),
+                                      padding: EdgeInsets.fromLTRB(
+                                          4, 2, 4, 2),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(50),
+                                          gradient: LinearGradient(
+                                              begin:
+                                              Alignment.topCenter,
+                                              end: Alignment
+                                                  .bottomCenter,
+                                              colors: [
+                                                Color(0xFF00C6FB),
+                                                Color(0xFF005BEA)
+                                              ])),
+                                      child: Text(
+                                        "${weekdayEngToKor[item]}",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xFFFFFFFF)),
+                                      ),
+                                    ))
                                         .toList(),
                                   ),
                                 ],
@@ -789,10 +788,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: reviewTotal == 0
                                           ? 0
                                           : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                                      '62c66ead4b8212e4674dbe1f'] +
-                                                  reviewPoint[
-                                                      '62c66ef64b8212e4674dbe20']),
+                                          (reviewPoint[
+                                          '62c66ead4b8212e4674dbe1f'] +
+                                              reviewPoint[
+                                              '62c66ef64b8212e4674dbe20']),
                                       height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -854,8 +853,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: reviewTotal == 0
                                           ? 0
                                           : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                                  '62c66f224b8212e4674dbe22']),
+                                          (reviewPoint[
+                                          '62c66f224b8212e4674dbe22']),
                                       height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -917,10 +916,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: reviewTotal == 0
                                           ? 0
                                           : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                                      '62dbb30f26e97374cf97aec9'] +
-                                                  reviewPoint[
-                                                      "62dbb2fb26e97374cf97aec8"]),
+                                          (reviewPoint[
+                                          '62dbb30f26e97374cf97aec9'] +
+                                              reviewPoint[
+                                              "62dbb2fb26e97374cf97aec8"]),
                                       height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -982,8 +981,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: reviewTotal == 0
                                           ? 0
                                           : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                                  '62dbb2e126e97374cf97aec7']),
+                                          (reviewPoint[
+                                          '62dbb2e126e97374cf97aec7']),
                                       height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -1045,8 +1044,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: reviewTotal == 0
                                           ? 0
                                           : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                                  '62c66f0b4b8212e4674dbe21']),
+                                          (reviewPoint[
+                                          '62c66f0b4b8212e4674dbe21']),
                                       height: 8,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -1244,17 +1243,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                       showDialog(
                                           context: context,
                                           barrierDismissible:
-                                              true, // 바깥 영역 터치시 닫을지 여부
+                                          true, // 바깥 영역 터치시 닫을지 여부
                                           builder: (BuildContext context) {
                                             return AlertDialog(
                                               content: Text("로그아웃 하시겠습니까?",
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
-                                                          FontWeight.bold)),
+                                                      FontWeight.bold)),
                                               insetPadding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      50, 80, 20, 80),
+                                              const EdgeInsets.fromLTRB(
+                                                  50, 80, 20, 80),
                                               actions: [
                                                 Container(
                                                   margin: EdgeInsets.fromLTRB(
@@ -1263,13 +1262,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   height: 32,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+                                                    BorderRadius.circular(
+                                                        8),
                                                     color: Color(0xFFF2F3F7),
                                                     boxShadow: [
                                                       BoxShadow(
                                                         color:
-                                                            Color(0xFFffffff),
+                                                        Color(0xFFffffff),
                                                         spreadRadius: 2,
                                                         blurRadius: 8,
                                                         offset: Offset(-2, -2),
@@ -1286,9 +1285,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   child: Theme(
                                                     data: ThemeData(
                                                       splashColor:
-                                                          Colors.transparent,
+                                                      Colors.transparent,
                                                       highlightColor:
-                                                          Colors.transparent,
+                                                      Colors.transparent,
                                                     ),
                                                     child: TextButton(
                                                       child: Text(
@@ -1297,29 +1296,29 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             fontSize: 12,
                                                             color: Colors.black,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                            FontWeight
+                                                                .bold),
                                                       ),
                                                       onPressed: () async {
                                                         print('로그아웃');
                                                         locator.pauseListener();
 
                                                         await FirebaseAuthMethods(
-                                                                FirebaseAuth
-                                                                    .instance)
+                                                            FirebaseAuth
+                                                                .instance)
                                                             .signOut();
                                                         Navigator
                                                             .pushReplacement(
                                                           context,
                                                           PageRouteBuilder(
                                                             pageBuilder: (context,
-                                                                    animation,
-                                                                    secondaryAnimation) =>
+                                                                animation,
+                                                                secondaryAnimation) =>
                                                                 LoginPage(),
                                                             transitionDuration:
-                                                                Duration.zero,
+                                                            Duration.zero,
                                                             reverseTransitionDuration:
-                                                                Duration.zero,
+                                                            Duration.zero,
                                                           ),
                                                         );
                                                       },
@@ -1336,13 +1335,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   height: 32,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+                                                    BorderRadius.circular(
+                                                        8),
                                                     color: Color(0xFFF2F3F7),
                                                     boxShadow: [
                                                       BoxShadow(
                                                         color:
-                                                            Color(0xFFffffff),
+                                                        Color(0xFFffffff),
                                                         spreadRadius: 2,
                                                         blurRadius: 8,
                                                         offset: Offset(-2, -2),
@@ -1359,9 +1358,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   child: Theme(
                                                     data: ThemeData(
                                                       splashColor:
-                                                          Colors.transparent,
+                                                      Colors.transparent,
                                                       highlightColor:
-                                                          Colors.transparent,
+                                                      Colors.transparent,
                                                     ),
                                                     child: TextButton(
                                                       child: Text(
@@ -1370,8 +1369,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             fontSize: 12,
                                                             color: Colors.black,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                            FontWeight
+                                                                .bold),
                                                       ),
                                                       onPressed: () {
                                                         Navigator.of(context)
@@ -1410,12 +1409,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                     actions: [
                                       Container(
                                         margin:
-                                            EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                        EdgeInsets.fromLTRB(0, 0, 0, 10),
                                         width: 40,
                                         height: 32,
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                          BorderRadius.circular(8),
                                           color: Color(0xFFF2F3F7),
                                           boxShadow: [
                                             BoxShadow(
@@ -1448,22 +1447,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                             onPressed: () async {
                                               CollectionReference users =
-                                                  FirebaseFirestore.instance
-                                                      .collection('users');
+                                              FirebaseFirestore.instance
+                                                  .collection('users');
                                               users
                                                   .doc(UserData['social']
-                                                      ['user_id'])
+                                              ['user_id'])
                                                   .delete();
                                               User? user = FirebaseAuth
                                                   .instance.currentUser;
                                               user?.delete();
                                               locator.pauseListener();
                                               http.Response response =
-                                                  await http.delete(
+                                              await http.delete(
                                                 Uri.parse("${baseUrlV1}users"),
                                                 headers: {
                                                   "Authorization":
-                                                      "bearer $IdToken",
+                                                  "bearer $IdToken",
                                                 },
                                               );
                                               var resBody = jsonDecode(utf8
@@ -1472,9 +1471,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   resBody["error"]["code"] ==
                                                       "auth/id-token-expired") {
                                                 IdToken = (await FirebaseAuth
-                                                        .instance.currentUser
-                                                        ?.getIdTokenResult(
-                                                            true))!
+                                                    .instance.currentUser
+                                                    ?.getIdTokenResult(
+                                                    true))!
                                                     .token
                                                     .toString();
 
@@ -1483,7 +1482,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       "${baseUrlV1}users"),
                                                   headers: {
                                                     "Authorization":
-                                                        "bearer $IdToken",
+                                                    "bearer $IdToken",
                                                   },
                                                 );
                                                 resBody = jsonDecode(
@@ -1492,7 +1491,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               }
 
                                               await FirebaseAuthMethods(
-                                                      FirebaseAuth.instance)
+                                                  FirebaseAuth.instance)
                                                   .signOut();
                                               // Firebase 로그아웃
                                               //await _auth.signOut();
@@ -1502,13 +1501,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 context,
                                                 PageRouteBuilder(
                                                   pageBuilder: (context,
-                                                          animation,
-                                                          secondaryAnimation) =>
+                                                      animation,
+                                                      secondaryAnimation) =>
                                                       LoginPage(),
                                                   transitionDuration:
-                                                      Duration.zero,
+                                                  Duration.zero,
                                                   reverseTransitionDuration:
-                                                      Duration.zero,
+                                                  Duration.zero,
                                                 ),
                                               );
                                             },
@@ -1520,12 +1519,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       Container(
                                         margin:
-                                            EdgeInsets.fromLTRB(0, 0, 20, 10),
+                                        EdgeInsets.fromLTRB(0, 0, 20, 10),
                                         width: 60,
                                         height: 32,
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                          BorderRadius.circular(8),
                                           color: Color(0xFFF2F3F7),
                                           boxShadow: [
                                             BoxShadow(
