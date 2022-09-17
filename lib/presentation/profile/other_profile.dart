@@ -130,7 +130,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
       var reviewRes = jsonDecode(utf8.decode(response2.bodyBytes));
       reviewData = reviewRes['data'];
 
-      log("loaded reivew : ${reviewData}");
+      print("loaded reivew");
 
       reviewContext.clear();
       reviewImg.clear();
@@ -143,27 +143,19 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
 
         print("review res body : ${reviewRes['data'][i]['review_body']}");
         reviewContext.add(reviewRes['data'][i]['review_body']);
-
-        print("review res image : ${reviewRes["data"][i]["review_send_id"]['user_profile_img']}");
         reviewImg
             .add(reviewRes["data"][i]["review_send_id"]['user_profile_img']);
-
-        print("review res name : ${reviewRes['data'][i]['review_send_id']['user_nickname']}");
         reviewName.add(reviewRes['data'][i]['review_send_id']['user_nickname']);
-
-        print("review data candidate : ${reviewData[i]['review_candidate']}");
         for (int j = 0; j < reviewData[i]['review_candidates'].length; j++) {
           reviewTotal += 1;
 
-          reviewPoint[reviewData[i]['review_candidates'][j]['_id']] += 1;
+          reviewPoint[reviewData[i]['review_candidates'][j]["_id"]] += 1;
         }
       }
 
       if (reviewData.length != 0) {
         point = point ~/ reviewData.length;
       }
-
-      print("반환 : ${userRes['data']}");
 
       return userRes['data'];
     } else {
@@ -884,17 +876,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                           width: 18,
                                           height: 18,
                                         ),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => ReviewListPage(
-                                                    reviewData: reviewData,
-                                                    title: '메이트',
-                                                    profileImg: reviewImg,
-                                                    nickName: reviewName)),
-                                          );
-                                        },
+                                        onPressed: () {},
                                       ),
                                     ),
                                   ),
