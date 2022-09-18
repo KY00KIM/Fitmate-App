@@ -68,25 +68,29 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
         builder: (context) {
           return Stack(
             children: <Widget>[
-              NaverMap(
-                useSurface: kReleaseMode,
-                initLocationTrackingMode: LocationTrackingMode.Follow,
+              Container(
+                width: size.width,
+                height: size.height,
+                child: NaverMap(
+                  useSurface: kReleaseMode,
+                  initLocationTrackingMode: LocationTrackingMode.Follow,
 
-                onMapCreated: onMapCreated,
-                mapType: _mapType,
-                markers: markers,
-                //initLocationTrackingMode: _trackingMode,
-                locationButtonEnable: false,
-                indoorEnable: false,
-                onCameraChange: _onCameraChange,
-                onCameraIdle: _onCameraIdle,
-                //onMapTap: _onMapTap,
-                //onMapLongTap: _onMapLongTap,
-                //onMapDoubleTap: _onMapDoubleTap,
-                //onMapTwoFingerTap: _onMapTwoFingerTap,
-                //onSymbolTap: _onMarkerTap,
-                //maxZoom: 17,
-                //minZoom: 13,  //최대 지도 범위
+                  onMapCreated: onMapCreated,
+                  mapType: _mapType,
+                  markers: markers,
+                  //initLocationTrackingMode: _trackingMode,
+                  locationButtonEnable: false,
+                  indoorEnable: false,
+                  onCameraChange: _onCameraChange,
+                  onCameraIdle: _onCameraIdle,
+                  //onMapTap: _onMapTap,
+                  //onMapLongTap: _onMapLongTap,
+                  //onMapDoubleTap: _onMapDoubleTap,
+                  //onMapTwoFingerTap: _onMapTwoFingerTap,
+                  //onSymbolTap: _onMarkerTap,
+                  //maxZoom: 17,
+                  //minZoom: 13,  //최대 지도 범위
+                ),
               ),
               Positioned(
                   top : 50,
