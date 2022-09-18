@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +61,8 @@ class HomeBoardWidget extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            '${posts[index].userId.userProfileImg}',
+                          child: Image(
+                            image: CachedNetworkImageProvider('${posts[index].userId.userProfileImg}'),
                             width: 32.0,
                             height: 32.0,
                             fit: BoxFit.cover,
@@ -98,8 +99,8 @@ class HomeBoardWidget extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        '${posts[index].postImg}',
+                      child: Image(
+                        image: CachedNetworkImageProvider('${posts[index].postImg}'),
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,8 +55,8 @@ class DetailMakerWidget extends StatelessWidget {
                 ClipRRect(
                   borderRadius:
                   BorderRadius.circular(100.0),
-                  child: Image.network(
-                    '${post.userId.userProfileImg}',
+                  child: Image(
+                    image: CachedNetworkImageProvider('${post.userId.userProfileImg}'),
                     width: 32.0,
                     height: 32.0,
                     fit: BoxFit.cover,

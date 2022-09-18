@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class _HomeBannerWidget extends State<HomeBannerWidget>{
                       borderRadius: BorderRadius.circular(8),
                       image : DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(item.bannerImageUrl),
+                        image: CachedNetworkImageProvider(item.bannerImageUrl),
                       ),
                     ),
                   ),

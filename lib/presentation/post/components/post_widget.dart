@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../domain/model/post.dart';
 import '../../detail/detail.dart';
@@ -58,6 +59,23 @@ class PostWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(4.0),
+                child: Image(
+                  image: CachedNetworkImageProvider(
+                    "${posts.postImg}",
+                  ),
+                  width: 68.0,
+                  height: 68.0,
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return Image.asset(
+                      'assets/images/dummy.jpg',
+                      width: 68.0,
+                      height: 68.0,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
+                /*
                 child: Image.network(
                   "${posts.postImg}",
                   width: 68.0,
@@ -72,6 +90,8 @@ class PostWidget extends StatelessWidget {
                     );
                   },
                 ),
+
+                 */
               ),
               SizedBox(
                 width: 16,

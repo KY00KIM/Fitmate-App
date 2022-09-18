@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/profile/profile_edit.dart';
@@ -231,7 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                               image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(
+                                image: CachedNetworkImageProvider(
                                   '${UserData['user_profile_img']}',
                                 ),
                               ),

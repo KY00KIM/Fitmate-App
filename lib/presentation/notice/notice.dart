@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/material.dart';
@@ -137,8 +138,8 @@ class _NoticePageState extends State<NoticePage> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(100.0),
-                                      child: Image.network(
-                                        img,
+                                      child: Image(
+                                        image: CachedNetworkImageProvider(img),
                                         width: 40,
                                         height: 40,
                                         fit: BoxFit.cover,
