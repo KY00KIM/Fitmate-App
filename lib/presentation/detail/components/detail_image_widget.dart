@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,8 +34,8 @@ class DetailImageWidget extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(20, 20.5, 20, 32),
       child: Column(
         children: [
-          Image.network(
-            '${post.postImg}',
+          Image(
+            image: CachedNetworkImageProvider('${post.postImg}'),
             fit: BoxFit.fitWidth,
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {

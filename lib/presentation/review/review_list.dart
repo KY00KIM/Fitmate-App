@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -142,8 +143,8 @@ class _ReviewListPageState extends State<ReviewListPage> {
                         ClipRRect(
                           borderRadius:
                           BorderRadius.circular(100.0),
-                          child: Image.network(
-                            widget.title == "메이트" ? '${widget.profileImg[index]}' :'${widget.reviewData[index]['review_send_id']['user_profile_img']}',
+                          child: Image(
+                            image: CachedNetworkImageProvider(widget.title == "메이트" ? '${widget.profileImg[index]}' :'${widget.reviewData[index]['review_send_id']['user_profile_img']}'),
                             width: 40.0,
                             height: 40.0,
                             fit: BoxFit.cover,

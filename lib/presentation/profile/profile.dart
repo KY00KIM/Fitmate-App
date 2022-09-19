@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/policy_agreement/policy_show.dart';
@@ -232,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                               image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(
+                                image: CachedNetworkImageProvider(
                                   '${UserData['user_profile_img']}',
                                 ),
                               ),
@@ -319,7 +320,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       Container(
                         width: double.infinity,
-                        height: 175,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Color(0xFFF2F3F7),

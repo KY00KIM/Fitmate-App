@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/ui/colors.dart';
@@ -190,8 +191,8 @@ class _ChatPageState extends State<ChatPage> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100.0),
-                            child: Image.network(
-                              '${widget.imageUrl}',
+                            child: Image(
+                              image: CachedNetworkImageProvider('${widget.imageUrl}'),
                               width: 32,
                               height: 32,
                               fit: BoxFit.cover,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -560,8 +561,8 @@ class _ReviewPageState extends State<ReviewPage> {
                         borderRadius:
                         BorderRadius.circular(
                             100.0),
-                        child: Image.network(
-                          '${widget.userImg}',
+                        child: Image(
+                          image: CachedNetworkImageProvider('${widget.userImg}'),
                           width: 52.0,
                           height: 52.0,
                           fit: BoxFit.cover,

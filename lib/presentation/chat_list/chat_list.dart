@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/chat/chat.dart';
@@ -145,8 +146,8 @@ class _ChatListPageState extends State<ChatListPage> {
                                         children: [
                                           ClipRRect(
                                             borderRadius: BorderRadius.circular(100.0),
-                                            child: Image.network(
-                                              '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img']}',
+                                            child: Image(
+                                              image: CachedNetworkImageProvider('${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img']}'),
                                               width: 40,
                                               height: 40,
                                               fit: BoxFit.cover,

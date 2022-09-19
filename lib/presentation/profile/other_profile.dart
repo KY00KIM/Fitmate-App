@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/chat/chat.dart';
 import 'package:fitmate/presentation/profile/component/otherProfileAppBar.dart';
@@ -318,7 +319,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                       image: !imageError
                                           ? DecorationImage(
                                               fit: BoxFit.fill,
-                                              image: NetworkImage(
+                                              image: CachedNetworkImageProvider(
                                                 '${snapshot.data!["user_profile_img"]}',
                                               ),
                                               onError: (error, StackTrace? st) {

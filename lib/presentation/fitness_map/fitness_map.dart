@@ -146,28 +146,32 @@ class _FitnessMapPageState extends State<FitnessMapPage> with TickerProviderStat
           key: scaffoldKey,
           body: Stack(
             children: <Widget>[
-              NaverMap(
-                useSurface: kReleaseMode,
-                initLocationTrackingMode: LocationTrackingMode.None,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(widget.x, widget.y),
-                  zoom: 17,
+              Container(
+                width: size.width,
+                height: size.height,
+                child: NaverMap(
+                  useSurface: kReleaseMode,
+                  initLocationTrackingMode: LocationTrackingMode.None,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(widget.x, widget.y),
+                    zoom: 17,
+                  ),
+                  onMapCreated: onMapCreated,
+                  mapType: _mapType,
+                  markers: _fitnessMarkers,
+                  //initLocationTrackingMode: _trackingMode,
+                  locationButtonEnable: false,
+                  indoorEnable: true,
+                  onCameraChange: _onCameraChange,
+                  onCameraIdle: _onCameraIdle,
+                  onMapTap: _onMapTap,
+                  onMapLongTap: _onMapLongTap,
+                  onMapDoubleTap: _onMapDoubleTap,
+                  onMapTwoFingerTap: _onMapTwoFingerTap,
+                  //onSymbolTap: _onMarkerTap,
+                  //maxZoom: 17,
+                  minZoom: 13,  //최대 지도 범위
                 ),
-                onMapCreated: onMapCreated,
-                mapType: _mapType,
-                markers: _fitnessMarkers,
-                //initLocationTrackingMode: _trackingMode,
-                locationButtonEnable: false,
-                indoorEnable: true,
-                onCameraChange: _onCameraChange,
-                onCameraIdle: _onCameraIdle,
-                onMapTap: _onMapTap,
-                onMapLongTap: _onMapLongTap,
-                onMapDoubleTap: _onMapDoubleTap,
-                onMapTwoFingerTap: _onMapTwoFingerTap,
-                //onSymbolTap: _onMarkerTap,
-                //maxZoom: 17,
-                minZoom: 13,  //최대 지도 범위
               ),
               Positioned(
                   bottom : 20,
