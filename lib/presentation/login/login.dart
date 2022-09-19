@@ -77,20 +77,20 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 25,
                       ),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                            primary: Colors.black,
-                            textStyle: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            "로그인 없이 둘러보기",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                            ),
-                          ))
+                      // TextButton(
+                      //     style: TextButton.styleFrom(
+                      //       primary: Colors.black,
+                      //       textStyle: TextStyle(
+                      //         fontSize: 14,
+                      //       ),
+                      //     ),
+                      //     onPressed: () {},
+                      //     child: Text(
+                      //       "로그인 없이 둘러보기",
+                      //       style: TextStyle(
+                      //         decoration: TextDecoration.underline,
+                      //       ),
+                      //     ))
                     ],
                   )
                 ],

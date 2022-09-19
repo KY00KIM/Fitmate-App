@@ -74,9 +74,14 @@ class AppleLoginWidget extends StatelessWidget {
         ),
       ),
       onTap: () async {
+        // await FirebaseAuth.instance.signOut();
         await FirebaseAuthMethods(FirebaseAuth.instance)
             .signInWithApple()
             .then((val) => {});
+        IdToken =
+            (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+                .token
+                .toString();
         IdToken =
             (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
                 .token
