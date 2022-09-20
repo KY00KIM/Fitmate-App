@@ -74,7 +74,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
                 child: NaverMap(
                   useSurface: kReleaseMode,
                   initLocationTrackingMode: LocationTrackingMode.Follow,
-
                   onMapCreated: onMapCreated,
                   mapType: _mapType,
                   markers: markers,
@@ -89,7 +88,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
                   //onMapTwoFingerTap: _onMapTwoFingerTap,
                   //onSymbolTap: _onMarkerTap,
                   //maxZoom: 17,
-                  //minZoom: 13,  //최대 지도 범위
+                  minZoom: 7,  //최대 지도 범위
                 ),
               ),
               Positioned(
@@ -703,7 +702,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
     print("first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}");
 
     http.Response response = await http.get(
-      Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=200&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}"),
+      Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=100&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}"),
       headers: {
         "Authorization": "bearer $IdToken",
         "Content-Type": "application/json; charset=UTF-8"

@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                 behavior: const ScrollBehavior().copyWith(overscroll: false),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Column(
                       children: [
                         HomeBannerWidget(
