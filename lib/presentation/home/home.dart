@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
               behavior: const ScrollBehavior().copyWith(overscroll: false),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Column(
                     children: [
                       HomeBannerWidget(
@@ -301,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             );
-            else return Center(child: CircularProgressIndicator());
+            else return Container(width: size.width, height: size.height, child: Center(child: CircularProgressIndicator()));
           },
         ),
       ),

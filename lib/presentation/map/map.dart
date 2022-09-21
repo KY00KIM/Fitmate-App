@@ -211,7 +211,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
                             (BuildContext context) {
                           return Container(
                             padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                            height: size.height-85,
+                            height: size.height-80,
                             width: size.width,
                             color: whiteTheme,
                             child: Column(
