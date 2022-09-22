@@ -23,6 +23,7 @@ class _NoticePageState extends State<NoticePage> {
   List noticeData = [];
 
   Future getNotice() async {
+    if(visit) return true;
     http.Response response = await http.get(
         Uri.parse(
             "https://fitmate.co.kr/v2/push"),
@@ -196,7 +197,7 @@ class _NoticePageState extends State<NoticePage> {
           );
         }
         // 기본적으로 로딩 Spinner를 보여줍니다.
-        return Center(child: CircularProgressIndicator());
+        return Container(width: size.width, height: size.height, color: whiteTheme, child: Center(child: CircularProgressIndicator()));
       },
     );
   }

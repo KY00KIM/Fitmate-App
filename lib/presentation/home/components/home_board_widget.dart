@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/presentation/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,7 +30,13 @@ class HomeBoardWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage(post: posts[index],)));
+              if(visit == true) {
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        LoginPage()), (route) => false);
+              } else {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage(post: posts[index],)));
+              }
             },
             child: Container(
               margin: EdgeInsets.fromLTRB(8, 10, 8, 10),
@@ -149,89 +156,91 @@ class HomeBoardWidget extends StatelessWidget {
                                 ),
                               ),
                               onTap: () {
-                                showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      // <-- SEE HERE
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(40.0),
+                                if(visit == false) {
+                                  showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        // <-- SEE HERE
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(40.0),
+                                        ),
                                       ),
-                                    ),
-                                    backgroundColor: Color(0xFFF2F3F7),
-                                    builder: (BuildContext context) {
-                                      return Wrap(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              Container(
-                                                width: 40,
-                                                height: 4,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(2.0),
-                                                  color: Color(0xFFD1D9E6),
+                                      backgroundColor: Color(0xFFF2F3F7),
+                                      builder: (BuildContext context) {
+                                        return Wrap(
+                                          children: [
+                                            Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 20,
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: 36,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  http.Response response =
-                                                  await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${posts[index].underId}"),
-                                                      headers: {
-                                                        "Authorization": "bearer $IdToken",
-                                                      },
-                                                      body: {});
-                                                  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                                                  if (response.statusCode != 201 &&
-                                                      resBody["error"]["code"] == "auth/id-token-expired") {
-                                                    IdToken =
-                                                        (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-                                                            .token
-                                                            .toString();
-
-                                                    response = await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${posts[index].underId}"),
+                                                Container(
+                                                  width: 40,
+                                                  height: 4,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(2.0),
+                                                    color: Color(0xFFD1D9E6),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 36,
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    http.Response response =
+                                                    await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${posts[index].underId}"),
                                                         headers: {
                                                           "Authorization": "bearer $IdToken",
                                                         },
                                                         body: {});
-                                                    resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                                                  }
-                                                  if(resBody['success'] == true) FlutterToastBottom('신고가 접수되었습니다.');
-                                                  else FlutterToastBottom('에러가 발생하였습니다.');
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Container(
-                                                  padding:
-                                                  EdgeInsets.fromLTRB(20, 22, 20, 20),
-                                                  height: 64,
-                                                  width : size.width,
-                                                  color: whiteTheme,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        '게시글 신고',
-                                                        style: TextStyle(
-                                                          color: Color(0xFFCF2933),
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.bold,
+                                                    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                                    if (response.statusCode != 201 &&
+                                                        resBody["error"]["code"] == "auth/id-token-expired") {
+                                                      IdToken =
+                                                          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+                                                              .token
+                                                              .toString();
+
+                                                      response = await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${posts[index].underId}"),
+                                                          headers: {
+                                                            "Authorization": "bearer $IdToken",
+                                                          },
+                                                          body: {});
+                                                      resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                                    }
+                                                    if(resBody['success'] == true) FlutterToastBottom('신고가 접수되었습니다.');
+                                                    else FlutterToastBottom('에러가 발생하였습니다.');
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                    EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                                    height: 64,
+                                                    width : size.width,
+                                                    color: whiteTheme,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          '게시글 신고',
+                                                          style: TextStyle(
+                                                            color: Color(0xFFCF2933),
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      );
-                                    });
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
                               },
                             ),
                           ],
@@ -286,10 +295,17 @@ class HomeBoardWidget extends StatelessWidget {
                                 ),
                               ),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FitnessCenterPage(fitnessId: '${posts[index].promiseLocation.underId}',)));
+                                if(visit == true) {
+                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          LoginPage()), (route) => false);
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => FitnessCenterPage(fitnessId: '${posts[index].promiseLocation.underId}',)));
+
+                                }
                               },
                             ),
                           ],

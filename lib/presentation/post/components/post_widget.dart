@@ -4,7 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../domain/model/post.dart';
+import '../../../domain/util.dart';
 import '../../detail/detail.dart';
+import '../../login/login.dart';
 
 class PostWidget extends StatelessWidget {
   final Post posts;
@@ -51,7 +53,13 @@ class PostWidget extends StatelessWidget {
             primary: Color(0xFFF2F3F7)
         ),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage(post: posts,)));
+          if(visit == true) {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    LoginPage()), (route) => false);
+          } else {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailMachingPage(post: posts,)));
+          }
         },
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 16),

@@ -12,6 +12,7 @@ import 'package:fitmate/presentation/profile/other_profile.dart';
 import 'package:fitmate/presentation/signup/component/signup-view-model.dart';
 import 'package:fitmate/presentation/signup/signup.dart';
 import 'package:fitmate/presentation/signup/signup2.dart';
+import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

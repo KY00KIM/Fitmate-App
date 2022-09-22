@@ -1,4 +1,5 @@
 import 'package:fitmate/domain/model/fitnesscenter.dart';
+import 'package:fitmate/presentation/login/login.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,11 +56,18 @@ class _HomeTownWidgetState extends State<HomeTownWidget> {
           if (snapshot.hasData) {
             return GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FitnessCenterPage(fitnessId: '${widget.fitness_center.underId}',)));
+                if(visit == true) {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          LoginPage()), (route) => false);
 
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FitnessCenterPage(fitnessId: '${widget.fitness_center.underId}',)));
+
+                }
               },
               child: Container(
                 decoration: BoxDecoration(

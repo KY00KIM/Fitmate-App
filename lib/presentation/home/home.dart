@@ -39,6 +39,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    print("방문 여부 : $visit");
+    print("map 방문 여부 : $mapOpend");
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.appBar(context),

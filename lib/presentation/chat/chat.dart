@@ -16,6 +16,7 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 
 import '../../domain/util.dart';
 import '../make_promise/make_promise.dart';
+import '../profile/other_profile.dart';
 
 class ChatPage extends StatefulWidget {
   String name;
@@ -185,39 +186,52 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       ),
                     ),
-                    title: Container(
-                      margin: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100.0),
-                            child: Image(
-                              image: CachedNetworkImageProvider('${widget.imageUrl}'),
-                              width: 32,
-                              height: 32,
-                              fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return Image.asset(
-                                  'assets/images/profile_null_image.png',
-                                  width: 32.0,
-                                  height: 32.0,
-                                  fit: BoxFit.cover,
-                                );
-                              },
+                    title: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => OtherProfilePage(
+                              profileId: widget.userId,
+                              profileName: '${widget.name}',
                             ),
                           ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Text(
-                            '${widget.name}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 10),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(100.0),
+                              child: Image(
+                                image: CachedNetworkImageProvider('${widget.imageUrl}'),
+                                width: 32,
+                                height: 32,
+                                fit: BoxFit.cover,
+                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/profile_null_image.png',
+                                    width: 32.0,
+                                    height: 32.0,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              width: 16,
+                            ),
+                            Text(
+                              '${widget.name}',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     actions: [

@@ -17,6 +17,7 @@ class HomeApiRepository {
   final fitnessCenterRepo = FitnessCenterApiRepository();
 
   Future<Map> getHomeRepo() async {
+    print("홈 함수 실행");
     List<Post> _posts = <Post>[];
     List<Banner> _banners = <Banner>[];
     _posts = await postApi.getPost();

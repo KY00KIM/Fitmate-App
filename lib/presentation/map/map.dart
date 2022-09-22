@@ -17,6 +17,7 @@ import '../../domain/util.dart';
 import '../../ui/bar_widget.dart';
 import '../../ui/colors.dart';
 import '../fitness_map/fitness_map.dart';
+import '../login/login.dart';
 
 
 class MapPage extends StatefulWidget {
@@ -36,7 +37,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
   final barWidget = BarWidget();
 
   late AnimationController controller;
-  double _height = 0;
   double latitude = 0.0;
   double longitude = 0.0;
   List pins = [];
@@ -60,369 +60,117 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
     final Size size = MediaQuery.of(context).size;
     print("맵 빌드 : ${markers}");
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      //extendBodyBehindAppBar: true,
       extendBody: true,
       key: scaffoldKey,
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 3),
       body: Builder(
         builder: (context) {
-          return Stack(
-            children: <Widget>[
-              Container(
-                width: size.width,
-                height: size.height,
-                child: NaverMap(
-                  useSurface: kReleaseMode,
-                  initLocationTrackingMode: LocationTrackingMode.Follow,
-                  onMapCreated: onMapCreated,
-                  mapType: _mapType,
-                  markers: markers,
-                  //initLocationTrackingMode: _trackingMode,
-                  locationButtonEnable: false,
-                  indoorEnable: false,
-                  onCameraChange: _onCameraChange,
-                  onCameraIdle: _onCameraIdle,
-                  //onMapTap: _onMapTap,
-                  //onMapLongTap: _onMapLongTap,
-                  //onMapDoubleTap: _onMapDoubleTap,
-                  //onMapTwoFingerTap: _onMapTwoFingerTap,
-                  //onSymbolTap: _onMarkerTap,
-                  //maxZoom: 17,
-                  minZoom: 7,  //최대 지도 범위
+          return Container(
+            width: size.width,
+            height: size.height,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  width: size.width,
+                  height: size.height,
+                  child: NaverMap(
+                    useSurface: kReleaseMode,
+                    initLocationTrackingMode: LocationTrackingMode.Follow,
+                    onMapCreated: onMapCreated,
+                    mapType: _mapType,
+                    markers: markers,
+                    //initLocationTrackingMode: _trackingMode,
+                    locationButtonEnable: false,
+                    indoorEnable: false,
+                    onCameraChange: _onCameraChange,
+                    onCameraIdle: _onCameraIdle,
+                    //onMapTap: _onMapTap,
+                    //onMapLongTap: _onMapLongTap,
+                    //onMapDoubleTap: _onMapDoubleTap,
+                    //onMapTwoFingerTap: _onMapTwoFingerTap,
+                    //onSymbolTap: _onMarkerTap,
+                    //maxZoom: 17,
+                    minZoom: 7,  //최대 지도 범위
+                  ),
                 ),
-              ),
-              Positioned(
-                  top : 50,
-                  left: 20,
-                  child: Container(
-                    width: size.width - 40,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(48),
-                      color: Color(0xFFffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.16),
-                          blurRadius: 12,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '$region_1depth_name',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Color(0xFF000000)
-                            ),
-                          ),
-                          SvgPicture.asset(
-                            "assets/icon/right_arrow_icon.svg",
-                            width: 16,
-                            height: 16,
-                            color: Color(0xFFCED3EA),
-                          ),
-                          Text(
-                            '$region_2depth_name',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Color(0xFF000000)
-                            ),
-                          ),
-                          SvgPicture.asset(
-                            "assets/icon/right_arrow_icon.svg",
-                            width: 16,
-                            height: 16,
-                            color: Color(0xFFCED3EA),
-                          ),
-                          Text(
-                            '$region_3depth_name',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Color(0xFF000000)
-                            ),
+                Positioned(
+                    top : 42,
+                    left: 20,
+                    child: Container(
+                      width: size.width - 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(48),
+                        color: Color(0xFFffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(0, 0, 0, 0.16),
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
-                    ),
-                  )
-              ),
-              Positioned(
-                right: 20,
-                top: 120,
-                child: GestureDetector(
-                  onTap: () {
-                    _onTapLocation();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Color(0xFF3F51B5),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromRGBO(63, 81, 181, 0.5),
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(26, 0, 26, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '$region_1depth_name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Color(0xFF000000)
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              "assets/icon/right_arrow_icon.svg",
+                              width: 16,
+                              height: 16,
+                              color: Color(0xFFCED3EA),
+                            ),
+                            Text(
+                              '$region_2depth_name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Color(0xFF000000)
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              "assets/icon/right_arrow_icon.svg",
+                              width: 16,
+                              height: 16,
+                              color: Color(0xFFCED3EA),
+                            ),
+                            Text(
+                              '$region_3depth_name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Color(0xFF000000)
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/icon/map_location_icon.svg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                )
-                /*
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF3F51B5),
-                    maximumSize: Size(40, 40),
-                    minimumSize: Size(40, 40),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                  ),
-                  onPressed: () {
-
-                  },
-                  child: SvgPicture.asset(
-                    'assets/icon/map_location_icon.svg',
-                    width: 34,
-                    height: 34,
-                  ),
-
-                 */
+                      ),
+                    )
                 ),
-              Positioned(
-                  bottom : 80,
-                  left: 20,
+                Positioned(
+                  right: 20,
+                  top: 100,
                   child: GestureDetector(
                     onTap: () {
-                      Scaffold.of(context).showBottomSheet<void>(
-                            (BuildContext context) {
-                          return Container(
-                            padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                            height: size.height-80,
-                            width: size.width,
-                            color: whiteTheme,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 4,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(2.0),
-                                        color: Color(0xFFD1D9E6),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 28,
-                                ),
-                                Text(
-                                  '이 지역 피트니스 클럽 ${pins.length}',
-                                  style: TextStyle(
-                                    color: Color(0xFF6E7995),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16
-                                  ),
-                                ),
-                                SizedBox(height: 10,),
-                                Expanded(
-                                  child: ListView.builder(
-                                    itemCount: pins.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator
-                                              .push(
-                                            context,
-                                            PageRouteBuilder(
-                                              pageBuilder: (context,
-                                                  animation,
-                                                  secondaryAnimation) =>
-                                                  FitnessCenterPage(fitnessId: '${pins[index]["_id"]}'),
-                                              transitionDuration:
-                                              Duration.zero,
-                                              reverseTransitionDuration:
-                                              Duration.zero,
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.fromLTRB(0, 16, 20, 16),
-                                          height: 80,
-                                          width: size.width,
-                                          color: whiteTheme,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    pins[index]['center_name'].toString(),
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Color(0xFF000000),
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  Spacer(),
-                                                  Container(
-                                                    width: 28,
-                                                    height: 28,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(8),
-                                                      color: Color(0xFFF2F3F7),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Color(0xFFffffff),
-                                                          spreadRadius: 2,
-                                                          blurRadius: 8,
-                                                          offset: Offset(-2, -2),
-                                                        ),
-                                                        BoxShadow(
-                                                          color: Color.fromRGBO(55, 84, 170, 0.1),
-                                                          spreadRadius: 2,
-                                                          blurRadius: 2,
-                                                          offset: Offset(2, 2),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Theme(
-                                                      data: ThemeData(
-                                                        splashColor: Colors.transparent,
-                                                        highlightColor: Colors.transparent,
-                                                      ),
-                                                      child: IconButton(
-                                                        icon: SvgPicture.asset(
-                                                          "assets/icon/map_icon.svg",
-                                                          width: 16,
-                                                          height: 16,
-                                                        ),
-                                                        onPressed: () async {
-                                                          bool outturn = await Navigator
-                                                              .push(
-                                                            context,
-                                                            PageRouteBuilder(
-                                                              pageBuilder: (context,
-                                                                  animation,
-                                                                  secondaryAnimation) =>
-                                                                  FitnessMapPage(x: pins[index]['fitness_latitude'], y: pins[index]['fitness_longitude'], fitnessName: '${pins[index]['center_name'].toString()}', fitnessAddress: '${pins[index]['center_address'].toString()}',),
-                                                              transitionDuration:
-                                                              Duration.zero,
-                                                              reverseTransitionDuration:
-                                                              Duration.zero,
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 16,),
-                                                  Container(
-                                                    width: 28,
-                                                    height: 28,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(8),
-                                                      color: Color(0xFFF2F3F7),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Color(0xFFffffff),
-                                                          spreadRadius: 2,
-                                                          blurRadius: 8,
-                                                          offset: Offset(-2, -2),
-                                                        ),
-                                                        BoxShadow(
-                                                          color: Color.fromRGBO(55, 84, 170, 0.1),
-                                                          spreadRadius: 2,
-                                                          blurRadius: 2,
-                                                          offset: Offset(2, 2),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Theme(
-                                                      data: ThemeData(
-                                                        splashColor: Colors.transparent,
-                                                        highlightColor: Colors.transparent,
-                                                      ),
-                                                      child: IconButton(
-                                                        icon: SvgPicture.asset(
-                                                          "assets/icon/right_arrow_icon.svg",
-                                                          width: 16,
-                                                          height: 16,
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator
-                                                              .push(
-                                                            context,
-                                                            PageRouteBuilder(
-                                                              pageBuilder: (context,
-                                                                  animation,
-                                                                  secondaryAnimation) =>
-                                                                  FitnessCenterPage(fitnessId: '${pins[index]["_id"]}'),
-                                                              transitionDuration:
-                                                              Duration.zero,
-                                                              reverseTransitionDuration:
-                                                              Duration.zero,
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Flexible(
-                                                    child: RichText(
-                                                      overflow: TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      text: TextSpan(
-                                                        text: pins[index]['center_address'].toString(),
-                                                        style: TextStyle(
-                                                          color: Color(0xFF6E7995),
-                                                          fontSize: 12,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
+                      _onTapLocation();
                     },
                     child: Container(
                       padding: EdgeInsets.all(8),
-                      width: size.width - 40,
-                      height: 60,
+                      width: 44,
+                      height: 44,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(100),
                         color: Color(0xFF3F51B5),
                         boxShadow: [
                           BoxShadow(
@@ -432,80 +180,358 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
                           ),
                         ],
                       ),
-                      child: Center(
-                        child: Text(
-                          '이 지역 피트니스 클럽 ${pins.length}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Color(0xFFffffff)
-                          ),
-                        ),
+                      child: SvgPicture.asset(
+                        'assets/icon/map_location_icon.svg',
+                        fit: BoxFit.cover,
                       ),
                     ),
                   )
                   /*
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(size.width - 40, 52),
-                      maximumSize: Size(size.width - 40, 52),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      elevation: 4,
                       primary: Color(0xFF3F51B5),
-                      shadowColor: Color.fromRGBO(63, 81, 181, 0.5),
+                      maximumSize: Size(40, 40),
+                      minimumSize: Size(40, 40),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                     ),
-                    onPressed: () async {
+                    onPressed: () {
 
                     },
-                    child: Text(
-                      '이 지역 피트니스 클럽',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                    child: SvgPicture.asset(
+                      'assets/icon/map_location_icon.svg',
+                      width: 34,
+                      height: 34,
                     ),
-                  ),
 
                    */
-                /*
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF3F51B5),
-                    maximumSize: Size(40, 40),
-                    minimumSize: Size(40, 40),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                   ),
-                  onPressed: () {
+                Positioned.fill(
+                    bottom : 80,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: GestureDetector(
+                        onTap: () {
+                          showBottomSheet(
+                              context: context,
+                              elevation : 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(40)
+                                  )),
+                              builder: (BuildContext context) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    /*
+                                    borderRadius: new BorderRadius.only(
+                                      topLeft: const Radius.circular(40.0),
+                                      topRight: const Radius.circular(40.0),
+                                    ),
 
-                  },
-                  child: SvgPicture.asset(
-                    'assets/icon/map_location_icon.svg',
-                    width: 34,
-                    height: 34,
-                  ),
+                                     */
+                                    color: whiteTheme,
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(20, 10, 0, 20),
+                                  height: size.height - 80,
+                                  width: size.width,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 40,
+                                            height: 5,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(2.0),
+                                              color: Color(0xFFD1D9E6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 28,
+                                      ),
+                                      Text(
+                                        '이 지역 피트니스 클럽 ${pins.length}',
+                                        style: TextStyle(
+                                            color: Color(0xFF6E7995),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16
+                                        ),
+                                      ),
+                                      SizedBox(height: 10,),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount: pins.length,
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                if(visit == true) {
+                                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                                                      builder: (BuildContext context) =>
+                                                          LoginPage()), (route) => false);
+                                                } else {
+                                                  Navigator
+                                                      .push(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                      pageBuilder: (context,
+                                                          animation,
+                                                          secondaryAnimation) =>
+                                                          FitnessCenterPage(fitnessId: '${pins[index]["_id"]}'),
+                                                      transitionDuration:
+                                                      Duration.zero,
+                                                      reverseTransitionDuration:
+                                                      Duration.zero,
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.fromLTRB(0, 16, 20, 16),
+                                                height: 80,
+                                                width: size.width,
+                                                color: whiteTheme,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          pins[index]['center_name'].toString(),
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            color: Color(0xFF000000),
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                        Spacer(),
+                                                        Container(
+                                                          width: 28,
+                                                          height: 28,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                            color: Color(0xFFF2F3F7),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Color(0xFFffffff),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 8,
+                                                                offset: Offset(-2, -2),
+                                                              ),
+                                                              BoxShadow(
+                                                                color: Color.fromRGBO(55, 84, 170, 0.1),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 2,
+                                                                offset: Offset(2, 2),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: Theme(
+                                                            data: ThemeData(
+                                                              splashColor: Colors.transparent,
+                                                              highlightColor: Colors.transparent,
+                                                            ),
+                                                            child: IconButton(
+                                                              icon: SvgPicture.asset(
+                                                                "assets/icon/map_icon.svg",
+                                                                width: 16,
+                                                                height: 16,
+                                                              ),
+                                                              onPressed: () async {
+                                                                if(visit == true) {
+                                                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                                                                      builder: (BuildContext context) =>
+                                                                          LoginPage()), (route) => false);
+                                                                } else {
+                                                                  await Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    PageRouteBuilder(
+                                                                      pageBuilder: (context,
+                                                                          animation,
+                                                                          secondaryAnimation) =>
+                                                                          FitnessMapPage(x: pins[index]['fitness_latitude'], y: pins[index]['fitness_longitude'], fitnessName: '${pins[index]['center_name'].toString()}', fitnessAddress: '${pins[index]['center_address'].toString()}',),
+                                                                      transitionDuration:
+                                                                      Duration.zero,
+                                                                      reverseTransitionDuration:
+                                                                      Duration.zero,
+                                                                    ),
+                                                                  );
+                                                                }
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 16,),
+                                                        Container(
+                                                          width: 28,
+                                                          height: 28,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                            color: Color(0xFFF2F3F7),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Color(0xFFffffff),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 8,
+                                                                offset: Offset(-2, -2),
+                                                              ),
+                                                              BoxShadow(
+                                                                color: Color.fromRGBO(55, 84, 170, 0.1),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 2,
+                                                                offset: Offset(2, 2),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: Theme(
+                                                            data: ThemeData(
+                                                              splashColor: Colors.transparent,
+                                                              highlightColor: Colors.transparent,
+                                                            ),
+                                                            child: IconButton(
+                                                              icon: SvgPicture.asset(
+                                                                "assets/icon/right_arrow_icon.svg",
+                                                                width: 16,
+                                                                height: 16,
+                                                              ),
+                                                              onPressed: () {
+                                                                if(visit == true) {
+                                                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                                                                      builder: (BuildContext context) =>
+                                                                          LoginPage()), (route) => false);
+                                                                } else {
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    PageRouteBuilder(
+                                                                      pageBuilder: (context,
+                                                                          animation,
+                                                                          secondaryAnimation) =>
+                                                                          FitnessCenterPage(fitnessId: '${pins[index]["_id"]}'),
+                                                                      transitionDuration:
+                                                                      Duration.zero,
+                                                                      reverseTransitionDuration:
+                                                                      Duration.zero,
+                                                                    ),
+                                                                  );
+                                                                }
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Flexible(
+                                                          child: RichText(
+                                                            overflow: TextOverflow.ellipsis,
+                                                            maxLines: 1,
+                                                            text: TextSpan(
+                                                              text: pins[index]['center_address'].toString(),
+                                                              style: TextStyle(
+                                                                color: Color(0xFF6E7995),
+                                                                fontSize: 12,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              });
 
-                 */
-              ),
-              //_trackingModeSelector(),
-            ],
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          width: 110,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Color(0xFF3F51B5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(63, 81, 181, 0.5),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              '헬스장 목록보기',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Color(0xFFffffff)
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                    /*
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(size.width - 40, 52),
+                        maximumSize: Size(size.width - 40, 52),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        elevation: 4,
+                        primary: Color(0xFF3F51B5),
+                        shadowColor: Color.fromRGBO(63, 81, 181, 0.5),
+                      ),
+                      onPressed: () async {
+
+                      },
+                      child: Text(
+                        '이 지역 피트니스 클럽',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+
+                     */
+                  /*
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF3F51B5),
+                      maximumSize: Size(40, 40),
+                      minimumSize: Size(40, 40),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                    ),
+                    onPressed: () {
+
+                    },
+                    child: SvgPicture.asset(
+                      'assets/icon/map_location_icon.svg',
+                      width: 34,
+                      height: 34,
+                    ),
+
+                   */
+                ),
+                //_trackingModeSelector(),
+              ],
+            ),
           );
         }
       ),
-      /*
-      bottomSheet: BottomSheet(
-        animationController: controller,
-        enableDrag: true,
-        builder: (BuildContext context) {
-          return Container(
-            height: 0,
-          );
-        },
-        onClosing: () {  },
-      ),
-
-       */
     );
   }
 
@@ -682,12 +708,15 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
 
   void _onCameraChange(
       LatLng? latLng, CameraChangeReason? reason, bool? isAnimated) {
+    /*
     print('카메라 움직임 >>> 위치 : ${latLng!.latitude}, ${latLng.longitude}'
         '\n원인: $reason'
         '\n에니메이션 여부: $isAnimated');
     print("MARKERs : ${markers.length}");
 
-    latitude = latLng.latitude;
+     */
+
+    latitude = latLng!.latitude;
     longitude = latLng.longitude;
   }
 
@@ -701,34 +730,46 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
     print("south : ${dontNow.southwest}");
     print("first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}");
 
-    http.Response response = await http.get(
-      Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=100&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}"),
-      headers: {
-        "Authorization": "bearer $IdToken",
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-    );
-    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode != 200 &&
-        resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken =
-          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-              .token
-              .toString();
+    http.Response response;
+    var resBody;
 
+    if(visit == true) {
       response = await http.get(
-        Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=50&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.southwest.longitude}&second_latitude=${dontNow.southwest.latitude}"),
+        Uri.parse("https://fitmate.co.kr/v2/visitor/fitnesscenter?page=1&limit=200&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}"),
+      );
+      resBody = jsonDecode(utf8.decode(response.bodyBytes));
+      print("visit resbody : $resBody");
+    } else {
+      response = await http.get(
+        Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=200&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.northeast.longitude}&second_latitude=${dontNow.northeast.latitude}"),
         headers: {
           "Authorization": "bearer $IdToken",
           "Content-Type": "application/json; charset=UTF-8"
         },
       );
       resBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode != 200 &&
+          resBody["error"]["code"] == "auth/id-token-expired") {
+        IdToken =
+            (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
+                .token
+                .toString();
+
+        response = await http.get(
+          Uri.parse("https://fitmate.co.kr/v2/fitnesscenters?page=1&limit=50&first_longitude=${dontNow.southwest.longitude}&first_latitude=${dontNow.southwest.latitude}&second_longitude=${dontNow.southwest.longitude}&second_latitude=${dontNow.southwest.latitude}"),
+          headers: {
+            "Authorization": "bearer $IdToken",
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+        );
+        resBody = jsonDecode(utf8.decode(response.bodyBytes));
+      }
     }
 
     pins = resBody['data']['docs'];
 
     markers.clear();
+
 
     for(int i = 0; i < resBody['data']['docs'].length; i++) {
       markers.add(Marker(
@@ -738,9 +779,12 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
           captionOffset: 0,
           icon: await OverlayImage.fromAssetImage(assetName: 'assets/icon/map_pin.png', size: Size(36, 36)),
           anchor: AnchorPoint(0.5, 0.7),
-          width: 90,
-          height: 90,
-          onMarkerTab: (Marker? a, Map b) {}));
+          width: 70,
+          height: 70,
+          onMarkerTab: (Marker? a, Map b) {
+            print("클릭");
+            markerClick();
+          }));
     }
 
     var url = Uri.parse('https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84');
@@ -778,5 +822,20 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin{
             );
           });
     });
+  }
+
+  PersistentBottomSheetController markerClick() {
+    return showBottomSheet(
+        context: context,
+        elevation : 0,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+                top: Radius.circular(40)
+            )),
+        builder: (BuildContext context) {
+          return Container(
+            height: 100,
+          );
+        });
   }
 }

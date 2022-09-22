@@ -22,6 +22,12 @@ class _LoginPageState extends State<LoginPage> {
   final barWidget = BarWidget();
 
   @override
+  void initState() {
+    visit = false;
+    mapOpend = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -84,13 +90,28 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 14,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            visit = true;
+                            Navigator.pushReplacement(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                    HomePage(reload: false),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ),
+                            );
+                          },
                           child: Text(
                             "로그인 없이 둘러보기",
                             style: TextStyle(
                               decoration: TextDecoration.underline,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold
                             ),
-                          ))
+                          )),
+                      SizedBox(height: 12,)
                     ],
                   )
                 ],

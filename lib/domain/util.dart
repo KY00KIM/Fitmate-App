@@ -92,6 +92,7 @@ late Map UserData = {
 Map userWeekdayMap = UserData["user_weekday"];
 List<String> userWeekdayList = [];
 Map user_center = {};
+bool visit = false;
 
 bool findStringInList(List list, String string) {
   for (int i = 0; i < list.length; i++) {

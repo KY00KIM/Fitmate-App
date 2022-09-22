@@ -9,8 +9,9 @@ class BannerApi {
     List<Banner> _banner = <Banner>[];
     final httpApi = HttpApi();
 
-    http.Response response = await httpApi.get(2, 'banner');
-
+    print("배너");
+    http.Response response = await http.get(Uri.parse("https://fitmate.co.kr/v2/banner"));
+    print("배너 완료");
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       List hits = jsonResponse['data'];

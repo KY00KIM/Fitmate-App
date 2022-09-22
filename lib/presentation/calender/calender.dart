@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,145 +75,102 @@ class _CalenderPageState extends State<CalenderPage> {
   }
 
   Future<bool> getMatching() async {
-    http.Response response = await http.get(
-      Uri.parse("${baseUrlV1}appointments"),
-      headers: {
-        "Authorization": "bearer $IdToken",
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-    );
-    var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode != 200 &&
-        resBody["error"]["code"] == "auth/id-token-expired") {
-      IdToken =
-          (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-              .token
-              .toString();
+    if(visit) {
+      _kEventSource = Map.fromIterable(List.generate(0, (index) => index),
+          key: (item) => DateTime.utc(1999, 01, 01),
+          value: (item) => List.generate(item % 4 + 1,
+                  (index) => Event({'k': 'Event $item | ${index + 1}'})));
 
-      response = await http.post(
-        Uri.parse("${baseUrlV1}appointments"),
-        headers: {
-          'Authorization': 'bearer $IdToken',
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-      resBody = jsonDecode(utf8.decode(response.bodyBytes));
-    }
+      kEvents = LinkedHashMap<DateTime, List<Event>>(
+        equals: isSameDay,
+        hashCode: getHashCode,
+      )..addAll(_kEventSource);
 
-    if (response.statusCode != 200) {
-      FlutterToastBottom("매칭 값을 가져오지 못했습니다");
-    }
-
-    print("resbody : ${resBody['data']}");
-
-    _kEventSource = Map.fromIterable(List.generate(0, (index) => index),
-        key: (item) => DateTime.utc(1999, 01, 01),
-        value: (item) => List.generate(item % 4 + 1,
-            (index) => Event({'k': 'Event $item | ${index + 1}'})));
-
-    var temp;
-    for (int i = 0; i < resBody['data'].length; i++) {
-      temp = Event(resBody['data'][i]);
-      http.Response response2 = await http.get(
-        Uri.parse(
-            "${baseUrlV1}fitnesscenters/${resBody['data'][i]['center_id']}"),
+      return true;
+    } else {
+      http.Response response = await http.get(
+        Uri.parse("${baseUrlV2}appointments/calendar"),
         headers: {
           "Authorization": "bearer $IdToken",
-          "fitnesscenterId": "${resBody['data'][i]['center_id']}"
+          "Content-Type": "application/json; charset=UTF-8"
         },
       );
-      var resBody2 = jsonDecode(utf8.decode(response2.bodyBytes));
-      if (response2.statusCode != 200 &&
-          resBody2["error"]["code"] == "auth/id-token-expired") {
+      var resBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode != 200 &&
+          resBody["error"]["code"] == "auth/id-token-expired") {
         IdToken =
             (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
                 .token
                 .toString();
 
-        response2 = await http.get(
-          Uri.parse(
-              "${baseUrlV1}fitnesscenters/${resBody['data'][i]['center_id']}"),
+        response = await http.get(
+          Uri.parse("${baseUrlV2}appointments/calendar"),
           headers: {
             "Authorization": "bearer $IdToken",
-            "fitnesscenterId": "${resBody['data'][i]['center_id']}"
+            "Content-Type": "application/json; charset=UTF-8"
           },
         );
-        resBody2 = jsonDecode(utf8.decode(response.bodyBytes));
+        resBody = jsonDecode(utf8.decode(response.bodyBytes));
       }
-      temp.content['centerName'] = "${resBody2['data']['center_name']}";
 
-      String partnerId = resBody['data'][i]['match_start_id'] == UserData['_id']
-          ? resBody['data'][i]['match_join_id']
-          : resBody['data'][i]['match_start_id'];
-      http.Response response3 = await http.get(
-        Uri.parse("${baseUrlV1}users/${partnerId}"),
-        headers: {"Authorization": "bearer $IdToken", "userId": "${partnerId}"},
-      );
-      var resBody3 = jsonDecode(utf8.decode(response3.bodyBytes));
-      if (response3.statusCode != 200 &&
-          resBody3["error"]["code"] == "auth/id-token-expired") {
-        IdToken =
-            (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-                .token
-                .toString();
+      _kEventSource = Map.fromIterable(List.generate(0, (index) => index),
+          key: (item) => DateTime.utc(1999, 01, 01),
+          value: (item) => List.generate(item % 4 + 1,
+                  (index) => Event({'k': 'Event $item | ${index + 1}'})));
 
-        response3 = await http.get(
-          Uri.parse("${baseUrlV1}users/${partnerId}"),
-          headers: {
-            "Authorization": "bearer $IdToken",
-            "userId": "${partnerId}"
-          },
-        );
-        resBody3 = jsonDecode(utf8.decode(response.bodyBytes));
-      }
-      temp.content['partnerName'] = "${resBody3['data']['user_nickname']}";
-      temp.content['parnerImg'] = "${resBody3['data']['user_profile_img']}";
-      print("머냐 : ${resBody3['data']['user_profile_img']}");
+      var temp;
+      for (int i = 0; i < resBody['data']['appointments'].length; i++) {
+        temp = Event(resBody['data']['appointments'][i]);
 
-      if (_kEventSource.containsKey(DateTime.utc(
-              int.parse(resBody['data'][i]['appointment_date']
-                  .toString()
-                  .substring(0, 4)),
-              int.parse(resBody['data'][i]['appointment_date']
-                  .toString()
-                  .substring(5, 7)),
-              int.parse(resBody['data'][i]['appointment_date']
-                  .toString()
-                  .substring(8, 10)))) ==
-          true) {
-        //기존 날짜에 해당 날짜가 있음
-        _kEventSource[DateTime.utc(
-                int.parse(resBody['data'][i]['appointment_date']
-                    .toString()
-                    .substring(0, 4)),
-                int.parse(resBody['data'][i]['appointment_date']
-                    .toString()
-                    .substring(5, 7)),
-                int.parse(resBody['data'][i]['appointment_date']
-                    .toString()
-                    .substring(8, 10)))]
-            ?.add(temp);
-      } else {
-        //없띠
-        _kEventSource[DateTime.utc(
-            int.parse(resBody['data'][i]['appointment_date']
+        temp.content['centerName'] = "${resBody['data']['appointments'][i]['center_id']['center_name']}";
+        temp.content['partnerName'] = "${resBody['data']['appointments'][i]['match_start_id']['_id'] == UserData['_id'] ? resBody['data']['appointments'][i]['match_join_id']['user_nickname'] : resBody['data']['appointments'][i]['match_start_id']['user_nickname']}";
+        temp.content['parnerImg'] = "${resBody['data']['appointments'][i]['match_start_id']['_id'] == UserData['_id'] ? resBody['data']['appointments'][i]['match_join_id']['user_profile_img'] : resBody['data']['appointments'][i]['match_start_id']['user_profile_img']}";
+
+        if (_kEventSource.containsKey(DateTime.utc(
+            int.parse(resBody['data']['appointments'][i]['appointment_date']
                 .toString()
                 .substring(0, 4)),
-            int.parse(resBody['data'][i]['appointment_date']
+            int.parse(resBody['data']['appointments'][i]['appointment_date']
                 .toString()
                 .substring(5, 7)),
-            int.parse(resBody['data'][i]['appointment_date']
+            int.parse(resBody['data']['appointments'][i]['appointment_date']
                 .toString()
-                .substring(8, 10)))] = [temp];
+                .substring(8, 10)))) ==
+            true) {
+          //기존 날짜에 해당 날짜가 있음
+          _kEventSource[DateTime.utc(
+              int.parse(resBody['data']['appointments'][i]['appointment_date']
+                  .toString()
+                  .substring(0, 4)),
+              int.parse(resBody['data']['appointments'][i]['appointment_date']
+                  .toString()
+                  .substring(5, 7)),
+              int.parse(resBody['data']['appointments'][i]['appointment_date']
+                  .toString()
+                  .substring(8, 10)))]
+              ?.add(temp);
+        } else {
+          //없띠
+          _kEventSource[DateTime.utc(
+              int.parse(resBody['data']['appointments'][i]['appointment_date']
+                  .toString()
+                  .substring(0, 4)),
+              int.parse(resBody['data']['appointments'][i]['appointment_date']
+                  .toString()
+                  .substring(5, 7)),
+              int.parse(resBody['data']['appointments'][i]['appointment_date']
+                  .toString()
+                  .substring(8, 10)))] = [temp];
+        }
       }
+
+      kEvents = LinkedHashMap<DateTime, List<Event>>(
+        equals: isSameDay,
+        hashCode: getHashCode,
+      )..addAll(_kEventSource);
+
+      return true;
     }
-
-    kEvents = LinkedHashMap<DateTime, List<Event>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    )..addAll(_kEventSource);
-
-    return true;
   }
 
   @override
@@ -241,6 +199,7 @@ class _CalenderPageState extends State<CalenderPage> {
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    print("날짜 선택");
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
@@ -299,19 +258,11 @@ class _CalenderPageState extends State<CalenderPage> {
                             TableCalendar<Event>(
                               calendarBuilders: CalendarBuilders(
                                 singleMarkerBuilder: (context, date, _) {
-                                  DateTime now = DateTime.now();
-                                  DateFormat formatter = DateFormat('yyyy-MM-dd');
-                                  String strToday = formatter.format(now);
-                                  print("maching date : $matchingDate");
                                   if(matchingDate.contains(date)) {
                                     return Container(
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: (date == _selectedDay ||
-                                              date.toString() ==
-                                                  '$strToday 00:00:00.000Z')
-                                              ? Color(0xFFF27F22)
-                                              : Color(0xFFF27F22)),
+                                          color: Color(0xFFF27F22)),
                                       //Change color
                                       width: 8.0,
                                       height: 8.0,
@@ -322,11 +273,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                     return Container(
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: (date == _selectedDay ||
-                                              date.toString() ==
-                                                  '$strToday 00:00:00.000Z')
-                                              ? Color(0xFF00E3AE)
-                                              : Color(0xFF00E3AE)),
+                                          color: Color(0xFF00E3AE)),
                                       //Change color
                                       width: 8.0,
                                       height: 8.0,
@@ -348,7 +295,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                 ),
                                 //headerMargin: EdgeInsets.only(bottom: 10),
                               ),
-                              daysOfWeekHeight: 30,
+                              //daysOfWeekHeight: 30,
                               locale: 'ko_KO',
                               //focusedDay: kToday,
                               focusedDay: _focusedDay,
@@ -510,7 +457,6 @@ class _CalenderPageState extends State<CalenderPage> {
                               child: ListView.builder(
                                 itemCount: value.length,
                                 itemBuilder: (context, index) {
-                                  print("value : ${value[index].content}");
                                   return Container(
                                     margin: EdgeInsets.fromLTRB(20, 16, 20, 0),
                                     padding: EdgeInsets.all(16),
