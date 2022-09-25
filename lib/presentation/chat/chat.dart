@@ -199,6 +199,7 @@ class _ChatPageState extends State<ChatPage> {
                       }
                       var temp = await UpdateUserData();
                       Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -503,61 +504,7 @@ class _ChatPageState extends State<ChatPage> {
                                               ),
                                               GestureDetector(
                                                 onTap: () async {
-                                                  print("Container clicked");
-                                                  http.Response response =
-                                                      await http.post(
-                                                    Uri.parse(
-                                                        "${baseUrlV2}users/${widget.chatId}"),
-                                                    headers: {
-                                                      "Authorization":
-                                                          "bearer $IdToken",
-                                                      "chatroomId":
-                                                          "${widget.chatId}"
-                                                    },
-                                                  );
-                                                  var resBody = jsonDecode(
-                                                      utf8.decode(
-                                                          response.bodyBytes));
-                                                  if (response.statusCode !=
-                                                          200 &&
-                                                      resBody["error"]
-                                                              ["code"] ==
-                                                          "auth/id-token-expired") {
-                                                    IdToken = (await FirebaseAuth
-                                                            .instance
-                                                            .currentUser
-                                                            ?.getIdTokenResult(
-                                                                true))!
-                                                        .token
-                                                        .toString();
-
-                                                    response =
-                                                        await http.delete(
-                                                      Uri.parse(
-                                                          "${baseUrlV1}chats/${widget.chatId}"),
-                                                      headers: {
-                                                        "Authorization":
-                                                            "bearer $IdToken",
-                                                        "chatroomId":
-                                                            "${widget.chatId}"
-                                                      },
-                                                    );
-                                                    resBody = jsonDecode(
-                                                        utf8.decode(response
-                                                            .bodyBytes));
-                                                  }
-
-                                                  for (int i = 0;
-                                                      i < chatList.length;
-                                                      i++) {
-                                                    if (chatList[i]['_id'] ==
-                                                        widget.chatId) {
-                                                      chatList.removeAt(i);
-                                                      break;
-                                                    }
-                                                  }
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context, true);
+                                                  _showBlockUserDialog();
                                                 },
                                                 child: Container(
                                                   padding: EdgeInsets.fromLTRB(
