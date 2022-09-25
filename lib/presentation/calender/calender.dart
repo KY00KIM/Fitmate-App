@@ -295,7 +295,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                 ),
                                 //headerMargin: EdgeInsets.only(bottom: 10),
                               ),
-                              //daysOfWeekHeight: 30,
+                              daysOfWeekHeight: 30,
                               locale: 'ko_KO',
                               //focusedDay: kToday,
                               focusedDay: _focusedDay,

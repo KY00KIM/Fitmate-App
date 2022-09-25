@@ -45,7 +45,7 @@ class _FitnessMapPageState extends State<FitnessMapPage> with TickerProviderStat
         position: LatLng(widget.x, widget.y),
         alpha: 1,
         //captionOffset: 30,
-        icon: await OverlayImage.fromAssetImage(assetName: 'assets/icon/map_pin.png', size: Size(36, 36)),
+        icon: await OverlayImage.fromAssetImage(assetName: 'assets/icon/map_pin.png', /*size: Size(36, 36)*/),
       anchor: AnchorPoint(0.5, 0.7),
       width: 90,
       height: 90,));
@@ -146,32 +146,23 @@ class _FitnessMapPageState extends State<FitnessMapPage> with TickerProviderStat
           key: scaffoldKey,
           body: Stack(
             children: <Widget>[
-              Container(
-                width: size.width,
-                height: size.height,
-                child: NaverMap(
-                  useSurface: kReleaseMode,
-                  initLocationTrackingMode: LocationTrackingMode.None,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(widget.x, widget.y),
-                    zoom: 17,
-                  ),
-                  onMapCreated: onMapCreated,
-                  mapType: _mapType,
-                  markers: _fitnessMarkers,
-                  //initLocationTrackingMode: _trackingMode,
-                  locationButtonEnable: false,
-                  indoorEnable: true,
-                  onCameraChange: _onCameraChange,
-                  onCameraIdle: _onCameraIdle,
-                  onMapTap: _onMapTap,
-                  onMapLongTap: _onMapLongTap,
-                  onMapDoubleTap: _onMapDoubleTap,
-                  onMapTwoFingerTap: _onMapTwoFingerTap,
-                  //onSymbolTap: _onMarkerTap,
-                  //maxZoom: 17,
-                  minZoom: 13,  //최대 지도 범위
+              NaverMap(
+                initLocationTrackingMode: LocationTrackingMode.NoFollow,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(widget.x, widget.y),
+                  zoom: 17,
                 ),
+                onMapCreated: onMapCreated,
+                mapType: _mapType,
+                markers: _fitnessMarkers,
+                locationButtonEnable: false,
+                indoorEnable: true,
+                onCameraChange: _onCameraChange,
+                onCameraIdle: _onCameraIdle,
+                onMapTap: _onMapTap,
+                onMapLongTap: _onMapLongTap,
+                onMapDoubleTap: _onMapDoubleTap,
+                onMapTwoFingerTap: _onMapTwoFingerTap,
               ),
               Positioned(
                   bottom : 20,

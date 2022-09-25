@@ -48,7 +48,7 @@ class LoginedUser {
   late String user_address;
 }
 
-String version = "2.0.0";
+String version = "1.1.2";
 String UserCenterName = '';
 bool mapOpend = false;
 List chatList = [];

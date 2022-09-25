@@ -30,7 +30,7 @@ class _HomeTownWidgetState extends State<HomeTownWidget> {
       position: LatLng(widget.fitness_center.fitnessLatitude, widget.fitness_center.fitnessLongitude),
       alpha: 1,
       //captionOffset: 30,
-      icon: await OverlayImage.fromAssetImage(assetName: 'assets/icon/map_pin.png', size: Size(36, 36)),
+      icon: await OverlayImage.fromAssetImage(assetName: 'assets/icon/map_pin.png', /*size: Size(36, 36)*/),
       anchor: AnchorPoint(0.5, 0.7),
       width: 90,
       height: 90,));

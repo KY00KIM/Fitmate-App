@@ -79,10 +79,13 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 25,
                       ),
+                      /*
                       AppleLoginWidget(),
                       SizedBox(
                         height: 25,
                       ),
+
+                       */
                       TextButton(
                           style: TextButton.styleFrom(
                             primary: Colors.black,
