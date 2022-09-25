@@ -28,8 +28,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
 
-import 'naver_map.dart';
-
 final Map<dynamic, dynamic> user_object = {
   "name": "김민규",
   "picture":
