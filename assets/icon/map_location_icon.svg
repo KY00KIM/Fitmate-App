@@ -1,0 +1,14 @@
+<svg id="구성_요소_9_7" data-name="구성 요소 9 – 7" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="그룹_9" data-name="그룹 9" transform="translate(-296 -550)">
+    <g id="타원_9" data-name="타원 9" transform="translate(300 554)" fill="none" stroke="#fff" stroke-width="1.5">
+      <circle cx="8" cy="8" r="8" stroke="none"/>
+      <circle cx="8" cy="8" r="7.25" fill="none"/>
+    </g>
+    <line id="선_2" data-name="선 2" y2="2" transform="translate(308.5 552.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+    <line id="선_3" data-name="선 3" y2="2" transform="translate(308.5 569.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+    <line id="선_4" data-name="선 4" x2="2" transform="translate(298.5 562.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+    <line id="선_5" data-name="선 5" x2="2" transform="translate(316 562.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="1.5"/>
+    <circle id="타원_10" data-name="타원 10" cx="3" cy="3" r="3" transform="translate(305 559)" fill="#fff"/>
+  </g>
+  <rect id="사각형_31" data-name="사각형 31" width="24" height="24" fill="none"/>
+</svg>

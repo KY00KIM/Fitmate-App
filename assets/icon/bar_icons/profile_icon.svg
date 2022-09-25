@@ -1,0 +1,10 @@
+<svg id="구성_요소_23_1" data-name="구성 요소 23 – 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3f51b5"/>
+      <stop offset="1" stop-color="#6b8cce"/>
+    </linearGradient>
+  </defs>
+  <path id="user-filling" d="M84.667,74.667a10,10,0,1,0,10,10A10.014,10.014,0,0,0,84.667,74.667Zm0,3.659a2.927,2.927,0,1,1-2.927,2.927A2.935,2.935,0,0,1,84.667,78.325Zm5.415,11.61a7.54,7.54,0,0,1-10.829,0,.852.852,0,0,1-.2-.732,5.812,5.812,0,0,1,11.219,0,.852.852,0,0,1-.2.732Z" transform="translate(-68.667 -68.667)" fill="url(#linear-gradient)"/>
+  <rect id="사각형_70" data-name="사각형 70" width="32" height="32" fill="none"/>
+</svg>

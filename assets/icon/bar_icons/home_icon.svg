@@ -1,0 +1,10 @@
+<svg id="구성_요소_16_4" data-name="구성 요소 16 – 4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3f51b5"/>
+      <stop offset="1" stop-color="#6b8cce"/>
+    </linearGradient>
+  </defs>
+  <rect id="사각형_37" data-name="사각형 37" width="32" height="32" fill="none"/>
+  <path id="home-fill" d="M124,137.386h-4a.757.757,0,0,0-.75.763v7.022a.757.757,0,0,1-.75.763h-5.75a.757.757,0,0,1-.75-.763V133.69a1.535,1.535,0,0,1,.623-1.239l8.5-6.229a1.479,1.479,0,0,1,1.753,0l8.5,6.229A1.535,1.535,0,0,1,132,133.69v11.481a.757.757,0,0,1-.75.763H125.5a.757.757,0,0,1-.75-.763v-7.022A.757.757,0,0,0,124,137.386Z" transform="translate(-106 -119.935)" fill="url(#linear-gradient)"/>
+</svg>

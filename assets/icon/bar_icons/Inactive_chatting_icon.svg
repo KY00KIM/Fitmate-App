@@ -1,0 +1,9 @@
+<svg id="구성_요소_39_1" data-name="구성 요소 39 – 1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <g id="사각형_162" data-name="사각형 162" transform="translate(6 6)" fill="none" stroke="#d1d9e6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+    <path d="M10,0h0A10,10,0,0,1,20,10v0A10,10,0,0,1,10,20H.833A.833.833,0,0,1,0,19.167V10A10,10,0,0,1,10,0Z" stroke="none"/>
+    <path d="M10,.9h0A9.1,9.1,0,0,1,19.1,10v0A9.1,9.1,0,0,1,10,19.1H.982A.082.082,0,0,1,.9,19.018V10A9.1,9.1,0,0,1,10,.9Z" fill="none"/>
+  </g>
+  <line id="선_18" data-name="선 18" x2="8" transform="translate(12 14.5)" fill="none" stroke="#d1d9e6" stroke-linecap="round" stroke-width="1.5"/>
+  <line id="선_19" data-name="선 19" x2="8" transform="translate(12 18.5)" fill="none" stroke="#d1d9e6" stroke-linecap="round" stroke-width="1.5"/>
+  <rect id="사각형_39" data-name="사각형 39" width="32" height="32" fill="none"/>
+</svg>

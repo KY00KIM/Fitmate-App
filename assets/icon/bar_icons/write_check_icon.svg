@@ -1,0 +1,10 @@
+<svg id="구성_요소_31_1" data-name="구성 요소 31 – 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3f51b5"/>
+      <stop offset="1" stop-color="#6b8cce"/>
+    </linearGradient>
+  </defs>
+  <path id="Icon_ionic-ios-checkmark" data-name="Icon ionic-ios-checkmark" d="M26.35,13.64,25.042,12.3a.281.281,0,0,0-.208-.089h0a.27.27,0,0,0-.208.089l-9.065,9.132-3.3-3.3a.287.287,0,0,0-.416,0l-1.323,1.323a.3.3,0,0,0,0,.424l4.161,4.161a1.316,1.316,0,0,0,.869.424,1.379,1.379,0,0,0,.862-.409h.007l9.934-9.986A.318.318,0,0,0,26.35,13.64Z" transform="translate(-10.434 -10.206)" fill="url(#linear-gradient)"/>
+  <rect id="사각형_103" data-name="사각형 103" width="16" height="16" fill="none"/>
+</svg>

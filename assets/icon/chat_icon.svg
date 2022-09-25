@@ -1,0 +1,10 @@
+<svg id="구성_요소_49_1" data-name="구성 요소 49 – 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#00c6fb"/>
+      <stop offset="1" stop-color="#005bea"/>
+    </linearGradient>
+  </defs>
+  <path id="빼기_1" data-name="빼기 1" d="M10,20H.833A.834.834,0,0,1,0,19.166V10A10,10,0,1,1,10,20ZM5.937,11.875a.937.937,0,1,0,0,1.875h8.124a.937.937,0,1,0,0-1.875Zm0-5.625a.937.937,0,1,0,0,1.875h8.124a.937.937,0,1,0,0-1.875Z" transform="translate(2 2)" fill="url(#linear-gradient)"/>
+  <rect id="사각형_164" data-name="사각형 164" width="24" height="24" fill="none"/>
+</svg>

@@ -1,16 +1,26 @@
-# fitmate
+# 코드 작성 규칙
 
-A new Flutter project.
+- Add : 기능 혹은 코드가 추가 되었을 경우 작성
+- Fix : 기존에 작성된 코드에 버그 및 수정된 기능이 있을 경우 사용
+- Rename : 파일 이름 및 명시된 이름이 변경 되었을 경우 사용
+- Remove : 코드가 삭제 된 경우 사용
+- Delete : 파일이 삭제된 경우 사용
+- Refactor : 코드를 전면 수정할 경우 사용
+- Move : 파일이 다른 디렉토리로 이동 했을 경우 사용
+- Feat : 새로운 기능에 대한 커밋
+- Build : 빌드 관련 파일 수정에 대한 커밋
+- Chore : 그 외 자잘한 수정에 대한 커밋
+- Ci : CI관련 설정 수정에 대한 커밋
+- Docs : 문서 수정에 대한 커밋
+- Style : 코드 스타일 혹은 포맷 등에 관한 커밋
+- Test : 테스트 코드 수정에 대한 커밋
 
-## Getting Started
+### 커밋 메시지의 7가지 규칙
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. 제목과 본문을 빈 행으로 구분한다
+2. 제목을 50자 내로 제한
+3. 제목 첫 글자는 대문자로 작성
+4. 제목 끝에 마침표 넣지 않기
+5. 제목은 명령문으로 상요하며 과거형을 사용하지 않는다
+6. 본문의 각 행은 72글자 내로 제한
+7. 어떻게 보다는 무엇과 왜를 설명한다

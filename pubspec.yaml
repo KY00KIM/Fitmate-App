@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.1+4
+version: 1.1.2+9
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: '>=2.16.2 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -51,25 +51,34 @@ dependencies:
   video_player: ^2.4.5
   firebase_messaging: ^12.0.1
   fluttertoast: ^8.0.9
-  geolocator: ^9.0.1
   intl: ^0.17.0
   flutter_launcher_icons: ^0.9.3
   flutter_native_splash: ^2.1.6
   flutter_chat_bubble: ^2.0.0
 
-  #naver_map_plugin:
-  #  git: https://github.com/LBSTECH/naver_map_plugin.git
+  naver_map_plugin:
+    git: https://github.com/LBSTECH/naver_map_plugin.git
+  #naver_map_plugin: ^0.9.6
   sign_in_with_apple: ^4.1.0
   iconsax: ^0.0.8
-
+  kakao_flutter_sdk: ^1.2.1
+  flutter_dotenv: ^5.0.2
+  flutter_inset_box_shadow: ^1.0.8
+  dropdown_button2: ^1.7.2
+  url_launcher: ^6.1.5
+  flutter_holo_date_picker: ^1.0.6
+  location: ^4.4.0
+  permission_handler: ^10.0.0
+  carousel_slider: ^4.1.1
+  flutter_rating_bar: ^4.0.1
+  cached_network_image: ^3.2.0
 
 flutter_icons:
-  android: "launcher_icon"
+  android: 'launcher_icon'
   ios: true
-  image_path: "assets/icon/logo.png"
-  adaptive_icon_background: "#22232A"
-  adaptive_icon_foreground: "assets/icon/logo.png"
-
+  image_path: 'assets/icon/logo.png'
+  #adaptive_icon_background: '#22232A'
+  #adaptive_icon_foreground: 'assets/icon/logo.png'
 
 dev_dependencies:
   flutter_test:
@@ -88,7 +97,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -98,6 +106,8 @@ flutter:
   assets:
     - assets/images/
     - assets/icon/
+    - assets/icon/bar_icons/
+    - .env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

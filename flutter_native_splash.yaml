@@ -1,5 +1,4 @@
 flutter_native_splash:
-
   # This package generates native code to customize Flutter's default white native splash screen
   # with background color and splash image.
   # Customize the parameters below, and run the following command in the terminal:
@@ -11,9 +10,10 @@ flutter_native_splash:
   # of your splash screen to a solid color.  Use background_image to set the background of your
   # splash screen to a png image.  This is useful for gradients. The image will be stretch to the
   # size of the app. Only one parameter can be used, color and background_image cannot both be set.
-  color: "#22232A"
-  image: assets/images/fitmate_logo200.png
+  color: '#3F51B5'
+  image: assets/icon/logo-w300.png
   fullscreen: true
+  branding: assets/icon/team-logo-h500.png
   #background_image: "assets/background.png"
 
   # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing
@@ -35,7 +35,7 @@ flutter_native_splash:
   #
   # Make sure this content mode value should not be similar to android_gravity value and
   # ios_content_mode value.
-  #branding_mode: bottom
+  branding_mode: bottom
 
   # The color_dark, background_image_dark, and image_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
@@ -77,8 +77,8 @@ flutter_native_splash:
   #       WidgetsFlutterBinding.ensureInitialized();
   #       SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
   #fullscreen: true
-  
-  # If you have changed the name(s) of your info.plist file(s), you can specify the filename(s) 
+
+  # If you have changed the name(s) of your info.plist file(s), you can specify the filename(s)
   # with the info_plist_files parameter.  Remove only the # characters in the three lines below,
   # do not remove any spaces:
   #info_plist_files:
