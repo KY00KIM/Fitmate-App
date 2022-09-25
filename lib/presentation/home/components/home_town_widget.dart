@@ -8,7 +8,6 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 
 import '../../../domain/util.dart';
 import '../../fitness_center/fitness_center.dart';
-import '../../notice/notice.dart';
 
 class HomeTownWidget extends StatefulWidget {
   FitnessCenter fitness_center;
@@ -224,8 +223,8 @@ class _HomeTownWidgetState extends State<HomeTownWidget> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          //'리뷰 ${widget.fitness_center.reviews.length}',
-                                          '리뷰 0',
+                                          '리뷰 ${widget.fitness_center.reviews.length}',
+                                          //'리뷰 0',
                                           style: TextStyle(
                                             color: Color(0xFF283593),
                                             fontWeight: FontWeight.bold,

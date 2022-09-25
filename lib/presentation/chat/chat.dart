@@ -24,7 +24,15 @@ class ChatPage extends StatefulWidget {
   String uid;
   String userId;
   String chatId;
-  ChatPage({Key? key, required this.chatId, required this.name, required this.imageUrl, required this.uid, required this.userId}) : super(key: key);
+
+  ChatPage(
+      {Key? key,
+      required this.chatId,
+      required this.name,
+      required this.imageUrl,
+      required this.uid,
+      required this.userId})
+      : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -36,39 +44,46 @@ class _ChatPageState extends State<ChatPage> {
   var _textController = new TextEditingController();
   var data;
 
-
   @override
   void initState() {
     super.initState();
   }
 
   Future<bool> checkUser() async {
-    while(chatDocId.runtimeType.toString() != 'String') {
+    while (chatDocId.runtimeType.toString() != 'String') {
       await chats
-          .where('users', isEqualTo: {widget.uid: null, UserData['social']['user_id']: null})
+          .where('users', isEqualTo: {
+            widget.uid: null,
+            UserData['social']['user_id']: null
+          })
           .limit(1)
           .get()
           .then(
             (QuerySnapshot querySnapshot) async {
-          if (querySnapshot.docs.isNotEmpty) {
-            setState(() {
-              chatDocId = querySnapshot.docs.single.id;
-            });
-
-          } else {
-            await chats.add({
-              'users': {widget.uid: null, UserData['social']['user_id']: null},
-              'names':{widget.uid:widget.name, UserData['social']['user_id']:UserData['social']['user_name'] }
-            }).then((value) {
-              setState(() {
-                chatDocId = value;
-              });
-            });
-          }
-        },
-      )
-          .catchError((error) {
-      });
+              if (querySnapshot.docs.isNotEmpty) {
+                setState(() {
+                  chatDocId = querySnapshot.docs.single.id;
+                });
+              } else {
+                await chats.add({
+                  'users': {
+                    widget.uid: null,
+                    UserData['social']['user_id']: null
+                  },
+                  'names': {
+                    widget.uid: widget.name,
+                    UserData['social']['user_id']: UserData['social']
+                        ['user_name']
+                  }
+                }).then((value) {
+                  setState(() {
+                    chatDocId = value;
+                  });
+                });
+              }
+            },
+          )
+          .catchError((error) {});
     }
     return true;
   }
@@ -78,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
     chats.doc(chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
       'uid': UserData['social']['user_id'],
-      'friendName':widget.uid,
+      'friendName': widget.uid,
       'msg': msg
     }).then((value) {
       _textController.text = '';
@@ -111,7 +126,8 @@ class _ChatPageState extends State<ChatPage> {
                 .collection('messages')
                 .orderBy('createdOn', descending: true)
                 .snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               print("snapshot : $snapshot");
               print("snapshot data : ${snapshot.data}");
               print("snapshot hasdata : ${snapshot.hasData}");
@@ -205,11 +221,13 @@ class _ChatPageState extends State<ChatPage> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(100.0),
                               child: Image(
-                                image: CachedNetworkImageProvider('${widget.imageUrl}'),
+                                image: CachedNetworkImageProvider(
+                                    '${widget.imageUrl}'),
                                 width: 32,
                                 height: 32,
                                 fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
                                   return Image.asset(
                                     'assets/images/profile_null_image.png',
                                     width: 32.0,
@@ -227,8 +245,7 @@ class _ChatPageState extends State<ChatPage> {
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black
-                              ),
+                                  color: Colors.black),
                             ),
                           ],
                         ),
@@ -292,7 +309,9 @@ class _ChatPageState extends State<ChatPage> {
                                                 width: 40,
                                                 height: 4,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(2.0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          2.0),
                                                   color: Color(0xFFD1D9E6),
                                                 ),
                                               ),
@@ -305,26 +324,36 @@ class _ChatPageState extends State<ChatPage> {
                                                   Navigator.push(
                                                     context,
                                                     PageRouteBuilder(
-                                                      pageBuilder: (context, animation, secondaryAnimation) => MakePromisePage(partnerId: widget.userId),
-                                                      transitionDuration: Duration.zero,
-                                                      reverseTransitionDuration: Duration.zero,
+                                                      pageBuilder: (context,
+                                                              animation,
+                                                              secondaryAnimation) =>
+                                                          MakePromisePage(
+                                                              partnerId: widget
+                                                                  .userId),
+                                                      transitionDuration:
+                                                          Duration.zero,
+                                                      reverseTransitionDuration:
+                                                          Duration.zero,
                                                     ),
                                                   );
                                                 },
                                                 child: Container(
-                                                  padding:
-                                                  EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      20, 22, 20, 20),
                                                   height: 64,
                                                   color: whiteTheme,
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
                                                     children: [
                                                       Text(
                                                         '매칭 잡기',
                                                         style: TextStyle(
-                                                          color: Color(0xFF000000),
+                                                          color:
+                                                              Color(0xFF000000),
                                                           fontSize: 16,
-                                                          fontWeight: FontWeight.bold,
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                         ),
                                                       ),
                                                     ],
@@ -333,27 +362,55 @@ class _ChatPageState extends State<ChatPage> {
                                               ),
                                               GestureDetector(
                                                 onTap: () async {
-                                                  http.Response response = await http.delete(Uri.parse("${baseUrlV1}chats/${widget.chatId}"),
+                                                  print("Container clicked");
+                                                  http.Response response =
+                                                      await http.post(
+                                                    Uri.parse(
+                                                        "${baseUrlV2}users/${widget.chatId}"),
                                                     headers: {
-                                                      "Authorization" : "bearer $IdToken",
-                                                      "chatroomId" : "${widget.chatId}"
+                                                      "Authorization":
+                                                          "bearer $IdToken",
+                                                      "chatroomId":
+                                                          "${widget.chatId}"
                                                     },
                                                   );
-                                                  var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                                                  if(response.statusCode != 200 && resBody["error"]["code"] == "auth/id-token-expired") {
-                                                    IdToken = (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!.token.toString();
+                                                  var resBody = jsonDecode(
+                                                      utf8.decode(
+                                                          response.bodyBytes));
+                                                  if (response.statusCode !=
+                                                          200 &&
+                                                      resBody["error"]
+                                                              ["code"] ==
+                                                          "auth/id-token-expired") {
+                                                    IdToken = (await FirebaseAuth
+                                                            .instance
+                                                            .currentUser
+                                                            ?.getIdTokenResult(
+                                                                true))!
+                                                        .token
+                                                        .toString();
 
-                                                    response = await http.delete(Uri.parse("${baseUrlV1}chats/${widget.chatId}"),
+                                                    response =
+                                                        await http.delete(
+                                                      Uri.parse(
+                                                          "${baseUrlV1}chats/${widget.chatId}"),
                                                       headers: {
-                                                        "Authorization" : "bearer $IdToken",
-                                                        "chatroomId" : "${widget.chatId}"
+                                                        "Authorization":
+                                                            "bearer $IdToken",
+                                                        "chatroomId":
+                                                            "${widget.chatId}"
                                                       },
                                                     );
-                                                    resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                                                    resBody = jsonDecode(
+                                                        utf8.decode(response
+                                                            .bodyBytes));
                                                   }
 
-                                                  for(int i = 0; i < chatList.length; i++) {
-                                                    if(chatList[i]['_id'] == widget.chatId) {
+                                                  for (int i = 0;
+                                                      i < chatList.length;
+                                                      i++) {
+                                                    if (chatList[i]['_id'] ==
+                                                        widget.chatId) {
                                                       chatList.removeAt(i);
                                                       break;
                                                     }
@@ -362,19 +419,102 @@ class _ChatPageState extends State<ChatPage> {
                                                   Navigator.pop(context, true);
                                                 },
                                                 child: Container(
-                                                  padding:
-                                                  EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      20, 22, 20, 20),
+                                                  height: 64,
+                                                  color: whiteTheme,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '차단하기',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xFF000000),
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  http.Response response =
+                                                      await http.delete(
+                                                    Uri.parse(
+                                                        "${baseUrlV1}chats/${widget.chatId}"),
+                                                    headers: {
+                                                      "Authorization":
+                                                          "bearer $IdToken",
+                                                      "chatroomId":
+                                                          "${widget.chatId}"
+                                                    },
+                                                  );
+                                                  var resBody = jsonDecode(
+                                                      utf8.decode(
+                                                          response.bodyBytes));
+                                                  if (response.statusCode !=
+                                                          200 &&
+                                                      resBody["error"]
+                                                              ["code"] ==
+                                                          "auth/id-token-expired") {
+                                                    IdToken = (await FirebaseAuth
+                                                            .instance
+                                                            .currentUser
+                                                            ?.getIdTokenResult(
+                                                                true))!
+                                                        .token
+                                                        .toString();
+
+                                                    response =
+                                                        await http.delete(
+                                                      Uri.parse(
+                                                          "${baseUrlV1}chats/${widget.chatId}"),
+                                                      headers: {
+                                                        "Authorization":
+                                                            "bearer $IdToken",
+                                                        "chatroomId":
+                                                            "${widget.chatId}"
+                                                      },
+                                                    );
+                                                    resBody = jsonDecode(
+                                                        utf8.decode(response
+                                                            .bodyBytes));
+                                                  }
+
+                                                  for (int i = 0;
+                                                      i < chatList.length;
+                                                      i++) {
+                                                    if (chatList[i]['_id'] ==
+                                                        widget.chatId) {
+                                                      chatList.removeAt(i);
+                                                      break;
+                                                    }
+                                                  }
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context, true);
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      20, 22, 20, 20),
                                                   color: whiteTheme,
                                                   height: 64,
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
                                                     children: [
                                                       Text(
                                                         '채팅방 나가기',
                                                         style: TextStyle(
-                                                          color: Color(0xFFCF2933),
+                                                          color:
+                                                              Color(0xFFCF2933),
                                                           fontSize: 16,
-                                                          fontWeight: FontWeight.bold,
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                         ),
                                                       ),
                                                     ],
@@ -554,23 +694,29 @@ class _ChatPageState extends State<ChatPage> {
                           child: ListView(
                             reverse: true,
                             children: snapshot.data!.docs.map(
-                                  (DocumentSnapshot document) {
+                              (DocumentSnapshot document) {
                                 data = document.data()!;
                                 print('document : ${document.toString()}');
                                 print(data);
                                 String time = data['createdOn'] == null
-                                    ? DateTime.now().toString().substring(11, 16)
+                                    ? DateTime.now()
+                                        .toString()
+                                        .substring(11, 16)
                                     : data['createdOn']
-                                    .toDate()
-                                    .toString().substring(11, 16);
+                                        .toDate()
+                                        .toString()
+                                        .substring(11, 16);
                                 String amPm = '오전';
-                                if(int.parse(time.substring(0,2)) > 12) {
+                                if (int.parse(time.substring(0, 2)) > 12) {
                                   amPm = '오후';
-                                  time = '${int.parse(time.substring(0,2))-12}:${time.substring(3,5)}';
-                                }
-                                else time = '${int.parse(time.substring(0,2))}:${time.substring(3,5)}';
+                                  time =
+                                      '${int.parse(time.substring(0, 2)) - 12}:${time.substring(3, 5)}';
+                                } else
+                                  time =
+                                      '${int.parse(time.substring(0, 2))}:${time.substring(3, 5)}';
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: ChatBubble(
                                     elevation: 0,
                                     clipper: ChatBubbleClipper1(
@@ -585,51 +731,71 @@ class _ChatPageState extends State<ChatPage> {
                                       //    ? BubbleType.sendBubble
                                       //    : BubbleType.receiverBubble,
                                     ),
-                                    alignment: getAlignment(data['uid'].toString()),
+                                    alignment:
+                                        getAlignment(data['uid'].toString()),
                                     margin: EdgeInsets.only(top: 20),
-                                    backGroundColor: isSender(data['uid'].toString())
-                                        ? Color(0xFF6E7995)
-                                        : Color(0xFFFFFFFF),
+                                    backGroundColor:
+                                        isSender(data['uid'].toString())
+                                            ? Color(0xFF6E7995)
+                                            : Color(0xFFFFFFFF),
                                     child: IntrinsicWidth(
                                       child: Container(
                                         constraints: BoxConstraints(
-                                          maxWidth: MediaQuery.of(context).size.width * 0.7,
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.7,
                                         ),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         child: Column(
                                           children: [
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
                                               children: [
                                                 Flexible(
                                                   child: RichText(
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 100,
-                                                    strutStyle: StrutStyle(fontSize: 14),
+                                                    strutStyle: StrutStyle(
+                                                        fontSize: 14),
                                                     text: TextSpan(
                                                       text: data['msg'],
                                                       style: TextStyle(
                                                         fontSize: 14,
-                                                        color: isSender(data['uid'].toString()) ? Color(0xFFffffff) : Color(0xFF000000),
-                                                        fontWeight: FontWeight.bold,
+                                                        color: isSender(
+                                                                data['uid']
+                                                                    .toString())
+                                                            ? Color(0xFFffffff)
+                                                            : Color(0xFF000000),
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(width: 16,),
+                                                SizedBox(
+                                                  width: 16,
+                                                ),
                                                 Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
                                                   children: [
                                                     Text(
                                                       '${amPm} ${time}',
                                                       style: TextStyle(
                                                           fontSize: 10,
-                                                          color: isSender(
-                                                              data['uid'].toString())
-                                                              ? Color(0xFFD1D9E6)
+                                                          color: isSender(data[
+                                                                      'uid']
+                                                                  .toString())
+                                                              ? Color(
+                                                                  0xFFD1D9E6)
                                                               : Colors.black),
                                                     )
                                                   ],
@@ -646,7 +812,9 @@ class _ChatPageState extends State<ChatPage> {
                             ).toList(),
                           ),
                         ),
-                        SizedBox(height: 24,),
+                        SizedBox(
+                          height: 24,
+                        ),
                         Container(
                           padding: EdgeInsets.fromLTRB(20, 0, 14, 0),
                           height: 60,
@@ -665,7 +833,8 @@ class _ChatPageState extends State<ChatPage> {
                             children: [
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 10),
                                   child: TextField(
                                     style: TextStyle(
                                       color: Color(0xFF757575),
@@ -673,7 +842,8 @@ class _ChatPageState extends State<ChatPage> {
                                     ),
                                     decoration: InputDecoration(
                                       //contentPadding: EdgeInsets.symmetric(vertical: 2.0),
-                                      contentPadding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(15, 0, 10, 0),
                                       focusedBorder: InputBorder.none,
                                       enabledBorder: InputBorder.none,
                                       filled: true,
@@ -693,9 +863,9 @@ class _ChatPageState extends State<ChatPage> {
                                     size: 18,
                                   ),
                                   onPressed: () {
-                                    sendMessage(_textController.value.text.toString());
-                                  }
-                              )
+                                    sendMessage(
+                                        _textController.value.text.toString());
+                                  })
                             ],
                           ),
                         )

@@ -7,7 +7,7 @@ class FitnessCenter {
     required this.fitnessLongitude,
     required this.fitnessLatitude,
     required this.kakaoUrl,
-    //required this.reviews,
+    required this.reviews,
   });
   late final String underId;
   late final String centerName;
@@ -16,7 +16,7 @@ class FitnessCenter {
   late final double fitnessLongitude;
   late final double fitnessLatitude;
   late final String kakaoUrl;
-  //late final List<Reviews> reviews;
+  late final List<Reviews> reviews;
 
   FitnessCenter.fromJson(Map<String, dynamic> json){
     underId = json['_id'];
@@ -26,7 +26,7 @@ class FitnessCenter {
     fitnessLongitude = json['fitness_longitude'];
     fitnessLatitude = json['fitness_latitude'];
     kakaoUrl = json['kakao_url'];
-    //reviews = List.from(json['reviews']).map((e)=>Reviews.fromJson(e)).toList();
+    reviews = List.from(json['reviews']).map((e)=>Reviews.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +38,7 @@ class FitnessCenter {
     _data['fitness_longitude'] = fitnessLongitude;
     _data['fitness_latitude'] = fitnessLatitude;
     _data['kakao_url'] = kakaoUrl;
-    //_data['reviews'] = reviews.map((e)=>e.toJson()).toList();
+    _data['reviews'] = reviews.map((e)=>e.toJson()).toList();
     return _data;
   }
 }
