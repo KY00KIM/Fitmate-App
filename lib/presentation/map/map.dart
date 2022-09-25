@@ -255,6 +255,10 @@ class _MapPageState extends State<MapPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
+                                  (Platform.isIOS)
+                                      ? SizedBox(height: 30,)
+                                      : SizedBox(
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -474,7 +478,7 @@ class _MapPageState extends State<MapPage> {
                           });
                     },
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 70),
+                      margin: EdgeInsets.only(bottom: 70 + ((Platform.isIOS) ? 30 : 0)),
                       padding: EdgeInsets.all(8),
                       width: 110,
                       height: 35,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fitmate/presentation/login/components/apple_login_widget.dart';
 import 'package:fitmate/presentation/login/components/google_login_widget.dart';
 import 'package:fitmate/presentation/login/components/kakao_login_widget.dart';
@@ -79,13 +81,14 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 25,
                       ),
-                      /*
-                      AppleLoginWidget(),
+                      (Platform.isIOS)
+                          ? AppleLoginWidget()
+                          : SizedBox(
+                              height: 25,
+                            ),
                       SizedBox(
                         height: 25,
                       ),
-
-                       */
                       TextButton(
                           style: TextButton.styleFrom(
                             primary: Colors.black,
@@ -100,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                               PageRouteBuilder(
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                    HomePage(reload: false),
+                                        HomePage(reload: false),
                                 transitionDuration: Duration.zero,
                                 reverseTransitionDuration: Duration.zero,
                               ),
@@ -109,12 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "로그인 없이 둘러보기",
                             style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold
-                            ),
+                                decoration: TextDecoration.underline,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
                           )),
-                      SizedBox(height: 12,)
+                      SizedBox(
+                        height: 12,
+                      )
                     ],
                   )
                 ],

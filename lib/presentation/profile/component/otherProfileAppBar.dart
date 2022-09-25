@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -168,6 +170,155 @@ class BarWidget {
       );
     }
 
+    void _showBlockUserDialog() {
+      showDialog(
+          context: context,
+          barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("사용자를 차단하시겠습니까?",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              insetPadding: const EdgeInsets.fromLTRB(50, 80, 20, 80),
+              actions: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  width: 40,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFFF2F3F7),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xFFffffff),
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset: Offset(-2, -2),
+                      ),
+                      BoxShadow(
+                        color: Color.fromRGBO(55, 84, 170, 0.1),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Theme(
+                    data: ThemeData(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                    ),
+                    child: TextButton(
+                      child: Text(
+                        "확인",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () async {
+                        print('차단');
+                        http.Response response = await http.post(
+                            Uri.parse(
+                                "https://fitmate.co.kr/v2/users/blockuser"),
+                            headers: {
+                              "Authorization": "bearer $IdToken",
+                            },
+                            body: {
+                              "blocked_user_id": "${userId}"
+                            });
+                        var resBody =
+                            jsonDecode(utf8.decode(response.bodyBytes));
+                        print(resBody);
+                        if (response.statusCode != 200 &&
+                            resBody["error"]["code"] ==
+                                "auth/id-token-expired") {
+                          IdToken = (await FirebaseAuth.instance.currentUser
+                                  ?.getIdTokenResult(true))!
+                              .token
+                              .toString();
+
+                          response = await http.post(
+                              Uri.parse(
+                                  "https://fitmate.co.kr/v2/users/blockuser"),
+                              headers: {
+                                "Authorization": "bearer $IdToken",
+                              },
+                              body: {
+                                "blocked_user_id": "${userId}"
+                              });
+                          resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                        }
+                        print("before toast");
+                        if (resBody['success'] == true) {
+                          FlutterToastBottom('사용자가 차단되었습니다.');
+                        } else {
+                          FlutterToastBottom('에러가 발생했습니다.');
+                        }
+                        await UpdateUserData();
+                        Navigator.pushReplacement(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      HomePage(reload: true),
+                              transitionDuration: Duration.zero,
+                              reverseTransitionDuration: Duration.zero,
+                            ));
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 20, 10),
+                  width: 60,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color(0xFFF2F3F7),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xFFffffff),
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset: Offset(-2, -2),
+                      ),
+                      BoxShadow(
+                        color: Color.fromRGBO(55, 84, 170, 0.1),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Theme(
+                    data: ThemeData(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                    ),
+                    child: TextButton(
+                      child: Text(
+                        '아니오',
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            );
+          });
+    }
+
+    final Size size = MediaQuery.of(context).size;
+
     return AppBar(
       centerTitle: false,
       automaticallyImplyLeading: false,
@@ -247,38 +398,96 @@ class BarWidget {
                     height: 18,
                   ),
                   onPressed: () async {
-                    _showDialog();
-
-                    // if (conditionalFunction != null &&
-                    //     viewModel != null) {
-                    //   createUserInFirestore();
-                    //   if (await viewModel.sendSignUp()) {
-                    //     await UpdateUserData();
-                    //     Navigator.pushNamedAndRemoveUntil(
-                    //         context, '/', (_) => false);
-                    //     Navigator.pushReplacement(
-                    //         context,
-                    //         PageRouteBuilder(
-                    //           pageBuilder: (context, animation,
-                    //                   secondaryAnimation) =>
-                    //               nextPage,
-                    //           transitionDuration: Duration.zero,
-                    //           reverseTransitionDuration: Duration.zero,
-                    //         ));
-                    //   } else {
-                    //     FlutterToastTop("회원가입 중 문제가 발생했습니다");
-                    //   }
-                    // } else {
-                    //   Navigator.push(
-                    //       context,
-                    //       PageRouteBuilder(
-                    //         pageBuilder: (context, animation,
-                    //                 secondaryAnimation) =>
-                    //             nextPage,
-                    //         transitionDuration: Duration.zero,
-                    //         reverseTransitionDuration: Duration.zero,
-                    //       ));
-                    // }
+                    showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        shape: const RoundedRectangleBorder(
+                          // <-- SEE HERE
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(40.0),
+                          ),
+                        ),
+                        backgroundColor: Color(0xFFF2F3F7),
+                        builder: (BuildContext context) {
+                          return Wrap(
+                            children: [
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    width: 40,
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2.0),
+                                      color: Color(0xFFD1D9E6),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 36,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      _showBlockUserDialog();
+                                    },
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                      height: 64,
+                                      width: size.width,
+                                      color: whiteTheme,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '사용자 차단',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      _showDialog();
+                                    },
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 22, 20, 20),
+                                      height: 64,
+                                      width: size.width,
+                                      color: whiteTheme,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '사용자 신고',
+                                            style: TextStyle(
+                                              color: Color(0xFFCF2933),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  (Platform.isIOS)
+                                      ? SizedBox(height: 30,)
+                                      : SizedBox(
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        });
                   },
                 ),
               ),

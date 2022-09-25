@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 
 import '../../domain/util.dart';
+import '../../ui/show_toast.dart';
 import '../make_promise/make_promise.dart';
 import '../profile/other_profile.dart';
 
@@ -109,6 +111,145 @@ class _ChatPageState extends State<ChatPage> {
       return Alignment.topRight;
     }
     return Alignment.topLeft;
+  }
+
+  void _showBlockUserDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("사용자를 차단하시겠습니까?",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            insetPadding: const EdgeInsets.fromLTRB(50, 80, 20, 80),
+            actions: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                width: 40,
+                height: 32,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xFFF2F3F7),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFffffff),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                      offset: Offset(-2, -2),
+                    ),
+                    BoxShadow(
+                      color: Color.fromRGBO(55, 84, 170, 0.1),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
+                child: Theme(
+                  data: ThemeData(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      "확인",
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () async {
+                      print('차단');
+                      http.Response response = await http.post(
+                          Uri.parse(
+                              "https://fitmate.co.kr/v2/users/blockuser"),
+                          headers: {
+                            "Authorization": "bearer $IdToken",
+                          },
+                          body: {
+                            "blocked_user_id": "${widget.userId}"
+                          });
+                      var resBody =
+                      jsonDecode(utf8.decode(response.bodyBytes));
+                      print(resBody);
+                      if (response.statusCode != 200 &&
+                          resBody["error"]["code"] ==
+                              "auth/id-token-expired") {
+                        IdToken = (await FirebaseAuth.instance.currentUser
+                            ?.getIdTokenResult(true))!
+                            .token
+                            .toString();
+
+                        response = await http.post(
+                            Uri.parse(
+                                "https://fitmate.co.kr/v2/users/blockuser"),
+                            headers: {
+                              "Authorization": "bearer $IdToken",
+                            },
+                            body: {
+                              "blocked_user_id": "${widget.userId}"
+                            });
+                        resBody = jsonDecode(utf8.decode(response.bodyBytes));
+                      }
+                      print("before toast");
+                      if (resBody['success'] == true) {
+                        FlutterToastBottom('사용자가 차단되었습니다.');
+                      } else {
+                        FlutterToastBottom('에러가 발생했습니다.');
+                      }
+                      var temp = await UpdateUserData();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 20, 10),
+                width: 60,
+                height: 32,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xFFF2F3F7),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFffffff),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                      offset: Offset(-2, -2),
+                    ),
+                    BoxShadow(
+                      color: Color.fromRGBO(55, 84, 170, 0.1),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
+                child: Theme(
+                  data: ThemeData(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      '아니오',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -520,6 +661,10 @@ class _ChatPageState extends State<ChatPage> {
                                                     ],
                                                   ),
                                                 ),
+                                              ),
+                                              (Platform.isIOS)
+                                                  ? SizedBox(height: 30,)
+                                                  : SizedBox(
                                               ),
                                             ],
                                           ),
