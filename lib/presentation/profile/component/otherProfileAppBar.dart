@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -477,9 +479,10 @@ class BarWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 30,
-                                  )
+                                  (Platform.isIOS)
+                                      ? SizedBox(height: 30,)
+                                      : SizedBox(
+                                  ),
                                 ],
                               ),
                             ],
