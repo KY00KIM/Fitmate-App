@@ -93,6 +93,9 @@ class MyApp extends StatelessWidget {
   }
 
   @override
+
+
+  @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
     return AnnotatedRegion<SystemUiOverlayStyle>(

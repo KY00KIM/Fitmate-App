@@ -40,7 +40,6 @@ class _HomeTownWidgetState extends State<HomeTownWidget> {
   @override
   Widget build(BuildContext context) {
     print("타운 가즈아");
-    /*
     if(widget.fitness_center.reviews.length != 0) {
       for(int i = 0; i< widget.fitness_center.reviews.length; i++) {
         point += widget.fitness_center.reviews[i].centerRating;
@@ -48,7 +47,6 @@ class _HomeTownWidgetState extends State<HomeTownWidget> {
       point = point ~/ widget.fitness_center.reviews.length;
     }
 
-     */
     return FutureBuilder(
         future: setMarkers(),
         builder: (context, snapshot) {
