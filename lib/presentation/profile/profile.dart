@@ -148,7 +148,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 26
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(size.width - 130, 60),
@@ -159,9 +161,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     primary: Color(0xFF3F51B5),
                   ),
                   onPressed: () async {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            LoginPage()), (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => LoginPage()),
+                        (route) => false);
                   },
                   child: Text(
                     '합류하러가기',
@@ -190,106 +194,73 @@ class _ProfilePageState extends State<ProfilePage> {
               print('snapshot data : ${snapshot.hasData}');
               if (snapshot.hasData) {
                 return ScrollConfiguration(
-                  behavior: const ScrollBehavior().copyWith(overscroll: false),
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                      width: size.width,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Image.asset(
-                                'assets/icon/profIcon.png',
-                                width: 24,
-                                height: 24,
-                                fit: BoxFit.fill,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Text(
-                                "내 정보",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                    behavior:
+                        const ScrollBehavior().copyWith(overscroll: false),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                        width: size.width,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Image.asset(
+                                  'assets/icon/profIcon.png',
+                                  width: 24,
+                                  height: 24,
+                                  fit: BoxFit.fill,
                                 ),
-                              ),
-                              Spacer(),
-                              Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Color(0xFFF2F3F7),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0xFFffffff),
-                                      spreadRadius: 2,
-                                      blurRadius: 8,
-                                      offset: Offset(-2, -2),
-                                    ),
-                                    BoxShadow(
-                                      color: Color.fromRGBO(55, 84, 170, 0.1),
-                                      spreadRadius: 2,
-                                      blurRadius: 2,
-                                      offset: Offset(2, 2),
-                                    ),
-                                  ],
+                                SizedBox(
+                                  width: 12,
                                 ),
-                                child: Theme(
-                                  data: ThemeData(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                  ),
-                                  child: IconButton(
-                                    icon: SvgPicture.asset(
-                                      "assets/icon/writeProfile.svg",
-                                      width: 18,
-                                      height: 18,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfileEditPage()));
-                                    },
+                                Text(
+                                  "내 정보",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 52,
-                                height: 52,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Color(0xFFF2F3F7),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0xFFffffff),
-                                      spreadRadius: 2,
-                                      blurRadius: 8,
-                                      offset: Offset(-2, -2),
+                                Spacer(),
+                                Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Color(0xFFF2F3F7),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0xFFffffff),
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
+                                        offset: Offset(-2, -2),
+                                      ),
+                                      BoxShadow(
+                                        color: Color.fromRGBO(55, 84, 170, 0.1),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(2, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Theme(
+                                    data: ThemeData(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
                                     ),
-                                    BoxShadow(
-                                      color: Color.fromRGBO(55, 84, 170, 0.1),
-                                      spreadRadius: 2,
-                                      blurRadius: 2,
-                                      offset: Offset(2, 2),
-                                    ),
-                                  ],
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: CachedNetworkImageProvider(
-                                      '${UserData['user_profile_img']}',
+                                    child: IconButton(
+                                      icon: SvgPicture.asset(
+                                        "assets/icon/writeProfile.svg",
+                                        width: 18,
+                                        height: 18,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfileEditPage()));
+                                      },
                                     ),
                                   ),
                                 ),
@@ -371,38 +342,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Color(0xFFF2F3F7),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xFFffffff),
-                                  spreadRadius: 2,
-                                  blurRadius: 8,
-                                  offset: Offset(-2, -2),
-                                ),
-                                BoxShadow(
-                                  color: Color.fromRGBO(55, 84, 170, 0.1),
-                                  spreadRadius: 2,
-                                  blurRadius: 2,
-                                  offset: Offset(2, 2),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 4,
+                            Row(
+                              children: [
+                                Container(
+                                  width: 52,
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Color(0xFFF2F3F7),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0xFFffffff),
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
+                                        offset: Offset(-2, -2),
                                       ),
                                       Text(
                                         "기본정보",
@@ -617,33 +570,36 @@ class _ProfilePageState extends State<ProfilePage> {
                                   blurRadius: 8,
                                   offset: Offset(-2, -2),
                                 ),
-                                BoxShadow(
-                                  color: Color.fromRGBO(55, 84, 170, 0.1),
-                                  spreadRadius: 2,
-                                  blurRadius: 2,
-                                  offset: Offset(2, 2),
+                                SizedBox(
+                                  width: 20,
                                 ),
+                                Text('${UserData["user_nickname"]}',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold))
                               ],
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        "기본 루틴",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 108,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Color(0xFFF2F3F7),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFFffffff),
+                                    spreadRadius: 2,
+                                    blurRadius: 8,
+                                    offset: Offset(-2, -2),
                                   ),
-                                  SizedBox(
-                                    height: 16,
+                                  BoxShadow(
+                                    color: Color.fromRGBO(55, 84, 170, 0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(2, 2),
                                   ),
                                   Row(
                                     children: [
@@ -712,49 +668,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ))
                                             .toList(),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icon/reviewProfileIcon.svg",
-                                width: 24,
-                                height: 24,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Text(
-                                "메이트 리뷰",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              Spacer(),
-                              Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Color(0xFFF2F3F7),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0xFFffffff),
-                                      spreadRadius: 2,
-                                      blurRadius: 8,
-                                      offset: Offset(-2, -2),
-                                    ),
-                                    BoxShadow(
-                                      color: Color.fromRGBO(55, 84, 170, 0.1),
-                                      spreadRadius: 2,
-                                      blurRadius: 2,
-                                      offset: Offset(2, 2),
                                     ),
                                   ],
                                 ),
@@ -784,15 +697,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                              padding: EdgeInsets.fromLTRB(20, 24, 20, 20),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Container(
                               width: double.infinity,
-                              //height: 280,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Color(0xFFF2F3F7),
@@ -818,40 +728,25 @@ class _ProfilePageState extends State<ProfilePage> {
                                       crossAxisAlignment: CrossAxisAlignment
                                           .end,
                                       children: [
-                                        Text(
-                                          "총 평점",
-                                          style: TextStyle(
-                                              fontSize: 24,
-                                              color: Color(0xff6E7995),
-                                              fontWeight: FontWeight.bold),
-                                        ),
                                         SizedBox(
-                                          width: 12,
+                                          width: 4,
                                         ),
                                         Text(
-                                          "리뷰 ${reviewData.length}",
+                                          "기본정보",
                                           style: TextStyle(
-                                              color: Color(0xff6E7995),
-                                              fontSize: 16),
-                                        ),
-                                        Spacer(),
-                                        Text(
-                                          "${point}.0",
-                                          style: TextStyle(
-                                              color: Color(0xffF27F22),
-                                              fontSize: 24,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold),
                                         )
-                                      ]),
-                                  SizedBox(
-                                    height: 21,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Stack(children: [
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      children: [
                                         Container(
-                                          height: 8,
-                                          width: 120,
+                                          width: 20,
+                                          height: 20,
                                           decoration: BoxDecoration(
                                             boxShadow: [
                                               BoxShadow(
@@ -862,7 +757,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               const BoxShadow(
                                                 offset: Offset(2, 2),
                                                 blurRadius: 6,
-                                                color: Color(0xFFEFEFEF),
+                                                color: Color(0xFFfFfFfF),
                                               ),
                                             ],
                                             borderRadius: BorderRadius.circular(
@@ -939,13 +834,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 8),
                                           ),
                                         ),
+                                        Spacer(),
                                         Container(
-                                          width: reviewTotal == 0
-                                              ? 0
-                                              : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                              '62c66f224b8212e4674dbe22']),
-                                          height: 8,
+                                          padding:
+                                              EdgeInsets.fromLTRB(9, 2, 10, 1),
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(
                                                 begin: Alignment.centerLeft,
@@ -987,8 +879,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     children: [
                                       Stack(children: [
                                         Container(
-                                          height: 8,
-                                          width: 120,
+                                          width: 20,
+                                          height: 20,
                                           decoration: BoxDecoration(
                                             boxShadow: [
                                               BoxShadow(
@@ -999,7 +891,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               const BoxShadow(
                                                 offset: Offset(2, 2),
                                                 blurRadius: 6,
-                                                color: Color(0xFFEFEFEF),
+                                                color: Color(0xFFfFfFfF),
                                               ),
                                             ],
                                             borderRadius: BorderRadius.circular(
@@ -1076,13 +968,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 8),
                                           ),
                                         ),
+                                        Spacer(),
                                         Container(
-                                          width: reviewTotal == 0
-                                              ? 0
-                                              : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                              '62dbb2e126e97374cf97aec7']),
-                                          height: 8,
+                                          padding:
+                                              EdgeInsets.fromLTRB(9, 2, 10, 1),
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(
                                                 begin: Alignment.centerLeft,
@@ -1124,8 +1013,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     children: [
                                       Stack(children: [
                                         Container(
-                                          height: 8,
-                                          width: 120,
+                                          width: 20,
+                                          height: 20,
                                           decoration: BoxDecoration(
                                             boxShadow: [
                                               BoxShadow(
@@ -1136,20 +1025,32 @@ class _ProfilePageState extends State<ProfilePage> {
                                               const BoxShadow(
                                                 offset: Offset(2, 2),
                                                 blurRadius: 6,
-                                                color: Color(0xFFEFEFEF),
+                                                color: Color(0xFFfFfFfF),
                                               ),
                                             ],
                                             borderRadius: BorderRadius.circular(
                                                 8),
                                           ),
+                                          child: SvgPicture.asset(
+                                            'assets/icon/matchingProfileIcon.svg',
+                                            width: 12,
+                                            fit: BoxFit.scaleDown,
+                                          ),
                                         ),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text(
+                                          "매칭 수",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF6E7995),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Spacer(),
                                         Container(
-                                          width: reviewTotal == 0
-                                              ? 0
-                                              : (120 / reviewTotal) *
-                                              (reviewPoint[
-                                              '62c66f0b4b8212e4674dbe21']),
-                                          height: 8,
+                                          padding:
+                                              EdgeInsets.fromLTRB(9, 2, 10, 1),
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(
                                                 begin: Alignment.centerLeft,
@@ -1205,18 +1106,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
-                                width: 100,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Container(
                               width: double.infinity,
-                              height: 64,
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                              //height: 95,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Color(0xFFF2F3F7),
@@ -1250,87 +1146,467 @@ class _ProfilePageState extends State<ProfilePage> {
                                         color: Color(0xff6E7995),
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
-                                    width: 10,
+                                  child: Theme(
+                                    data: ThemeData(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                    ),
+                                    child: IconButton(
+                                      icon: SvgPicture.asset(
+                                        "assets/icon/right_arrow_icon.svg",
+                                        width: 18,
+                                        height: 18,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReviewListPage(
+                                                      reviewData: reviewData,
+                                                      title: '메이트',
+                                                      profileImg: reviewImg,
+                                                      nickName: reviewName)),
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ],
-                              )),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                              width: double.infinity,
-                              height: 64,
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Color(0xFFF2F3F7),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xFFffffff),
-                                    spreadRadius: 2,
-                                    blurRadius: 8,
-                                    offset: Offset(-2, -2),
-                                  ),
-                                  BoxShadow(
-                                    color: Color.fromRGBO(55, 84, 170, 0.1),
-                                    spreadRadius: 2,
-                                    blurRadius: 2,
-                                    offset: Offset(2, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  Text("이용약관",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff6E7995))),
-                                  Spacer(),
-                                  new SizedBox(
-                                      height: 18.0,
-                                      width: 18.0,
-                                      child: new IconButton(
-                                        padding: new EdgeInsets.all(0.0),
-                                        color: Color(0xFFF2F3F7),
-                                        icon: SvgPicture.asset(
-                                          "assets/icon/right_arrow_icon.svg",
-                                          width: 16,
-                                          height: 16,
-                                        ),
-                                        onPressed: () {},
-                                      ))
-                                ],
-                              )),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              print('로그아웃');
-                              locator.pauseListener();
-
-                              await FirebaseAuthMethods(
-                                  FirebaseAuth
-                                      .instance)
-                                  .signOut();
-                              Navigator
-                                  .pushReplacement(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context,
-                                      animation,
-                                      secondaryAnimation) =>
-                                      LoginPage(),
-                                  transitionDuration:
-                                  Duration.zero,
-                                  reverseTransitionDuration:
-                                  Duration.zero,
                                 ),
-                              );
-                            },
-                            child: Container(
+                              ],
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                                padding: EdgeInsets.fromLTRB(20, 24, 20, 20),
+                                width: double.infinity,
+                                //height: 280,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Color(0xFFF2F3F7),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xFFffffff),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-2, -2),
+                                    ),
+                                    BoxShadow(
+                                      color: Color.fromRGBO(55, 84, 170, 0.1),
+                                      spreadRadius: 2,
+                                      blurRadius: 2,
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            "총 평점",
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                color: Color(0xff6E7995),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 12,
+                                          ),
+                                          Text(
+                                            "리뷰 ${reviewData.length}",
+                                            style: TextStyle(
+                                                color: Color(0xff6E7995),
+                                                fontSize: 16),
+                                          ),
+                                          Spacer(),
+                                          Text(
+                                            "${point}.0",
+                                            style: TextStyle(
+                                                color: Color(0xffF27F22),
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ]),
+                                    SizedBox(
+                                      height: 21,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Stack(children: [
+                                          Container(
+                                            height: 8,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromRGBO(
+                                                      0,
+                                                      0,
+                                                      0,
+                                                      0.16), // shadow color
+                                                ),
+                                                const BoxShadow(
+                                                  offset: Offset(2, 2),
+                                                  blurRadius: 6,
+                                                  color: Color(0xFFEFEFEF),
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: reviewTotal == 0
+                                                ? 0
+                                                : (120 / reviewTotal) *
+                                                    (reviewPoint[
+                                                            '62c66ead4b8212e4674dbe1f'] +
+                                                        reviewPoint[
+                                                            '62c66ef64b8212e4674dbe20']),
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    Color(0xFF00C6FB),
+                                                    Color(0xFF005BEA)
+                                                  ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ]),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          "${(reviewPoint['62c66ead4b8212e4674dbe1f'] + reviewPoint['62c66ef64b8212e4674dbe20']).toString()}",
+                                          style: TextStyle(
+                                            color: Color(0xff6E7995),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "매너있고 친절해요",
+                                          style: TextStyle(
+                                              color: Color(0xff6E7995),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 21,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Stack(children: [
+                                          Container(
+                                            height: 8,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromRGBO(
+                                                      0,
+                                                      0,
+                                                      0,
+                                                      0.16), // shadow color
+                                                ),
+                                                const BoxShadow(
+                                                  offset: Offset(2, 2),
+                                                  blurRadius: 6,
+                                                  color: Color(0xFFEFEFEF),
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: reviewTotal == 0
+                                                ? 0
+                                                : (120 / reviewTotal) *
+                                                    (reviewPoint[
+                                                        '62c66f224b8212e4674dbe22']),
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    Color(0xFF00C6FB),
+                                                    Color(0xFF005BEA)
+                                                  ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ]),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          "${reviewPoint['62c66f224b8212e4674dbe22'].toString()}",
+                                          style: TextStyle(
+                                            color: Color(0xff6E7995),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "열정적이에요",
+                                          style: TextStyle(
+                                              color: Color(0xff6E7995),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 21,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Stack(children: [
+                                          Container(
+                                            height: 8,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromRGBO(
+                                                      0,
+                                                      0,
+                                                      0,
+                                                      0.16), // shadow color
+                                                ),
+                                                const BoxShadow(
+                                                  offset: Offset(2, 2),
+                                                  blurRadius: 6,
+                                                  color: Color(0xFFEFEFEF),
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: reviewTotal == 0
+                                                ? 0
+                                                : (120 / reviewTotal) *
+                                                    (reviewPoint[
+                                                            '62dbb30f26e97374cf97aec9'] +
+                                                        reviewPoint[
+                                                            "62dbb2fb26e97374cf97aec8"]),
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    Color(0xFF00C6FB),
+                                                    Color(0xFF005BEA)
+                                                  ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ]),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          "${(reviewPoint['62dbb30f26e97374cf97aec9'] + reviewPoint["62dbb2fb26e97374cf97aec8"]).toString()}",
+                                          style: TextStyle(
+                                            color: Color(0xff6E7995),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "운동을 잘 알려줘요",
+                                          style: TextStyle(
+                                              color: Color(0xff6E7995),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 21,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Stack(children: [
+                                          Container(
+                                            height: 8,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromRGBO(
+                                                      0,
+                                                      0,
+                                                      0,
+                                                      0.16), // shadow color
+                                                ),
+                                                const BoxShadow(
+                                                  offset: Offset(2, 2),
+                                                  blurRadius: 6,
+                                                  color: Color(0xFFEFEFEF),
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: reviewTotal == 0
+                                                ? 0
+                                                : (120 / reviewTotal) *
+                                                    (reviewPoint[
+                                                        '62dbb2e126e97374cf97aec7']),
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    Color(0xFF00C6FB),
+                                                    Color(0xFF005BEA)
+                                                  ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ]),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          "${reviewPoint['62dbb2e126e97374cf97aec7'].toString()}",
+                                          style: TextStyle(
+                                            color: Color(0xff6E7995),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "응답이 빨라요",
+                                          style: TextStyle(
+                                              color: Color(0xff6E7995),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 21,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Stack(children: [
+                                          Container(
+                                            height: 8,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromRGBO(
+                                                      0,
+                                                      0,
+                                                      0,
+                                                      0.16), // shadow color
+                                                ),
+                                                const BoxShadow(
+                                                  offset: Offset(2, 2),
+                                                  blurRadius: 6,
+                                                  color: Color(0xFFEFEFEF),
+                                                ),
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: reviewTotal == 0
+                                                ? 0
+                                                : (120 / reviewTotal) *
+                                                    (reviewPoint[
+                                                        '62c66f0b4b8212e4674dbe21']),
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: [
+                                                    Color(0xFF00C6FB),
+                                                    Color(0xFF005BEA)
+                                                  ]),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ]),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          "${reviewPoint['62c66f0b4b8212e4674dbe21'].toString()}",
+                                          style: TextStyle(
+                                            color: Color(0xff6E7995),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          "약속을 잘 지켜요",
+                                          style: TextStyle(
+                                              color: Color(0xff6E7995),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 34,
+                            ),
+                            Row(
+                              children: [
+                                Image.asset(
+                                  'assets/icon/settingsProfileIcon.png',
+                                  width: 24,
+                                  height: 24,
+                                  fit: BoxFit.scaleDown,
+                                ),
+                                SizedBox(
+                                  width: 12,
+                                ),
+                                Text(
+                                  "설정",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 100,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
                                 width: double.infinity,
                                 height: 64,
                                 padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -1354,13 +1630,66 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 child: Row(
                                   children: [
-                                    Text("로그아웃",
+                                    Text("버전",
                                         style: TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff6E7995))),
+                                            color: Color(0xff6E7995),
+                                            fontWeight: FontWeight.bold)),
                                     Spacer(),
-                                    new SizedBox(
+                                    Text(
+                                      "ver_${version}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xff6E7995),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PolicyShowPage()));
+                              },
+                              child: Container(
+                                  width: double.infinity,
+                                  height: 64,
+                                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Color(0xFFF2F3F7),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0xFFffffff),
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
+                                        offset: Offset(-2, -2),
+                                      ),
+                                      BoxShadow(
+                                        color: Color.fromRGBO(55, 84, 170, 0.1),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(2, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text("이용약관",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xff6E7995))),
+                                      Spacer(),
+                                      new SizedBox(
                                         height: 18.0,
                                         width: 18.0,
                                         child: new IconButton(
@@ -1504,12 +1833,42 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             ),
                                                           ],
                                                         ),
-                                                        child: Theme(
-                                                          data: ThemeData(
-                                                            splashColor:
-                                                            Colors.transparent,
-                                                            highlightColor:
-                                                            Colors.transparent,
+                                                        Container(
+                                                          margin: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 0, 20, 10),
+                                                          width: 60,
+                                                          height: 32,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                            color: Color(
+                                                                0xFFF2F3F7),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Color(
+                                                                    0xFFffffff),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 8,
+                                                                offset: Offset(
+                                                                    -2, -2),
+                                                              ),
+                                                              BoxShadow(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        55,
+                                                                        84,
+                                                                        170,
+                                                                        0.1),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 2,
+                                                                offset: Offset(
+                                                                    2, 2),
+                                                              ),
+                                                            ],
                                                           ),
                                                           child: TextButton(
                                                             child: Text(
@@ -1529,21 +1888,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             },
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                        ))
-                                  ],
-                                )),
-                          ),
-                          SizedBox(height: 32),
-                          TextButton(
-                              style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                textStyle: TextStyle(
-                                  fontSize: 14,
+                                                      ],
+                                                    );
+                                                  });
+                                            },
+                                          ))
+                                    ],
+                                  )),
+                            ),
+                            SizedBox(height: 32),
+                            TextButton(
+                                style: TextButton.styleFrom(
+                                  primary: Colors.black,
+                                  textStyle: TextStyle(
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                               onPressed: () {
@@ -1643,7 +2002,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           "${baseUrlV1}users"),
                                                       headers: {
                                                         "Authorization":
-                                                        "bearer $IdToken",
+                                                            "bearer $IdToken",
                                                       },
                                                     );
                                                     resBody = jsonDecode(
@@ -1652,12 +2011,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 .bodyBytes));
                                                   }
 
-                                                  await FirebaseAuthMethods(
-                                                      FirebaseAuth.instance)
-                                                      .signOut();
-                                                  // Firebase 로그아웃
-                                                  //await _auth.signOut();
-                                                  //await _googleSignIn.signOut();
+                                                      response =
+                                                          await http.delete(
+                                                        Uri.parse(
+                                                            "${baseUrlV1}users"),
+                                                        headers: {
+                                                          "Authorization":
+                                                              "bearer $IdToken",
+                                                        },
+                                                      );
+                                                      resBody = jsonDecode(
+                                                          utf8.decode(response
+                                                              .bodyBytes));
+                                                    }
 
                                                   Navigator.pushReplacement(
                                                     context,
