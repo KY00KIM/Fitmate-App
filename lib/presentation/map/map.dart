@@ -119,6 +119,7 @@ class _MapPageState extends State<MapPage> {
                   onMapDoubleTap: _onMapDoubleTap,
                   onMapTwoFingerTap: _onMapTwoFingerTap,
                   //onSymbolTap: _onSymbolTap,
+                  minZoom: 6,
                 ),
                 Align(
                     alignment: Alignment.topCenter,
@@ -747,7 +748,6 @@ class _MapPageState extends State<MapPage> {
     pins = resBody['data']['docs'];
 
     markers.clear();
-
 
     for(int i = 0; i < resBody['data']['docs'].length; i++) {
       markers.add(Marker(
