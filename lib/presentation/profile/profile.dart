@@ -7,16 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/policy_agreement/policy_show.dart';
 import 'package:fitmate/presentation/profile/profile_edit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import '../../domain/instance_preference/location.dart';
 import '../../domain/util.dart';
 
 import '../../data/firebase_service/firebase_auth_methods.dart';
-import '../../domain/util.dart';
 import '../../ui/bar_widget.dart';
 import '../login/login.dart';
+import '../post/someone_post.dart';
 import '../review/review_list.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -56,6 +54,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    print("내 프로필 페이지");
+
   }
 
   Future<int> getReviewProfile() async {
@@ -690,7 +690,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Row(
                                         children: userWeekdayList
                                             .map((item) => Container(
-                                                  margin: EdgeInsets.fromLTRB(
+                                                  margin: const EdgeInsets.fromLTRB(
                                                       2, 0, 2, 0),
                                                   padding: EdgeInsets.fromLTRB(
                                                       4, 2, 4, 2),
@@ -1210,10 +1210,58 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             height: 20,
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SomeonePostPage(userId: '${UserData['_id']}',)));
+                            },
+                            child: Container(
+                                width: double.infinity,
+                                height: 64,
+                                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Color(0xFFF2F3F7),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xFFffffff),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-2, -2),
+                                    ),
+                                    BoxShadow(
+                                      color: Color.fromRGBO(55, 84, 170, 0.1),
+                                      spreadRadius: 2,
+                                      blurRadius: 2,
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text("내 게시물",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff6E7995))),
+                                    Spacer(),
+                                    SvgPicture.asset(
+                                      "assets/icon/right_arrow_icon.svg",
+                                      width: 16,
+                                      height: 16,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
                           Container(
                               width: double.infinity,
                               height: 64,
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Color(0xFFF2F3F7),
@@ -1271,7 +1319,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Container(
                                 width: double.infinity,
                                 height: 64,
-                                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   color: Color(0xFFF2F3F7),
@@ -1298,33 +1346,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xff6E7995))),
                                     Spacer(),
-                                    new SizedBox(
-                                        height: 18.0,
-                                        width: 18.0,
-                                        child: new IconButton(
-                                          padding: new EdgeInsets.all(0.0),
-                                          color: Color(0xFFF2F3F7),
-                                          icon: SvgPicture.asset(
-                                            "assets/icon/right_arrow_icon.svg",
-                                            width: 16,
-                                            height: 16,
-                                          ),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                pageBuilder: (context,
-                                                        animation,
-                                                        secondaryAnimation) =>
-                                                    PolicyShowPage(),
-                                                transitionDuration:
-                                                    Duration.zero,
-                                                reverseTransitionDuration:
-                                                    Duration.zero,
-                                              ),
-                                            );
-                                          },
-                                        ))
+                                    SvgPicture.asset(
+                                      "assets/icon/right_arrow_icon.svg",
+                                      width: 16,
+                                      height: 16,
+                                    ),
                                   ],
                                 )),
                           ),
@@ -1352,7 +1378,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Container(
                                 width: double.infinity,
                                 height: 64,
-                                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   color: Color(0xFFF2F3F7),
@@ -1379,200 +1405,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xff6E7995))),
                                     Spacer(),
-                                    new SizedBox(
-                                        height: 18.0,
-                                        width: 18.0,
-                                        child: new IconButton(
-                                          padding: new EdgeInsets.all(0.0),
-                                          color: Color(0xFFF2F3F7),
-                                          icon: SvgPicture.asset(
-                                            "assets/icon/right_arrow_icon.svg",
-                                            width: 16,
-                                            height: 16,
-                                          ),
-                                          onPressed: () async {
-                                            showDialog(
-                                                context: context,
-                                                barrierDismissible:
-                                                    true, // 바깥 영역 터치시 닫을지 여부
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    content: Text(
-                                                        "로그아웃 하시겠습니까?",
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    insetPadding:
-                                                        const EdgeInsets
-                                                                .fromLTRB(
-                                                            50, 80, 20, 80),
-                                                    actions: [
-                                                      Container(
-                                                        margin:
-                                                            EdgeInsets.fromLTRB(
-                                                                0, 0, 0, 10),
-                                                        width: 40,
-                                                        height: 32,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color:
-                                                              Color(0xFFF2F3F7),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Color(
-                                                                  0xFFffffff),
-                                                              spreadRadius: 2,
-                                                              blurRadius: 8,
-                                                              offset: Offset(
-                                                                  -2, -2),
-                                                            ),
-                                                            BoxShadow(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      55,
-                                                                      84,
-                                                                      170,
-                                                                      0.1),
-                                                              spreadRadius: 2,
-                                                              blurRadius: 2,
-                                                              offset:
-                                                                  Offset(2, 2),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Theme(
-                                                          data: ThemeData(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                          ),
-                                                          child: TextButton(
-                                                            child: Text(
-                                                              "확인",
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            onPressed:
-                                                                () async {
-                                                              print('로그아웃');
-                                                              locator
-                                                                  .pauseListener();
-
-                                                              await FirebaseAuthMethods(
-                                                                      FirebaseAuth
-                                                                          .instance)
-                                                                  .signOut();
-                                                              Navigator
-                                                                  .pushReplacement(
-                                                                context,
-                                                                PageRouteBuilder(
-                                                                  pageBuilder: (context,
-                                                                          animation,
-                                                                          secondaryAnimation) =>
-                                                                      LoginPage(),
-                                                                  transitionDuration:
-                                                                      Duration
-                                                                          .zero,
-                                                                  reverseTransitionDuration:
-                                                                      Duration
-                                                                          .zero,
-                                                                ),
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 20,
-                                                      ),
-                                                      Container(
-                                                        margin:
-                                                            EdgeInsets.fromLTRB(
-                                                                0, 0, 20, 10),
-                                                        width: 60,
-                                                        height: 32,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                          color:
-                                                              Color(0xFFF2F3F7),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Color(
-                                                                  0xFFffffff),
-                                                              spreadRadius: 2,
-                                                              blurRadius: 8,
-                                                              offset: Offset(
-                                                                  -2, -2),
-                                                            ),
-                                                            BoxShadow(
-                                                              color: Color
-                                                                  .fromRGBO(
-                                                                      55,
-                                                                      84,
-                                                                      170,
-                                                                      0.1),
-                                                              spreadRadius: 2,
-                                                              blurRadius: 2,
-                                                              offset:
-                                                                  Offset(2, 2),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Theme(
-                                                          data: ThemeData(
-                                                            splashColor: Colors
-                                                                .transparent,
-                                                            highlightColor:
-                                                                Colors
-                                                                    .transparent,
-                                                          ),
-                                                          child: TextButton(
-                                                            child: Text(
-                                                              '아니오',
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                        ))
+                                    SvgPicture.asset(
+                                      "assets/icon/right_arrow_icon.svg",
+                                      width: 16,
+                                      height: 16,
+                                    ),
                                   ],
                                 )),
                           ),
                           SizedBox(height: 32),
                           TextButton(
                               style: TextButton.styleFrom(
-                                primary: Colors.black,
+                                primary: const Color(0xFF000000),
                                 textStyle: TextStyle(
                                   fontSize: 14,
                                 ),
@@ -1592,23 +1436,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                             50, 80, 20, 80),
                                         actions: [
                                           Container(
-                                            margin: EdgeInsets.fromLTRB(
+                                            margin: const EdgeInsets.fromLTRB(
                                                 0, 0, 0, 10),
                                             width: 40,
                                             height: 32,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
-                                              color: Color(0xFFF2F3F7),
+                                              color: const Color(0xFFF2F3F7),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Color(0xFFffffff),
+                                                  color: const Color(0xFFffffff),
                                                   spreadRadius: 2,
                                                   blurRadius: 8,
                                                   offset: Offset(-2, -2),
                                                 ),
                                                 BoxShadow(
-                                                  color: Color.fromRGBO(
+                                                  color: const Color.fromRGBO(
                                                       55, 84, 170, 0.1),
                                                   spreadRadius: 2,
                                                   blurRadius: 2,
@@ -1627,7 +1471,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   "확인",
                                                   style: TextStyle(
                                                       fontSize: 12,
-                                                      color: Colors.black,
+                                                      color: const Color(0xFF000000),
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -1710,23 +1554,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                             width: 20,
                                           ),
                                           Container(
-                                            margin: EdgeInsets.fromLTRB(
+                                            margin: const EdgeInsets.fromLTRB(
                                                 0, 0, 20, 10),
                                             width: 60,
                                             height: 32,
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(8),
-                                              color: Color(0xFFF2F3F7),
+                                              color: const Color(0xFFF2F3F7),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Color(0xFFffffff),
+                                                  color: const Color(0xFFffffff),
                                                   spreadRadius: 2,
                                                   blurRadius: 8,
                                                   offset: Offset(-2, -2),
                                                 ),
                                                 BoxShadow(
-                                                  color: Color.fromRGBO(
+                                                  color: const Color.fromRGBO(
                                                       55, 84, 170, 0.1),
                                                   spreadRadius: 1,
                                                   blurRadius: 1,
@@ -1745,7 +1589,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   '아니오',
                                                   style: TextStyle(
                                                       fontSize: 12,
-                                                      color: Colors.black,
+                                                      color: const Color(0xff000000),
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -1763,7 +1607,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 "회원탈퇴",
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
-                                  color: Color(0xFF3F51B5),
+                                  color: const Color(0xFF3F51B5),
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -1811,16 +1655,16 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 32,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                color: Color(0xFFF2F3F7),
+                                color: const Color(0xFFF2F3F7),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Color(0xFFffffff),
+                                    color: const Color(0xFFffffff),
                                     spreadRadius: 2,
                                     blurRadius: 8,
                                     offset: Offset(-2, -2),
                                   ),
                                   BoxShadow(
-                                    color: Color.fromRGBO(55, 84, 170, 0.1),
+                                    color: const Color.fromRGBO(55, 84, 170, 0.1),
                                     spreadRadius: 2,
                                     blurRadius: 2,
                                     offset: Offset(2, 2),
@@ -1860,16 +1704,16 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 52,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                color: Color(0xFFF2F3F7),
+                                color: const Color(0xFFF2F3F7),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Color(0xFFffffff),
+                                    color: const Color(0xFFffffff),
                                     spreadRadius: 2,
                                     blurRadius: 8,
                                     offset: Offset(-2, -2),
                                   ),
                                   BoxShadow(
-                                    color: Color.fromRGBO(55, 84, 170, 0.1),
+                                    color: const Color.fromRGBO(55, 84, 170, 0.1),
                                     spreadRadius: 2,
                                     blurRadius: 2,
                                     offset: Offset(2, 2),
@@ -1900,16 +1744,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 108,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFF2F3F7),
+                            color: const Color(0xFFF2F3F7),
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0xFFffffff),
+                                color: const Color(0xFFffffff),
                                 spreadRadius: 2,
                                 blurRadius: 8,
                                 offset: Offset(-2, -2),
                               ),
                               BoxShadow(
-                                color: Color.fromRGBO(55, 84, 170, 0.1),
+                                color: const Color.fromRGBO(55, 84, 170, 0.1),
                                 spreadRadius: 2,
                                 blurRadius: 2,
                                 offset: Offset(2, 2),
@@ -1917,7 +1761,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
+                            padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
                             child: Column(
                               children: [
                                 Expanded(
@@ -1951,7 +1795,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           "${UserData['user_introduce']}",
                                           style: TextStyle(
                                               fontSize: 14,
-                                              color: Color(0xff6E7995)),
+                                              color: const Color(0xff6E7995)),
                                           maxLines: 5,
                                         ),
                                       )
@@ -1969,16 +1813,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFF2F3F7),
+                            color: const Color(0xFFF2F3F7),
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0xFFffffff),
+                                color: const Color(0xFFffffff),
                                 spreadRadius: 2,
                                 blurRadius: 8,
                                 offset: Offset(-2, -2),
                               ),
                               BoxShadow(
-                                color: Color.fromRGBO(55, 84, 170, 0.1),
+                                color: const Color.fromRGBO(55, 84, 170, 0.1),
                                 spreadRadius: 2,
                                 blurRadius: 2,
                                 offset: Offset(2, 2),
@@ -1986,7 +1830,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
+                            padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
                             child: Column(
                               children: [
                                 Row(
@@ -2043,8 +1887,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     Spacer(),
                                     Container(
-                                      padding:
-                                      EdgeInsets.fromLTRB(9, 2, 10, 1),
+                                      padding: const EdgeInsets.fromLTRB(9, 2, 10, 1),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                           BorderRadius.circular(12),
@@ -2059,7 +1902,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         "${UserData["user_address"]}",
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFFFFFFFF),
+                                          color: const Color(0xFFFFFFFF),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -2081,7 +1924,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           const BoxShadow(
                                             offset: Offset(2, 2),
                                             blurRadius: 6,
-                                            color: Color(0xFFfFfFfF),
+                                            color: const Color(0xFFfFfFfF),
                                           ),
                                         ],
                                         borderRadius:
@@ -2100,13 +1943,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       "피트니스 센터",
                                       style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF6E7995),
+                                          color: const Color(0xFF6E7995),
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Spacer(),
                                     Container(
-                                      padding:
-                                      EdgeInsets.fromLTRB(9, 2, 10, 1),
+                                      padding: const EdgeInsets.fromLTRB(9, 2, 10, 1),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                           BorderRadius.circular(12),
@@ -2121,7 +1963,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         "${UserCenterName}",
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFFFFFFFF),
+                                          color: const Color(0xFFFFFFFF),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -2162,13 +2004,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       "매칭 수",
                                       style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF6E7995),
+                                          color: const Color(0xFF6E7995),
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Spacer(),
                                     Container(
-                                      padding:
-                                      EdgeInsets.fromLTRB(9, 2, 10, 1),
+                                      padding: const EdgeInsets.fromLTRB(9, 2, 10, 1),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                           BorderRadius.circular(12),
@@ -2183,7 +2024,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         "0 회",
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFFFFFFFF),
+                                          color: const Color(0xFFFFFFFF),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -2202,16 +2043,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           //height: 95,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFF2F3F7),
+                            color: const Color(0xFFF2F3F7),
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0xFFffffff),
+                                color: const Color(0xFFffffff),
                                 spreadRadius: 2,
                                 blurRadius: 8,
                                 offset: Offset(-2, -2),
                               ),
                               BoxShadow(
-                                color: Color.fromRGBO(55, 84, 170, 0.1),
+                                color: const Color.fromRGBO(55, 84, 170, 0.1),
                                 spreadRadius: 2,
                                 blurRadius: 2,
                                 offset: Offset(2, 2),
@@ -2219,7 +2060,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 20, 16, 20),
+                            padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
                             child: Column(
                               children: [
                                 Row(
@@ -2271,16 +2112,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                       "운동 요일",
                                       style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF6E7995),
+                                          color: const Color(0xFF6E7995),
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Spacer(),
                                     Row(
                                       children: userWeekdayList
                                           .map((item) => Container(
-                                        margin: EdgeInsets.fromLTRB(
+                                        margin: const EdgeInsets.fromLTRB(
                                             2, 0, 2, 0),
-                                        padding: EdgeInsets.fromLTRB(
+                                        padding: const EdgeInsets.fromLTRB(
                                             4, 2, 4, 2),
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -2299,8 +2140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           "${weekdayEngToKor[item]}",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color:
-                                            Color(0xFFFFFFFF),
+                                            color: const Color(0xFFFFFFFF),
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -2337,16 +2177,16 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 32,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                color: Color(0xFFF2F3F7),
+                                color: const Color(0xFFF2F3F7),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Color(0xFFffffff),
+                                    color: const Color(0xFFffffff),
                                     spreadRadius: 2,
                                     blurRadius: 8,
                                     offset: Offset(-2, -2),
                                   ),
                                   BoxShadow(
-                                    color: Color.fromRGBO(55, 84, 170, 0.1),
+                                    color: const Color.fromRGBO(55, 84, 170, 0.1),
                                     spreadRadius: 2,
                                     blurRadius: 2,
                                     offset: Offset(2, 2),
@@ -2385,21 +2225,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 30,
                         ),
                         Container(
-                            padding: EdgeInsets.fromLTRB(20, 24, 20, 20),
+                            padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
                             width: double.infinity,
                             //height: 280,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: Color(0xFFF2F3F7),
+                              color: const Color(0xFFF2F3F7),
                               boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xFFffffff),
+                                const BoxShadow(
+                                  color: const Color(0xFFffffff),
                                   spreadRadius: 2,
                                   blurRadius: 8,
                                   offset: Offset(-2, -2),
                                 ),
-                                BoxShadow(
-                                  color: Color.fromRGBO(55, 84, 170, 0.1),
+                                const BoxShadow(
+                                  color: const Color.fromRGBO(55, 84, 170, 0.1),
                                   spreadRadius: 2,
                                   blurRadius: 2,
                                   offset: Offset(2, 2),
@@ -2417,7 +2257,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         "총 평점",
                                         style: TextStyle(
                                             fontSize: 24,
-                                            color: Color(0xff6E7995),
+                                            color: const Color(0xff6E7995),
                                             fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
@@ -2426,14 +2266,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Text(
                                         "리뷰 ${reviewData.length}",
                                         style: TextStyle(
-                                            color: Color(0xff6E7995),
+                                            color: const Color(0xff6E7995),
                                             fontSize: 16),
                                       ),
                                       Spacer(),
                                       Text(
                                         "${point}.0",
                                         style: TextStyle(
-                                            color: Color(0xffF27F22),
+                                            color: const Color(0xffF27F22),
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold),
                                       )
@@ -2449,7 +2289,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         width: 120,
                                         decoration: BoxDecoration(
                                           boxShadow: [
-                                            BoxShadow(
+                                            const BoxShadow(
                                               color: const Color.fromRGBO(0,
                                                   0, 0, 0.16), // shadow color
                                             ),
@@ -2491,7 +2331,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Text(
                                       "${(reviewPoint['62c66ead4b8212e4674dbe1f'] + reviewPoint['62c66ef64b8212e4674dbe20']).toString()}",
                                       style: TextStyle(
-                                        color: Color(0xff6E7995),
+                                        color: const Color(0xff6E7995),
                                         fontSize: 14,
                                       ),
                                     ),
@@ -2499,7 +2339,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Text(
                                       "매너있고 친절해요",
                                       style: TextStyle(
-                                          color: Color(0xff6E7995),
+                                          color: const Color(0xff6E7995),
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     )
@@ -2516,7 +2356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         width: 120,
                                         decoration: BoxDecoration(
                                           boxShadow: [
-                                            BoxShadow(
+                                            const BoxShadow(
                                               color: const Color.fromRGBO(0,
                                                   0, 0, 0.16), // shadow color
                                             ),
@@ -2798,10 +2638,58 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           height: 20,
                         ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SomeonePostPage(userId: UserData['_id'])));
+                          },
+                          child: Container(
+                              width: double.infinity,
+                              height: 64,
+                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Color(0xFFF2F3F7),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFFffffff),
+                                    spreadRadius: 2,
+                                    blurRadius: 8,
+                                    offset: Offset(-2, -2),
+                                  ),
+                                  BoxShadow(
+                                    color: Color.fromRGBO(55, 84, 170, 0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(2, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  Text("내 게시물",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff6E7995))),
+                                  Spacer(),
+                                  SvgPicture.asset(
+                                    "assets/icon/right_arrow_icon.svg",
+                                    width: 16,
+                                    height: 16,
+                                  ),
+                                ],
+                              )),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
                         Container(
                             width: double.infinity,
                             height: 64,
-                            padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               color: Color(0xFFF2F3F7),
@@ -2859,7 +2747,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Container(
                               width: double.infinity,
                               height: 64,
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Color(0xFFF2F3F7),
@@ -2890,7 +2778,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       height: 18.0,
                                       width: 18.0,
                                       child: new IconButton(
-                                        padding: new EdgeInsets.all(0.0),
+                                        padding: const EdgeInsets.all(0.0),
                                         color: Color(0xFFF2F3F7),
                                         icon: SvgPicture.asset(
                                           "assets/icon/right_arrow_icon.svg",
@@ -2940,7 +2828,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Container(
                               width: double.infinity,
                               height: 64,
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Color(0xFFF2F3F7),
@@ -2971,7 +2859,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       height: 18.0,
                                       width: 18.0,
                                       child: new IconButton(
-                                        padding: new EdgeInsets.all(0.0),
+                                        padding: const EdgeInsets.all(0.0),
                                         color: Color(0xFFF2F3F7),
                                         icon: SvgPicture.asset(
                                           "assets/icon/right_arrow_icon.svg",
@@ -3000,7 +2888,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   actions: [
                                                     Container(
                                                       margin:
-                                                      EdgeInsets.fromLTRB(
+                                                      const EdgeInsets.fromLTRB(
                                                           0, 0, 0, 10),
                                                       width: 40,
                                                       height: 32,
@@ -3088,7 +2976,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ),
                                                     Container(
                                                       margin:
-                                                      EdgeInsets.fromLTRB(
+                                                      const EdgeInsets.fromLTRB(
                                                           0, 0, 20, 10),
                                                       width: 60,
                                                       height: 32,
@@ -3180,7 +3068,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           50, 80, 20, 80),
                                       actions: [
                                         Container(
-                                          margin: EdgeInsets.fromLTRB(
+                                          margin: const EdgeInsets.fromLTRB(
                                               0, 0, 0, 10),
                                           width: 40,
                                           height: 32,
@@ -3298,7 +3186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           width: 20,
                                         ),
                                         Container(
-                                          margin: EdgeInsets.fromLTRB(
+                                          margin: const EdgeInsets.fromLTRB(
                                               0, 0, 20, 10),
                                           width: 60,
                                           height: 32,
