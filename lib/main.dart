@@ -92,8 +92,7 @@ class MyApp extends StatelessWidget {
     return IdToken == null || UserId == null || userdata == false;
   }
 
-  @override
-
+  // 로딩 시에 현재 위치 바로 받아오고 맵 핀을 한번 받아오고 맵으로 넘어갈 때 바로 보여지도록(처음만)
 
   @override
   Widget build(BuildContext context) {

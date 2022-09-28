@@ -32,6 +32,7 @@ Map fitnessPartConverse = {
   '하체': '62c670664b8212e4674dbe36',
   '유산소': '62c670a04b8212e4674dbe3a'
 };
+
 Map weekdayEngToKor = {
   "mon": "월",
   "tue": "화",
@@ -51,11 +52,11 @@ class LoginedUser {
 String version = "1.1.2";
 String UserCenterName = '';
 bool mapOpend = false;
-List chatList = [];
+List chatList = [];  // sqlite로
 
 // 홈 화면 전역 객체들
-List<Post> posts = <Post>[];
-List<Banner> banners = <Banner>[];
+List<Post> posts = <Post>[];  //sqlite로
+List<Banner> banners = <Banner>[];  //sqlite로
 var myFitnessCenter = null;
 
 late locationController locator = locationController();
@@ -90,7 +91,7 @@ late Map UserData = {
   "updatedAt": ""
 };
 Map userWeekdayMap = UserData["user_weekday"];
-List<String> userWeekdayList = [];
+List<String> userWeekdayList = [];   //sqlite로
 Map user_center = {};
 bool visit = false;
 
