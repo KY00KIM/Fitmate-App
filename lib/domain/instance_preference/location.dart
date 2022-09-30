@@ -48,7 +48,7 @@ class locationController {
     }
     location.changeSettings(accuracy: LocationAccuracy.high);
 
-    _listenLocation();
+    // _listenLocation();
     print("LocationListener paused : ${_locationSubscription?.isPaused}");
   }
 
