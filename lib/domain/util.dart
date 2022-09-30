@@ -1,10 +1,8 @@
 import 'package:http/http.dart' as http;
-import 'package:naver_map_plugin/naver_map_plugin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'model/banner.dart';
-import 'model/fitnesscenter.dart';
 import 'model/post.dart';
 import 'instance_preference/location.dart';
 import 'model/user.dart';
@@ -155,6 +153,10 @@ Future<bool> UpdateUserData() async {
       user_center["fitness_latitude"] = resBody2["data"]["fitness_latitude"]!;
       user_center["id"] = resBody2["data"]["_id"]!;
     }
+    //로컬 SharedPreference에 저장
+    await UserIdData().saveUser(UserData['_id']);
+    String pref_data = await UserIdData().getUserId();
+    print("THIS pref_data : $pref_data");
     return true;
   } else {
     print("유저 정보 가져오지 못함");
@@ -171,3 +173,34 @@ late String UserId;
 
 String baseUrlV1 = "https://fitmate.co.kr/v1/";
 String baseUrlV2 = "https://fitmate.co.kr/v2/";
+
+class UserIdData {
+  static const _userKey = 'background_user_data';
+  static const _userSeparator = '-/-/-/';
+
+  static UserIdData? _instance;
+  UserIdData._();
+  factory UserIdData() => _instance ??= UserIdData._();
+  SharedPreferences? _prefs;
+
+  Future<SharedPreferences> get prefs async =>
+      _prefs ??= await SharedPreferences.getInstance();
+
+  Future<void> saveUser(String newId) async {
+    final userIds = newId;
+    final prefs = await this.prefs;
+    await prefs.reload();
+
+    await (await prefs).setString(_userKey, newId);
+  }
+
+  Future<String> getUserId() async {
+    final prefs = await this.prefs;
+    await prefs.reload();
+    final userId = prefs.getString(_userKey);
+    if (userId == null) return "63367815762ac8c4a8b291d9";
+    return userId;
+  }
+
+  Future<void> clear() async => (await prefs).clear();
+}
