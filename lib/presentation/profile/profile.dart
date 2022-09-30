@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     print("내 프로필 페이지");
-
+    log("Idtoken : $IdToken");
   }
 
   Future<int> getReviewProfile() async {

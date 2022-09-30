@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
+
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -142,6 +143,7 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class $ {}

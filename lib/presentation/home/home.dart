@@ -73,10 +73,10 @@ class _HomePageState extends State<HomePage> {
                                   width: 24,
                                   height: 24,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 12,
                                 ),
-                                Text(
+                                const Text(
                                   '게시판',
                                   style: TextStyle(
                                     color: Color(0xFF000000),
@@ -93,13 +93,13 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(8),
                                 color: Color(0xFFF2F3F7),
                                 boxShadow: [
-                                  BoxShadow(
+                                  const BoxShadow(
                                     color: Color(0xFFffffff),
                                     spreadRadius: 2,
                                     blurRadius: 8,
                                     offset: Offset(-2, -2),
                                   ),
-                                  BoxShadow(
+                                  const BoxShadow(
                                     color: Color.fromRGBO(55, 84, 170, 0.1),
                                     spreadRadius: 2,
                                     blurRadius: 2,
@@ -131,13 +131,13 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         HomeBoardWidget(
                           posts: snapshot.data!['posts'],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -148,10 +148,10 @@ class _HomePageState extends State<HomePage> {
                               width: 24,
                               height: 24,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 12,
                             ),
-                            Text(
+                            const Text(
                               '우리동네',
                               style: TextStyle(
                                 color: Color(0xFF000000),
@@ -161,13 +161,13 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         HomeTownWidget(
                           fitness_center: snapshot.data!['fitness_center'],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 32,
                         ),
                       ],
@@ -176,7 +176,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
-
             // 기본적으로 로딩 Spinner를 보여줍니다.
             if(myFitnessCenter != null) return ScrollConfiguration(
               behavior: const ScrollBehavior().copyWith(overscroll: false),

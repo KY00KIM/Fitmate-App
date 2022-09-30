@@ -51,6 +51,12 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    print("창 닫습니다");
+    super.dispose();
+  }
+
   Future<bool> checkUser() async {
     while (chatDocId.runtimeType.toString() != 'String') {
       await chats
