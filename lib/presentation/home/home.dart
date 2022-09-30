@@ -306,10 +306,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-              ),
-            );
-
-            else return Container(width: size.width, height: size.height, child: Center(child: CircularProgressIndicator()));
+              );
+            else
+              return Container(
+                  width: size.width,
+                  height: size.height,
+                  child: Center(child: CircularProgressIndicator()));
           },
         ),
       ),
