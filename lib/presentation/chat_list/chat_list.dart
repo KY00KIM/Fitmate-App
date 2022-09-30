@@ -164,12 +164,28 @@ class _ChatListPageState extends State<ChatListPage> {
                                           SizedBox(
                                             width: 20,
                                           ),
-                                          Text(
-                                            '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname']}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname']}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                '${snapshot.data![index]['last_chat']}',
+                                                //'안녕하세요. 상대방과의 채팅을 시작하는게 어떠세요? 새로운 도전과 만남은 늘 설레는 법이랍니다',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -352,12 +368,23 @@ class _ChatListPageState extends State<ChatListPage> {
                                           SizedBox(
                                             width: 20,
                                           ),
-                                          Text(
-                                            '${chatList[index]['chat_start_id']['_id'] == UserData['_id'] ? chatList[index]['chat_join_id']['user_nickname'] : chatList[index]['chat_start_id']['user_nickname']}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${chatList[index]['chat_start_id']['_id'] == UserData['_id'] ? chatList[index]['chat_join_id']['user_nickname'] : chatList[index]['chat_start_id']['user_nickname']}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                '${chatList[index]['last_chat']}',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),

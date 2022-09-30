@@ -45,17 +45,13 @@ class _ChatPageState extends State<ChatPage> {
   var chatDocId;
   var _textController = new TextEditingController();
   var data;
+  String message = '';
 
   @override
   void initState() {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    print("창 닫습니다");
-    super.dispose();
-  }
 
   Future<bool> checkUser() async {
     while (chatDocId.runtimeType.toString() != 'String') {
@@ -263,7 +259,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     print("chat Id : ${widget.chatId}");
     print("docId : $chatDocId");
-    return FutureBuilder(
+    return isLoading ? Center(child: CircularProgressIndicator(),) : FutureBuilder(
       future: checkUser(),
       builder: (context, snapshot) {
         print("snapshot : ${snapshot.data}");
@@ -795,7 +791,8 @@ class _ChatPageState extends State<ChatPage> {
                               (DocumentSnapshot document) {
                                 data = document.data()!;
                                 print('document : ${document.toString()}');
-                                print(data);
+                                print(data['msg']);
+                                message = data['msg'];
                                 String time = data['createdOn'] == null
                                     ? DateTime.now()
                                         .toString()

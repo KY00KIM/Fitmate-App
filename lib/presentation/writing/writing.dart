@@ -42,6 +42,7 @@ class _WritingPageState extends State<WritingPage> {
 
   File? _image;
   bool flag = false;
+  bool touchWriting = false;
 
   final _picker = ImagePicker();
 
@@ -86,6 +87,12 @@ class _WritingPageState extends State<WritingPage> {
   }
 
   void PostPosets() async {
+    print("췍췍;");
+    setState(() {
+      isLoading = true;
+      touchWriting = true;
+    });
+
       List<int> imageBytes = _image!.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       List _selectedPartData = [];
@@ -128,6 +135,9 @@ class _WritingPageState extends State<WritingPage> {
         request.files
             .add(await http.MultipartFile.fromPath('image', _image!.path));
         var res = await request.send();
+        setState(() {
+          isLoading = false;
+        });
         FlutterToastBottom("게시글이 등록되었습니다!");
         Navigator.pop(context);
       } else if (resBody["error"]["code"] == "auth/id-token-expired") {
@@ -135,11 +145,18 @@ class _WritingPageState extends State<WritingPage> {
             (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
                 .token
                 .toString();
+        setState(() {
+          isLoading = false;
+        });
         FlutterToastBottom("오류가 발생했습니다. 한번 더 시도해 주세요");
       } else {
+        setState(() {
+          isLoading = false;
+        });
         FlutterToastBottom("오류가 발생하였습니다");
       }
   }
+
 
   Iterable<Widget> get companyPosition sync* {
     for (CompanyWidget company in _companies) {
@@ -241,65 +258,6 @@ class _WritingPageState extends State<WritingPage> {
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           backgroundColor: whiteTheme,
-          //appBar: barWidget.writingAppBar(context, checkValid),
-          /*
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            elevation: 0.0,
-            shape: Border(
-              bottom: BorderSide(
-                color: Color(0xFF3D3D3D),
-                width: 1,
-              ),
-            ),
-            backgroundColor: Color(0xFF22232A),
-            title: Transform(
-              transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-              child: Text(
-                "매칭 글등록",
-                style: TextStyle(
-                  color: Color(0xFFffffff),
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  _image == null ||
-                          title == "" ||
-                          centerName == '만날 피트니스장을 선택해주세요' ||
-                          _selectedDate == '날짜 선택' ||
-                          _selectedTime == '시간 선택'
-                      ? FlutterToastBottom("상세 설명 외의 모든 항목을 입력하여주세요")
-                      : PostPosets();
-                },
-                child: Text(
-                  '완료',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: _image == null ||
-                            title == "" ||
-                            centerName == '만날 피트니스장을 선택해주세요' ||
-                            _selectedDate == '날짜 선택' ||
-                            _selectedTime == '시간 선택'
-                        ? Color(0xFF878E97)
-                        : Color(0xFF2975CF),
-                  ),
-                ),
-              ),
-            ],
-          ),
-           */
           appBar: AppBar(
             centerTitle: false,
             backgroundColor: whiteTheme,
@@ -392,7 +350,7 @@ class _WritingPageState extends State<WritingPage> {
                         height: 18,
                       ),
                       onPressed: () {
-                        if (checkValid()) {
+                        if (checkValid() && touchWriting != true) {
                           PostPosets();
                         }
                       },
@@ -402,7 +360,7 @@ class _WritingPageState extends State<WritingPage> {
               )
             ],
           ),
-          body: SafeArea(
+          body: isLoading ? Center(child: CircularProgressIndicator(),) :SafeArea(
             child: ScrollConfiguration(
               behavior: const ScrollBehavior().copyWith(overscroll: false),
               child: SingleChildScrollView(

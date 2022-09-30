@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       home: Scaffold(
         // appBar: barWidget.signUpAppBar(context),
         backgroundColor: const Color(0xfff2f3f7),
-        body: SafeArea(
+        body: isLoading ? Center(child: CircularProgressIndicator(),) : SafeArea(
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
