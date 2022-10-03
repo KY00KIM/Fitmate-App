@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/ui/colors.dart';
@@ -32,6 +33,7 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
         .get(url, headers: {"Authorization": "bearer ${IdToken}"});
     var resBody = json.decode(response.body);
 
+    /*
     if(resBody['data']['docs'].length == 0) {
       print("서버 실패");
       url = Uri.parse('https://dapi.kakao.com/v2/local/search/keyword.json?size=15&sort=accuracy&query=${_editingController.text}&page=45');
@@ -52,14 +54,14 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
       }
 
       setState(() {
-        serverVersion = false;
+        //serverVersion = false;
         data.clear();
         data.addAll(temp);
       });
     } else {
       print("서버 성공;");
       setState(() {
-        serverVersion = true;
+        //serverVersion = true;
         data.clear();
         List result = resBody['data']['docs'];
         print("result : ${result}");
@@ -67,11 +69,27 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
       });
     }
 
+     */
+    if(resBody['data']['docs'].length != 0) {
+      setState(() {
+        data.clear();
+        List result = resBody['data']['docs'];
+        log("result : ${result}");
+        data.addAll(result);
+      });
+    }
+
+
     return response.body;
   }
 
   Future<void> returnPop(BuildContext context, var data) async {
     print("함수에서 받은 값 : ${data}");
+
+    print("바로 반환");
+    Navigator.pop(context, data);
+
+    /*
     if(serverVersion) {
       print("바로 반환");
       Navigator.pop(context, data);
@@ -113,6 +131,8 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
       print("반환 값 : ${resBody['data']}");
       Navigator.pop(context, resBody['data']);
     }
+
+     */
   }
 
   @override
@@ -227,7 +247,7 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
       body: Container(
         width: size.width,
         padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-        child: data.length == 0
+        child: data.length == 0 && _editingController.text == ''
             ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -269,7 +289,7 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
                 SizedBox(height: 34,),
               ],
             )
-            : Container(
+            : (data.length == 0 ? Center(child: Text('검색 결과가 없습니다'),) : Container(
               width: size.width - 40,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,7 +449,7 @@ class _SearchCenterPageState extends State<SearchCenterPage> {
                   ),
                 ],
               ),
-            ),
+            )),
       ),
     );
   }

@@ -17,6 +17,7 @@ import '../post/post.dart';
 import 'components/home_board_widget.dart';
 import 'components/home_town_widget.dart';
 
+
 class HomePage extends StatefulWidget {
   bool reload;
 
@@ -33,11 +34,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    /*
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startTrackManager();
     });
+     */
     super.initState();
     locator.initListner();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -64,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                         HomeBannerWidget(
                           banner: snapshot.data!['banners'],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 26,
                         ),
                         Row(
@@ -181,6 +189,7 @@ class _HomePageState extends State<HomePage> {
               );
             }
             // 기본적으로 로딩 Spinner를 보여줍니다.
+            /*
             if (myFitnessCenter != null)
               return ScrollConfiguration(
                 behavior: const ScrollBehavior().copyWith(overscroll: false),
@@ -312,6 +321,12 @@ class _HomePageState extends State<HomePage> {
                   width: size.width,
                   height: size.height,
                   child: Center(child: CircularProgressIndicator()));
+
+             */
+            return Container(
+                width: size.width,
+                height: size.height,
+                child: Center(child: CircularProgressIndicator()));
           },
         ),
       ),

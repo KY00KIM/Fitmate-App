@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
 class HomeBannerWidget extends StatefulWidget {
   List banner;
 
@@ -21,6 +22,16 @@ class _HomeBannerWidget extends State<HomeBannerWidget>{
     if (await canLaunchUrl(openUrl)) {
       launchUrl(openUrl, mode: LaunchMode.externalApplication);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -134,3 +145,4 @@ class _HomeBannerWidget extends State<HomeBannerWidget>{
     );
   }
 }
+

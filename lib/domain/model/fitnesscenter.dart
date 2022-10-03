@@ -65,7 +65,7 @@ class Reviews {
   late final String updatedAt;
   late final String id;
 
-  Reviews.fromJson(Map<String, dynamic> json){
+  Reviews.fromJson(Map<String, dynamic> json) {
     underId = json['_id'];
     centerId = json['center_id'];
     reviewSendId = json['review_send_id'];

@@ -63,6 +63,11 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     print("map init 완료");
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   // Text('${snapshot.data?[index]['post_title']}');
   @override
   Widget build(BuildContext context) {
@@ -77,7 +82,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           builder: (context) {
             return Stack(
               children: <Widget>[
-                SizedBox(),
+                const SizedBox(),
                 NaverMap(
                   /*
                     useSurface: kReleaseMode,
@@ -115,10 +120,12 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                     target: LatLng(37.566570, 126.978442),
                     zoom: 17,
                   ),
+                  liteModeEnable: true,
+                  useSurface: true,
                   markers: markers,
                   onMapCreated: onMapCreated,
                   mapType: _mapType,
-                  initLocationTrackingMode: LocationTrackingMode.NoFollow,
+                  initLocationTrackingMode: LocationTrackingMode.Follow,
                   locationButtonEnable: false,
                   indoorEnable: true,
                   onCameraChange: _onCameraChange,
@@ -128,7 +135,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                   onMapDoubleTap: _onMapDoubleTap,
                   onMapTwoFingerTap: _onMapTwoFingerTap,
                   //onSymbolTap: _onSymbolTap,
-                  minZoom: 6,
+                  minZoom: 11,
                 ),
                 Align(
                     alignment: Alignment.topCenter,
