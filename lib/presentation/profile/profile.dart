@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import '../../domain/util.dart';
+import 'component/profile_dialog.dart';
 
 import '../../data/firebase_service/firebase_auth_methods.dart';
 import '../../ui/bar_widget.dart';
@@ -298,10 +299,53 @@ class _ProfilePageState extends State<ProfilePage> {
                               SizedBox(
                                 width: 20,
                               ),
-                              Text('${UserData["user_nickname"]}',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold))
+                              Text(
+                                '${UserData["user_nickname"]}',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Container(
+                                width: 90,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Color(0xFFF2F3F7),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xFFffffff),
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-2, -2),
+                                    ),
+                                    BoxShadow(
+                                      color: Color.fromRGBO(55, 84, 170, 0.1),
+                                      spreadRadius: 2,
+                                      blurRadius: 2,
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Theme(
+                                  data: ThemeData(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                  ),
+                                  child: TextButton(
+                                    child: Text("센터 인증하기"),
+                                    style: TextButton.styleFrom(
+                                      primary: Colors.black,
+                                      textStyle: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      centerAuthenicate(context);
+                                    },
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -1745,7 +1789,53 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             Text('${UserData["user_nickname"]}',
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold))
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                            Text("asdasd"),
+                            Spacer(),
+                            Container(
+                              width: 50,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: const Color(0xFFF2F3F7),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFFffffff),
+                                    spreadRadius: 2,
+                                    blurRadius: 8,
+                                    offset: Offset(-2, -2),
+                                  ),
+                                  BoxShadow(
+                                    color:
+                                        const Color.fromRGBO(55, 84, 170, 0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: Offset(2, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Theme(
+                                data: ThemeData(
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                ),
+                                child: IconButton(
+                                  icon: Text(
+                                    "헬스장 인증하기",
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileEditPage()));
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(

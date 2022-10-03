@@ -123,6 +123,26 @@ class locationController {
     return {"user_longitude": 0.0, "user_latitude": 0.0};
   }
 
+  Future<Map> getSomeLocation() async {
+    try {
+      if (_serviceEnabled == false ||
+          _permissionGranted == PermissionStatus.denied) {
+        print("is rejected : $_serviceEnabled    $_permissionGranted");
+        return {"user_longitude": 0.0, "user_latitude": 0.0};
+      }
+      LocationData locationData = await location.getLocation();
+      Map _location = {
+        "user_longitude": locationData.longitude,
+        "user_latitude": locationData.latitude
+      };
+
+      return _location;
+    } catch (error) {
+      print("error at get&send : ${error}");
+    }
+    return {"user_longitude": 0.0, "user_latitude": 0.0};
+  }
+
   pauseListener() {
     _locationSubscription?.cancel();
   }
