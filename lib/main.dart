@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
-
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +31,7 @@ void main() async {
   );
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  initTrackManager();
+  // initTrackManager();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
@@ -47,9 +46,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      startTrackManager();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   startTrackManager();
+    // });
 
     super.initState();
   }
@@ -135,7 +134,6 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
 }
 
 class $ {}

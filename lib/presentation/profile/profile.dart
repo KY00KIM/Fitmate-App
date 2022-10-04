@@ -1790,52 +1790,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             Text('${UserData["user_nickname"]}',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
-                            Text("asdasd"),
-                            Spacer(),
-                            Container(
-                              width: 50,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color(0xFFF2F3F7),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0xFFffffff),
-                                    spreadRadius: 2,
-                                    blurRadius: 8,
-                                    offset: Offset(-2, -2),
-                                  ),
-                                  BoxShadow(
-                                    color:
-                                        const Color.fromRGBO(55, 84, 170, 0.1),
-                                    spreadRadius: 2,
-                                    blurRadius: 2,
-                                    offset: Offset(2, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Theme(
-                                data: ThemeData(
-                                  splashColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                ),
-                                child: IconButton(
-                                  icon: Text(
-                                    "헬스장 인증하기",
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProfileEditPage()));
-                                  },
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                         SizedBox(
