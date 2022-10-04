@@ -82,7 +82,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
           builder: (context) {
             return Stack(
               children: <Widget>[
-                const SizedBox(),
                 NaverMap(
                   /*
                     useSurface: kReleaseMode,
@@ -120,8 +119,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                     target: LatLng(37.566570, 126.978442),
                     zoom: 17,
                   ),
-                  liteModeEnable: true,
-                  useSurface: true,
+                  //liteModeEnable: true,
+                  useSurface: kReleaseMode,
                   markers: markers,
                   onMapCreated: onMapCreated,
                   mapType: _mapType,

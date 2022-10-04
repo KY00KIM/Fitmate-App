@@ -157,6 +157,7 @@ class _FitnessMapPageState extends State<FitnessMapPage> with TickerProviderStat
                 markers: _fitnessMarkers,
                 locationButtonEnable: false,
                 indoorEnable: true,
+                useSurface: kReleaseMode,
                 onCameraChange: _onCameraChange,
                 onCameraIdle: _onCameraIdle,
                 onMapTap: _onMapTap,

@@ -2,6 +2,7 @@ import 'package:fitmate/domain/model/fitnesscenter.dart';
 import 'package:fitmate/presentation/login/login.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
@@ -358,6 +359,7 @@ class HomeTownWidget extends StatelessWidget {
                           //onMapCreated: onMapCreated,
                           mapType: MapType.Basic,
                           markers: _homeTownMarkers,
+                          useSurface: kReleaseMode,
                           //initLocationTrackingMode: _trackingMode,
                           locationButtonEnable: false,
                           indoorEnable: true,

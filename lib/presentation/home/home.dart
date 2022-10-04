@@ -175,12 +175,14 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           height: 20,
                         ),
+                        /*
                         HomeTownWidget(
                           fitness_center: snapshot.data!['fitness_center'],
                         ),
                         const SizedBox(
                           height: 32,
                         ),
+                         */
                       ],
                     ),
                   ),
