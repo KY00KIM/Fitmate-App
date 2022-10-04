@@ -11,7 +11,7 @@ Future<void> initTrackManager() async {
     config: const BackgroundLocationTrackerConfig(
       loggingEnabled: false,
       androidConfig: AndroidConfig(
-        trackingInterval: Duration(seconds: 300),
+        trackingInterval: Duration(seconds: 5),
         distanceFilterMeters: null,
       ),
       iOSConfig: IOSConfig(
@@ -26,6 +26,10 @@ String _trace_id = "63367815762ac8c4a8b291d9";
 
 void startTrackManager() async {
   await BackgroundLocationTrackerManager.startTracking();
+}
+
+void stopTrackManager() async {
+  await BackgroundLocationTrackerManager.stopTracking();
 }
 
 @pragma('vm:entry-point')

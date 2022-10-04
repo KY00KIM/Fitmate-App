@@ -33,9 +33,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      startTrackManager();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   stopTrackManager();
+    // });
+
     super.initState();
     locator.initListner();
   }
