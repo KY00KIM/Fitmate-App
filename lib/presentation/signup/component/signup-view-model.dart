@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +23,6 @@ class signUpViewModel {
     locator = locationController();
     String? deviceToken = await FirebaseMessaging.instance.getToken();
     await locator.init();
-    print("locator initiated");
     // Map location = await locator.getAndSendLocation(null);
     Map<String, dynamic> json = {
       "user_nickname": nickname == null ? "" : nickname,
@@ -32,9 +33,9 @@ class signUpViewModel {
       "user_weekday": isSelectedWeekDay,
       "user_longitude": 0.0,
       "user_latitude": 0.0,
-      //"survey_candidates": Survey,
+      "survey_candidates": Survey,
       "device_token": deviceToken ?? "",
-      "fitness_center_id": centerName == "피트니스 센터를1` 검색"
+      "fitness_center_id": centerName == "피트니스 센터를 검색"
           ? "631d65a35c8fcf2a7116f0d7"
           : center["id"]
       // "fitness_center": {
@@ -47,8 +48,8 @@ class signUpViewModel {
       //       centerName == "피트니스 센터를 검색" ? 0.0 : double.parse(center['x'])
       // }
     };
+    log("userdata json ready : ${json.toString()}");
     userdata = SignupUser.fromJson(json);
-    print("userdata json ready");
     var result = await signupApi.postSignUpUser(userdata);
     print("oauth response : $result");
     return result["success"];

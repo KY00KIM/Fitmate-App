@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 import '../domain/model/SignupUser.dart';
@@ -8,7 +9,7 @@ class SignUpApi {
   Future<Map> postSignUpUser(SignupUser user) async {
     HttpApi httpApi = HttpApi();
     try {
-      print("user at API : ${user.toJson()}");
+      log("user at API : ${user.toJson()}");
       http.Response response =
           await httpApi.post(2, 'users/oauth', user.toJson());
       print("$response");

@@ -9,6 +9,8 @@ class SignupUser {
     required this.userLatitude,
     required this.fitnessCenterId,
     required this.deviceToken,
+    required this.user_introduce,
+    required this.survey_candidates,
   });
   late final String userNickname;
   late final String userAddress;
@@ -19,6 +21,8 @@ class SignupUser {
   late final double userLatitude;
   late final String fitnessCenterId;
   late final String deviceToken;
+  late final String user_introduce;
+  late final List survey_candidates;
 
   SignupUser.fromJson(Map<String, dynamic> json) {
     userNickname = json['user_nickname'];
@@ -30,6 +34,8 @@ class SignupUser {
     userLatitude = json['user_latitude'];
     fitnessCenterId = json['fitness_center_id'];
     deviceToken = json['device_token'];
+    user_introduce = json['user_introduce'];
+    survey_candidates = json['survey_candidates'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +49,8 @@ class SignupUser {
     _data['user_latitude'] = userLatitude;
     _data['fitness_center_id'] = fitnessCenterId;
     _data['device_token'] = deviceToken;
+    _data['user_introduce'] = user_introduce;
+    _data['survey_candidates'] = survey_candidates;
     return _data;
   }
 }

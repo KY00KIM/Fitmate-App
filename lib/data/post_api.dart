@@ -18,17 +18,14 @@ class PostApi {
         Uri.parse("https://fitmate.co.kr/v2/visitor/posts?page=1&limit=3"),
       );
     } else  {
-      response = await httpApi.get(1, 'posts');
+      response = await httpApi.get(2, 'posts');
     }
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       List hits;
-      if(visit) {
-        hits = jsonResponse['data']['docs'];
-      } else {
-        hits = jsonResponse['data'];
-      }
+      hits = jsonResponse['data']['docs'];
+
       for(int i = 0; i < hits.length; i++) {
         try {
           _posts.add(Post.fromJson(hits[i]));

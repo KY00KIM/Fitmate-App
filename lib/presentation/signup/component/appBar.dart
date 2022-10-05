@@ -168,6 +168,7 @@ class BarWidget {
                                   reverseTransitionDuration: Duration.zero,
                                 ));
                           }
+
                         }
                       : () {
                           FlutterToastTop("모든 항목을 입력해주세요");

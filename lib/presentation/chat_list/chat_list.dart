@@ -47,6 +47,7 @@ class _ChatListPageState extends State<ChatListPage> {
 
     if(response.statusCode == 200) {
       chatList = resBody["data"];
+      log("log : ${resBody['data']}");
       return resBody["data"];
     }
     else {
@@ -97,6 +98,7 @@ class _ChatListPageState extends State<ChatListPage> {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) {
+                            log("재밌네${index.toString()} : ${snapshot.data![index]}");
                             if(snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] || snapshot.data![index]['chat_join_id']['_id'] == UserData['_id']) {
                               return GestureDetector(
                                 onTap: () async {

@@ -16,6 +16,8 @@ import '../../../data/firebase_service/firebase_auth_methods.dart';
 import '../../../domain/util.dart';
 import 'dart:convert';
 
+import '../user_report.dart';
+
 class BarWidget {
   final double iconSize = 32.0;
   final String iconSource = "assets/icon/";
@@ -454,8 +456,17 @@ class BarWidget {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: () {
-                                      _showDialog();
+                                    onTap: () async {
+                                      //_showDialog();
+
+                                      await Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => UserReportPage(reportUserId: '$userId',
+                                          ),
+                                        ),
+                                      );
+                                      Navigator.pop(context);
                                     },
                                     child: Container(
                                       padding:
