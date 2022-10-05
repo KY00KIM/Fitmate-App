@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +28,7 @@ class _SomeonePostPagePageState extends State<SomeonePostPage> with AutomaticKee
   @override
   void initState() {
     super.initState();
+    print("userId : ${widget.userId}");
   }
 
   //새로고침 방지
@@ -34,7 +37,7 @@ class _SomeonePostPagePageState extends State<SomeonePostPage> with AutomaticKee
 
   Future<List> getSomePost() async {
     List _posts = await postApi.getSomePost(widget.userId);
-
+    log("_posts : $_posts");
     return _posts;
   }
 

@@ -83,23 +83,6 @@ class PostWidget extends StatelessWidget {
                     );
                   },
                 ),
-                /*
-                child: Image.network(
-                  "${posts.postImg}",
-                  width: 68.0,
-                  height: 68.0,
-                  fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return Image.asset(
-                      'assets/images/dummy.jpg',
-                      width: 68.0,
-                      height: 68.0,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
-
-                 */
               ),
               SizedBox(
                 width: 16,

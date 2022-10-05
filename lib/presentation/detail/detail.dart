@@ -34,8 +34,7 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
 
   Future getPostDetail() async {
     http.Response responseUser = await http.get(
-        Uri.parse(
-            "${baseUrlV1}users/${widget.post.userId.id.toString()}"),
+        Uri.parse("${baseUrlV1}users/${widget.post.userId.id.toString()}"),
         headers: {
           "Authorization": "bearer ${IdToken.toString()}",
           "Content-Type": "application/json; charset=UTF-8",
@@ -78,70 +77,6 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
     } else {
       FlutterToastBottom("오류가 발생하였습니다");
     }
-  }
-
-  void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          backgroundColor: Color(0xFF22232A),
-          title: new Text(
-            "사용자 신고",
-            style: TextStyle(
-              color: Color(0xFFffffff),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF15161B),
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(
-                color: Color(0xFF878E97), //                   <--- border color
-                width: 1.0,
-              ),
-            ),
-            child: TextField(
-              keyboardType: TextInputType.multiline,
-              maxLines: 15,
-              minLines: 1,
-              style: TextStyle(color: Color(0xFF757575)),
-              decoration: InputDecoration(
-                fillColor: Color(0xFF15161B),
-                border: InputBorder.none,
-              ),
-            ),
-            padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
-          ),
-          actions: <Widget>[
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 130,
-                    child: ElevatedButton(
-                      child: Text(
-                        "신고 내용 보내기",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: () {
-                        ReportPosets();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -257,72 +192,128 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                               builder: (BuildContext context) {
                                 return Wrap(
                                   children: [
-                                    Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                          width: 40,
-                                          height: 4,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(2.0),
-                                            color: Color(0xFFD1D9E6),
+                                    Container(
+                                      height: 124,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 20,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 36,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            http.Response response =
-                                                await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${widget.post.underId}"),
-                                                headers: {
-                                                  "Authorization": "bearer $IdToken",
-                                                },
-                                                body: {});
-                                            var resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                                            if (response.statusCode != 201 &&
-                                                resBody["error"]["code"] == "auth/id-token-expired") {
-                                              IdToken =
-                                              (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
-                                                .token
-                                                .toString();
-
-                                              response = await http.post(Uri.parse("https://fitmate.co.kr/v2/report/${widget.post.underId}"),
-                                                  headers: {
-                                                    "Authorization": "bearer $IdToken",
-                                                  },
-                                                  body: {});
-                                              resBody = jsonDecode(utf8.decode(response.bodyBytes));
-                                            }
-                                            if(resBody['success'] == true) FlutterToastBottom('신고가 접수되었습니다.');
-                                            else FlutterToastBottom('에러가 발생하였습니다.');
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            padding:
-                                            EdgeInsets.fromLTRB(20, 22, 20, 20),
-                                            height: 64,
-                                            width : size.width,
-                                            color: whiteTheme,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '게시글 신고',
-                                                  style: TextStyle(
-                                                    color: Color(0xFFCF2933),
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
+                                          Container(
+                                            width: 40,
+                                            height: 4,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.0),
+                                              color: Color(0xFFD1D9E6),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            height: 36,
+                                          ),
+                                          widget.post.userId.underId == UserData['_id']
+                                              ? GestureDetector(
+                                                  onTap: () async {
+                                                    print("클릭");
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.fromLTRB(
+                                                        20, 22, 20, 20),
+                                                    height: 64,
+                                                    width: size.width,
+                                                    color: whiteTheme,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          '게시글 삭제',
+                                                          style: TextStyle(
+                                                            color:
+                                                                Color(0xFFCF2933),
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              : GestureDetector(
+                                                  onTap: () async {
+                                                    http.Response response =
+                                                        await http.post(
+                                                            Uri.parse(
+                                                                "https://fitmate.co.kr/v2/report/${widget.post.underId}"),
+                                                            headers: {
+                                                          "Authorization":
+                                                              "bearer $IdToken",
+                                                        },
+                                                            body: {});
+                                                    var resBody = jsonDecode(
+                                                        utf8.decode(
+                                                            response.bodyBytes));
+                                                    if (response.statusCode !=
+                                                            201 &&
+                                                        resBody["error"]
+                                                                ["code"] ==
+                                                            "auth/id-token-expired") {
+                                                      IdToken = (await FirebaseAuth
+                                                              .instance
+                                                              .currentUser
+                                                              ?.getIdTokenResult(
+                                                                  true))!
+                                                          .token
+                                                          .toString();
+
+                                                      response = await http.post(
+                                                          Uri.parse(
+                                                              "https://fitmate.co.kr/v2/report/${widget.post.underId}"),
+                                                          headers: {
+                                                            "Authorization":
+                                                                "bearer $IdToken",
+                                                          },
+                                                          body: {});
+                                                      resBody = jsonDecode(
+                                                          utf8.decode(response
+                                                              .bodyBytes));
+                                                    }
+                                                    if (resBody['success'] ==
+                                                        true)
+                                                      FlutterToastBottom(
+                                                          '신고가 접수되었습니다.');
+                                                    else
+                                                      FlutterToastBottom(
+                                                          '에러가 발생하였습니다.');
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.fromLTRB(
+                                                        20, 22, 20, 20),
+                                                    height: 64,
+                                                    width: size.width,
+                                                    color: whiteTheme,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          '게시글 신고',
+                                                          style: TextStyle(
+                                                            color:
+                                                                Color(0xFFCF2933),
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 );
@@ -378,10 +369,13 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    DetailTitleWidget(post: widget.post,),
+                    DetailTitleWidget(
+                      post: widget.post,
+                    ),
                     DetailMakerWidget(post: widget.post),
                     DetailImageWidget(post: widget.post),
-                    DetailContentWidget(post: widget.post, makerUserUid : makerUserUid),
+                    DetailContentWidget(
+                        post: widget.post, makerUserUid: makerUserUid),
                   ],
                 ),
               ),
@@ -396,5 +390,4 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
       },
     );
   }
-
 }
