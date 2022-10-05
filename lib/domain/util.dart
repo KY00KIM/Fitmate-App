@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'model/banner.dart';
@@ -50,11 +50,11 @@ class LoginedUser {
 String version = "1.1.2";
 String UserCenterName = '';
 bool mapOpend = false;
-List chatList = [];  // sqlite로
+List chatList = []; // sqlite로
 
 // 홈 화면 전역 객체들
-List<Post> posts = <Post>[];  //sqlite로
-List<Banner> banners = <Banner>[];  //sqlite로
+List<Post> posts = <Post>[]; //sqlite로
+List<Banner> banners = <Banner>[]; //sqlite로
 var myFitnessCenter = null;
 
 late locationController locator = locationController();
@@ -87,10 +87,11 @@ late Map UserData = {
   },
   "is_deleted": false,
   "createdAt": "",
-  "updatedAt": ""
+  "updatedAt": "",
+  "is_certificated": false
 };
 Map userWeekdayMap = UserData["user_weekday"];
-List<String> userWeekdayList = [];   //sqlite로
+List<String> userWeekdayList = []; //sqlite로
 Map user_center = {};
 bool visit = false;
 
@@ -156,9 +157,9 @@ Future<bool> UpdateUserData() async {
       user_center["id"] = resBody2["data"]["_id"]!;
     }
     //로컬 SharedPreference에 저장
-    await UserIdData().saveUser(UserData['_id']);
-    String pref_data = await UserIdData().getUserId();
-    print("THIS pref_data : $pref_data");
+    // await UserIdData().saveUser(UserData['_id']);
+    // String pref_data = await UserIdData().getUserId();
+    // print("THIS pref_data : $pref_data");
     return true;
   } else {
     print("유저 정보 가져오지 못함");
@@ -176,33 +177,33 @@ late String UserId;
 String baseUrlV1 = "https://fitmate.co.kr/v1/";
 String baseUrlV2 = "https://fitmate.co.kr/v2/";
 
-class UserIdData {
-  static const _userKey = 'background_user_data';
-  static const _userSeparator = '-/-/-/';
+// class UserIdData {
+//   static const _userKey = 'background_user_data';
+//   static const _userSeparator = '-/-/-/';
 
-  static UserIdData? _instance;
-  UserIdData._();
-  factory UserIdData() => _instance ??= UserIdData._();
-  SharedPreferences? _prefs;
+//   static UserIdData? _instance;
+//   UserIdData._();
+//   factory UserIdData() => _instance ??= UserIdData._();
+//   SharedPreferences? _prefs;
 
-  Future<SharedPreferences> get prefs async =>
-      _prefs ??= await SharedPreferences.getInstance();
+//   Future<SharedPreferences> get prefs async =>
+//       _prefs ??= await SharedPreferences.getInstance();
 
-  Future<void> saveUser(String newId) async {
-    final userIds = newId;
-    final prefs = await this.prefs;
-    await prefs.reload();
+//   Future<void> saveUser(String newId) async {
+//     final userIds = newId;
+//     final prefs = await this.prefs;
+//     await prefs.reload();
 
-    await (await prefs).setString(_userKey, newId);
-  }
+//     await (await prefs).setString(_userKey, newId);
+//   }
 
-  Future<String> getUserId() async {
-    final prefs = await this.prefs;
-    await prefs.reload();
-    final userId = prefs.getString(_userKey);
-    if (userId == null) return "63367815762ac8c4a8b291d9";
-    return userId;
-  }
+//   Future<String> getUserId() async {
+//     final prefs = await this.prefs;
+//     await prefs.reload();
+//     final userId = prefs.getString(_userKey);
+//     if (userId == null) return "63367815762ac8c4a8b291d9";
+//     return userId;
+//   }
 
-  Future<void> clear() async => (await prefs).clear();
-}
+//   Future<void> clear() async => (await prefs).clear();
+// }

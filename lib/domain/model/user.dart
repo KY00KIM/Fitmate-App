@@ -21,6 +21,7 @@ class User {
     required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
+    required this.isCertified,
   });
   late final String id;
   late final String userName;
@@ -43,8 +44,9 @@ class User {
   late final bool isDeleted;
   late final String createdAt;
   late final String updatedAt;
+  late final bool isCertified;
 
-  User.fromJson(Map<String, dynamic> json){
+  User.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     userName = json['user_name'];
     userAddress = json['user_address'];
@@ -66,6 +68,7 @@ class User {
     isDeleted = json['is_deleted'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    isCertified = json['is_certificated'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,6 +94,7 @@ class User {
     _data['is_deleted'] = isDeleted;
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
+    _data['is_certificated'] = isCertified;
     return _data;
   }
 }
@@ -113,7 +117,7 @@ class UserWeekday {
   late final bool sat;
   late final bool sun;
 
-  UserWeekday.fromJson(Map<String, dynamic> json){
+  UserWeekday.fromJson(Map<String, dynamic> json) {
     mon = json['mon'];
     tue = json['tue'];
     wed = json['wed'];
@@ -150,7 +154,7 @@ class Social {
   late final List<String> deviceToken;
   late final FirebaseInfo firebaseInfo;
 
-  Social.fromJson(Map<String, dynamic> json){
+  Social.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     userName = json['user_name'];
     provider = json['provider'];
