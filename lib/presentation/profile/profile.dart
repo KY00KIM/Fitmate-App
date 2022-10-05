@@ -304,6 +304,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              UserData['is_certificated']
+                                  ? Icon(
+                                      Icons.check_circle,
+                                      color: Color(0xff3F51B5),
+                                      size: 18,
+                                    )
+                                  : SizedBox(),
                               Spacer(),
                               Container(
                                 width: 90,

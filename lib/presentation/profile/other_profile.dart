@@ -37,6 +37,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
   late String otherId;
   late String otherName;
   bool imageError = false;
+  bool other_certificated = false;
 
   List<String> reviewName = [];
   List<String> reviewImg = [];
@@ -93,6 +94,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     }
 
     otherId = userRes['data']['_id'].toString();
+    other_certificated = userRes['data']['is_certificated'];
 
     if (response.statusCode == 200) {
       print("성공입니다");
