@@ -37,6 +37,7 @@ class BarWidget {
   PreferredSizeWidget nextBackAppBar(
       BuildContext context,
       Widget nextPage,
+      int pageNum,
       bool Function() changeButtonActive,
       signUpViewModel? instanceViewModel,
       Function? conditionalFunction) {
@@ -78,7 +79,7 @@ class BarWidget {
                     ],
                   ),
                   child: SvgPicture.asset(
-                    "${iconSource}x_icon.svg",
+                    "${iconSource}back_icon.svg",
                     width: 16,
                     height: 16,
                     fit: BoxFit.scaleDown,
@@ -114,7 +115,17 @@ class BarWidget {
                   highlightColor: Colors.transparent,
                 ),
                 child: IconButton(
-                  icon: changeButtonActive()
+                  icon: pageNum == 3 ? (changeButtonActive()
+                      ? SvgPicture.asset(
+                    "${iconSource}write_check_icon.svg",
+                    width: 18,
+                    height: 18,
+                  )
+                      : SvgPicture.asset(
+                    "${iconSource}non_color_check_icon.svg",
+                    width: 18,
+                    height: 18,
+                  )) : (changeButtonActive()
                       ? SvgPicture.asset(
                           "${iconSource}arrowNextActive.svg",
                           width: 18,
@@ -124,7 +135,7 @@ class BarWidget {
                           "${iconSource}arrowNextDeactive.svg",
                           width: 18,
                           height: 18,
-                        ),
+                        )),
                   onPressed: changeButtonActive()
                       ? () async {
                           if (conditionalFunction != null &&

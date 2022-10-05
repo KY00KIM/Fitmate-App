@@ -54,7 +54,7 @@ class _PolicyAgreementPageState extends State<PolicyAgreementPage> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 110, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 110, 20, 20),
                 child: Column(
                   children: [
                     Container(
@@ -66,7 +66,7 @@ class _PolicyAgreementPageState extends State<PolicyAgreementPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 150,
+                      height: 130,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,28 +89,23 @@ class _PolicyAgreementPageState extends State<PolicyAgreementPage> {
                         Row(
                           children: [
                             Container(
-                                decoration: inset.BoxDecoration(
-                                  color: const Color(0xffEFEFEF),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  border: Border.all(
-                                      width: 1.0,
-                                      color: const Color(0xffffffff)),
-                                  boxShadow: const [
-                                    inset.BoxShadow(
-                                      offset: Offset(-30, -30),
-                                      blurRadius: 100,
-                                      color: Color.fromARGB(0, 46, 46, 191),
-                                      inset: true,
-                                    ),
-                                    inset.BoxShadow(
-                                      offset: Offset(3, 3),
-                                      blurRadius: 6,
-                                      spreadRadius: 1,
-                                      color: Color.fromARGB(255, 169, 176, 189),
-                                      inset: true,
-                                    ),
-                                  ],
-                                ),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                BoxShadow(
+                                color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
+                          ),
+                            const BoxShadow(
+                              offset: Offset(2, 2),
+                              blurRadius: 6,
+                              color: Color(0xFFEFEFEF),
+                            ),
+                            ],
+                            borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          width: 1,
+                          color: Color(0xFFFFFFFF),
+                        ),
+                      ),
                                 width: 28,
                                 height: 28,
                                 child: IconButton(
@@ -171,28 +166,22 @@ class _PolicyAgreementPageState extends State<PolicyAgreementPage> {
                             Row(
                               children: [
                                 Container(
-                                    decoration: inset.BoxDecoration(
-                                      color: const Color(0xffEFEFEF),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                          width: 1.0,
-                                          color: const Color(0xffffffff)),
-                                      boxShadow: const [
-                                        inset.BoxShadow(
-                                          offset: Offset(-30, -30),
-                                          blurRadius: 100,
-                                          color: Color.fromARGB(0, 46, 46, 191),
-                                          inset: true,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
                                         ),
-                                        inset.BoxShadow(
-                                          offset: Offset(3, 3),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
                                           blurRadius: 6,
-                                          spreadRadius: 1,
-                                          color: Color.fromARGB(
-                                              255, 169, 176, 189),
-                                          inset: true,
+                                          color: Color(0xFFEFEFEF),
                                         ),
                                       ],
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Color(0xFFFFFFFF),
+                                      ),
                                     ),
                                     width: 28,
                                     height: 28,
@@ -319,28 +308,22 @@ class _PolicyAgreementPageState extends State<PolicyAgreementPage> {
                             Row(
                               children: [
                                 Container(
-                                    decoration: inset.BoxDecoration(
-                                      color: const Color(0xffEFEFEF),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                          width: 1.0,
-                                          color: const Color(0xffffffff)),
-                                      boxShadow: const [
-                                        inset.BoxShadow(
-                                          offset: Offset(-30, -30),
-                                          blurRadius: 100,
-                                          color: Color.fromARGB(0, 46, 46, 191),
-                                          inset: true,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
                                         ),
-                                        inset.BoxShadow(
-                                          offset: Offset(3, 3),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
                                           blurRadius: 6,
-                                          spreadRadius: 1,
-                                          color: Color.fromARGB(
-                                              255, 169, 176, 189),
-                                          inset: true,
+                                          color: Color(0xFFEFEFEF),
                                         ),
                                       ],
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Color(0xFFFFFFFF),
+                                      ),
                                     ),
                                     width: 28,
                                     height: 28,
@@ -468,28 +451,22 @@ class _PolicyAgreementPageState extends State<PolicyAgreementPage> {
                             Row(
                               children: [
                                 Container(
-                                    decoration: inset.BoxDecoration(
-                                      color: const Color(0xffEFEFEF),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                          width: 1.0,
-                                          color: const Color(0xffffffff)),
-                                      boxShadow: const [
-                                        inset.BoxShadow(
-                                          offset: Offset(-30, -30),
-                                          blurRadius: 100,
-                                          color: Color.fromARGB(0, 46, 46, 191),
-                                          inset: true,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
                                         ),
-                                        inset.BoxShadow(
-                                          offset: Offset(3, 3),
+                                        const BoxShadow(
+                                          offset: Offset(2, 2),
                                           blurRadius: 6,
-                                          spreadRadius: 1,
-                                          color: Color.fromARGB(
-                                              255, 169, 176, 189),
-                                          inset: true,
+                                          color: Color(0xFFEFEFEF),
                                         ),
                                       ],
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Color(0xFFFFFFFF),
+                                      ),
                                     ),
                                     width: 28,
                                     height: 28,
@@ -609,7 +586,7 @@ class _PolicyAgreementPageState extends State<PolicyAgreementPage> {
                           ],
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

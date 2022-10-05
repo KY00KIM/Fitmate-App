@@ -227,7 +227,7 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
     print(resBody);
 
     if (response.statusCode == 201) {
-      Navigator.pop(context);
+      Navigator.pop(context);  // 새로고침 여부
       FlutterToastBottom("리뷰를 작성해 주셔서 감사합니다");
     } else if (resBody['success'] == false &&
         resBody['message'] == "이미 해당 피트니스 센터 리뷰를 등록했습니다.") {
@@ -485,71 +485,6 @@ class _FitnessCenterReviewPageState extends State<FitnessCenterReviewPage> {
               )
             ],
           ),
-          /*
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-              ),
-            ),
-            elevation: 0.0,
-            shape: Border(
-              bottom: BorderSide(
-                color: Color(0xFF3D3D3D),
-                width: 1,
-              ),
-            ),
-            backgroundColor: Color(0xFF22232A),
-            title: Transform(
-              transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
-              child: Text(
-                "리뷰 작성",
-                style: TextStyle(
-                  color: Color(0xFFffffff),
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  (checkBoxList[0] == true ||
-                              checkBoxList[1] == true ||
-                              checkBoxList[2] == true ||
-                              checkBoxList[3] == true ||
-                              checkBoxList[4] == true ||
-                              checkBoxList[5] == true ||
-                              checkBoxList[6] == true) &&
-                          description != ''
-                      ? PostReview()
-                      : FlutterToastBottom("매칭 리뷰 선택 및 후기 작성을 해주세요!");
-                },
-                child: Text(
-                  '완료',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: (checkBoxList[0] == true ||
-                                checkBoxList[1] == true ||
-                                checkBoxList[2] == true ||
-                                checkBoxList[3] == true ||
-                                checkBoxList[4] == true ||
-                                checkBoxList[5] == true ||
-                                checkBoxList[6] == true) &&
-                            description != ''
-                        ? Color(0xFF2975CF)
-                        : Color(0xFF878E97),
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-           */
           body: SafeArea(
             child: ScrollConfiguration(
               behavior: const ScrollBehavior().copyWith(overscroll: false),

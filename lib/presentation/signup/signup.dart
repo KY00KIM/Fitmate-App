@@ -1,17 +1,11 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:fitmate/presentation/signup/signup2.dart';
 import 'component/signup-view-model.dart';
 import 'component/appBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
     as inset;
-import '../../domain/util.dart';
 import '../../ui/show_toast.dart';
-import '../home/home.dart';
 
 class SignupPage1 extends StatefulWidget {
   SignupPage1({Key? key, required this.user_object}) : super(key: key);
@@ -49,6 +43,7 @@ class _SignupPageState1 extends State<SignupPage1> {
               SignupPage2(
                 viewModel: viewModel,
               ),
+              1,
               checkValid,
               null,
               null),
@@ -143,26 +138,22 @@ class _SignupPageState1 extends State<SignupPage1> {
                       SizedBox(height: 13.5),
                       Container(
                         height: 52,
-                        decoration: inset.BoxDecoration(
-                          color: const Color(0xffEFEFEF),
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                              width: 1.0, color: const Color(0xffffffff)),
-                          boxShadow: const [
-                            inset.BoxShadow(
-                              offset: Offset(-30, -30),
-                              blurRadius: 100,
-                              color: Color.fromARGB(0, 46, 46, 191),
-                              inset: true,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
                             ),
-                            inset.BoxShadow(
-                              offset: Offset(3, 3),
+                            const BoxShadow(
+                              offset: Offset(2, 2),
                               blurRadius: 6,
-                              spreadRadius: 1,
-                              color: Color.fromARGB(255, 169, 176, 189),
-                              inset: true,
+                              color: Color(0xFFEFEFEF),
                             ),
                           ],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xFFFFFFFF),
+                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),

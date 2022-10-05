@@ -1,4 +1,5 @@
 import 'package:fitmate/presentation/search_center/search_center.dart';
+import 'package:fitmate/presentation/signup/signup3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart'
@@ -39,16 +40,29 @@ class _SignupPageState2 extends State<SignupPage2> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
+        /*
         appBar: barWidget.nextBackAppBar(context, HomePage(reload: true),
             checkValid, widget.viewModel, widget.viewModel.sendSignUp),
+
+         */
+
+        appBar: barWidget.nextBackAppBar(
+            context,
+            SignupPage3(
+              viewModel: widget.viewModel,
+            ),
+            2,
+            checkValid,
+            null,
+            null),
         backgroundColor: const Color(0xffF2F3F7),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Container(
-              child: ListView(
-                children: [
-                  Column(
+            child: ScrollConfiguration(
+              behavior: const ScrollBehavior().copyWith(overscroll: false),
+              child: SingleChildScrollView(
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -81,63 +95,58 @@ class _SignupPageState2 extends State<SignupPage2> {
                       SizedBox(height: 12.5),
                       Container(
                         height: 52,
-                        decoration: inset.BoxDecoration(
-                          color: const Color(0xffEFEFEF),
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                              width: 1.0, color: const Color(0xffffffff)),
-                          boxShadow: const [
-                            inset.BoxShadow(
-                              offset: Offset(-30, -30),
-                              blurRadius: 100,
-                              color: Color.fromARGB(0, 46, 46, 191),
-                              inset: true,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
                             ),
-                            inset.BoxShadow(
-                              offset: Offset(3, 3),
+                            const BoxShadow(
+                              offset: Offset(2, 2),
                               blurRadius: 6,
-                              spreadRadius: 1,
-                              color: Color.fromARGB(255, 169, 176, 189),
-                              inset: true,
+                              color: Color(0xFFEFEFEF),
                             ),
                           ],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xFFFFFFFF),
+                          ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2<String>(
-                              hint: Text(
-                                "지역을 선택하세요",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color(0xff6E7995),
-                                ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2<String>(
+                            buttonPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            hint: Text(
+                              "지역을 선택하세요",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: Color(0xff6E7995),
                               ),
-                              isExpanded: true,
-                              items: widget.viewModel.locationMap.keys
-                                  .map((item) => DropdownMenuItem<String>(
-                                      value: item, child: Text(item)))
-                                  .toList(),
-                              value: widget.viewModel.selectedLocation,
-                              onChanged: (value) {
-                                setState(() {
-                                  widget.viewModel.selectedLocation =
-                                      value as String;
-                                  widget.viewModel.selectedSemiLocation = null;
-                                });
-                              },
-                              icon:
-                                  SvgPicture.asset('assets/icon/dropArrow.svg'),
-                              iconSize: 20,
-                              iconEnabledColor: Colors.black,
-                              iconDisabledColor: Colors.grey,
-                              dropdownMaxHeight: 400,
-                              dropdownWidth: 300,
-                              dropdownPadding: EdgeInsets.only(left: 10),
-                              dropdownDecoration: BoxDecoration(
-                                color: Color(0xffF2F3F7),
-                              ),
+                            ),
+                            isExpanded: true,
+                            items: widget.viewModel.locationMap.keys
+                                .map((item) => DropdownMenuItem<String>(
+                                    value: item, child: Text(item)))
+                                .toList(),
+                            value: widget.viewModel.selectedLocation,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.viewModel.selectedLocation =
+                                    value as String;
+                                widget.viewModel.selectedSemiLocation = null;
+                              });
+                            },
+                            icon:
+                                SvgPicture.asset('assets/icon/dropArrow.svg'),
+                            iconSize: 20,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.grey,
+                            dropdownMaxHeight: 400,
+                            dropdownWidth: size.width - 40,
+                            dropdownPadding: EdgeInsets.only(left: 10),
+                            dropdownDecoration: BoxDecoration(
+                              color: Color(0xffF2F3F7),
+                              borderRadius:BorderRadius.circular(8),
                             ),
                           ),
                         ),
@@ -153,80 +162,76 @@ class _SignupPageState2 extends State<SignupPage2> {
                       SizedBox(height: 13.5),
                       Container(
                         height: 52,
-                        decoration: inset.BoxDecoration(
-                          color: const Color(0xffEFEFEF),
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                              width: 1.0, color: const Color(0xffffffff)),
-                          boxShadow: const [
-                            inset.BoxShadow(
-                              offset: Offset(-30, -30),
-                              blurRadius: 100,
-                              color: Color.fromARGB(0, 46, 46, 191),
-                              inset: true,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
                             ),
-                            inset.BoxShadow(
-                              offset: Offset(3, 3),
+                            const BoxShadow(
+                              offset: Offset(2, 2),
                               blurRadius: 6,
-                              spreadRadius: 1,
-                              color: Color.fromARGB(255, 169, 176, 189),
-                              inset: true,
+                              color: Color(0xFFEFEFEF),
                             ),
                           ],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xFFFFFFFF),
+                          ),
                         ),
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
-                                hint: Text(
-                                  "동네를 선택해주세요",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xff6E7995),
-                                  ),
-                                ),
-                                isExpanded: true,
-                                items: widget.viewModel.selectedLocation ==
-                                            "" &&
-                                        widget.viewModel.locationMap[widget
-                                                .viewModel.selectedLocation] ==
-                                            null
-                                    ? [
-                                        DropdownMenuItem(
-                                            value: null,
-                                            child: Text("결과가 없습니다."))
-                                      ]
-                                    : widget
-                                        .viewModel
-                                        .locationMap[
-                                            widget.viewModel.selectedLocation]
-                                        ?.map(
-                                            (item) => DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(item),
-                                                ))
-                                        .toList(),
-                                value: widget.viewModel.selectedSemiLocation,
-                                onChanged: (value) {
-                                  setState(() {
-                                    widget.viewModel.selectedSemiLocation =
-                                        value as String;
-                                  });
-                                },
-                                icon: SvgPicture.asset(
-                                    'assets/icon/dropArrow.svg'),
-                                iconSize: 20,
-                                iconEnabledColor: Colors.black,
-                                iconDisabledColor: Colors.grey,
-                                dropdownMaxHeight: 400,
-                                dropdownWidth: 300,
-                                dropdownPadding: EdgeInsets.only(left: 10),
-                                dropdownDecoration: BoxDecoration(
-                                  color: Color(0xffF2F3F7),
-                                ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2<String>(
+                            buttonPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            hint: Text(
+                              "동네를 선택해주세요",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: Color(0xff6E7995),
                               ),
-                            )),
+                            ),
+                            isExpanded: true,
+                            items: widget.viewModel.selectedLocation ==
+                                        "" &&
+                                    widget.viewModel.locationMap[widget
+                                            .viewModel.selectedLocation] ==
+                                        null
+                                ? [
+                                    DropdownMenuItem(
+                                        value: null,
+                                        child: Text("결과가 없습니다."))
+                                  ]
+                                : widget
+                                    .viewModel
+                                    .locationMap[
+                                        widget.viewModel.selectedLocation]
+                                    ?.map(
+                                        (item) => DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(item),
+                                            ))
+                                    .toList(),
+                            value: widget.viewModel.selectedSemiLocation,
+                            onChanged: (value) {
+                              setState(() {
+                                widget.viewModel.selectedSemiLocation =
+                                    value as String;
+                              });
+                            },
+                            icon: SvgPicture.asset(
+                                'assets/icon/dropArrow.svg'),
+                            iconSize: 20,
+                            iconEnabledColor: Colors.black,
+                            iconDisabledColor: Colors.grey,
+                            dropdownMaxHeight: 400,
+                            dropdownWidth: size.width - 40,
+                            dropdownPadding: EdgeInsets.only(left: 10),
+                            dropdownDecoration: BoxDecoration(
+                              color: Color(0xffF2F3F7),
+                              borderRadius:BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 22,
@@ -239,26 +244,22 @@ class _SignupPageState2 extends State<SignupPage2> {
                       SizedBox(height: 13.5),
                       Container(
                         height: 52,
-                        decoration: inset.BoxDecoration(
-                          color: const Color(0xffEFEFEF),
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                              width: 1.0, color: const Color(0xffffffff)),
-                          boxShadow: const [
-                            inset.BoxShadow(
-                              offset: Offset(-30, -30),
-                              blurRadius: 100,
-                              color: Color.fromARGB(0, 46, 46, 191),
-                              inset: true,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromRGBO(0, 0, 0, 0.16), // shadow color
                             ),
-                            inset.BoxShadow(
-                              offset: Offset(3, 3),
+                            const BoxShadow(
+                              offset: Offset(2, 2),
                               blurRadius: 6,
-                              spreadRadius: 1,
-                              color: Color.fromARGB(255, 169, 176, 189),
-                              inset: true,
+                              color: Color(0xFFEFEFEF),
                             ),
                           ],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            width: 1,
+                            color: Color(0xFFFFFFFF),
+                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -444,82 +445,9 @@ class _SignupPageState2 extends State<SignupPage2> {
                                 ),
                               )
                               .toList()),
-                      // SizedBox(
-                      //   height: 22,
-                      // ),
-                      // Text("운동 종료시간",
-                      //     style: TextStyle(
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: Color(0xff6E7995))),
-                      // SizedBox(height: 12),
-                      // Container(
-                      //   height: 50,
-                      //   decoration: inset.BoxDecoration(
-                      //     color: const Color(0xffEFEFEF),
-                      //     borderRadius: BorderRadius.circular(8.0),
-                      //     border: Border.all(
-                      //         width: 1.0, color: const Color(0xffffffff)),
-                      //     boxShadow: const [
-                      //       inset.BoxShadow(
-                      //         offset: Offset(-30, -30),
-                      //         blurRadius: 100,
-                      //         color: Color.fromARGB(0, 46, 46, 191),
-                      //         inset: true,
-                      //       ),
-                      //       inset.BoxShadow(
-                      //         offset: Offset(3, 3),
-                      //         blurRadius: 6,
-                      //         spreadRadius: 1,
-                      //         color: Color.fromARGB(255, 169, 176, 189),
-                      //         inset: true,
-                      //       ),
-                      //     ],
-                      //   ),
-                      //   child: Padding(
-                      //     padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      //     child: InkWell(
-                      //       onTap: () {
-                      //         Future<TimeOfDay?> future = showTimePicker(
-                      //           context: context,
-                      //           initialTime: TimeOfDay.now(),
-                      //         );
-                      //         future.then((timeOfDay) {
-                      //           setState(() {
-                      //             if (timeOfDay != null) {
-                      //               widget.viewModel.selectedEndTime =
-                      //                   '${widget.viewModel.selectTime(timeOfDay.hour)}:${widget.viewModel.selectTime(timeOfDay.minute)}';
-                      //             }
-                      //             print('${widget.viewModel.selectedEndTime}');
-                      //           });
-                      //         });
-                      //       },
-                      //       child: Container(
-                      //         child: Row(
-                      //           mainAxisAlignment:
-                      //               MainAxisAlignment.spaceBetween,
-                      //           children: [
-                      //             Text(
-                      //               '  ${widget.viewModel.selectedEndTime}',
-                      //               style: TextStyle(
-                      //                 color: Color(0xFF878E97),
-                      //                 fontSize: 14.0,
-                      //               ),
-                      //             ),
-                      //             Icon(
-                      //               Icons.schedule,
-                      //               color: Color(0xFF878E97),
-                      //               size: 18,
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      SizedBox(height: 30,),
                     ],
                   ),
-                ],
               ),
             ),
           ),

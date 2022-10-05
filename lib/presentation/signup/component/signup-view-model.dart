@@ -25,14 +25,16 @@ class signUpViewModel {
     // Map location = await locator.getAndSendLocation(null);
     Map<String, dynamic> json = {
       "user_nickname": nickname == null ? "" : nickname,
+      "user_introduce": introduce,
       'user_address': "$selectedLocation $selectedSemiLocation",
       'user_schedule_time': selectedTime,
       "user_gender": gender,
       "user_weekday": isSelectedWeekDay,
       "user_longitude": 0.0,
       "user_latitude": 0.0,
+      //"survey_candidates": Survey,
       "device_token": deviceToken ?? "",
-      "fitness_center_id": centerName == "피트니스 센터를 검색"
+      "fitness_center_id": centerName == "피트니스 센터를1` 검색"
           ? "631d65a35c8fcf2a7116f0d7"
           : center["id"]
       // "fitness_center": {
@@ -71,7 +73,7 @@ class signUpViewModel {
   bool isNicknameValid = false;
   String? nickname;
   bool gender = true;
-  String? introduce;
+  String introduce = '';
 
   /**
    * @회원가입 2페이지 파라미터
@@ -83,6 +85,11 @@ class signUpViewModel {
   String? selectedSemiLocation;
   String centerName = '피트니스 센터를 검색';
   late Map center;
+
+  /**
+   * @회원가입 3페이지 파라미터
+   */
+  List Survey = [];
 
 /**
  * @운동 시간 관련 함수
@@ -119,6 +126,53 @@ class signUpViewModel {
     "금": "fri",
     "토": "sat",
     "일": "sun"
+  };
+
+  /**
+   * @설문조사 관련 데이터
+   */
+
+  final List SurveyKorList = [
+    "마른것보다 근성장을 선호해요",
+    "누군가에게 동기부여를 주는 몸을 갖고 싶어요",
+    "스스로 도전하는 삶을 지향해요",
+    "즐거운 삶은 건강한 몸에서 나온다고 생각해요",
+    "미래의 건강을 위해서 꾸준한 운동이 중요해요",
+    "혼자하기 어려운 운동을 같이 해보고 싶어요",
+    "같이 운동할 때 더 성장하는 것 같아요",
+    "새로운 사람들과 함께 다양한 운동을 하고 싶어요",
+    "몰랐던 루틴이나 식단을 함께 공유하고 싶어요",
+    "어제보다 오늘 더 가벼워지고 싶어요",
+    "중량이 늘 때, 더 성장하는 것 같아요",
+    "부상없이, 안전하게 운동하고 싶어요",
+  ];
+  Map<String, dynamic> isSelectedSurveyKor = {
+    "633a75c0ad5ad46e4d0f81dd" : false,
+    "633a75c0ad5ad46e4d0f81df" : false,
+    "633a75c0ad5ad46e4d0f81e1" : false,
+    "633a75c0ad5ad46e4d0f81e3" : false,
+    "633a75c0ad5ad46e4d0f81e5" : false,
+    "633a75c0ad5ad46e4d0f81e7" : false,
+    "633a75c0ad5ad46e4d0f81e9" : false,
+    "633a75c0ad5ad46e4d0f81eb" : false,
+    "633a75c0ad5ad46e4d0f81ed" : false,
+    "633a75c0ad5ad46e4d0f81ef" : false,
+    "633a75c0ad5ad46e4d0f81f1" : false,
+    "633a75c0ad5ad46e4d0f81f3" : false
+  };
+  final Map SurveyKorId = {
+    "마른것보다 근성장을 선호해요" : "633a75c0ad5ad46e4d0f81dd",
+    "누군가에게 동기부여를 주는 몸을 갖고 싶어요" : "633a75c0ad5ad46e4d0f81df",
+    "스스로 도전하는 삶을 지향해요" : "633a75c0ad5ad46e4d0f81e1",
+    "즐거운 삶은 건강한 몸에서 나온다고 생각해요" : "633a75c0ad5ad46e4d0f81e3",
+    "미래의 건강을 위해서 꾸준한 운동이 중요해요" : "633a75c0ad5ad46e4d0f81e5",
+    "혼자하기 어려운 운동을 같이 해보고 싶어요" : "633a75c0ad5ad46e4d0f81e7",
+    "같이 운동할 때 더 성장하는 것 같아요" : "633a75c0ad5ad46e4d0f81e9",
+    "새로운 사람들과 함께 다양한 운동을 하고 싶어요" : "633a75c0ad5ad46e4d0f81eb",
+    "몰랐던 루틴이나 식단을 함께 공유하고 싶어요" : "633a75c0ad5ad46e4d0f81ed",
+    "어제보다 오늘 더 가벼워지고 싶어요" : "633a75c0ad5ad46e4d0f81ef",
+    "중량이 늘 때, 더 성장하는 것 같아요" : "633a75c0ad5ad46e4d0f81f1",
+    "부상없이, 안전하게 운동하고 싶어요" : "633a75c0ad5ad46e4d0f81f3"
   };
 
   /**

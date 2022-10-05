@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fitmate/domain/model/fitnesscenter.dart';
 import 'package:fitmate/presentation/login/login.dart';
 import 'package:fitmate/ui/colors.dart';
@@ -350,6 +351,7 @@ class HomeTownWidget extends StatelessWidget {
                       color: whiteTheme,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
+                        /*
                         child: NaverMap(
                           initLocationTrackingMode: LocationTrackingMode.None,
                           initialCameraPosition: CameraPosition(
@@ -363,6 +365,14 @@ class HomeTownWidget extends StatelessWidget {
                           //initLocationTrackingMode: _trackingMode,
                           locationButtonEnable: false,
                           indoorEnable: true,
+                        ),
+
+                         */
+                        child: Image(
+                          image: AssetImage('assets/images/gym.jpeg'),
+                          //width: 32.0,
+                          //height: 32.0,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
