@@ -177,15 +177,9 @@ late String UserId;
 String baseUrlV1 = "https://fitmate.co.kr/v1/";
 String baseUrlV2 = "https://fitmate.co.kr/v2/";
 
-<<<<<<< HEAD
-class UserIdData {  //110 -24 = 86
-  static const _userKey = 'background_user_data';
-  static const _userSeparator = '-/-/-/';
-=======
 // class UserIdData {
 //   static const _userKey = 'background_user_data';
 //   static const _userSeparator = '-/-/-/';
->>>>>>> 282c281c1555e9ca81ad22250b2a0bca07111f51
 
 //   static UserIdData? _instance;
 //   UserIdData._();
