@@ -1044,7 +1044,7 @@ class _ChatPageState extends State<ChatPage> {
                           CupertinoPageRoute(
                             builder: (context) => OtherProfilePage(
                               profileId: widget.userId,
-                              profileName: '${widget.name}',
+                              profileName: '${widget.name}', chatButton: true,
                             ),
                           ),
                         );

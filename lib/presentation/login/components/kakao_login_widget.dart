@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:developer';
 
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kakao;
+import 'package:loader_overlay/loader_overlay.dart';
 import '../../../data/firebase_service/firebase_auth_methods.dart';
 import '../../../domain/util.dart';
 import '../../../ui/show_toast.dart';
@@ -142,10 +143,12 @@ class KakaoLoginWidget extends StatelessWidget {
           ),
         ),
         onTap: () async {
+          context.loaderOverlay.show();
           IdToken = await login(context);
           print("IdToken : $IdToken");
 
           if (IdToken == 'error') {
+            context.loaderOverlay.hide();
             FlutterToastTop("알수 없는 에러가 발생하였습니다");
           } else {
             String? deviceToken = await FirebaseMessaging.instance.getToken();
@@ -173,6 +176,7 @@ class KakaoLoginWidget extends StatelessWidget {
               bool userdata = await UpdateUserData();
 
               if (userdata == true) {
+                context.loaderOverlay.hide();
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
@@ -185,12 +189,13 @@ class KakaoLoginWidget extends StatelessWidget {
                   ),
                 );
               } else {
+                context.loaderOverlay.hide();
                 print("else 문 에러");
                 FlutterToastTop("알수 없는 에러가 발생하였습니다");
               }
             } else if (resBody['message'] == 404) {
               // 사용자 정보가 등록 안된 상황에서는
-
+              context.loaderOverlay.hide();
               Navigator.push(
                 context,
                 PageRouteBuilder(
@@ -203,6 +208,7 @@ class KakaoLoginWidget extends StatelessWidget {
                 ),
               );
             } else {
+              context.loaderOverlay.hide();
               //모르는 문제 시에는
               FlutterToastTop("알수 없는 에러가 발생하였습니다");
             }

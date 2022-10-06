@@ -70,7 +70,7 @@ class _CalenderPageState extends State<CalenderPage> {
     final dayCount = last.difference(first).inDays + 1;
     return List.generate(
       dayCount,
-      (index) => DateTime.utc(first.year, first.month, first.day + index),
+          (index) => DateTime.utc(first.year, first.month, first.day + index),
     );
   }
 
@@ -565,7 +565,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                                                   CupertinoPageRoute(
                                                                     builder: (context) => OtherProfilePage(
                                                                       profileId: '${value[index].content['match_start_id'] == UserData['_id'] ? value[index].content['match_join_id'] : value[index].content['match_start_id']}',
-                                                                      profileName: '${value[index].content['partnerName']}',
+                                                                      profileName: '${value[index].content['partnerName']}', chatButton: false,
                                                                     ),
                                                                   ),
                                                                 );
@@ -687,11 +687,11 @@ class _CalenderPageState extends State<CalenderPage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) => ReviewPage(
-                                                            recv_id:
-                                                            "${value[index].content['match_start_id'] == UserData['_id'] ? value[index].content['match_join_id'] : value[index].content['match_start_id']}",
-                                                            appointmentId:
-                                                            "${value[index].content['_id']}",
-                                                            userImg: '${value[index].content['parnerImg']}', nickName: '${value[index].content['partnerName']}',)));
+                                                          recv_id:
+                                                          "${value[index].content['match_start_id'] == UserData['_id'] ? value[index].content['match_join_id'] : value[index].content['match_start_id']}",
+                                                          appointmentId:
+                                                          "${value[index].content['_id']}",
+                                                          userImg: '${value[index].content['parnerImg']}', nickName: '${value[index].content['partnerName']}',)));
                                               },
                                               child: Container(
                                                 child: Row(

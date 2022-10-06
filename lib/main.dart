@@ -2,9 +2,13 @@
 
 import 'dart:developer';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
+import 'package:fitmate/ui/colors.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import './background_isolate.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,6 +48,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   @override
   void initState() {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -107,11 +113,21 @@ class _MyAppState extends State<MyApp> {
         //   },
         // ),
         // home: PolicyAgreementPage(user_object: user_object),
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
         home: FutureBuilder(
           future: getToken(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData == false) {
-              return Center(child: CircularProgressIndicator());
+              return Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: whiteTheme,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
             //error가 발생하게 될 경우 반환하게 되는 부분
             else if (snapshot.hasError) {
@@ -127,7 +143,6 @@ class _MyAppState extends State<MyApp> {
                       reload: true,
                     );
             }
-
             //return BaseMapPage();
           },
         ),
@@ -139,3 +154,153 @@ class _MyAppState extends State<MyApp> {
 class $ {}
 
 class $idToken {}
+
+/*
+
+import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Shimmer',
+      routes: <String, WidgetBuilder>{
+        'loading': (_) => LoadingListPage(),
+      },
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Shimmer'),
+      ),
+      body: Column(
+        children: <Widget>[
+          ListTile(
+            title: const Text('Loading List'),
+            onTap: () => Navigator.of(context).pushNamed('loading'),
+          ),
+          ListTile(
+            title: const Text('Slide To Unlock'),
+            onTap: () => Navigator.of(context).pushNamed('slide'),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class LoadingListPage extends StatefulWidget {
+  @override
+  _LoadingListPageState createState() => _LoadingListPageState();
+}
+
+class _LoadingListPageState extends State<LoadingListPage> {
+  bool _enabled = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Loading List'),
+      ),
+      body: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                enabled: _enabled,
+                child: ListView.builder(
+                  itemBuilder: (_, __) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 48.0,
+                          height: 48.0,
+                          color: Colors.white,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: double.infinity,
+                                height: 8.0,
+                                color: Colors.white,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 8.0,
+                                color: Colors.white,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                              ),
+                              Container(
+                                width: 40.0,
+                                height: 8.0,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  itemCount: 6,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      _enabled = !_enabled;
+                    });
+                  },
+                  child: Text(
+                    _enabled ? 'Stop' : 'Play',
+                    style: Theme.of(context).textTheme.button?.copyWith(
+                        fontSize: 18.0,
+                        color: _enabled ? Colors.redAccent : Colors.green),
+                  )),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+ */

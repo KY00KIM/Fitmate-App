@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import '../../data/firebase_service/firebase_auth_methods.dart';
 import '../../domain/util.dart';
@@ -33,95 +34,97 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        // appBar: barWidget.signUpAppBar(context),
-        backgroundColor: const Color(0xfff2f3f7),
-        body: isLoading ? Center(child: CircularProgressIndicator(),) : SafeArea(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 110, 20, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    height: 84,
-                    width: 84,
-                    child: Image.asset(
-                      "assets/icon/icon-round.png",
-                      fit: BoxFit.cover,
+      home: LoaderOverlay(
+        child: Scaffold(
+          // appBar: barWidget.signUpAppBar(context),
+          backgroundColor: const Color(0xfff2f3f7),
+          body: SafeArea(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 110, 20, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      height: 84,
+                      width: 84,
+                      child: Image.asset(
+                        "assets/icon/icon-round.png",
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 150,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '로그인',
-                        style: TextStyle(
-                          color: Color(0xFF6E7995),
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      KakaoLoginWidget(),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      GoogleLoginWidget(),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      (Platform.isIOS)
-                          ? AppleLoginWidget()
-                          : SizedBox(
-                              height: 25,
-                            ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      TextButton(
-                          style: TextButton.styleFrom(
-                            primary: Colors.black,
-                            textStyle: TextStyle(
-                              fontSize: 14,
-                            ),
+                    SizedBox(
+                      height: 150,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '로그인',
+                          style: TextStyle(
+                            color: Color(0xFF6E7995),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
                           ),
-                          onPressed: () {
-                            visit = true;
-                            Navigator.pushReplacement(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        HomePage(reload: false),
-                                transitionDuration: Duration.zero,
-                                reverseTransitionDuration: Duration.zero,
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "로그인 없이 둘러보기",
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        KakaoLoginWidget(),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        GoogleLoginWidget(),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        (Platform.isIOS)
+                            ? AppleLoginWidget()
+                            : SizedBox(
+                          height: 25,
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.black,
+                              textStyle: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          )),
-                      SizedBox(
-                        height: 12,
-                      )
-                    ],
-                  )
-                ],
+                              ),
+                            ),
+                            onPressed: () {
+                              visit = true;
+                              Navigator.pushReplacement(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) =>
+                                      HomePage(reload: false),
+                                  transitionDuration: Duration.zero,
+                                  reverseTransitionDuration: Duration.zero,
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "로그인 없이 둘러보기",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        SizedBox(
+                          height: 12,
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

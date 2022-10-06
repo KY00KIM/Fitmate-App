@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 import 'model/banner.dart';
+import 'model/fitnesscenter.dart';
 import 'model/post.dart';
 import 'instance_preference/location.dart';
 import 'model/user.dart';
@@ -53,13 +54,22 @@ bool mapOpend = false;
 List chatList = []; // sqlite로
 
 // 홈 화면 전역 객체들
+bool homeDataGet = false;
 List<Post> posts = <Post>[]; //sqlite로
 List<Banner> banners = <Banner>[]; //sqlite로
-var myFitnessCenter = null;
+FitnessCenter myFitnessCenter = FitnessCenter(
+  kakaoUrl: '',
+  centerName: '',
+  reviews: [],
+  centerLocation: '',
+  centerAddress: '',
+  fitnessLatitude: 46.789879,
+  underId: '',
+  fitnessLongitude: 78.09897
+);
 
 late locationController locator = locationController();
 late User test;
-bool isLoading = false;
 late Map UserData = {
   "_id": "",
   "user_name": "",

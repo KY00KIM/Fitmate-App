@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_svg/svg.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import '../../../data/firebase_service/firebase_auth_methods.dart';
 import '../../../domain/util.dart';
@@ -73,6 +74,7 @@ class GoogleLoginWidget extends StatelessWidget {
         ),
       ),
       onTap: () async {
+        context.loaderOverlay.show();
         IdToken = await FirebaseAuthMethods(FirebaseAuth.instance)
             .signInWithGoogle(context);
         IdToken =
@@ -81,6 +83,7 @@ class GoogleLoginWidget extends StatelessWidget {
                 .toString();
 
         if (IdToken == 'error') {
+          context.loaderOverlay.hide();
           FlutterToastTop("알수 없는 에러가 발생하였습니다");
         } else {
           String? deviceToken = await FirebaseMessaging.instance.getToken();
@@ -100,6 +103,7 @@ class GoogleLoginWidget extends StatelessWidget {
 
             bool userdata = await UpdateUserData();
 
+            context.loaderOverlay.hide();
             if (userdata == true) {
               Navigator.pushReplacement(
                 context,
@@ -117,6 +121,7 @@ class GoogleLoginWidget extends StatelessWidget {
               FlutterToastTop("알수 없는 에러가 발생하였습니다");
             }
           } else if (resBody['message'] == 404) {
+            context.loaderOverlay.hide();
             // 사용자 정보가 등록 안된 상황에서는
             log("DATA");
             log(resBody['error'].toString());
