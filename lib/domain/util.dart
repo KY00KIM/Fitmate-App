@@ -59,7 +59,6 @@ var myFitnessCenter = null;
 
 late locationController locator = locationController();
 late User test;
-bool isLoading = false;
 late Map UserData = {
   "_id": "",
   "user_name": "",

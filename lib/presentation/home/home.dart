@@ -188,7 +188,6 @@ class _HomePageState extends State<HomePage> {
               );
             }
             // 기본적으로 로딩 Spinner를 보여줍니다.
-            /*
             if (myFitnessCenter != null)
               return ScrollConfiguration(
                 behavior: const ScrollBehavior().copyWith(overscroll: false),
@@ -321,11 +320,6 @@ class _HomePageState extends State<HomePage> {
                   height: size.height,
                   child: Center(child: CircularProgressIndicator()));
 
-             */
-            return Container(
-                width: size.width,
-                height: size.height,
-                child: Center(child: CircularProgressIndicator()));
           },
         ),
       ),

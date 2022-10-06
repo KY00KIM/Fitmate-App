@@ -2,6 +2,7 @@ import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/profile/component/profile_edit_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import '../../../ui/show_toast.dart';
 import '../../../ui/colors.dart';
 import 'package:flutter_svg/svg.dart';
@@ -117,8 +118,10 @@ class BarWidget {
                     height: 18,
                   ),
                   onPressed: () async {
+                    context.loaderOverlay.show();
                     await viewModel.sendEditProfile();
                     await UpdateUserData();
+                    context.loaderOverlay.hide();
                     Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(

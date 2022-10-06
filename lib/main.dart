@@ -5,6 +5,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
+import 'package:fitmate/ui/colors.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import './background_isolate.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -111,7 +113,14 @@ class _MyAppState extends State<MyApp> {
           future: getToken(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData == false) {
-              return Center(child: CircularProgressIndicator());
+              return Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: whiteTheme,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
             //error가 발생하게 될 경우 반환하게 되는 부분
             else if (snapshot.hasError) {
@@ -127,7 +136,6 @@ class _MyAppState extends State<MyApp> {
                       reload: true,
                     );
             }
-
             //return BaseMapPage();
           },
         ),
