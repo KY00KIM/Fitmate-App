@@ -49,8 +49,7 @@ class _ChatListPageState extends State<ChatListPage> {
       chatList = resBody["data"];
       log("log : ${resBody['data']}");
       return resBody["data"];
-    }
-    else {
+    } else {
       print("what the fuck");
       throw Exception('Failed to load post');
     }
@@ -98,7 +97,6 @@ class _ChatListPageState extends State<ChatListPage> {
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) {
-                            log("재밌네${index.toString()} : ${snapshot.data![index]}");
                             if(snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] || snapshot.data![index]['chat_join_id']['_id'] == UserData['_id']) {
                               return GestureDetector(
                                 onTap: () async {

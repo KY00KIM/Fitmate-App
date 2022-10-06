@@ -20,7 +20,7 @@ class DetailMakerWidget extends StatelessWidget {
           CupertinoPageRoute(
             builder: (context) => OtherProfilePage(
               profileId: post.userId.underId,
-              profileName: '${post.userId.userNickname}',
+              profileName: '${post.userId.userNickname}', chatButton: false,
             ),
           ),
         );
@@ -123,7 +123,7 @@ class DetailMakerWidget extends StatelessWidget {
                       CupertinoPageRoute(
                         builder: (context) => OtherProfilePage(
                           profileId: post.userId.underId,
-                          profileName: '${post.userId.userNickname}',
+                          profileName: '${post.userId.userNickname}', chatButton: false,
                         ),
                       ),
                     );

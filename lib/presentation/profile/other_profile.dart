@@ -18,11 +18,13 @@ String OtherUserCenterName = '';
 class OtherProfilePage extends StatefulWidget {
   String profileId;
   String profileName;
+  bool chatButton;
 
   OtherProfilePage(
       {Key? key,
       required String this.profileId,
-      required String this.profileName})
+      required String this.profileName,
+      required bool this.chatButton})
       : super(key: key);
 
   @override
@@ -412,7 +414,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                 ),
                                 Container(
                                   width: double.infinity,
-                                  height: 175,
+                                  //height: 175,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     color: Color(0xFFF2F3F7),
@@ -772,7 +774,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                               ],
                             ),
                           ),
-                          GestureDetector(
+                          widget.chatButton ? SizedBox() : GestureDetector(
                             onTap: () async {
                               print("USER DATA :");
                               log(UserData["social"]["user_id"].toString());
@@ -783,38 +785,23 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => ChatPage(
-                                                name: otherName,
-                                                imageUrl: snapshot
-                                                    .data!['user_profile_img'],
-                                                uid: UserData["social"]
-                                                    ["user_id"],
-                                                userId: otherId,
-                                                chatId: chatId,
-                                              )));
+                                            name: otherName,
+                                            imageUrl: snapshot
+                                                .data!['user_profile_img'],
+                                            uid: UserData["social"]
+                                            ["user_id"],
+                                            userId: otherId,
+                                            chatId: chatId,
+                                          )));
                                 }
                               }
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 52,
+                              height: 56,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Color(0xff3F51B5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xFFffffff),
-                                    spreadRadius: 2,
-                                    blurRadius: 8,
-                                    offset: Offset(-2, -2),
-                                  ),
-                                  BoxShadow(
-                                    color: Color(
-                                        0xff3F51B5), //.fromRGBO(55, 84, 170, 0.1),
-                                    spreadRadius: 2,
-                                    blurRadius: 2,
-                                    offset: Offset(2, 2),
-                                  ),
-                                ],
                               ),
                               child: Center(
                                 child: Text(

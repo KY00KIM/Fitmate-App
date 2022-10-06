@@ -39,6 +39,7 @@ class HomeApiRepository {
     posts = _posts;
     banners = _banners;
     myFitnessCenter = _fitness;
+    homeDataGet = true;
 
     print("START");
     print("posts" +

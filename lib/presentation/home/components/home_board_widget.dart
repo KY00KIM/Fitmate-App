@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'package:fitmate/presentation/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../domain/util.dart';
 import '../../../ui/colors.dart';
@@ -13,6 +15,8 @@ import '../../../ui/show_toast.dart';
 import '../../detail/detail.dart';
 import '../../fitness_center/fitness_center.dart';
 import 'package:http/http.dart' as http;
+
+import '../../post/post.dart';
 
 class HomeBoardWidget extends StatelessWidget {
   List posts;
@@ -26,8 +30,50 @@ class HomeBoardWidget extends StatelessWidget {
       height: 420,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: posts.length > 3 ? 3 : posts.length,
+        itemCount: posts.length > 3 ? 4 : posts.length + 1,
         itemBuilder: (context, index) {
+          if(index == (posts.length > 3 ? 3 : posts.length)) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PostPage(
+                          reload: true,
+                        )));
+              },
+              child: Container(
+                margin: EdgeInsets.fromLTRB(8, 10, 8, 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xFFF2F3F7),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFFffffff),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                      offset: Offset(-2, -2),
+                    ),
+                    BoxShadow(
+                      color: Color.fromRGBO(55, 84, 170, 0.1),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
+                width: 80,
+                child: Center(
+                  child: Text(
+                    "게시물\n더 보기",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
           return GestureDetector(
             onTap: () {
               if(visit == true) {
