@@ -30,7 +30,7 @@ void centerAuthenicate(context) {
             child: Text("현재 등록하신 피트니스 센터 근처에 있어야 합니다.\n필수: 위치정보를 허용해주세요.",
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal)),
           ),
-          insetPadding: const EdgeInsets.fromLTRB(50, 80, 20, 80),
+          insetPadding: const EdgeInsets.fromLTRB(20, 80, 20, 80),
           actions: [
             Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),

@@ -61,9 +61,13 @@ class _HomePageState extends State<HomePage> {
                   HomeBannerWidget(
                     banner: banners,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 26,
                   ),
+                  HomeBoardWidget(
+                    posts: posts,
+                  ),
+                  /*
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -168,9 +172,8 @@ class _HomePageState extends State<HomePage> {
                   HomeTownWidget(
                     fitness_center: myFitnessCenter,
                   ),
-                  SizedBox(
-                    height: 32,
-                  ),
+
+                   */
                 ],
               ),
             ),
@@ -189,9 +192,13 @@ class _HomePageState extends State<HomePage> {
                         HomeBannerWidget(
                           banner: snapshot.data!['banners'],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 26,
                         ),
+                        HomeBoardWidget(
+                          posts: snapshot.data!['posts'],
+                        ),
+                        /*
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -296,9 +303,7 @@ class _HomePageState extends State<HomePage> {
                         HomeTownWidget(
                           fitness_center: snapshot.data!['fitness_center'],
                         ),
-                        const SizedBox(
-                          height: 32,
-                        ),
+                         */
                       ],
                     ),
                   ),
@@ -317,9 +322,13 @@ class _HomePageState extends State<HomePage> {
                         HomeBannerWidget(
                           banner: banners,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 26,
                         ),
+                        HomeBoardWidget(
+                          posts: posts,
+                        ),
+                        /*
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -424,9 +433,8 @@ class _HomePageState extends State<HomePage> {
                         HomeTownWidget(
                           fitness_center: myFitnessCenter,
                         ),
-                        SizedBox(
-                          height: 32,
-                        ),
+
+                         */
                       ],
                     ),
                   ),
