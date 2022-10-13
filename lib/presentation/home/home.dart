@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:fitmate/domain/facebook_pref.dart';
 import 'package:fitmate/presentation/home/components/home_banner_widget.dart';
 import 'package:fitmate/presentation/home/components/home_head_text.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../domain/util.dart';
 
 import '../../data/post_api.dart';
@@ -28,10 +32,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   stopTrackManager();
-    // });
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // stopTrackManager();
+      if (Platform.isIOS) checkAndRequestTrackingPermission();
+    });
     super.initState();
     locator.initListner();
   }
