@@ -1,13 +1,8 @@
-import 'dart:developer';
-
-import 'package:fitmate/background_isolate.dart';
-import 'package:fitmate/domain/instance_preference/location.dart';
 import 'package:fitmate/presentation/home/components/home_banner_widget.dart';
+import 'package:fitmate/presentation/home/components/home_head_text.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../domain/util.dart';
 
 import '../../data/post_api.dart';
@@ -51,23 +46,22 @@ class _HomePageState extends State<HomePage> {
       appBar: barWidget.appBar(context),
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 1),
       body: SafeArea(
-        child: homeDataGet ? ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Column(
-                children: [
-                  HomeBannerWidget(
-                    banner: banners,
-                  ),
-                  const SizedBox(
-                    height: 26,
-                  ),
-                  HomeBoardWidget(
-                    posts: posts,
-                  ),
-                  /*
+        child: homeDataGet
+            ? ScrollConfiguration(
+                behavior: const ScrollBehavior().copyWith(overscroll: false),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        HomeBannerWidget(
+                          banner: banners,
+                        ),
+                        HomeHeadTextWidget(),
+                        HomeBoardWidget(
+                          posts: posts,
+                        ),
+                        /*
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -174,31 +168,31 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                    */
-                ],
-              ),
-            ),
-          ),
-        ) : FutureBuilder<Map>(
-          future: homeApiRepo.getHomeRepo(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ScrollConfiguration(
-                behavior: const ScrollBehavior().copyWith(overscroll: false),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        HomeBannerWidget(
-                          banner: snapshot.data!['banners'],
-                        ),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        HomeBoardWidget(
-                          posts: snapshot.data!['posts'],
-                        ),
-                        /*
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : FutureBuilder<Map>(
+                future: homeApiRepo.getHomeRepo(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ScrollConfiguration(
+                      behavior:
+                          const ScrollBehavior().copyWith(overscroll: false),
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Column(
+                            children: [
+                              HomeBannerWidget(
+                                banner: snapshot.data!['banners'],
+                              ),
+                              HomeHeadTextWidget(),
+                              HomeBoardWidget(
+                                posts: snapshot.data!['posts'],
+                              ),
+                              /*
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -304,31 +298,32 @@ class _HomePageState extends State<HomePage> {
                           fitness_center: snapshot.data!['fitness_center'],
                         ),
                          */
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }
-            // 기본적으로 로딩 Spinner를 보여줍니다.
-            if (myFitnessCenter != null)
-              return ScrollConfiguration(
-                behavior: const ScrollBehavior().copyWith(overscroll: false),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: Column(
-                      children: [
-                        HomeBannerWidget(
-                          banner: banners,
+                            ],
+                          ),
                         ),
-                        const SizedBox(
-                          height: 26,
-                        ),
-                        HomeBoardWidget(
-                          posts: posts,
-                        ),
-                        /*
+                      ),
+                    );
+                  }
+                  // 기본적으로 로딩 Spinner를 보여줍니다.
+                  if (myFitnessCenter != null)
+                    return ScrollConfiguration(
+                      behavior:
+                          const ScrollBehavior().copyWith(overscroll: false),
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Column(
+                            children: [
+                              HomeBannerWidget(
+                                banner: banners,
+                              ),
+                              const SizedBox(
+                                height: 26,
+                              ),
+                              HomeBoardWidget(
+                                posts: posts,
+                              ),
+                              /*
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -435,18 +430,18 @@ class _HomePageState extends State<HomePage> {
                         ),
 
                          */
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            else
-              return Container(
-                  width: size.width,
-                  height: size.height,
-                  child: Center(child: CircularProgressIndicator()));
-          },
-        ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  else
+                    return Container(
+                        width: size.width,
+                        height: size.height,
+                        child: Center(child: CircularProgressIndicator()));
+                },
+              ),
       ),
     );
   }
