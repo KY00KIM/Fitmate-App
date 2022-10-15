@@ -128,7 +128,7 @@ class BarWidget {
                         PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  HomePage(reload: true),
+                                  HomePage(),
                           transitionDuration: Duration.zero,
                           reverseTransitionDuration: Duration.zero,
                         ));
@@ -262,7 +262,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      HomePage(reload: true),
+                                      HomePage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ));

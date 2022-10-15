@@ -573,7 +573,7 @@ class BarWidget {
     return AppBar(
       backgroundColor: whiteTheme,
       centerTitle: false,
-      toolbarHeight: 76,
+      toolbarHeight: 68,
       elevation: 0,
       automaticallyImplyLeading: false,
       systemOverlayStyle: SystemUiOverlayStyle(
@@ -592,10 +592,10 @@ class BarWidget {
       ),
       actions: [
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 16, 20, 16),
+          padding: EdgeInsets.fromLTRB(0, 14, 20, 14),
           child: Container(
-            width: 44,
-            height: 44,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: Color(0xFFF2F3F7),
@@ -622,8 +622,8 @@ class BarWidget {
               child: IconButton(
                 icon: SvgPicture.asset(
                   "${iconSource}notice_icon.svg",
-                  width: 18,
-                  height: 18,
+                  width: 14,
+                  height: 14,
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -680,7 +680,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  HomePage(reload: false),
+                                  HomePage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -691,7 +691,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  HomePage(reload: false),
+                                  HomePage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),

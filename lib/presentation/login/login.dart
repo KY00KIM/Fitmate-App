@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                                 PageRouteBuilder(
                                   pageBuilder:
                                       (context, animation, secondaryAnimation) =>
-                                      HomePage(reload: false),
+                                      HomePage(),
                                   transitionDuration: Duration.zero,
                                   reverseTransitionDuration: Duration.zero,
                                 ),

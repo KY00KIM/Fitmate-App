@@ -74,7 +74,6 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     final Size size = MediaQuery.of(context).size;
     print("맵 빌드 : ${markers}");
     return Scaffold(
-      extendBodyBehindAppBar: false,
       extendBody: true,
       key: scaffoldKey,
       bottomNavigationBar: barWidget.bottomNavigationBar(context, 3),

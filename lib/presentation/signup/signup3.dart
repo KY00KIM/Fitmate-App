@@ -37,7 +37,7 @@ class _SignupPageState3 extends State<SignupPage3> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: barWidget.nextBackAppBar(context, HomePage(reload: true), 3,
+        appBar: barWidget.nextBackAppBar(context, HomePage(), 3,
             checkValid, widget.viewModel, widget.viewModel.sendSignUp),
         backgroundColor: const Color(0xffF2F3F7),
         body: SafeArea(

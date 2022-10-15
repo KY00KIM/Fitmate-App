@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'dart:math' as math;
 
 import '../../data/post_api.dart';
 import '../../domain/model/post.dart';
 import '../../domain/repository/post_api_repository.dart';
 import '../../domain/util.dart';
+import '../writing/writing.dart';
 import 'components/post_widget.dart';
 
 class PostPage extends StatefulWidget {
@@ -30,6 +34,7 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
   @override
   void initState() {
     super.initState();
+    log("post init");
   }
 
   //새로고침 방지
@@ -49,17 +54,33 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
   // Text('${snapshot.data?[index]['post_title']}');
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return new Scaffold(
       backgroundColor: whiteTheme,
-      appBar: barWidget.bulletinBoardAppBar(context),
-      body: SafeArea(
+      appBar: barWidget.appBar(context),
+      floatingActionButton: new Container(
+        margin: EdgeInsets.only(bottom: 60),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => WritingPage()));
+          },
+          backgroundColor: Color(0xFF3F51B5),
+          child: SvgPicture.asset(
+            "assets/icon/bar_icons/plus_icon.svg",
+            width: 18,
+            height: 18,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: new SafeArea(
         child: RefreshIndicator(
           //onRefresh: () => postApiRepo.getPostRepo(),
           onRefresh: () => refresh(),
           child: ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
             child: SingleChildScrollView(
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
                 child: Column(
                   children: [

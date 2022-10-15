@@ -55,6 +55,11 @@ class _ChatListPageState extends State<ChatListPage> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    print("hello");
+  }
 
   @override
   Widget build(BuildContext context) {

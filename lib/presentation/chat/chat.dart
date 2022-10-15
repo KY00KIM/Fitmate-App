@@ -64,6 +64,10 @@ class _ChatPageState extends State<ChatPage> {
     print('initState');
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   Future<bool> checkUser() async {
     while (chatDocId.runtimeType.toString() != 'String') {
