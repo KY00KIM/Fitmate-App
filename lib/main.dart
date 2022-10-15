@@ -1,10 +1,12 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, duplicate_ignore
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitmate/domain/facebook_pref.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
 import 'package:fitmate/screens/First.dart';
@@ -117,6 +119,7 @@ void main() async {
   );
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   // initTrackManager();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
@@ -124,7 +127,6 @@ void main() async {
 class MyApp extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   const MyApp({Key? key}) : super(key: key);
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -134,10 +136,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   startTrackManager();
-    // });
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // startTrackManager();
+      facebookAppEvents.getApplicationId().then((value) {
+        print("facebook_app_id :  $value");
+        ;
+      });
+    });
     super.initState();
   }
 
@@ -168,7 +173,6 @@ class _MyAppState extends State<MyApp> {
     UserId = resBody['data']['user_id'];
     bool userdata = await UpdateUserData();
     print("4");
-
     return IdToken == null || UserId == null || userdata == false;
   }
 
