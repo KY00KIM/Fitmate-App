@@ -321,9 +321,7 @@ class _HomePageState extends State<HomePage> {
                               HomeBannerWidget(
                                 banner: banners,
                               ),
-                              const SizedBox(
-                                height: 26,
-                              ),
+                              HomeHeadTextWidget(),
                               HomeBoardWidget(
                                 posts: posts,
                               ),

@@ -64,8 +64,7 @@ class _HomeBannerWidget extends State<HomeBannerWidget> {
                     return Builder(builder: (BuildContext context) {
                       return GestureDetector(
                         onTap: () {
-                          print("클릭");
-                          facebookAppEvents.logEvent(name: "Test Banner Click");
+                          facebookAppEvents.logEvent(name: "Banner Click ");
                           // facebookAppEvents.logAdClick(
                           //     adType: 'Banner ${item['_id']}');
                           _launchURL(item.connectUrl);

@@ -25,8 +25,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
-// Import package
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 void main() async {
   //Constants.setEnvironment(Environment.PROD);
@@ -40,12 +38,6 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-// Show tracking authorization dialog and ask for permission
-  // final appTrackStatus =
-  //     await AppTrackingTransparency.requestTrackingAuthorization();
-  // final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
-  // print("app_track_status : ${appTrackStatus}");
-  // print("app_track_id(uuid): ${uuid}");
   // initTrackManager();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
@@ -64,13 +56,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // startTrackManager();
-      print("Facebook_App Initializing...");
       facebookAppEvents.getApplicationId().then((value) {
         print("facebook_app_id :  $value");
-        if (Platform.isIOS) {
-          facebookAppEvents.clearUserData();
-          checkAndRequestTrackingPermission();
-        }
         ;
       });
     });

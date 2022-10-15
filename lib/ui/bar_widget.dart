@@ -674,13 +674,13 @@ class BarWidget {
                     onPressed: () {
                       if (pages != 1) {
                         //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                        if(pages == 3) {
+                        if (pages == 3) {
                           Navigator.push(
                             context,
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  HomePage(reload: false),
+                                      HomePage(reload: false),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -691,7 +691,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  HomePage(reload: false),
+                                      HomePage(reload: false),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -717,13 +717,13 @@ class BarWidget {
                     onPressed: () {
                       if (pages != 2) {
                         //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                        if(pages == 3) {
+                        if (pages == 3) {
                           Navigator.push(
                             context,
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  ChatListPage(),
+                                      ChatListPage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -734,7 +734,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  ChatListPage(),
+                                      ChatListPage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -761,7 +761,7 @@ class BarWidget {
                       if (pages != 3) {
                         //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                         print("map : ${mapOpend}");
-                        if(mapOpend) {
+                        if (mapOpend) {
                           Navigator.pop(context);
                         } else {
                           Navigator.pushReplacement(
@@ -769,7 +769,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  MapPage(),
+                                      MapPage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -796,13 +796,13 @@ class BarWidget {
                     onPressed: () {
                       if (pages != 4) {
                         //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                        if(pages == 3) {
+                        if (pages == 3) {
                           Navigator.push(
                             context,
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  CalenderPage(),
+                                      CalenderPage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -813,7 +813,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  CalenderPage(),
+                                      CalenderPage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -839,13 +839,13 @@ class BarWidget {
                     onPressed: () {
                       if (pages != 5) {
                         //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                        if(pages == 3) {
+                        if (pages == 3) {
                           Navigator.push(
                             context,
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  ProfilePage(),
+                                      ProfilePage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -856,7 +856,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                  ProfilePage(),
+                                      ProfilePage(),
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
