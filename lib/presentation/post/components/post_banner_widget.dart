@@ -8,16 +8,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../domain/util.dart';
 
-class HomeBannerWidget extends StatefulWidget {
+class PostBannerWidget extends StatefulWidget {
   List banner;
 
-  HomeBannerWidget({Key? key, required this.banner}) : super(key: key);
+  PostBannerWidget({Key? key, required this.banner}) : super(key: key);
 
   @override
-  State<HomeBannerWidget> createState() => _HomeBannerWidget();
+  State<PostBannerWidget> createState() => _PostBannerWidget();
 }
 
-class _HomeBannerWidget extends State<HomeBannerWidget> {
+class _PostBannerWidget extends State<PostBannerWidget> {
   int page = 1;
 
   _launchURL(String url) async {
@@ -42,7 +42,8 @@ class _HomeBannerWidget extends State<HomeBannerWidget> {
     print("banner 길이 : ${widget.banner}");
     final Size size = MediaQuery.of(context).size;
     return Container(
-      width: size.width,
+      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      width: size.width - 20,
       height: 140,
       child: widget.banner.length != 1
           ? Stack(

@@ -376,7 +376,6 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
                     DetailImageWidget(post: widget.post),
                     DetailContentWidget(
                         post: widget.post, makerUserUid: makerUserUid),
-                    SizedBox(height: 60.0,),
                   ],
                 ),
               ),

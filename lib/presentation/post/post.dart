@@ -5,18 +5,17 @@ import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'dart:math' as math;
 
 import '../../data/post_api.dart';
-import '../../domain/model/post.dart';
 import '../../domain/repository/home_api_repository.dart';
 import '../../domain/repository/post_api_repository.dart';
 import '../../domain/util.dart';
-import '../home/components/home_banner_widget.dart';
-import '../home/components/home_board_widget.dart';
-import '../home/components/home_head_text.dart';
 import '../writing/writing.dart';
-import 'components/post_widget.dart';
+import 'components/post_banner_widget.dart';
+import 'components/post_board_widget.dart';
+import 'components/post_head_text.dart';
 
 class PostPage extends StatefulWidget {
   bool reload;
@@ -88,45 +87,99 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
           ),
         ),
       ),
-      body:SafeArea(
+      body: SafeArea(
         child: homeDataGet
-            ? ScrollConfiguration(
+            ? RefreshIndicator(
+          onRefresh: () => refresh(),
+              child: ScrollConfiguration(
           behavior: const ScrollBehavior().copyWith(overscroll: false),
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Column(
+                  children: [
+                    PostBannerWidget(
+                      banner: banners,
+                    ),
+                    PostHeadTextWidget(),
+                    PostBoardWidget(
+                      posts: posts,
+                    ),
+                  ],
+                ),
+              ),
+          ),
+        ),
+            )
+            : ScrollConfiguration(
+            behavior: const ScrollBehavior().copyWith(overscroll: false),
+          child: SingleChildScrollView(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Column(
-                children: [
-                  HomeBannerWidget(
-                    banner: banners,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    enabled: true,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          width: size.width - 20,
+                          height: 140,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  HomeHeadTextWidget(),
-                  HomeBoardWidget(
-                    posts: posts,
+                  PostHeadTextWidget(),
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    enabled: true,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          width: size.width - 20,
+                          height: 330,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    enabled: true,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          width: size.width - 20,
+                          height: 330,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           ),
         )
-            : ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Column(
-                children: [
-                  Text('zzz'),
-                  Text('zzz'),
-                  Text('zzz'),Text('zzz'),
-                  Text('zzz'),
-
-
-                ],
-              ),
-            ),
-          ),
-        ),
       ),
         /*
         child: RefreshIndicator(

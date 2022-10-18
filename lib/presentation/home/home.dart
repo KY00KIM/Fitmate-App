@@ -2,27 +2,19 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:fitmate/domain/facebook_pref.dart';
-import 'package:fitmate/presentation/home/components/home_banner_widget.dart';
-import 'package:fitmate/presentation/home/components/home_head_text.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../domain/util.dart';
 
-import '../../data/post_api.dart';
 import '../../domain/repository/home_api_repository.dart';
-import '../../domain/util.dart';
-import '../../main.dart';
 import '../calender/calender.dart';
 import '../chat_list/chat_list.dart';
 import '../map/map.dart';
 import '../post/post.dart';
 import '../profile/profile.dart';
 import '../writing/writing.dart';
-import 'components/home_board_widget.dart';
-import 'components/home_town_widget.dart';
 
 
 class HomePage extends StatefulWidget {

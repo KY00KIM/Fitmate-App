@@ -7,6 +7,7 @@ import 'package:fitmate/presentation/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../domain/util.dart';
@@ -18,10 +19,10 @@ import 'package:http/http.dart' as http;
 
 import '../../post/post.dart';
 
-class HomeBoardWidget extends StatelessWidget {
+class PostBoardWidget extends StatelessWidget {
   List posts;
 
-  HomeBoardWidget({Key? key, required this.posts}) : super(key: key);
+  PostBoardWidget({Key? key, required this.posts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +44,10 @@ class HomeBoardWidget extends StatelessWidget {
             }
           },
           child: Container(
-            margin: EdgeInsets.fromLTRB(8, 10, 8, 10),
+            width: size.width - 20,
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               color: Color(0xFFF2F3F7),
               boxShadow: [
                 BoxShadow(
@@ -64,14 +66,16 @@ class HomeBoardWidget extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Container(
+                posts[index].postImg == '' ? SizedBox(
+                  height: 0,
+                ) : Container(
                   height: 200,
                   width: size.width,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8)
+                    borderRadius: BorderRadius.circular(6)
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(6),
                     child: Image(
                       image: CachedNetworkImageProvider('${posts[index].postImg}'),
                       fit: BoxFit.cover,
@@ -86,7 +90,7 @@ class HomeBoardWidget extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: 166, //30
+                  height: 130, //30
                   padding: EdgeInsets.fromLTRB(16, 20, 16, 14),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,101 +230,84 @@ class HomeBoardWidget extends StatelessWidget {
                             ],
                           ),
                           //SizedBox(height: 10,),
-                          GestureDetector(
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.only(left: 16),
-                                    height: 64,
-                                    child: Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(100.0),
-                                          child: Image(
-                                            image: CachedNetworkImageProvider('${posts[index].userId.userProfileImg}'),
-                                            width: 32.0,
-                                            height: 32.0,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (BuildContext context,
-                                                Object exception, StackTrace? stackTrace) {
-                                              return Image.asset(
-                                                'assets/images/profile_null_image.png',
-                                                width: 32.0,
-                                                height: 32.0,
-                                                fit: BoxFit.cover,
-                                              );
-                                            },
-                                          ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(100.0),
+                                        child: Image(
+                                          image: CachedNetworkImageProvider('${posts[index].userId.userProfileImg}'),
+                                          width: 32.0,
+                                          height: 32.0,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception, StackTrace? stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/profile_null_image.png',
+                                              width: 32.0,
+                                              height: 32.0,
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
                                         ),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Text(
-                                          '${posts[index].userId.userNickname}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF000000),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    '${posts[index].promiseLocation.centerName}',
-                                    style: TextStyle(
-                                      color: Color(0xFF283593),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  /*
-                                  Flexible(
-                                    fit: FlexFit.tight,
-                                    child: RichText(
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      text: TextSpan(
-                                        text: '${posts[index].promiseLocation.centerName}',
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        '${posts[index].userId.userNickname}',
                                         style: TextStyle(
-                                          color: Color(0xFF283593),
-                                          fontWeight: FontWeight.bold,
                                           fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF000000),
                                         ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  '${posts[index].promiseLocation.centerName}',
+                                  style: TextStyle(
+                                    color: Color(0xFF283593),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                /*
+                                Flexible(
+                                  fit: FlexFit.tight,
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    text: TextSpan(
+                                      text: '${posts[index].promiseLocation.centerName}',
+                                      style: TextStyle(
+                                        color: Color(0xFF283593),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
                                       ),
                                     ),
                                   ),
+                                ),
 
-                                   */
-                                  SizedBox(width: 13,),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 3, 4, 0),
-                                    child: SvgPicture.asset(
-                                      "assets/icon/right_arrow_icon.svg",
-                                      width: 14,
-                                      height: 14,
-                                      color: Color(0xFF283593),
-                                    ),
+                                 */
+                                SizedBox(width: 13,),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 3, 4, 0),
+                                  child: SvgPicture.asset(
+                                    "assets/icon/right_arrow_icon.svg",
+                                    width: 14,
+                                    height: 14,
+                                    color: Color(0xFF283593),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            onTap: () {
-                              if(visit == true) {
-                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        LoginPage()), (route) => false);
-                              } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FitnessCenterPage(fitnessId: '${posts[index].promiseLocation.underId}',)));
-
-                              }
-                            },
                           ),
                         ],
                       ),
