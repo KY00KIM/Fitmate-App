@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:fitmate/domain/facebook_pref.dart';
@@ -6,6 +7,7 @@ import 'package:fitmate/presentation/home/components/home_head_text.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../domain/util.dart';
 
@@ -30,14 +32,11 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<HomePage> {
+class _HomePageState extends State<HomePage> {
   final barWidget = BarWidget();
   final homeApiRepo = HomeApiRepository();
   final double iconSize = 32.0;
   final String iconSource = "assets/icon/bar_icons/";
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -50,7 +49,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     log("췌구첵");
   }
 
-  List _pages = [
+  int _currentIndex = 0;
+
+  final List<Widget> _children = [
     PostPage(
       reload: false,
     ),
@@ -59,450 +60,146 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     CalenderPage(),
     ProfilePage(),
   ];
-  final _navigatorKeyList =
-      List.generate(5, (index) => GlobalKey<NavigatorState>());
-  int _currentIndex = 0;
+
+  void _onTap(int index) {
+    pageController.jumpToPage(index);
+  }
+
+  void onPageChanged(int index) {
+    print("index : $index");
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  final pageController = PageController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        extendBody: true,
+        body: PageView(
+          controller: pageController,
+          onPageChanged: onPageChanged,
+          children: _children,
+          physics: NeverScrollableScrollPhysics(), // No sliding
+        ),
+        bottomNavigationBar: Container(
+          height: 62,
+          decoration: BoxDecoration(
+            boxShadow:  <BoxShadow>[
+              BoxShadow(
+                color: Color.fromRGBO(55, 84, 170, 0.1),
+                spreadRadius: 4,
+                blurRadius: 12,
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(12),
+              topLeft: Radius.circular(12),
+            ),
+            child: BottomNavigationBar(
+                elevation: 10,
+                backgroundColor: whiteTheme,
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                type: BottomNavigationBarType.fixed,
+                onTap: _onTap,
+                currentIndex: _currentIndex,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: _currentIndex == 0
+                        ? SvgPicture.asset(
+                      // 5
+                      "${iconSource}home_icon.svg",
+                      width: iconSize,
+                      height: iconSize,
+                    )
+                        : SvgPicture.asset(
+                      // 5
+                      "${iconSource}Inactive_home_icon.svg",
+                      width: iconSize,
+                      height: iconSize,
+                    ),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: _currentIndex == 1
+                        ? SvgPicture.asset(
+                      // 5
+                      "${iconSource}chatting_icon.svg",
+                      width: iconSize,
+                      height: iconSize,
+                    )
+                        : SvgPicture.asset(
+                      // 5
+                      "${iconSource}Inactive_chatting_icon.svg",
+                      width: iconSize,
+                      height: iconSize,
+                    ),
+                    label: 'First',
+                  ),
+                  BottomNavigationBarItem(
+                      icon: _currentIndex == 2
+                          ? SvgPicture.asset(
+                        // 5
+                        "${iconSource}map_icon.svg",
+                        width: iconSize,
+                        height: iconSize,
+                      )
+                          : SvgPicture.asset(
+                        // 5
+                        "${iconSource}Inactive_map_icon.svg",
+                        width: iconSize,
+                        height: iconSize,
+                      ),
+                      label: 'Second'
+                  ),
+                  BottomNavigationBarItem(
+                    icon: _currentIndex == 3
+                        ? SvgPicture.asset(
+                      // 5
+                      "${iconSource}calender_icon.svg",
+                      width: iconSize,
+                      height: iconSize,
+                    )
+                        : SvgPicture.asset(
+                      // 5
+                      "${iconSource}Inactive_calender_icon.svg",
+                      width: iconSize,
+                      height: iconSize,
+                    ),
+                    label: 'First',
+                  ),
+                  BottomNavigationBarItem(
+                      icon: _currentIndex == 4
+                          ? SvgPicture.asset(
+                        // 5
+                        "${iconSource}profile_icon.svg",
+                        width: iconSize,
+                        height: iconSize,
+                      )
+                          : SvgPicture.asset(
+                        // 5
+                        "${iconSource}Inactive_profile_icon.svg",
+                        width: iconSize,
+                        height: iconSize,
+                      ),
+                      label: 'Second'
+                  )
+                ]
+            ),
+          ),
+        )
+    );
+  }
 
 
   /*
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return !(await _navigatorKeyList[_currentIndex]
-            .currentState!
-            .maybePop());
-      },
-      child: DefaultTabController(
-        animationDuration: Duration(milliseconds: 0),
-        length: 5,
-        child: Scaffold(
-          extendBody: true,
-          body: new TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: _pages.map(
-              (page) {
-                int index = _pages.indexOf(page);
-                return CustomNavigator(
-                  page: page,
-                  navigatorKey: _navigatorKeyList[index],
-                );
-              },
-            ).toList(),
-          ),
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(55, 84, 170, 0.1),
-                  spreadRadius: 4,
-                  blurRadius: 12,
-                ),
-              ],
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(12),
-                topLeft: Radius.circular(12),
-              ),
-              color: whiteTheme,
-            ),
-            height: 60.0,
-            child: TabBar(
-              indicator: BoxDecoration(
-                color: whiteTheme,
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(12),
-                  topLeft: Radius.circular(12),
-                ),
-              ),
-              isScrollable: false,
-              automaticIndicatorColorAdjustment: false,
-              onTap: (index) => setState(() {
-                _currentIndex = index;
-                print("index : $index");
-              }),
-              tabs: [
-                Tab(
-                  icon: _currentIndex == 0
-                      ? SvgPicture.asset(
-                    // 5
-                    "${iconSource}home_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  )
-                      : SvgPicture.asset(
-                    // 5
-                    "${iconSource}Inactive_home_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  ),
-                ),
-                Tab(
-                  icon : _currentIndex == 1
-                      ? SvgPicture.asset(
-                    // 5
-                    "${iconSource}chatting_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  )
-                      : SvgPicture.asset(
-                    // 5
-                    "${iconSource}Inactive_chatting_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  ),
-                ),
-                Tab(
-                  icon: _currentIndex == 2
-                      ? SvgPicture.asset(
-                    // 5
-                    "${iconSource}map_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  )
-                      : SvgPicture.asset(
-                    // 5
-                    "${iconSource}Inactive_map_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  ),
-                ),
-                Tab(
-                  icon: _currentIndex == 3
-                      ? SvgPicture.asset(
-                    // 5
-                    "${iconSource}calender_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  )
-                      : SvgPicture.asset(
-                    // 5
-                    "${iconSource}Inactive_calender_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  ),
-                ),
-                Tab(
-                  icon: _currentIndex == 4
-                      ? SvgPicture.asset(
-                    // 5
-                    "${iconSource}profile_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  )
-                      : SvgPicture.asset(
-                    // 5
-                    "${iconSource}Inactive_profile_icon.svg",
-                    width: iconSize,
-                    height: iconSize,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          /*
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(55, 84, 170, 0.1),
-                  spreadRadius: 4,
-                  blurRadius: 12,
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(12),
-                topLeft: Radius.circular(12),
-              ),
-              child: BottomAppBar(
-                elevation: 10,
-                color: whiteTheme,
-                child: Container(
-                  width: size.width,
-                  height: 60.0,
-                  child: Theme(
-                    data: ThemeData(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            /*
-                            if (_currentIndex != 1) {
-                              //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                              if(_currentIndex == 3) {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        HomePage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              } else {
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        HomePage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              }
-                            }
-                             */
-                            _currentIndex = 1;
-                          },
-                          icon: _currentIndex == 1
-                              ? SvgPicture.asset(
-                            // 5
-                            "${iconSource}home_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          )
-                              : SvgPicture.asset(
-                            // 5
-                            "${iconSource}Inactive_home_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            /*
-                            if (_currentIndex != 2) {
-                              //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                              if(_currentIndex == 3) {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        ChatListPage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              } else {
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        ChatListPage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              }
-                            }
-
-                             */
-                          },
-                          icon: _currentIndex == 2
-                              ? SvgPicture.asset(
-                            // 5
-                            "${iconSource}chatting_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          )
-                              : SvgPicture.asset(
-                            // 5
-                            "${iconSource}Inactive_chatting_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            /*
-                            if (_currentIndex != 3) {
-                              //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                              print("map : ${mapOpend}");
-                              if(mapOpend) {
-                                Navigator.pop(context);
-                              } else {
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        MapPage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              }
-                              mapOpend = true;
-                            }
-
-                             */
-                          },
-                          icon: _currentIndex == 3
-                              ? SvgPicture.asset(
-                            // 5
-                            "${iconSource}map_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          )
-                              : SvgPicture.asset(
-                            // 5
-                            "${iconSource}Inactive_map_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            /*
-                            if (_currentIndex != 4) {
-                              //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                              if(_currentIndex == 3) {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        CalenderPage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              } else {
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        CalenderPage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              }
-                            }
-
-                             */
-                          },
-                          icon: _currentIndex == 4
-                              ? SvgPicture.asset(
-                            // 5
-                            "${iconSource}calender_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          )
-                              : SvgPicture.asset(
-                            // 5
-                            "${iconSource}Inactive_calender_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            /*
-                            if (_currentIndex != 5) {
-                              //Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                              if(_currentIndex == 3) {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        ProfilePage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              } else {
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation, secondaryAnimation) =>
-                                        ProfilePage(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              }
-                            }
-
-                             */
-                          },
-                          icon: _currentIndex == 5
-                              ? SvgPicture.asset(
-                            // 5
-                            "${iconSource}profile_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          )
-                              : SvgPicture.asset(
-                            // 5
-                            "${iconSource}Inactive_profile_icon.svg",
-                            width: iconSize,
-                            height: iconSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              /*
-              child: TabBar(
-                isScrollable: false,
-                automaticIndicatorColorAdjustment: true,
-                onTap: (index) => setState(() {
-                  _currentIndex = index;
-                  print("index : $index");
-                }),
-                tabs: const [
-                  Tab(
-                    icon: Icon(
-                      Icons.home,
-                    ),
-                    text: '플라토',
-                  ),
-                  Tab(
-                    icon: Icon(
-                      Icons.calendar_today,
-                    ),
-                    text: '캘린더',
-                  ),
-                  Tab(
-                    icon: Icon(
-                      Icons.email,
-                    ),
-                    text: '쪽지',
-                  ),
-                ],
-              ),
-
-               */
-            ),
-          ),
-
-           */
-        ),
-      ),
-    );
-  }
-
-   */
-
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
     final Size size = MediaQuery.of(context).size;
     print("방문 여부 : $visit");
     print("map 방문 여부 : $mapOpend");
@@ -908,6 +605,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
       ),
     );
   }
+
+   */
 
 }
 

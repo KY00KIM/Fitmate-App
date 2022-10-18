@@ -20,6 +20,7 @@ import '../../ui/colors.dart';
 import '../fitness_map/fitness_map.dart';
 import '../login/login.dart';
 
+// map 전체보기 / 게시물 보기
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
+class _MapPageState extends State<MapPage> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   Completer<NaverMapController> _controller = Completer();
   late NaverMapController navarMapController;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -60,8 +61,12 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
     aniController = BottomSheet.createAnimationController(this);
     aniController.duration = Duration(seconds: 3);
-    print("map init 완료");
+    print("map init");
   }
+
+  //새로고침 방지
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -73,52 +78,21 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     print("맵 빌드 : ${markers}");
+    super.build(context);
     return Scaffold(
       extendBody: true,
       key: scaffoldKey,
-      bottomNavigationBar: barWidget.bottomNavigationBar(context, 3),
+      //bottomNavigationBar: barWidget.bottomNavigationBar(context, 3),
       body: Builder(
           builder: (context) {
             return Stack(
               children: <Widget>[
                 NaverMap(
-                  /*
-                    useSurface: kReleaseMode,
-                    initLocationTrackingMode: LocationTrackingMode.Follow,
-                    onMapCreated: onMapCreated,
-                    mapType: _mapType,
-                    markers: markers,
-                    //initLocationTrackingMode: _trackingMode,
-                    locationButtonEnable: false,
-                    indoorEnable: false,
-                    onCameraChange: _onCameraChange,
-                    onCameraIdle: _onCameraIdle,
-                    //onMapTap: _onMapTap,
-                    //onMapLongTap: _onMapLongTap,
-                    //onMapDoubleTap: _onMapDoubleTap,
-                    //onMapTwoFingerTap: _onMapTwoFingerTap,
-                    //onSymbolTap: _onMarkerTap,
-                    //maxZoom: 17,
-                    minZoom: 7,  //최대 지도 범위
-
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(37.566570, 126.978442),
-                      zoom: 17,
-                    ),
-                    onMapTap: _onMapTap,
-                    onMapLongTap: _onMapLongTap,
-                    onMapDoubleTap: _onMapDoubleTap,
-                    onMapTwoFingerTap: _onMapTwoFingerTap,
-                    onSymbolTap: _onSymbolTap,
-                    maxZoom: 17,
-
-                     */
-
                   initialCameraPosition: CameraPosition(
                     target: LatLng(37.566570, 126.978442),
                     zoom: 17,
                   ),
-                  liteModeEnable: true,
+                  //liteModeEnable: true,
                   //useSurface: kReleaseMode,
                   markers: markers,
                   onMapCreated: onMapCreated,
@@ -152,6 +126,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
+                      /*
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(26, 0, 26, 0),
                         child: Row(
@@ -197,6 +172,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
+                       */
+                      child: Text('dd'),
                     )
                 ),
                 Align(
@@ -441,6 +418,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
+
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: GestureDetector(
@@ -1376,6 +1354,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       }
     }
 
+    /*
     var url = Uri.parse('https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${cameraPosition.target.longitude}&y=${cameraPosition.target.latitude}&input_coord=WGS84');
     response = await http
         .get(url, headers: {"Authorization": "KakaoAK 281e3d7d678f26ad3b6020d8fc517852"});
@@ -1385,6 +1364,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     region_1depth_name = resBody2['documents'][0]['address']['region_1depth_name'];
     region_2depth_name = resBody2['documents'][0]['address']['region_2depth_name'];
     region_3depth_name = resBody2['documents'][0]['address']['region_3depth_name'];
+     */
 
     //log("markers : ${markers}");
     setState(() {

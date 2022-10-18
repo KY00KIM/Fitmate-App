@@ -9,8 +9,12 @@ import 'dart:math' as math;
 
 import '../../data/post_api.dart';
 import '../../domain/model/post.dart';
+import '../../domain/repository/home_api_repository.dart';
 import '../../domain/repository/post_api_repository.dart';
 import '../../domain/util.dart';
+import '../home/components/home_banner_widget.dart';
+import '../home/components/home_board_widget.dart';
+import '../home/components/home_head_text.dart';
 import '../writing/writing.dart';
 import 'components/post_widget.dart';
 
@@ -27,6 +31,7 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
   final postApiRepo = PostApiRepository();
   final barWidget = BarWidget();
   final postApi = PostApi();
+  final homeApiRepo = HomeApiRepository();
 
   final _valueList = ['최신 순', '거리 순'];
   var _selectedVaue = '최신 순';
@@ -35,6 +40,14 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
   void initState() {
     super.initState();
     log("post init");
+    postInit();
+  }
+
+  void postInit() async {
+    await homeApiRepo.getHomeRepo();
+    setState(() {
+
+    });
   }
 
   //새로고침 방지
@@ -54,7 +67,9 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
   // Text('${snapshot.data?[index]['post_title']}');
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    super.build(context);
+    final Size size = MediaQuery.of(context).size;
+    return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.appBar(context),
       floatingActionButton: new Container(
@@ -62,7 +77,7 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
         child: FloatingActionButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => WritingPage()));
+                MaterialPageRoute(builder: (context) => new WritingPage()));
           },
           backgroundColor: Color(0xFF3F51B5),
           child: SvgPicture.asset(
@@ -73,7 +88,47 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
           ),
         ),
       ),
-      body: new SafeArea(
+      body:SafeArea(
+        child: homeDataGet
+            ? ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(overscroll: false),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Column(
+                children: [
+                  HomeBannerWidget(
+                    banner: banners,
+                  ),
+                  HomeHeadTextWidget(),
+                  HomeBoardWidget(
+                    posts: posts,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+            : ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(overscroll: false),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Column(
+                children: [
+                  Text('zzz'),
+                  Text('zzz'),
+                  Text('zzz'),Text('zzz'),
+                  Text('zzz'),
+
+
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+        /*
         child: RefreshIndicator(
           //onRefresh: () => postApiRepo.getPostRepo(),
           onRefresh: () => refresh(),
@@ -173,7 +228,8 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
             ),
           ),
         ),
-      ),
+
+         */
     );
   }
 }

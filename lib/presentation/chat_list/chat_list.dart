@@ -22,7 +22,7 @@ class ChatListPage extends StatefulWidget {
   State<ChatListPage> createState() => _ChatListPageState();
 }
 
-class _ChatListPageState extends State<ChatListPage> {
+class _ChatListPageState extends State<ChatListPage> with AutomaticKeepAliveClientMixin {
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   var chatDocId;
   var data;
@@ -58,15 +58,19 @@ class _ChatListPageState extends State<ChatListPage> {
   @override
   void initState() {
     super.initState();
-    print("hello");
+    print("chat list init");
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.appBar(context),
-      bottomNavigationBar: barWidget.bottomNavigationBar(context, 2),
+      //bottomNavigationBar: barWidget.bottomNavigationBar(context, 2),
       body: SafeArea(
         child: FutureBuilder<List> (
           future: getChatList(),

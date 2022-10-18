@@ -25,7 +25,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin {
   List<String> reviewName = [];
   List<String> reviewImg = [];
   List<String> reviewContext = [];
@@ -55,9 +55,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    print("내 프로필 페이지");
+    print("profile init");
     log("Idtoken : $IdToken");
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   Future<int> getReviewProfile() async {
     point = 0;
@@ -125,13 +128,14 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     log(UserData.toString());
+    super.build(context);
     if (visit == true) {
       print("여기");
       return Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color(0xffF2F3F7),
         appBar: barWidget.appBar(context),
-        bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
+        //bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
         body: SafeArea(
           child: Container(
             height: size.height,
@@ -184,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color(0xffF2F3F7),
         appBar: barWidget.appBar(context),
-        bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
+        //bottomNavigationBar: barWidget.bottomNavigationBar(context, 5),
         body: SafeArea(
           child: FutureBuilder<int>(
             future: getReviewProfile(),

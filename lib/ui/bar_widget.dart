@@ -680,11 +680,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-<<<<<<< HEAD
                                   HomePage(),
-=======
-                                      HomePage(reload: false),
->>>>>>> 8bcadbcfe006e913dfb08c247e527e6aacb38e77
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),
@@ -695,11 +691,7 @@ class BarWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-<<<<<<< HEAD
                                   HomePage(),
-=======
-                                      HomePage(reload: false),
->>>>>>> 8bcadbcfe006e913dfb08c247e527e6aacb38e77
                               transitionDuration: Duration.zero,
                               reverseTransitionDuration: Duration.zero,
                             ),

@@ -7,8 +7,13 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitmate/domain/facebook_pref.dart';
+import 'package:fitmate/presentation/calender/calender.dart';
+import 'package:fitmate/presentation/chat_list/chat_list.dart';
 import 'package:fitmate/presentation/home/home.dart';
 import 'package:fitmate/presentation/login/login.dart';
+import 'package:fitmate/presentation/map/map.dart';
+import 'package:fitmate/presentation/post/post.dart';
+import 'package:fitmate/presentation/profile/profile.dart';
 import 'package:fitmate/screens/First.dart';
 import 'package:fitmate/screens/Home.dart';
 import 'package:fitmate/screens/Second.dart';
@@ -28,7 +33,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:convert';
-
 
 /*
 void main() => runApp(MyApp());
@@ -57,7 +61,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _children = [Home(), First(), Second()];
+  final List<Widget> _children = [
+    PostPage(
+      reload: false,
+    ),
+    ChatListPage(),
+    MapPage(),
+    CalenderPage(),
+    ProfilePage(),
+  ];
 
   void _onTap(int index) {
     pageController.jumpToPage(index);
@@ -74,40 +86,49 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
         body: PageView(
           controller: pageController,
           onPageChanged: onPageChanged,
           children: _children,
-          physics: NeverScrollableScrollPhysics(), // No sliding
+          //physics: NeverScrollableScrollPhysics(), // No sliding
         ),
         bottomNavigationBar: BottomNavigationBar(
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
             type: BottomNavigationBarType.fixed,
             onTap: _onTap,
             currentIndex: _currentIndex,
             items: [
-              new BottomNavigationBarItem(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
               ),
-              new BottomNavigationBarItem(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.mail),
                 label: 'First',
               ),
-              new BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: 'Second')
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Second'
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.mail),
+                label: 'First',
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Second'
+              )
             ]
         )
     );
   }
 }
 
-
  */
 
 
+//this is main
 void main() async {
   //Constants.setEnvironment(Environment.PROD);
   await dotenv.load(fileName: ".env");
@@ -140,7 +161,6 @@ class _MyAppState extends State<MyApp> {
       // startTrackManager();
       facebookAppEvents.getApplicationId().then((value) {
         print("facebook_app_id :  $value");
-        ;
       });
     });
     super.initState();
@@ -240,7 +260,7 @@ class $ {}
 class $idToken {}
 
 
-
+//로딩 창
 /*
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -386,374 +406,5 @@ class _LoadingListPageState extends State<LoadingListPage> {
     );
   }
 }
-
-
- */
-
-/*
-
-
-import 'dart:math';
-import 'package:flutter/material.dart';
-
-bool appBarShow = true;
-void main() => runApp(const TestApp());
-
-
-class TestApp extends StatelessWidget {
-  const TestApp({Key? key}) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Demo',
-      home: Home(),
-    );
-  }
-}
-
-
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-
-class _HomeState extends State<Home> {
-  final _pages = const [Page1(), Page2(), Page3()];
-  final _navigatorKeyList = List.generate(3, (index) => GlobalKey<NavigatorState>());
-  int _currentIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return !(await _navigatorKeyList[_currentIndex].currentState!.maybePop());
-      },
-      child: DefaultTabController(
-        animationDuration: Duration(milliseconds: 0),
-        length: 3,
-        child: Scaffold(
-          body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: _pages.map(
-                  (page) {
-                int index = _pages.indexOf(page);
-                return CustomNavigator(
-                  page: page,
-                  navigatorKey: _navigatorKeyList[index],
-                );
-              },
-            ).toList(),
-          ),
-          bottomNavigationBar: TabBar(
-            isScrollable: false,
-            indicatorPadding: const EdgeInsets.only(bottom: 74),
-            automaticIndicatorColorAdjustment: true,
-            onTap: (index) => setState(() {
-              _currentIndex = index;
-              print("index : $index");
-
-            }),
-            tabs: const [
-              Tab(
-                icon: Icon(
-                  Icons.home,
-                ),
-                text: '플라토',
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.calendar_today,
-                ),
-                text: '캘린더',
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.email,
-                ),
-                text: '쪽지',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-class Page1 extends StatelessWidget {
-  const Page1({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: appBarShow ? 50 :  0,
-        title: const Text('Page 1'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: FutureBuilder(
-          future: Future.delayed(const Duration(seconds: 2)),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return TextButton(
-                child: const Text('Next page'),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const Page4()));
-                },
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      ),
-    );
-  }
-}
-
-
-class Page2 extends StatelessWidget {
-  const Page2({Key? key}) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: const Center(
-        child: Text('Page 2'),
-      ),
-    );
-  }
-}
-
-
-class Page3 extends StatelessWidget {
-  const Page3({Key? key}) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Page 3'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text('Page 3'),
-      ),
-    );
-  }
-}
-
-
-class Page4 extends StatelessWidget {
-  const Page4({Key? key}) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Page4'),
-        centerTitle: true,
-      ),
-      body: FutureBuilder(
-        future: Future.delayed(const Duration(seconds: 2)),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return const Text('Page4');
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
-  }
-}
- */
-
-/*
-import 'package:flutter/material.dart';
-
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      routes: <String, WidgetBuilder>{
-        "/home": (BuildContext context) => new HomePage(),
-        "/detail": (BuildContext context) => new DetailPage(),
-      },
-      initialRoute: "/home",
-      title: 'Flutter Nav',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: new HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new DefaultTabController(
-      length: 3,
-      child: Scaffold(
-          bottomNavigationBar: Container(
-            color: Colors.blue,
-            child: TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.directions_car)),
-                Tab(icon: Icon(Icons.directions_transit)),
-                Tab(icon: Icon(Icons.directions_bike)),
-              ],
-            ),
-          ),
-          appBar: AppBar(
-            title: Text("Home"),
-          ),
-          body: new TabBarView(
-            children: <Widget>[
-              new HomeTab1(),
-              new HomeTab2(),
-              new HomeTab3(),
-            ],
-          )),
-    );
-  }
-}
-
-class HomeTab1 extends StatefulWidget {
-  HomeTab1({Key? key}) : super(key: key);
-
-  @override
-  State<HomeTab1> createState() => _HomeTab1State();
-}
-
-class _HomeTab1State extends State<HomeTab1> {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Home1"),
-            new Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: new FlatButton.icon(
-                onPressed: () {
-                  //Navigator.of(context).pushNamed("/detail");
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DetailPage()));
-                },
-                color: Colors.red,
-                textColor: Colors.white,
-                icon: const Icon(Icons.navigate_next, size: 18.0),
-                label: const Text('Go To Details'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class HomeTab2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Home2"),
-          new Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: new FlatButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed("/detail");
-              },
-              color: Colors.red,
-              textColor: Colors.white,
-              icon: const Icon(Icons.navigate_next, size: 18.0),
-              label: const Text('Go To Details'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class HomeTab3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Home3"),
-          new Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: new FlatButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed("/detail");
-              },
-              color: Colors.red,
-              textColor: Colors.white,
-              icon: const Icon(Icons.navigate_next, size: 18.0),
-              label: const Text('Go To Details'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class DetailPage extends StatefulWidget {
-DetailPage({Key? key}) : super(key: key);
-
-  @override
-  State<DetailPage> createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          title: Text("Details"),
-        ),
-        body: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Details"),
-            ],
-          ),
-        ));
-  }
-}
-
 
  */
