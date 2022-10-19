@@ -386,7 +386,11 @@ class _DetailMachingPageState extends State<DetailMachingPage> {
           return Text("${snapshot.error}");
         }
         // 기본적으로 로딩 Spinner를 보여줍니다.
-        return Center(child: CircularProgressIndicator());
+        return Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: whiteTheme,
+          child: Center(child: CircularProgressIndicator()));
       },
     );
   }

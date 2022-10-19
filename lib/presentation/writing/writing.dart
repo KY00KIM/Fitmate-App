@@ -91,8 +91,6 @@ class _WritingPageState extends State<WritingPage> {
     context.loaderOverlay.show();
     print("췍췍;");
 
-    List<int> imageBytes = _image!.readAsBytesSync();
-    String base64Image = base64Encode(imageBytes);
     List _selectedPartData = [];
 
     _filters.forEach((element) {
@@ -122,7 +120,11 @@ class _WritingPageState extends State<WritingPage> {
     var resBody = jsonDecode(utf8.decode(response.bodyBytes));
     print('resBody : ${resBody}');
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 201 && _image == null) {
+      context.loaderOverlay.hide();
+      FlutterToastBottom("게시글이 등록되었습니다!");
+      Navigator.pop(context);
+    }else if (response.statusCode == 201 && _image != null) {
       postId = resBody["data"]["_id"].toString();
 
       // ignore: unused_local_variable
@@ -221,8 +223,6 @@ class _WritingPageState extends State<WritingPage> {
 
   bool checkValid() {
     if (title == '' ||
-        description == '' ||
-        _image == null ||
         centerName == '피트니스 클럽 검색' ||
         _selectedTime == '시간 선택' ||
         _selectedDate == '날짜 선택') {
@@ -341,6 +341,8 @@ class _WritingPageState extends State<WritingPage> {
                       onPressed: () {
                         if (checkValid()) {
                           PostPosets();
+                        } else {
+                          FlutterToastBottom('제목, 클럼, 날짜, 시간은 필수 입력입니다!');
                         }
                       },
                     ),

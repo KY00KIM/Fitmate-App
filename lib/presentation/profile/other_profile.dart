@@ -816,7 +816,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                           ),
                           Container(
                             width: size.width,
-                            padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                            padding: EdgeInsets.fromLTRB(0, widget.chatButton ? 0 : 35, 0, 0),
                             child: Column(
                               children: [
                                 Row(

@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 
+import '../../data/http_api.dart';
 import '../../domain/util.dart';
 import '../../ui/show_toast.dart';
 import '../make_promise/make_promise.dart';
@@ -47,6 +48,7 @@ class _ChatPageState extends State<ChatPage> {
   var data;
   String message = '';
   String _serverKey = 'AAAA8cYlWIw:APA91bGXee8Bjzl5RDLHajmI1nsK3Ys3IL-FZCKjw0B3SQVHkOTJw5sWedYxJRg2qSg-3D2QQSBTLSySo217KyeLfVwLDFcq8QMTHlYsxiEbUpiXMmPIO5qWrEhPNsHPzz6WhQRGw-BG';
+  String lastMessage = '';
 
   /*
   @override
@@ -68,6 +70,54 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     super.dispose();
+    lastChatUpdate();
+  }
+
+  Future<void> lastChatUpdate() async {
+
+    if(lastMessage != '') {
+      final httpApi = HttpApi();
+
+      http.Response response;
+      response = await httpApi.patch(2, 'chats/chat/${widget.chatId}', {'last_chat' : lastMessage});
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("success");
+      } else {
+        print("post 에러 떳습니다!");
+        throw Exception('Failed to load post');
+      }
+    }
+
+
+    /*
+    try {
+      response = await http.post(
+          Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'key=$_serverKey'
+          },
+          body: jsonEncode({
+            'notification': {'title': UserData['user_name'], 'body': 'msg', 'sound': 'false'},
+            'ttl': '60s',
+            "content_available": true,
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done',
+              "action": '테스트',
+            },
+            // 상대방 토큰 값, to -> 단일, registration_ids -> 여러명
+            'to': 'fNBmzEBGRJ2HMUpgeMVsV5:APA91bGDzu5cKF1MG6b0LCpqzbPKqcbyFIiL12vkqo23wpBR_qbXzXsye1OcoiV1h45IcUKPp3nkAFfw_KHoRkoH1uaDGjRLF74tab3DcOGhrg0vdF0xN8ITC_PsIEhe1imMxTq8mjr2'
+            // 'registration_ids': tokenList
+          }));
+      print("chat notifi push : ${response.statusCode}");
+    } catch (e) {
+      print('error $e');
+    }
+
+     */
   }
 
   Future<bool> checkUser() async {
@@ -119,35 +169,9 @@ class _ChatPageState extends State<ChatPage> {
       'msg': msg
     }).then((value) {
       //_textController.text = '';
+      lastMessage = msg;
     });
 
-    http.Response response;
-
-    try {
-      response = await http.post(
-          Uri.parse('https://fcm.googleapis.com/fcm/send'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-            'Authorization': 'key=$_serverKey'
-          },
-          body: jsonEncode({
-            'notification': {'title': UserData['user_name'], 'body': msg, 'sound': 'false'},
-            'ttl': '60s',
-            "content_available": true,
-            'data': {
-              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'id': '1',
-              'status': 'done',
-              "action": '테스트',
-            },
-            // 상대방 토큰 값, to -> 단일, registration_ids -> 여러명
-            'to': 'fNBmzEBGRJ2HMUpgeMVsV5:APA91bGDzu5cKF1MG6b0LCpqzbPKqcbyFIiL12vkqo23wpBR_qbXzXsye1OcoiV1h45IcUKPp3nkAFfw_KHoRkoH1uaDGjRLF74tab3DcOGhrg0vdF0xN8ITC_PsIEhe1imMxTq8mjr2'
-            // 'registration_ids': tokenList
-          }));
-      print("chat notifi push : ${response.statusCode}");
-    } catch (e) {
-      print('error $e');
-    }
   }
 
   bool isSender(String friend) {
