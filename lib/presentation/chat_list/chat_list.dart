@@ -48,6 +48,7 @@ class _ChatListPageState extends State<ChatListPage> with AutomaticKeepAliveClie
     if(response.statusCode == 200) {
       chatList = resBody["data"];
       log("log : ${resBody['data']}");
+
       return resBody["data"];
     } else {
       print("what the fuck");
@@ -67,6 +68,7 @@ class _ChatListPageState extends State<ChatListPage> with AutomaticKeepAliveClie
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: whiteTheme,
       appBar: barWidget.appBar(context),
@@ -125,6 +127,7 @@ class _ChatListPageState extends State<ChatListPage> with AutomaticKeepAliveClie
                                   }
                                 },
                                 child: Container(
+                                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   height: 84,
                                   margin: EdgeInsets.only(bottom: 16),
                                   decoration: BoxDecoration(
@@ -146,37 +149,37 @@ class _ChatListPageState extends State<ChatListPage> with AutomaticKeepAliveClie
                                     ],
                                   ),
                                   child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(100.0),
-                                            child: Image(
-                                              image: CachedNetworkImageProvider('${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img']}'),
-                                              width: 40,
-                                              height: 40,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                return Image.asset(
-                                                  'assets/images/profile_null_image.png',
-                                                  width: 40.0,
-                                                  height: 40.0,
-                                                  fit: BoxFit.cover,
-                                                );
-                                              },
-                                            ),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(100.0),
+                                          child: Image(
+                                            image: CachedNetworkImageProvider('${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img']}'),
+                                            width: 55,
+                                            height: 55,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/profile_null_image.png',
+                                                width: 40.0,
+                                                height: 40.0,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
                                           ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: size.width - 155,
+                                              child: Row(
                                                 children: [
                                                   Text(
                                                     '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname']}',
@@ -185,96 +188,47 @@ class _ChatListPageState extends State<ChatListPage> with AutomaticKeepAliveClie
                                                       fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
+                                                  Spacer(),
+                                                  Text(
+                                                    '${snapshot.data![index]['updatedAt'].toString().substring(5, 7)}월 ${snapshot.data![index]['updatedAt'].toString().substring(8, 10)}일',
+                                                    style: TextStyle(
+                                                      fontSize: 13,
+                                                      color: Color(0XFF6E7995),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
-                                              Text(
-                                                '${snapshot.data![index]['last_chat']}',
-                                                //'안녕하세요. 상대방과의 채팅을 시작하는게 어떠세요? 새로운 도전과 만남은 늘 설레는 법이랍니다',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                ),
+                                            ),
+                                            SizedBox(height: 4,),
+                                            Container(
+                                              width: size.width - 155,
+                                              child: Row(
+                                                children: [
+                                                  Flexible(
+                                                    fit: FlexFit.tight,
+                                                    child: RichText(
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 2,
+                                                      text: TextSpan(
+                                                        text: '${snapshot.data![index]['last_chat']}',
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.black87,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                                 ),
                               );
-                              /*
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size(size.width, 84),
-                                    maximumSize: Size(size.width, 84),
-                                    shape: new RoundedRectangleBorder(
-                                      borderRadius: new BorderRadius.circular(0),
-                                    ),
-                                    primary: Color(0xFF22232A)
-                                ),
-                                onPressed: () async {
-                                  bool rebuild = await Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
-                                    name : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname'],
-                                    imageUrl : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img'],
-                                    uid : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['social']['user_id'] : snapshot.data![index]['chat_start_id']['social']['user_id'],
-                                    userId : snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['_id'] : snapshot.data![index]['chat_start_id']['_id'],
-                                    chatId: snapshot.data![index]['_id'],
-                                  )
-                                  )
-                                  ) as bool;
-                                  if(rebuild) {
-                                    setState(() {
-                                      chatList;
-                                    });
-                                  }
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(100.0),
-                                            child: Image.network(
-                                              '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_profile_img'] : snapshot.data![index]['chat_start_id']['user_profile_img']}',
-                                              width: 40,
-                                              height: 40,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                                return Image.asset(
-                                                  'assets/images/profile_null_image.png',
-                                                  width: 45.0,
-                                                  height: 45.0,
-                                                  fit: BoxFit.cover,
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Text(
-                                            '${snapshot.data![index]['chat_start_id']['_id'] == UserData['_id'] ? snapshot.data![index]['chat_join_id']['user_nickname'] : snapshot.data![index]['chat_start_id']['user_nickname']}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-
-                               */
                             }
                             else return SizedBox();
                           },

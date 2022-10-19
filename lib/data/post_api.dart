@@ -18,7 +18,7 @@ class PostApi {
         Uri.parse("https://fitmate.co.kr/v2/visitor/posts?page=1&limit=3"),
       );
     } else  {
-      response = await httpApi.get(2, 'posts');
+      response = await httpApi.get(2, 'posts?page=1&limit=100');
     }
 
     if (response.statusCode == 200) {

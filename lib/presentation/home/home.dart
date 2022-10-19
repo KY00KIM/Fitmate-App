@@ -92,96 +92,102 @@ class _HomePageState extends State<HomePage> {
               topRight: Radius.circular(12),
               topLeft: Radius.circular(12),
             ),
-            child: BottomNavigationBar(
-                elevation: 10,
-                backgroundColor: whiteTheme,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                type: BottomNavigationBarType.fixed,
-                onTap: _onTap,
-                currentIndex: _currentIndex,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: _currentIndex == 0
-                        ? SvgPicture.asset(
-                      // 5
-                      "${iconSource}home_icon.svg",
-                      width: iconSize,
-                      height: iconSize,
-                    )
-                        : SvgPicture.asset(
-                      // 5
-                      "${iconSource}Inactive_home_icon.svg",
-                      width: iconSize,
-                      height: iconSize,
-                    ),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _currentIndex == 1
-                        ? SvgPicture.asset(
-                      // 5
-                      "${iconSource}chatting_icon.svg",
-                      width: iconSize,
-                      height: iconSize,
-                    )
-                        : SvgPicture.asset(
-                      // 5
-                      "${iconSource}Inactive_chatting_icon.svg",
-                      width: iconSize,
-                      height: iconSize,
-                    ),
-                    label: 'First',
-                  ),
-                  BottomNavigationBarItem(
-                      icon: _currentIndex == 2
+            child: Theme(
+              data: ThemeData(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+              ),
+              child: BottomNavigationBar(
+                  elevation: 10,
+                  backgroundColor: whiteTheme,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  type: BottomNavigationBarType.fixed,
+                  onTap: _onTap,
+                  currentIndex: _currentIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: _currentIndex == 0
                           ? SvgPicture.asset(
                         // 5
-                        "${iconSource}map_icon.svg",
+                        "${iconSource}home_icon.svg",
                         width: iconSize,
                         height: iconSize,
                       )
                           : SvgPicture.asset(
                         // 5
-                        "${iconSource}Inactive_map_icon.svg",
+                        "${iconSource}Inactive_home_icon.svg",
                         width: iconSize,
                         height: iconSize,
                       ),
-                      label: 'Second'
-                  ),
-                  BottomNavigationBarItem(
-                    icon: _currentIndex == 3
-                        ? SvgPicture.asset(
-                      // 5
-                      "${iconSource}calender_icon.svg",
-                      width: iconSize,
-                      height: iconSize,
-                    )
-                        : SvgPicture.asset(
-                      // 5
-                      "${iconSource}Inactive_calender_icon.svg",
-                      width: iconSize,
-                      height: iconSize,
+                      label: 'Home',
                     ),
-                    label: 'First',
-                  ),
-                  BottomNavigationBarItem(
-                      icon: _currentIndex == 4
+                    BottomNavigationBarItem(
+                      icon: _currentIndex == 1
                           ? SvgPicture.asset(
                         // 5
-                        "${iconSource}profile_icon.svg",
+                        "${iconSource}chatting_icon.svg",
                         width: iconSize,
                         height: iconSize,
                       )
                           : SvgPicture.asset(
                         // 5
-                        "${iconSource}Inactive_profile_icon.svg",
+                        "${iconSource}Inactive_chatting_icon.svg",
                         width: iconSize,
                         height: iconSize,
                       ),
-                      label: 'Second'
-                  )
-                ]
+                      label: 'Chatting',
+                    ),
+                    BottomNavigationBarItem(
+                        icon: _currentIndex == 2
+                            ? SvgPicture.asset(
+                          // 5
+                          "${iconSource}map_icon.svg",
+                          width: iconSize,
+                          height: iconSize,
+                        )
+                            : SvgPicture.asset(
+                          // 5
+                          "${iconSource}Inactive_map_icon.svg",
+                          width: iconSize,
+                          height: iconSize,
+                        ),
+                        label: 'Map'
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _currentIndex == 3
+                          ? SvgPicture.asset(
+                        // 5
+                        "${iconSource}calender_icon.svg",
+                        width: iconSize,
+                        height: iconSize,
+                      )
+                          : SvgPicture.asset(
+                        // 5
+                        "${iconSource}Inactive_calender_icon.svg",
+                        width: iconSize,
+                        height: iconSize,
+                      ),
+                      label: 'Calendar',
+                    ),
+                    BottomNavigationBarItem(
+                        icon: _currentIndex == 4
+                            ? SvgPicture.asset(
+                          // 5
+                          "${iconSource}profile_icon.svg",
+                          width: iconSize,
+                          height: iconSize,
+                        )
+                            : SvgPicture.asset(
+                          // 5
+                          "${iconSource}Inactive_profile_icon.svg",
+                          width: iconSize,
+                          height: iconSize,
+                        ),
+                        label: 'Profile'
+                    )
+                  ]
+              ),
             ),
           ),
         )
