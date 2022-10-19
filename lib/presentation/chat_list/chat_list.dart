@@ -47,7 +47,7 @@ class _ChatListPageState extends State<ChatListPage> with AutomaticKeepAliveClie
 
     if(response.statusCode == 200) {
       chatList = resBody["data"];
-      log("log : ${resBody['data']}");
+      log("chat list : ${resBody['data']}");
 
       return resBody["data"];
     } else {

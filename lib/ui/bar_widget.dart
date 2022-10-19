@@ -579,16 +579,10 @@ class BarWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: whiteTheme,
       ),
-      title: Padding(
-        padding: EdgeInsets.only(left: 7.0),
-        child: Text(
-          'FitMate',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      title: SvgPicture.asset(
+        "assets/icon/blk_color_svg.svg",
+        width: 44,
+        height: 44,
       ),
       actions: [
         Padding(

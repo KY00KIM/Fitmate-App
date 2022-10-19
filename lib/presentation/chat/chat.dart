@@ -46,6 +46,7 @@ class _ChatPageState extends State<ChatPage> {
   var _textController = new TextEditingController();
   var data;
   String message = '';
+  String _serverKey = 'AAAA8cYlWIw:APA91bGXee8Bjzl5RDLHajmI1nsK3Ys3IL-FZCKjw0B3SQVHkOTJw5sWedYxJRg2qSg-3D2QQSBTLSySo217KyeLfVwLDFcq8QMTHlYsxiEbUpiXMmPIO5qWrEhPNsHPzz6WhQRGw-BG';
 
   /*
   @override
@@ -108,16 +109,45 @@ class _ChatPageState extends State<ChatPage> {
     return true;
   }
 
-  void sendMessage(String msg) {
+  void sendMessage(String msg) async {
     if (msg == '') return;
+    _textController.text = '';
     chats.doc(chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
       'uid': UserData['social']['user_id'],
       'friendName': widget.uid,
       'msg': msg
     }).then((value) {
-      _textController.text = '';
+      //_textController.text = '';
     });
+
+    http.Response response;
+
+    try {
+      response = await http.post(
+          Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'key=$_serverKey'
+          },
+          body: jsonEncode({
+            'notification': {'title': UserData['user_name'], 'body': msg, 'sound': 'false'},
+            'ttl': '60s',
+            "content_available": true,
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done',
+              "action": '테스트',
+            },
+            // 상대방 토큰 값, to -> 단일, registration_ids -> 여러명
+            'to': 'fNBmzEBGRJ2HMUpgeMVsV5:APA91bGDzu5cKF1MG6b0LCpqzbPKqcbyFIiL12vkqo23wpBR_qbXzXsye1OcoiV1h45IcUKPp3nkAFfw_KHoRkoH1uaDGjRLF74tab3DcOGhrg0vdF0xN8ITC_PsIEhe1imMxTq8mjr2'
+            // 'registration_ids': tokenList
+          }));
+      print("chat notifi push : ${response.statusCode}");
+    } catch (e) {
+      print('error $e');
+    }
   }
 
   bool isSender(String friend) {
@@ -292,8 +322,13 @@ class _ChatPageState extends State<ChatPage> {
               print("snapshot data : ${snapshot.data}");
               print("snapshot hasdata : ${snapshot.hasData}");
               if (snapshot.hasError) {
-                return Center(
-                  child: Text("Something went wrong"),
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: whiteTheme,
+                  child: Center(
+                    child: Text("Something went wrong"),
+                  ),
                 );
               }
               /*
@@ -1510,8 +1545,13 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                 );
               } else {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: whiteTheme,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
             },
@@ -1520,7 +1560,11 @@ class _ChatPageState extends State<ChatPage> {
           return Text("${snapshot.error}");
         }
         // 기본적으로 로딩 Spinner를 보여줍니다.
-        return Center(child: CircularProgressIndicator());
+        return Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: whiteTheme,
+          child: Center(child: CircularProgressIndicator()));
       },
     );
   }

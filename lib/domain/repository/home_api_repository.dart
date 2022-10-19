@@ -16,6 +16,7 @@ class HomeApiRepository {
   final bannerApi = BannerApi();
   final fitnessCenterRepo = FitnessCenterApiRepository();
 
+
   Future<Map> getHomeRepo() async {
     print("홈 함수 실행");
     List<Post> _posts = <Post>[];
@@ -52,4 +53,5 @@ class HomeApiRepository {
 
     return {"posts": _posts, "banners": _banners, "fitness_center": _fitness};
   }
+
 }

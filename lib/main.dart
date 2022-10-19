@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fitmate/domain/facebook_pref.dart';
 import 'package:fitmate/presentation/calender/calender.dart';
 import 'package:fitmate/presentation/chat_list/chat_list.dart';
@@ -135,6 +136,7 @@ void main() async {
   KakaoSdk.init(nativeAppKey: '${dotenv.env['KAKAO_APP_KEY']}');
 
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -193,6 +195,10 @@ class _MyAppState extends State<MyApp> {
     UserId = resBody['data']['user_id'];
     bool userdata = await UpdateUserData();
     print("4");
+
+    String? token = await FirebaseMessaging.instance.getToken();
+    log("device token : ${token}");
+
     return IdToken == null || UserId == null || userdata == false;
   }
 

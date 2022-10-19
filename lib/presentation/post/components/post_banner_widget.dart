@@ -30,6 +30,7 @@ class _PostBannerWidget extends State<PostBannerWidget> {
   @override
   void initState() {
     super.initState();
+    print("배너 init");
   }
 
   @override
@@ -39,7 +40,6 @@ class _PostBannerWidget extends State<PostBannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("banner 길이 : ${widget.banner}");
     final Size size = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -61,7 +61,6 @@ class _PostBannerWidget extends State<PostBannerWidget> {
                         });
                       }),
                   items: widget.banner.map((item) {
-                    print("item : ${item.bannerImageUrl}");
                     return Builder(builder: (BuildContext context) {
                       return GestureDetector(
                         onTap: () {

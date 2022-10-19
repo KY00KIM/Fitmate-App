@@ -38,11 +38,15 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
   @override
   void initState() {
     super.initState();
-    log("post init");
-    postInit();
+    log("post init : $homeDataGet");
+    if(homeDataGet == false) {
+      postInit();
+      homeDataGet = true;
+    }
   }
 
   void postInit() async {
+    print("post init 함수 실행");
     await homeApiRepo.getHomeRepo();
     setState(() {
 
