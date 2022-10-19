@@ -18,13 +18,20 @@ class PostApi {
         Uri.parse("https://fitmate.co.kr/v2/visitor/posts?page=1&limit=3"),
       );
     } else  {
-      response = await httpApi.get(2, 'posts?page=1&limit=100');
+      response = await httpApi.get(2, 'posts?page=1&limit=100&sort=$sort');
     }
 
     if (response.statusCode == 200) {
+      print("post 200");
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       List hits;
-      hits = jsonResponse['data']['docs'];
+      log("json response : ${jsonResponse['data']}");
+      try{
+        hits = jsonResponse['data']['docs'];
+      } catch(e) {
+        hits = jsonResponse['data'];
+      }
+      log("hits : $hits");
 
       for(int i = 0; i < hits.length; i++) {
         try {
@@ -32,6 +39,7 @@ class PostApi {
         } catch (e) {
         }
       }
+      log("_posts : $_posts");
       return _posts;
     } else {
       print("post 에러 떳습니다!");

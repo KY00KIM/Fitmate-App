@@ -56,6 +56,7 @@ List chatList = []; // sqlite로
 // 홈 화면 전역 객체들
 bool isVisible = false;
 bool homeDataGet = false;
+String sort = "sort";
 List<Post> posts = <Post>[]; //sqlite로
 List<Banner> banners = <Banner>[]; //sqlite로
 FitnessCenter myFitnessCenter = FitnessCenter(

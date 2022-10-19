@@ -72,7 +72,7 @@ class PostBoardWidget extends StatelessWidget {
                   height: 200,
                   width: size.width,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6)
+                      borderRadius: BorderRadius.circular(6)
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),

@@ -5,6 +5,7 @@ import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:math' as math;
 
@@ -185,108 +186,6 @@ class _PostPageState extends State<PostPage> with AutomaticKeepAliveClientMixin 
           ),
         )
       ),
-        /*
-        child: RefreshIndicator(
-          //onRefresh: () => postApiRepo.getPostRepo(),
-          onRefresh: () => refresh(),
-          child: ScrollConfiguration(
-            behavior: const ScrollBehavior().copyWith(overscroll: false),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '게시판',
-                          style: TextStyle(
-                            color: Color(0xFF6E7995),
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            icon: Container(
-                              margin: EdgeInsets.only(left: 8),
-                              child: Transform.rotate(
-                                angle: 90 * math.pi / 180,
-                                child: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Color(0xFF000000),
-                                  size: 16,
-                                ),
-                              ),
-                            ),
-                            value: _selectedVaue,
-                            items: _valueList.map((value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(
-                                    color: Color(0xFF000000),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedVaue = value.toString();
-                              });
-                            },
-                            /*
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        '최신 순',
-                                        style: TextStyle(
-                                          color: Color(0xFF000000),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(width: 8,),
-                                      Transform.rotate(
-                                        angle: 90 * math.pi / 180,
-                                        child: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Color(0xFF000000),
-                                          size: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                   */
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: posts.length,
-                      itemBuilder: (context, index) {
-                        Post post = posts[index];
-                        return PostWidget(posts: post);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-         */
     );
   }
 }
