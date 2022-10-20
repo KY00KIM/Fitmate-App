@@ -94,6 +94,8 @@ class DetailContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("maker user uid : $makerUserUid");
+    print("my uid : ${UserData['social']['user_id']}");
     final Size size = MediaQuery.of(context).size;
     String? time = post.promiseDate.toString().substring(11, 13);
     String slot = int.parse(time) > 12 ? '오후' : '오전';
@@ -309,8 +311,8 @@ class DetailContentWidget extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 32,),
-            ElevatedButton(
+            SizedBox(height: makerUserUid == UserData['social']['user_id'] ? 0 : 32,),
+            makerUserUid == UserData['social']['user_id'] ? SizedBox() : ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(size.width, 60),
                 shape: RoundedRectangleBorder(

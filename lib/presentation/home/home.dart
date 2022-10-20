@@ -1,11 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fitmate/domain/facebook_pref.dart';
 import 'package:fitmate/ui/bar_widget.dart';
 import 'package:fitmate/ui/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/util.dart';
 
 import '../../domain/repository/home_api_repository.dart';
@@ -15,7 +19,6 @@ import '../map/map.dart';
 import '../post/post.dart';
 import '../profile/profile.dart';
 import '../writing/writing.dart';
-
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -30,6 +33,15 @@ class _HomePageState extends State<HomePage> {
   final double iconSize = 32.0;
   final String iconSource = "assets/icon/bar_icons/";
 
+  final notificationImageList = [
+    Image.asset('assets/notifications/1.png', fit: BoxFit.cover),
+    Image.asset('assets/notifications/2.png', fit: BoxFit.cover),
+    Image.asset('assets/notifications/3.png', fit: BoxFit.cover),
+    Image.asset('assets/notifications/4.png', fit: BoxFit.cover),
+  ];
+  int notificationPage = 1;
+  bool mpesachecked = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -38,7 +50,126 @@ class _HomePageState extends State<HomePage> {
     });
     super.initState();
     locator.initListner();
+    notification();
     log("췌구첵");
+  }
+
+  void notification() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    bool? isNotification = false;
+
+    try {
+      isNotification = pref.getBool('isNotification');
+    } catch (e) {}
+
+    if (isNotification == true) {
+    } else {
+      Future.delayed(Duration(seconds: 0)).then((_) {
+        showModalBottomSheet(
+            context: context,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+            isDismissible: false,
+            enableDrag: false,
+            builder: (builder) {
+              final Size size = MediaQuery.of(context).size;
+              return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                return Container(
+                  height: 350,
+                  decoration: BoxDecoration(
+                    color: whiteTheme,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Stack(
+                        children: [
+                          CarouselSlider(
+                            options: CarouselOptions(
+                                autoPlay: false,
+                                // 자동재생 여부
+                                height: 300,
+                                viewportFraction: 1,
+                                autoPlayAnimationDuration:
+                                    Duration(milliseconds: 200),
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    notificationPage = index + 1;
+                                  });
+                                  print("페이지 전환 : $notificationPage");
+                                }),
+                            items: notificationImageList.map((item) {
+                              return Builder(builder: (BuildContext context) {
+                                return Container(
+                                  child: item,
+                                );
+                              });
+                            }).toList(),
+                          ),
+                          Positioned(
+                            right: 12,
+                            top: 12,
+                            child: Container(
+                              width: 44,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(0, 0, 0, 0.5),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '${notificationPage}/4',
+                                  style: TextStyle(
+                                    color: Color(0xFFffffff),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+                        width: size.width,
+                        height: 50,
+                        child: Row(
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  pref.setBool('isNotification', true);
+                                }, child: Text(
+                                '다시보지 않기',
+                              style: TextStyle(
+                                color: Colors.black
+                              ),
+                            )),
+                            Spacer(),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                    '닫기',
+                                  style: TextStyle(
+                                      color: Colors.black
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              });
+            });
+      });
+    }
   }
 
   int _currentIndex = 0;
@@ -79,7 +210,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: Container(
           height: 62,
           decoration: BoxDecoration(
-            boxShadow:  <BoxShadow>[
+            boxShadow: <BoxShadow>[
               BoxShadow(
                 color: Color.fromRGBO(55, 84, 170, 0.1),
                 spreadRadius: 4,
@@ -109,93 +240,88 @@ class _HomePageState extends State<HomePage> {
                     BottomNavigationBarItem(
                       icon: _currentIndex == 0
                           ? SvgPicture.asset(
-                        // 5
-                        "${iconSource}home_icon.svg",
-                        width: iconSize,
-                        height: iconSize,
-                      )
+                              // 5
+                              "${iconSource}home_icon.svg",
+                              width: iconSize,
+                              height: iconSize,
+                            )
                           : SvgPicture.asset(
-                        // 5
-                        "${iconSource}Inactive_home_icon.svg",
-                        width: iconSize,
-                        height: iconSize,
-                      ),
+                              // 5
+                              "${iconSource}Inactive_home_icon.svg",
+                              width: iconSize,
+                              height: iconSize,
+                            ),
                       label: 'Home',
                     ),
                     BottomNavigationBarItem(
                       icon: _currentIndex == 1
                           ? SvgPicture.asset(
-                        // 5
-                        "${iconSource}chatting_icon.svg",
-                        width: iconSize,
-                        height: iconSize,
-                      )
+                              // 5
+                              "${iconSource}chatting_icon.svg",
+                              width: iconSize,
+                              height: iconSize,
+                            )
                           : SvgPicture.asset(
-                        // 5
-                        "${iconSource}Inactive_chatting_icon.svg",
-                        width: iconSize,
-                        height: iconSize,
-                      ),
+                              // 5
+                              "${iconSource}Inactive_chatting_icon.svg",
+                              width: iconSize,
+                              height: iconSize,
+                            ),
                       label: 'Chatting',
                     ),
                     BottomNavigationBarItem(
                         icon: _currentIndex == 2
                             ? SvgPicture.asset(
-                          // 5
-                          "${iconSource}map_icon.svg",
-                          width: iconSize,
-                          height: iconSize,
-                        )
+                                // 5
+                                "${iconSource}map_icon.svg",
+                                width: iconSize,
+                                height: iconSize,
+                              )
                             : SvgPicture.asset(
-                          // 5
-                          "${iconSource}Inactive_map_icon.svg",
-                          width: iconSize,
-                          height: iconSize,
-                        ),
-                        label: 'Map'
-                    ),
+                                // 5
+                                "${iconSource}Inactive_map_icon.svg",
+                                width: iconSize,
+                                height: iconSize,
+                              ),
+                        label: 'Map'),
                     BottomNavigationBarItem(
                       icon: _currentIndex == 3
                           ? SvgPicture.asset(
-                        // 5
-                        "${iconSource}calender_icon.svg",
-                        width: iconSize,
-                        height: iconSize,
-                      )
+                              // 5
+                              "${iconSource}calender_icon.svg",
+                              width: iconSize,
+                              height: iconSize,
+                            )
                           : SvgPicture.asset(
-                        // 5
-                        "${iconSource}Inactive_calender_icon.svg",
-                        width: iconSize,
-                        height: iconSize,
-                      ),
+                              // 5
+                              "${iconSource}Inactive_calender_icon.svg",
+                              width: iconSize,
+                              height: iconSize,
+                            ),
                       label: 'Calendar',
                     ),
                     BottomNavigationBarItem(
                         icon: _currentIndex == 4
                             ? SvgPicture.asset(
-                          // 5
-                          "${iconSource}profile_icon.svg",
-                          width: iconSize,
-                          height: iconSize,
-                        )
+                                // 5
+                                "${iconSource}profile_icon.svg",
+                                width: iconSize,
+                                height: iconSize,
+                              )
                             : SvgPicture.asset(
-                          // 5
-                          "${iconSource}Inactive_profile_icon.svg",
-                          width: iconSize,
-                          height: iconSize,
-                        ),
-                        label: 'Profile'
-                    )
-                  ]
-              ),
+                                // 5
+                                "${iconSource}Inactive_profile_icon.svg",
+                                width: iconSize,
+                                height: iconSize,
+                              ),
+                        label: 'Profile')
+                  ]),
             ),
           ),
-        )
-    );
+        ));
   }
 
-
-  /*
+/*
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -633,168 +759,5 @@ class _CustomNavigatorState extends State<CustomNavigator>
       onGenerateRoute: (_) =>
           MaterialPageRoute(builder: (context) => widget.page),
     );
-  }
-}
-
-
-/*
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return new DefaultTabController(
-      length: 3,
-      child: Scaffold(
-          bottomNavigationBar: Container(
-            color: Colors.blue,
-            child: TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.directions_car)),
-                Tab(icon: Icon(Icons.directions_transit)),
-                Tab(icon: Icon(Icons.directions_bike)),
-              ],
-            ),
-          ),
-          appBar: AppBar(
-            title: Text("Home"),
-          ),
-          body: new TabBarView(
-            children: <Widget>[
-              new HomeTab1(),
-              new HomeTab2(),
-              new HomeTab3(),
-            ],
-          )),
-    );
-  }
-}
-
-
- */
-class HomeTab1 extends StatefulWidget {
-  HomeTab1({Key? key}) : super(key: key);
-
-  @override
-  State<HomeTab1> createState() => _HomeTab1State();
-}
-
-class _HomeTab1State extends State<HomeTab1> {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Home1"),
-            new Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: new FlatButton.icon(
-                onPressed: () {
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage()));
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WritingPage()));
-                },
-                color: Colors.red,
-                textColor: Colors.white,
-                icon: const Icon(Icons.navigate_next, size: 18.0),
-                label: const Text('Go To Details'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class HomeTab2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Home2"),
-          new Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: new FlatButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed("/detail");
-              },
-              color: Colors.red,
-              textColor: Colors.white,
-              icon: const Icon(Icons.navigate_next, size: 18.0),
-              label: const Text('Go To Details'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class HomeTab3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Home3"),
-          new Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: new FlatButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed("/detail");
-              },
-              color: Colors.red,
-              textColor: Colors.white,
-              icon: const Icon(Icons.navigate_next, size: 18.0),
-              label: const Text('Go To Details'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class DetailPage extends StatefulWidget {
-  DetailPage({Key? key}) : super(key: key);
-
-  @override
-  State<DetailPage> createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          title: Text("Details"),
-        ),
-        body: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Details"),
-            ],
-          ),
-        ));
   }
 }

@@ -82,6 +82,8 @@ dependencies:
   firebase_analytics: ^9.3.7
   facebook_app_events: ^0.17.1
   app_tracking_transparency: ^2.0.3
+  flutter_toggle_tab: ^1.2.0
+  shared_preferences: ^2.0.15
 
 flutter_icons:
   android: 'launcher_icon'
@@ -117,6 +119,7 @@ flutter:
     - assets/images/
     - assets/icon/
     - assets/icon/bar_icons/
+    - assets/notifications/
     - .env
   #   - images/a_dot_ham.jpeg
 

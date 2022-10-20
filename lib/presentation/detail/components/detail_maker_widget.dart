@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../domain/model/post.dart';
+import '../../../domain/util.dart';
+import '../../../ui/show_toast.dart';
 import '../../profile/other_profile.dart';
 
 class DetailMakerWidget extends StatelessWidget {
@@ -15,15 +17,19 @@ class DetailMakerWidget extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => OtherProfilePage(
-              profileId: post.userId.underId,
-              profileName: '${post.userId.userNickname}', chatButton: false,
+        if(post.userId.underId == UserData['_id']) {
+          FlutterToastBottom('내 게시물입니다!');
+        } else {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => OtherProfilePage(
+                profileId: post.userId.underId,
+                profileName: '${post.userId.userNickname}', chatButton: false,
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 12),
