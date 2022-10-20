@@ -50,17 +50,6 @@ class _ChatPageState extends State<ChatPage> {
   String _serverKey = 'AAAA8cYlWIw:APA91bGXee8Bjzl5RDLHajmI1nsK3Ys3IL-FZCKjw0B3SQVHkOTJw5sWedYxJRg2qSg-3D2QQSBTLSySo217KyeLfVwLDFcq8QMTHlYsxiEbUpiXMmPIO5qWrEhPNsHPzz6WhQRGw-BG';
   String lastMessage = '';
 
-  /*
-  @override
-  void deactivate() async {
-    super.deactivate();
-    setState(() {
-
-    });
-  }
-
-   */
-
   @override
   void initState() {
     super.initState();
@@ -88,7 +77,6 @@ class _ChatPageState extends State<ChatPage> {
         throw Exception('Failed to load post');
       }
     }
-
 
     /*
     try {
