@@ -9,7 +9,6 @@ import 'dart:math' as math;
 import '../../data/post_api.dart';
 import '../../domain/model/post.dart';
 import '../../domain/repository/post_api_repository.dart';
-import '../../domain/util.dart';
 import 'components/post_widget.dart';
 
 class SomeonePostPage extends StatefulWidget {

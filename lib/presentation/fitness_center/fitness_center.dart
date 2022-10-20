@@ -294,7 +294,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 32,),
+                  SizedBox(height: 28,),
                   Row(
                     children: [
                       SvgPicture.asset(
@@ -359,7 +359,7 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(height: 28,),
                   Container(
                       padding: EdgeInsets.fromLTRB(20, 24, 20, 20),
                       width: double.infinity,
@@ -713,6 +713,26 @@ class _FitnessCenterPageState extends State<FitnessCenterPage> {
                           ),
                         ],
                       )),
+                  SizedBox(height: 28,),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icon/home_board_icon.svg",
+                        width: 24,
+                        height: 24,
+                      ),
+                      SizedBox(width: 12,),
+                      Text(
+                        '게시글',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 28,),
                 ],
               ),
             ),
