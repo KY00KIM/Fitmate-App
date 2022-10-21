@@ -270,22 +270,14 @@ class PostBoardWidget extends StatelessWidget {
                                   ),
                                 ),
                                 Spacer(),
-                                Text(
-                                  '${posts[index].promiseLocation.centerName}',
-                                  style: TextStyle(
-                                    color: Color(0xFF283593),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                /*
                                 Flexible(
                                   fit: FlexFit.tight,
                                   child: RichText(
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                    textAlign: TextAlign.end,
+                                    maxLines: 1,
                                     text: TextSpan(
-                                      text: '${posts[index].promiseLocation.centerName}',
+                                      text : '${posts[index].promiseLocation.centerName}',
                                       style: TextStyle(
                                         color: Color(0xFF283593),
                                         fontWeight: FontWeight.bold,
@@ -294,8 +286,6 @@ class PostBoardWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
-                                 */
                                 SizedBox(width: 13,),
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(0, 3, 4, 0),

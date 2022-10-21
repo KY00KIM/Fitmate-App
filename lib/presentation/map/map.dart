@@ -538,7 +538,7 @@ class _MapPageState extends State<MapPage>
                     ],
                   ),
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                  margin: EdgeInsets.only(top: 540),
+                  margin: EdgeInsets.only(top: 600),
                   height: alignHeight,
                   width: size.width - 50,
                   child: Column(
@@ -1132,7 +1132,7 @@ class _MapPageState extends State<MapPage>
      */
     if (bottomSheet) {
       bottomSheet = false;
-      Navigator.pop(context);
+      //Navigator.pop(context);
     }
     setState(() {
       alignment = Alignment.bottomCenter;

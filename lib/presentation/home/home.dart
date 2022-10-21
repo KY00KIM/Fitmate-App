@@ -146,7 +146,8 @@ class _HomePageState extends State<HomePage> {
                                 }, child: Text(
                                 '다시보지 않기',
                               style: TextStyle(
-                                color: Colors.black
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
                             )),
                             Spacer(),
@@ -157,7 +158,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                     '닫기',
                                   style: TextStyle(
-                                      color: Colors.black
+                                      color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 )),
                           ],
