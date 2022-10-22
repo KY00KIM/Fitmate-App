@@ -143,22 +143,23 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: () {
                                   Navigator.pop(context);
                                   pref.setBool('isNotification', true);
-                                }, child: Text(
-                                '다시보지 않기',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
+                                },
+                                child: Text(
+                                  '다시보지 않기',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
                             Spacer(),
                             TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 child: Text(
-                                    '닫기',
+                                  '닫기',
                                   style: TextStyle(
-                                      color: Colors.black,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 )),
@@ -210,7 +211,7 @@ class _HomePageState extends State<HomePage> {
           physics: NeverScrollableScrollPhysics(), // No sliding
         ),
         bottomNavigationBar: Container(
-          height: 62,
+          height: Platform.isIOS ? 70 : 62,
           decoration: BoxDecoration(
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -230,94 +231,96 @@ class _HomePageState extends State<HomePage> {
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
               ),
-              child: BottomNavigationBar(
-                  elevation: 10,
-                  backgroundColor: whiteTheme,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  type: BottomNavigationBarType.fixed,
-                  onTap: _onTap,
-                  currentIndex: _currentIndex,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: _currentIndex == 0
-                          ? SvgPicture.asset(
-                              // 5
-                              "${iconSource}home_icon.svg",
-                              width: iconSize,
-                              height: iconSize,
-                            )
-                          : SvgPicture.asset(
-                              // 5
-                              "${iconSource}Inactive_home_icon.svg",
-                              width: iconSize,
-                              height: iconSize,
-                            ),
-                      label: 'Home',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: _currentIndex == 1
-                          ? SvgPicture.asset(
-                              // 5
-                              "${iconSource}chatting_icon.svg",
-                              width: iconSize,
-                              height: iconSize,
-                            )
-                          : SvgPicture.asset(
-                              // 5
-                              "${iconSource}Inactive_chatting_icon.svg",
-                              width: iconSize,
-                              height: iconSize,
-                            ),
-                      label: 'Chatting',
-                    ),
-                    BottomNavigationBarItem(
-                        icon: _currentIndex == 2
+              child: Wrap(children: [
+                BottomNavigationBar(
+                    elevation: 10,
+                    backgroundColor: whiteTheme,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    type: BottomNavigationBarType.fixed,
+                    onTap: _onTap,
+                    currentIndex: _currentIndex,
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: _currentIndex == 0
                             ? SvgPicture.asset(
                                 // 5
-                                "${iconSource}map_icon.svg",
+                                "${iconSource}home_icon.svg",
                                 width: iconSize,
                                 height: iconSize,
                               )
                             : SvgPicture.asset(
                                 // 5
-                                "${iconSource}Inactive_map_icon.svg",
+                                "${iconSource}Inactive_home_icon.svg",
                                 width: iconSize,
                                 height: iconSize,
                               ),
-                        label: 'Map'),
-                    BottomNavigationBarItem(
-                      icon: _currentIndex == 3
-                          ? SvgPicture.asset(
-                              // 5
-                              "${iconSource}calender_icon.svg",
-                              width: iconSize,
-                              height: iconSize,
-                            )
-                          : SvgPicture.asset(
-                              // 5
-                              "${iconSource}Inactive_calender_icon.svg",
-                              width: iconSize,
-                              height: iconSize,
-                            ),
-                      label: 'Calendar',
-                    ),
-                    BottomNavigationBarItem(
-                        icon: _currentIndex == 4
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: _currentIndex == 1
                             ? SvgPicture.asset(
                                 // 5
-                                "${iconSource}profile_icon.svg",
+                                "${iconSource}chatting_icon.svg",
                                 width: iconSize,
                                 height: iconSize,
                               )
                             : SvgPicture.asset(
                                 // 5
-                                "${iconSource}Inactive_profile_icon.svg",
+                                "${iconSource}Inactive_chatting_icon.svg",
                                 width: iconSize,
                                 height: iconSize,
                               ),
-                        label: 'Profile')
-                  ]),
+                        label: 'Chatting',
+                      ),
+                      BottomNavigationBarItem(
+                          icon: _currentIndex == 2
+                              ? SvgPicture.asset(
+                                  // 5
+                                  "${iconSource}map_icon.svg",
+                                  width: iconSize,
+                                  height: iconSize,
+                                )
+                              : SvgPicture.asset(
+                                  // 5
+                                  "${iconSource}Inactive_map_icon.svg",
+                                  width: iconSize,
+                                  height: iconSize,
+                                ),
+                          label: 'Map'),
+                      BottomNavigationBarItem(
+                        icon: _currentIndex == 3
+                            ? SvgPicture.asset(
+                                // 5
+                                "${iconSource}calender_icon.svg",
+                                width: iconSize,
+                                height: iconSize,
+                              )
+                            : SvgPicture.asset(
+                                // 5
+                                "${iconSource}Inactive_calender_icon.svg",
+                                width: iconSize,
+                                height: iconSize,
+                              ),
+                        label: 'Calendar',
+                      ),
+                      BottomNavigationBarItem(
+                          icon: _currentIndex == 4
+                              ? SvgPicture.asset(
+                                  // 5
+                                  "${iconSource}profile_icon.svg",
+                                  width: iconSize,
+                                  height: iconSize,
+                                )
+                              : SvgPicture.asset(
+                                  // 5
+                                  "${iconSource}Inactive_profile_icon.svg",
+                                  width: iconSize,
+                                  height: iconSize,
+                                ),
+                          label: 'Profile')
+                    ]),
+              ]),
             ),
           ),
         ));
