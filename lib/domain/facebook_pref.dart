@@ -6,19 +6,19 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 final facebookAppEvents = FacebookAppEvents();
-const facebookSettingChannel = MethodChannel('com.hyeda.fitmate/facebook');
+// const facebookSettingChannel = MethodChannel('com.hyeda.fitmate/facebook');
 
-Future setFacebookStatus(bool status) async {
-  final arguments = {'permission': status};
-  final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
-  print("with uuid: $uuid");
-  print("CONFIGURING IOS FB_TRACKING_PERMISSON...");
+// Future setFacebookStatus(bool status) async {
+//   final arguments = {'permission': status};
+//   final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+//   print("with uuid: $uuid");
+//   print("CONFIGURING IOS FB_TRACKING_PERMISSON...");
 
-  await facebookAppEvents.setAdvertiserTracking(enabled: true);
-  final bool fbPermissionStatus =
-      await facebookSettingChannel.invokeMethod('setFacebookStatus', arguments);
-  print("FB STATUS : ${fbPermissionStatus}");
-}
+//   await facebookAppEvents.setAdvertiserTracking(enabled: true);
+//   final bool fbPermissionStatus =
+//       await facebookSettingChannel.invokeMethod('setFacebookStatus', arguments);
+//   print("FB STATUS : ${fbPermissionStatus}");
+// }
 
 /**
  * function : get app_tracking_permission status
@@ -61,10 +61,14 @@ void checkAndRequestTrackingPermission() async {
 
     TrackingStatus result_status = await requestAppTrackingPermission();
     print("tracking_permission requested : ${result_status}");
-    await setFacebookStatus(result_status == TrackingStatus.authorized);
-  } else
-    await setFacebookStatus(status == TrackingStatus.authorized);
-
+    // await setFacebookStatus(result_status == TrackingStatus.authorized);
+    facebookAppEvents.setAdvertiserTracking(
+        enabled: (result_status == TrackingStatus.authorized));
+  } else {
+    // await setFacebookStatus(status == TrackingStatus.authorized);
+    facebookAppEvents.setAdvertiserTracking(
+        enabled: (status == TrackingStatus.authorized));
+  }
   // await setFacebookStatus(status == TrackingStatus.authorized);
 }
 
