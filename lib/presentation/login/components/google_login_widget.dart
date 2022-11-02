@@ -75,13 +75,15 @@ class GoogleLoginWidget extends StatelessWidget {
       ),
       onTap: () async {
         context.loaderOverlay.show();
+        print("current : ${FirebaseAuth.instance.currentUser}");
         IdToken = await FirebaseAuthMethods(FirebaseAuth.instance)
             .signInWithGoogle(context);
+        print("Id token1 : $IdToken");
         IdToken =
             (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
                 .token
                 .toString();
-
+        print("Id token2 : $IdToken");
         if (IdToken == 'error') {
           context.loaderOverlay.hide();
           FlutterToastTop("알수 없는 에러가 발생하였습니다");

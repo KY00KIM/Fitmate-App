@@ -72,16 +72,20 @@ class FirebaseAuthMethods {
     try {
       //final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      print("gogole user : $googleUser");
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
+      print("googleAuth : $googleAuth");
       final User? user = _auth.currentUser;
+      print("user : $user");
+      print("auth : ${_auth.currentUser}");
       if (googleAuth?.accessToken != null && googleAuth?.idToken != null) {
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
         var userIdToken = await user?.getIdToken();
-        //log(userIdToken.toString());
+        log(userIdToken.toString());
         output = userIdToken.toString();
         //UserCredential userCredential = await _auth.signInWithCredential(credential);
         UserCredential userCredential =
@@ -112,9 +116,10 @@ class FirebaseAuthMethods {
   Future<String> signInWithCustomToken(
       BuildContext context, String token) async {
     try {
+      print("zz");
       await FirebaseAuth.instance.signInWithCustomToken(token);
-      log("FirebaseAuth instance : ${FirebaseAuth.instance.toString()}");
-      log("CustomToken : ${token}");
+      print("FirebaseAuth instance : ${FirebaseAuth.instance.toString()}");
+      print("CustomToken : ${token}");
       String AdditionalToken =
           (await FirebaseAuth.instance.currentUser?.getIdTokenResult(true))!
               .token

@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDwhLMOjNBfuS2BG2H7TumibSVS8uYtpPE',
+    apiKey: 'AIzaSyBenN6wz5C_LSs1HMpfleLNkpbTARQa1ss',
     appId: '1:1038411454604:android:8767bdae4487c30da703a9',
     messagingSenderId: '1038411454604',
     projectId: 'fitmate-cf118',
@@ -59,12 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDQCYp5mFe07YFhVvIL7SuvIaG7k7L6Mvw',
-    appId: '1:1038411454604:ios:5f8178af201fdef2a703a9',
+    appId: '1:1038411454604:ios:8b24b346ea53f4d7a703a9',
     messagingSenderId: '1038411454604',
     projectId: 'fitmate-cf118',
     storageBucket: 'fitmate-cf118.appspot.com',
-    androidClientId: '1038411454604-7568drml8ksi8mj535ue8ddbibu6t0i8.apps.googleusercontent.com',
-    iosClientId: '1038411454604-15fhb7u15npj7fvuohel7616naott1dg.apps.googleusercontent.com',
-    iosBundleId: 'com.hyeda.fitmate',
+    androidClientId: '1038411454604-35tkp1arp25pgni9i68dr4g3udv1n3pa.apps.googleusercontent.com',
+    iosClientId: '1038411454604-r7pl6bsddrpvtq6o9qfa93bs2ckj2ee2.apps.googleusercontent.com',
+    iosBundleId: 'com.examples.fitmate',
   );
 }

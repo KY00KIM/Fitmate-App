@@ -59,7 +59,6 @@ dependencies:
   device_info_plus: ^5.0.5
   flutter_native_timezone: ^2.0.0
 
-
   naver_map_plugin:
     git: https://github.com/LBSTECH/naver_map_plugin.git
   #naver_map_plugin: ^0.9.6

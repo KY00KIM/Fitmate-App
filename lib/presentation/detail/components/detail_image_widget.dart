@@ -39,10 +39,7 @@ class DetailImageWidget extends StatelessWidget {
             fit: BoxFit.fitWidth,
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {
-              return Image.asset(
-                'assets/images/dummy.jpg',
-                fit: BoxFit.fitWidth,
-              );
+              return SizedBox();
             },
           ),
           SizedBox(height: 20,),

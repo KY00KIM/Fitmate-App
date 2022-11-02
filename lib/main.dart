@@ -138,6 +138,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
+    name: 'fitmate',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -176,7 +177,7 @@ class _MyAppState extends State<MyApp> {
 
     User? tokenResult = await FirebaseAuth.instance.currentUser;
     print("1");
-    log(tokenResult.toString());
+    log("token result : ${tokenResult.toString()}");
     if (tokenResult == null) return true;
     print("1.5");
     // ignore: unused_local_variable
